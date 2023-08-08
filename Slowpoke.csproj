@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: C:\Users\slien\Desktop\Flint2\bin\Release\Flintstonesv2.exe-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{852C6750-B3D8-489A-B868-64873AFDE876}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>SlowPoke</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <RootNamespace>slowpoke</RootNamespace>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>199.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Views\ClientTab.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClientTab.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Types\ListViewColumnSorter.cs" />
+    <Compile Include="Types\Arena.cs" />
+    <Compile Include="Types\SpellAni.cs" />
+    <Compile Include="Types\ItemImage.cs" />
+    <Compile Include="Types\MonsterImage.cs" />
+    <Compile Include="Types\SpellIcon.cs" />
+    <Compile Include="Types\RootNpc.cs" />
+    <Compile Include="Types\Spawnarea.cs" />
+    <Compile Include="Types\Dest.cs" />
+    <Compile Include="Types\To.cs" />
+    <Compile Include="Types\RootObject.cs" />
+    <Compile Include="Types\HerbNode.cs" />
+    <Compile Include="Types\Item.cs" />
+    <Compile Include="Types\Parcel.cs" />
+    <Compile Include="Types\ChestItemXML.cs" />
+    <Compile Include="Types\ItemMapXML.cs" />
+    <Compile Include="Types\ItemMonsterXML.cs" />
+    <Compile Include="Types\Item2XML.cs" />
+    <Compile Include="Types\ItemXML.cs" />
+    <Compile Include="Types\SenseMonster.cs" />
+    <Compile Include="Types\Mail.cs" />
+    <Compile Include="Types\MappedMaps.cs" />
+    <Compile Include="Types\MonstersXML.cs" />
+    <Compile Include="Types\Tailors.cs" />
+    <Compile Include="Types\TimedEvent.cs" />
+    <Compile Include="Types\TailorLevCounts.cs" />
+    <Compile Include="Forms\ArenaCounter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Types\ListViewItemComparer.cs" />
+    <Compile Include="Forms\AscendOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ChestItemXMLEditorChild.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ComboEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ComboOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ComboOptions1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ItemMapXMLEditorChild.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ExternalChat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HideTrinketOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ItemXMLEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ItemXMLEditorChild.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LegendMarks.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Types\Marks.cs" />
+    <Compile Include="Forms\MacroOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\OptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SkillSwap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SpellPriority.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Updates.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Wayregion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Types\Character.cs" />
+    <Compile Include="Types\Player.cs" />
+    <Compile Include="Types\Npc.cs" />
+    <Compile Include="Networking\Client.cs" />
+    <Compile Include="Views\ClientTab.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Types\GroupCounts.cs" />
+    <Compile Include="Types\ItemData.cs" />
+    <Compile Include="Types\MapNum.cs" />
+    <Compile Include="Views\Matrix.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Types\Relog.cs" />
+    <Compile Include="Types\SkullData.cs" />
+    <Compile Include="Types\AscendData.cs" />
+    <Compile Include="Types\User32.cs" />
+    <Compile Include="Networking\Kernel32.cs" />
+    <Compile Include="Types\Location.cs" />
+    <Compile Include="Types\Direction.cs" />
+    <Compile Include="Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Types\Map.cs" />
+    <Compile Include="Types\Point.cs" />
+    <Compile Include="Types\DoorSpot.cs" />
+    <Compile Include="Types\Options.cs" />
+    <Compile Include="Types\Packet.cs" />
+    <Compile Include="Networking\ClientPacket.cs" />
+    <Compile Include="Networking\ServerPacket.cs" />
+    <Compile Include="Networking\KruCRC.cs" />
+    <Compile Include="Networking\ProcessMemoryStream.cs" />
+    <Compile Include="Types\Rect.cs" />
+    <Compile Include="Networking\ProcessAccess.cs" />
+    <Compile Include="Networking\ProcessCreationFlags.cs" />
+    <Compile Include="Types\StartupInfo.cs" />
+    <Compile Include="Networking\ProcessInformation.cs" />
+    <Compile Include="Types\WaitEventResult.cs" />
+    <Compile Include="Networking\Program.cs" />
+    <Compile Include="Types\UserActivityHook.cs" />
+    <Compile Include="Networking\ClientMessageHandler.cs" />
+    <Compile Include="Networking\ServerMessageHandler.cs" />
+    <Compile Include="Networking\Server.cs" />
+    <Compile Include="Types\Skill.cs" />
+    <Compile Include="Types\Spell.cs" />
+    <Compile Include="Types\SpellSpam.cs" />
+    <Compile Include="Types\SpellData.cs" />
+    <Compile Include="Types\Statistics.cs" />
+    <Compile Include="Types\Town.cs" />
+    <Compile Include="Views\targetAllMonster.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\targetAlts.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\targetGroup.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\targetMonster.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\targetMonsterbyPlayer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\targetPlayer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.cs" />
+    <Compile Include="Properties\Settings.cs" />
+    <Compile Include="Networking\AssemblyInfo.cs" />
+    <Compile Include="Views\UserControl1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\UserControl1.Designer.cs">
+      <DependentUpon>UserControl1.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Alarms\ALARMquiet.wav" />
+    <EmbeddedResource Include="Forms\ArenaCounter.resx" />
+    <EmbeddedResource Include="Forms\AscendOptions.resx" />
+    <EmbeddedResource Include="Forms\ChestItemXMLEditorChild.resx" />
+    <EmbeddedResource Include="Alarms\chime.wav" />
+    <EmbeddedResource Include="Views\ClientTab.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ClientTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ComboEdit.resx" />
+    <EmbeddedResource Include="Forms\ComboOptions.resx" />
+    <EmbeddedResource Include="Forms\ComboOptions1.resx" />
+    <EmbeddedResource Include="Alarms\Dcalarm1.wav" />
+    <EmbeddedResource Include="Alarms\Ding.wav" />
+    <EmbeddedResource Include="Forms\ExternalChat.resx" />
+    <EmbeddedResource Include="Forms\HideTrinketOptions.resx" />
+    <EmbeddedResource Include="Forms\ItemMapXMLEditorChild.resx" />
+    <EmbeddedResource Include="Forms\ItemXMLEditor.resx" />
+    <EmbeddedResource Include="Forms\ItemXMLEditorChild.resx" />
+    <EmbeddedResource Include="Forms\LegendMarks.resx" />
+    <EmbeddedResource Include="Alarms\LTTP_LowHealth.wav" />
+    <EmbeddedResource Include="Forms\MacroOptions.resx" />
+    <EmbeddedResource Include="Forms\MainForm.resx" />
+    <EmbeddedResource Include="Views\Matrix.resx" />
+    <EmbeddedResource Include="Alarms\MotherElevatorMuzak.wav" />
+    <EmbeddedResource Include="Forms\OptionsForm.resx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SkillSwap.resx" />
+    <EmbeddedResource Include="Forms\SpellPriority.resx" />
+    <EmbeddedResource Include="Views\targetAllMonster.resx" />
+    <EmbeddedResource Include="Views\targetAlts.resx" />
+    <EmbeddedResource Include="Views\targetGroup.resx" />
+    <EmbeddedResource Include="Views\targetMonster.resx" />
+    <EmbeddedResource Include="Views\targetMonsterbyPlayer.resx" />
+    <EmbeddedResource Include="Views\targetPlayer.resx" />
+    <EmbeddedResource Include="Forms\Updates.resx" />
+    <EmbeddedResource Include="Forms\Wayregion.resx" />
+    <EmbeddedResource Include="Views\UserControl1.resx">
+      <DependentUpon>UserControl1.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="199.ico" />
+    <Resource Include="Resources\btnStop.png" />
+    <Resource Include="Resources\btnPlay.png" />
+    <None Include="Resources\label12.text" />
+    <None Include="Resources\richTextBox1.text" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
