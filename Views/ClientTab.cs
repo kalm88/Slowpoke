@@ -9040,7 +9040,7 @@ namespace Flintstones
             // 
             // opencomboform
             // 
-            this.opencomboform.Location = new System.Drawing.Point(455, 88);
+            this.opencomboform.Location = new System.Drawing.Point(455, 90);
             this.opencomboform.Name = "opencomboform";
             this.opencomboform.Size = new System.Drawing.Size(117, 32);
             this.opencomboform.TabIndex = 80;
