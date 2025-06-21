@@ -122,7 +122,7 @@ namespace Flintstones
       }
       if (this.ClientTab.Client.YourCradhs.Contains("Demise"))
       {
-        this.cradhtype.Items.Add((object)"Demise");
+        this.cradhtype.Items.Add((object) "Demise");
         ++num;
       }
       if (this.ClientTab.Client.YourCradhs.Contains("Darker Seal"))
