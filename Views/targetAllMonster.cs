@@ -115,9 +115,14 @@ namespace Flintstones
     public void BestCradhs()
     {
       int num = 0;
+      if (this.ClientTab.Client.YourCradhs.Contains("Demon Seal"))
+      {
+        this.cradhtype.Items.Add((object) "Demon Seal");
+        ++num;
+      }
       if (this.ClientTab.Client.YourCradhs.Contains("Demise"))
       {
-        this.cradhtype.Items.Add((object) "Demise");
+        this.cradhtype.Items.Add((object)"Demise");
         ++num;
       }
       if (this.ClientTab.Client.YourCradhs.Contains("Darker Seal"))
