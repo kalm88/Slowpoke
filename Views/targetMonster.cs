@@ -355,9 +355,19 @@ namespace Flintstones
         this.attack2type.Items.Add((object) "Cursed Tune");
         ++num;
       }
+      if (this.ClientTab.Client.YourAttacks2.Contains("Chadul's Shot"))
+      {
+        this.attack2type.Items.Add((object) "Chadul's Shot");
+        ++num;
+      }
+            if (this.ClientTab.Client.YourAttacks2.Contains("Hypernova Shot"))
+      {
+        this.attack2type.Items.Add((object) "Hypernova Shot");
+        ++num;
+      }
       if (this.ClientTab.Client.YourAttacks2.Contains("Supernova Shot"))
       {
-        this.attack2type.Items.Add((object) "Supernova Shot");
+        this.attack2type.Items.Add((object)"Supernova Shot");
         ++num;
       }
       if (num > 0)

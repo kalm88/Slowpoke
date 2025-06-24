@@ -16691,10 +16691,12 @@ label_996:
       {
         this.UseSkill("Lullaby Punch");
       }
-      else
+      if (this.CanSkill("Frozen Strike"))
       {
-        if (!this.CanSkill("Wolf Fang Fist"))
-          return;
+        this.UseSkill("Frozen Strike");
+      }
+      if (this.CanSkill("Wolf Fang Fist"))
+      {
         this.UseSkill("Wolf Fang Fist");
       }
     }
@@ -20695,15 +20697,16 @@ label_146:
                   break;
               }
             }
-            if ((this.Tab.allMonsters.groupedmembers.Checked ? (this.GroupMembers.Count > 0 ? (this.GroupIsInRange((int) this.Tab.allMonsters.groupedmembersrange.Value) ? 1 : 0) : (this.GroupMembers.Count == 0 ? 1 : 0)) : (!this.Tab.allMonsters.groupedmembers.Checked ? 1 : 0)) != 0)
+            //little spaghetti bitch
+            if ((this.Tab.allMonsters.groupedmembers.Checked ? (this.GroupMembers.Count > 0 ? (this.GroupIsInRange((int)this.Tab.allMonsters.groupedmembersrange.Value) ? 1 : 0) : (this.GroupMembers.Count == 0 ? 1 : 0)) : (!this.Tab.allMonsters.groupedmembers.Checked ? 1 : 0)) != 0)
             {
               if (this.Tab.allMonsters.attack2.Checked && this.Tab.allMonsters.attack2type.Text == "Supernova Shot")
               {
-                foreach (Npc npc in (IEnumerable<Npc>) ((IEnumerable<Npc>) npcArray1).OrderBy<Npc, double>((Func<Npc, double>) (c => c.HpAmount)))
+                foreach (Npc npc in (IEnumerable<Npc>)((IEnumerable<Npc>)npcArray1).OrderBy<Npc, double>((Func<Npc, double>)(c => c.HpAmount)))
                 {
                   if (this.Tab.allMonsters.attack2.Checked)
                   {
-                    if (npc != null && Server.StaticCharacters[npc.ID] != null && npc.IsOnScreen && !this.HasInfiniteMR(npc.Image) && npc.Image != 46 && npc.Image != 321 && npc.Image != 452 && npc.Image != 240 && npc.Image != 273 && (long) this.Statistics.CurrentMP > (long) this.Tab.allMonsters.secattackwith.ManaCost && (this.Tab.allMonsters.ctd.Checked && Server.StaticCharacters[npc.ID].hasct || !this.Tab.allMonsters.ctd.Checked) && (this.Tab.allMonsters.fasedonly.Checked && Server.StaticCharacters[npc.ID].hasfas || !this.Tab.allMonsters.fasedonly.Checked) && (this.Tab.allMonsters.ardedonly.Checked && (Server.StaticCharacters[npc.ID].hasbeagcradh || Server.StaticCharacters[npc.ID].hasbardo || Server.StaticCharacters[npc.ID].hascradh || Server.StaticCharacters[npc.ID].hasmorcradh || Server.StaticCharacters[npc.ID].hasardcradh || Server.StaticCharacters[npc.ID].hasdarkseal || Server.StaticCharacters[npc.ID].hasdarkerseal || Server.StaticCharacters[npc.ID].hasdemise || Server.StaticCharacters[npc.ID].hasdemonseal) || !this.Tab.allMonsters.ardedonly.Checked) && (this.Tab.allMonsters.pramh.Checked ? (Server.StaticCharacters[npc.ID].haspramh || Server.StaticCharacters[npc.ID].haswff || Server.StaticCharacters[npc.ID].hassuain ? 1 : (Server.StaticCharacters[npc.ID].hasdall ? 1 : 0)) : (!this.Tab.allMonsters.pramh.Checked ? 1 : 0)) != 0 && ((Server.StaticCharacters[npc.ID].hasdemonseal || Server.StaticCharacters[npc.ID].hasdemise || Server.StaticCharacters[npc.ID].hasdarkerseal || Server.StaticCharacters[npc.ID].hasardcradh || Server.StaticCharacters[npc.ID].hasdarkseal || Server.StaticCharacters[npc.ID].hasmorcradh || Server.StaticCharacters[npc.ID].hascradh || Server.StaticCharacters[npc.ID].hasbardo || Server.StaticCharacters[npc.ID].hasbeagcradh) && this.Tab.allMonsters.cradh.Checked || !this.Tab.allMonsters.cradh.Checked) && (Server.StaticCharacters[npc.ID].hasfas && this.Tab.allMonsters.fas.Checked || !this.Tab.allMonsters.fas.Checked) && !Server.StaticCharacters[npc.ID].hasmonsterdion)
+                    if (npc != null && Server.StaticCharacters[npc.ID] != null && npc.IsOnScreen && !this.HasInfiniteMR(npc.Image) && npc.Image != 46 && npc.Image != 321 && npc.Image != 452 && npc.Image != 240 && npc.Image != 273 && (long)this.Statistics.CurrentMP > (long)this.Tab.allMonsters.secattackwith.ManaCost && (this.Tab.allMonsters.ctd.Checked && Server.StaticCharacters[npc.ID].hasct || !this.Tab.allMonsters.ctd.Checked) && (this.Tab.allMonsters.fasedonly.Checked && Server.StaticCharacters[npc.ID].hasfas || !this.Tab.allMonsters.fasedonly.Checked) && (this.Tab.allMonsters.ardedonly.Checked && (Server.StaticCharacters[npc.ID].hasbeagcradh || Server.StaticCharacters[npc.ID].hasbardo || Server.StaticCharacters[npc.ID].hascradh || Server.StaticCharacters[npc.ID].hasmorcradh || Server.StaticCharacters[npc.ID].hasardcradh || Server.StaticCharacters[npc.ID].hasdarkseal || Server.StaticCharacters[npc.ID].hasdarkerseal || Server.StaticCharacters[npc.ID].hasdemise || Server.StaticCharacters[npc.ID].hasdemonseal) || !this.Tab.allMonsters.ardedonly.Checked) && (this.Tab.allMonsters.pramh.Checked ? (Server.StaticCharacters[npc.ID].haspramh || Server.StaticCharacters[npc.ID].haswff || Server.StaticCharacters[npc.ID].hassuain ? 1 : (Server.StaticCharacters[npc.ID].hasdall ? 1 : 0)) : (!this.Tab.allMonsters.pramh.Checked ? 1 : 0)) != 0 && ((Server.StaticCharacters[npc.ID].hasdemonseal || Server.StaticCharacters[npc.ID].hasdemise || Server.StaticCharacters[npc.ID].hasdarkerseal || Server.StaticCharacters[npc.ID].hasardcradh || Server.StaticCharacters[npc.ID].hasdarkseal || Server.StaticCharacters[npc.ID].hasmorcradh || Server.StaticCharacters[npc.ID].hascradh || Server.StaticCharacters[npc.ID].hasbardo || Server.StaticCharacters[npc.ID].hasbeagcradh) && this.Tab.allMonsters.cradh.Checked || !this.Tab.allMonsters.cradh.Checked) && (Server.StaticCharacters[npc.ID].hasfas && this.Tab.allMonsters.fas.Checked || !this.Tab.allMonsters.fas.Checked) && !Server.StaticCharacters[npc.ID].hasmonsterdion)
                     {
                       this.CastSpell(this.Tab.allMonsters.secattackwith.Name, new uint?(npc.ID));
                       break;
@@ -20841,9 +20844,9 @@ label_146:
                   if (this.AttackGroup1())
                   {
                     Character character = this.BestTarget<Character>(1, npcArray1);
-                    if (character != null && character is Player && character.IsOnScreen && (long) this.Statistics.CurrentMP > (long) this.Tab.allMonsters.attackwith.ManaCost)
+                    if (character != null && character is Player && character.IsOnScreen && (long)this.Statistics.CurrentMP > (long)this.Tab.allMonsters.attackwith.ManaCost)
                     {
-                      if (this.Tab.allMonsters.spellsilenced.Checked && this.SpellBar.Contains((ushort) 143))
+                      if (this.Tab.allMonsters.spellsilenced.Checked && this.SpellBar.Contains((ushort)143))
                       {
                         if (this.Tab.fs.Checked && this.Statistics.CurrentMP < this.Statistics.MaximumMP / 2U)
                           this.CastSpell("fas spiorad");
@@ -20863,9 +20866,9 @@ label_146:
                         goto label_860;
                       }
                     }
-                    else if (character != null && character is Npc && character.IsOnScreen && (long) this.Statistics.CurrentMP > (long) this.Tab.allMonsters.attackwith.ManaCost && !this.HasInfiniteMR((character as Npc).Image) && (this.Tab.allMonsters.pramh.Checked ? (Server.StaticCharacters[(character as Npc).ID].haspramh || Server.StaticCharacters[(character as Npc).ID].haswff || Server.StaticCharacters[(character as Npc).ID].hassuain ? 1 : (Server.StaticCharacters[(character as Npc).ID].hasdall ? 1 : 0)) : (!this.Tab.allMonsters.pramh.Checked ? 1 : 0)) != 0 && ((Server.StaticCharacters[(character as Npc).ID].hasdemonseal || Server.StaticCharacters[(character as Npc).ID].hasdemise || Server.StaticCharacters[(character as Npc).ID].hasdarkerseal || Server.StaticCharacters[(character as Npc).ID].hasardcradh || Server.StaticCharacters[(character as Npc).ID].hasdarkseal || Server.StaticCharacters[(character as Npc).ID].hasmorcradh || Server.StaticCharacters[(character as Npc).ID].hascradh || Server.StaticCharacters[(character as Npc).ID].hasbardo || Server.StaticCharacters[(character as Npc).ID].hasbeagcradh) && this.Tab.allMonsters.cradh.Checked || !this.Tab.allMonsters.cradh.Checked) && ((Server.StaticCharacters[(character as Npc).ID].hasfas || this.IgnoreFas((character as Npc).Image)) && this.Tab.allMonsters.fas.Checked || !this.Tab.allMonsters.fas.Checked))
+                    else if (character != null && character is Npc && character.IsOnScreen && (long)this.Statistics.CurrentMP > (long)this.Tab.allMonsters.attackwith.ManaCost && !this.HasInfiniteMR((character as Npc).Image) && (this.Tab.allMonsters.pramh.Checked ? (Server.StaticCharacters[(character as Npc).ID].haspramh || Server.StaticCharacters[(character as Npc).ID].haswff || Server.StaticCharacters[(character as Npc).ID].hassuain ? 1 : (Server.StaticCharacters[(character as Npc).ID].hasdall ? 1 : 0)) : (!this.Tab.allMonsters.pramh.Checked ? 1 : 0)) != 0 && ((Server.StaticCharacters[(character as Npc).ID].hasdemonseal || Server.StaticCharacters[(character as Npc).ID].hasdemise || Server.StaticCharacters[(character as Npc).ID].hasdarkerseal || Server.StaticCharacters[(character as Npc).ID].hasardcradh || Server.StaticCharacters[(character as Npc).ID].hasdarkseal || Server.StaticCharacters[(character as Npc).ID].hasmorcradh || Server.StaticCharacters[(character as Npc).ID].hascradh || Server.StaticCharacters[(character as Npc).ID].hasbardo || Server.StaticCharacters[(character as Npc).ID].hasbeagcradh) && this.Tab.allMonsters.cradh.Checked || !this.Tab.allMonsters.cradh.Checked) && ((Server.StaticCharacters[(character as Npc).ID].hasfas || this.IgnoreFas((character as Npc).Image)) && this.Tab.allMonsters.fas.Checked || !this.Tab.allMonsters.fas.Checked))
                     {
-                      if (this.Tab.allMonsters.spellsilenced.Checked && this.SpellBar.Contains((ushort) 143))
+                      if (this.Tab.allMonsters.spellsilenced.Checked && this.SpellBar.Contains((ushort)143))
                       {
                         if (this.Tab.fs.Checked && this.Statistics.CurrentMP < this.Statistics.MaximumMP / 2U)
                           this.CastSpell("fas spiorad");
@@ -20918,9 +20921,9 @@ label_146:
                   else if (this.AttackGroup2())
                   {
                     Character character = this.BestTarget<Character>(2, npcArray1);
-                    if (character != null && character is Player && character.IsOnScreen && (long) this.Statistics.CurrentMP > (long) this.Tab.allMonsters.attackwith.ManaCost)
+                    if (character != null && character is Player && character.IsOnScreen && (long)this.Statistics.CurrentMP > (long)this.Tab.allMonsters.attackwith.ManaCost)
                     {
-                      if (this.Tab.allMonsters.spellsilenced.Checked && this.SpellBar.Contains((ushort) 143))
+                      if (this.Tab.allMonsters.spellsilenced.Checked && this.SpellBar.Contains((ushort)143))
                       {
                         if (this.Tab.fs.Checked && this.Statistics.CurrentMP < this.Statistics.MaximumMP / 2U)
                           this.CastSpell("fas spiorad");
@@ -20940,9 +20943,9 @@ label_146:
                         goto label_860;
                       }
                     }
-                    else if (character != null && character is Npc && character.IsOnScreen && (long) this.Statistics.CurrentMP > (long) this.Tab.allMonsters.attackwith.ManaCost && !this.HasInfiniteMR((character as Npc).Image) && (this.Tab.allMonsters.pramh.Checked ? (Server.StaticCharacters[(character as Npc).ID].haspramh || Server.StaticCharacters[(character as Npc).ID].haswff || Server.StaticCharacters[(character as Npc).ID].hassuain ? 1 : (Server.StaticCharacters[(character as Npc).ID].hasdall ? 1 : 0)) : (!this.Tab.allMonsters.pramh.Checked ? 1 : 0)) != 0 && ((Server.StaticCharacters[(character as Npc).ID].hasdemonseal || Server.StaticCharacters[(character as Npc).ID].hasdemise || Server.StaticCharacters[(character as Npc).ID].hasdarkerseal || Server.StaticCharacters[(character as Npc).ID].hasardcradh || Server.StaticCharacters[(character as Npc).ID].hasdarkseal || Server.StaticCharacters[(character as Npc).ID].hasmorcradh || Server.StaticCharacters[(character as Npc).ID].hascradh || Server.StaticCharacters[(character as Npc).ID].hasbardo || Server.StaticCharacters[(character as Npc).ID].hasbeagcradh) && this.Tab.allMonsters.cradh.Checked || !this.Tab.allMonsters.cradh.Checked) && ((Server.StaticCharacters[(character as Npc).ID].hasfas || this.IgnoreFas((character as Npc).Image)) && this.Tab.allMonsters.fas.Checked || !this.Tab.allMonsters.fas.Checked))
+                    else if (character != null && character is Npc && character.IsOnScreen && (long)this.Statistics.CurrentMP > (long)this.Tab.allMonsters.attackwith.ManaCost && !this.HasInfiniteMR((character as Npc).Image) && (this.Tab.allMonsters.pramh.Checked ? (Server.StaticCharacters[(character as Npc).ID].haspramh || Server.StaticCharacters[(character as Npc).ID].haswff || Server.StaticCharacters[(character as Npc).ID].hassuain ? 1 : (Server.StaticCharacters[(character as Npc).ID].hasdall ? 1 : 0)) : (!this.Tab.allMonsters.pramh.Checked ? 1 : 0)) != 0 && ((Server.StaticCharacters[(character as Npc).ID].hasdemonseal || Server.StaticCharacters[(character as Npc).ID].hasdemise || Server.StaticCharacters[(character as Npc).ID].hasdarkerseal || Server.StaticCharacters[(character as Npc).ID].hasardcradh || Server.StaticCharacters[(character as Npc).ID].hasdarkseal || Server.StaticCharacters[(character as Npc).ID].hasmorcradh || Server.StaticCharacters[(character as Npc).ID].hascradh || Server.StaticCharacters[(character as Npc).ID].hasbardo || Server.StaticCharacters[(character as Npc).ID].hasbeagcradh) && this.Tab.allMonsters.cradh.Checked || !this.Tab.allMonsters.cradh.Checked) && ((Server.StaticCharacters[(character as Npc).ID].hasfas || this.IgnoreFas((character as Npc).Image)) && this.Tab.allMonsters.fas.Checked || !this.Tab.allMonsters.fas.Checked))
                     {
-                      if (this.Tab.allMonsters.spellsilenced.Checked && this.SpellBar.Contains((ushort) 143))
+                      if (this.Tab.allMonsters.spellsilenced.Checked && this.SpellBar.Contains((ushort)143))
                       {
                         if (this.Tab.fs.Checked && this.Statistics.CurrentMP < this.Statistics.MaximumMP / 2U)
                           this.CastSpell("fas spiorad");
@@ -20995,9 +20998,9 @@ label_146:
                   else if (this.AttackGroup3())
                   {
                     Character character = this.BestTarget<Character>(3, npcArray1);
-                    if (character != null && character is Player && character.IsOnScreen && (long) this.Statistics.CurrentMP > (long) this.Tab.allMonsters.attackwith.ManaCost)
+                    if (character != null && character is Player && character.IsOnScreen && (long)this.Statistics.CurrentMP > (long)this.Tab.allMonsters.attackwith.ManaCost)
                     {
-                      if (this.Tab.allMonsters.spellsilenced.Checked && this.SpellBar.Contains((ushort) 143))
+                      if (this.Tab.allMonsters.spellsilenced.Checked && this.SpellBar.Contains((ushort)143))
                       {
                         if (this.Tab.fs.Checked && this.Statistics.CurrentMP < this.Statistics.MaximumMP / 2U)
                           this.CastSpell("fas spiorad");
@@ -21017,9 +21020,9 @@ label_146:
                         goto label_860;
                       }
                     }
-                    else if (character != null && character is Npc && character.IsOnScreen && (long) this.Statistics.CurrentMP > (long) this.Tab.allMonsters.attackwith.ManaCost && !this.HasInfiniteMR((character as Npc).Image) && (this.Tab.allMonsters.pramh.Checked ? (Server.StaticCharacters[(character as Npc).ID].haspramh || Server.StaticCharacters[(character as Npc).ID].haswff || Server.StaticCharacters[(character as Npc).ID].hassuain ? 1 : (Server.StaticCharacters[(character as Npc).ID].hasdall ? 1 : 0)) : (!this.Tab.allMonsters.pramh.Checked ? 1 : 0)) != 0 && ((Server.StaticCharacters[(character as Npc).ID].hasdemonseal || Server.StaticCharacters[(character as Npc).ID].hasdemonseal || Server.StaticCharacters[(character as Npc).ID].hasdemise || Server.StaticCharacters[(character as Npc).ID].hasdarkerseal || Server.StaticCharacters[(character as Npc).ID].hasardcradh || Server.StaticCharacters[(character as Npc).ID].hasdarkseal || Server.StaticCharacters[(character as Npc).ID].hasmorcradh || Server.StaticCharacters[(character as Npc).ID].hascradh || Server.StaticCharacters[(character as Npc).ID].hasbardo || Server.StaticCharacters[(character as Npc).ID].hasbeagcradh) && this.Tab.allMonsters.cradh.Checked || !this.Tab.allMonsters.cradh.Checked) && ((Server.StaticCharacters[(character as Npc).ID].hasfas || this.IgnoreFas((character as Npc).Image)) && this.Tab.allMonsters.fas.Checked || !this.Tab.allMonsters.fas.Checked))
+                    else if (character != null && character is Npc && character.IsOnScreen && (long)this.Statistics.CurrentMP > (long)this.Tab.allMonsters.attackwith.ManaCost && !this.HasInfiniteMR((character as Npc).Image) && (this.Tab.allMonsters.pramh.Checked ? (Server.StaticCharacters[(character as Npc).ID].haspramh || Server.StaticCharacters[(character as Npc).ID].haswff || Server.StaticCharacters[(character as Npc).ID].hassuain ? 1 : (Server.StaticCharacters[(character as Npc).ID].hasdall ? 1 : 0)) : (!this.Tab.allMonsters.pramh.Checked ? 1 : 0)) != 0 && ((Server.StaticCharacters[(character as Npc).ID].hasdemonseal || Server.StaticCharacters[(character as Npc).ID].hasdemonseal || Server.StaticCharacters[(character as Npc).ID].hasdemise || Server.StaticCharacters[(character as Npc).ID].hasdarkerseal || Server.StaticCharacters[(character as Npc).ID].hasardcradh || Server.StaticCharacters[(character as Npc).ID].hasdarkseal || Server.StaticCharacters[(character as Npc).ID].hasmorcradh || Server.StaticCharacters[(character as Npc).ID].hascradh || Server.StaticCharacters[(character as Npc).ID].hasbardo || Server.StaticCharacters[(character as Npc).ID].hasbeagcradh) && this.Tab.allMonsters.cradh.Checked || !this.Tab.allMonsters.cradh.Checked) && ((Server.StaticCharacters[(character as Npc).ID].hasfas || this.IgnoreFas((character as Npc).Image)) && this.Tab.allMonsters.fas.Checked || !this.Tab.allMonsters.fas.Checked))
                     {
-                      if (this.Tab.allMonsters.spellsilenced.Checked && this.SpellBar.Contains((ushort) 143))
+                      if (this.Tab.allMonsters.spellsilenced.Checked && this.SpellBar.Contains((ushort)143))
                       {
                         if (this.Tab.fs.Checked && this.Statistics.CurrentMP < this.Statistics.MaximumMP / 2U)
                           this.CastSpell("fas spiorad");
@@ -21073,11 +21076,12 @@ label_146:
                   {
                     foreach (Npc c in npcArray1)
                     {
-                        if (c != null && this.Tab.allMonsters.attack1.Checked && c != null && c.IsOnScreen && c.Image != 668 && (long) this.Statistics.CurrentMP > (long) this.Tab.allMonsters.attackwith.ManaCost && !this.HasInfiniteMR(c.Image) && (this.Tab.allMonsters.diondonly.Checked && (Server.StaticCharacters[c.ID].hasmonsterdion || Server.StaticCharacters[c.ID].hasdion) || !this.Tab.allMonsters.diondonly.Checked) && (this.Tab.allMonsters.ctd.Checked && Server.StaticCharacters[c.ID].hasct || !this.Tab.allMonsters.ctd.Checked) && (this.Tab.allMonsters.fasedonly.Checked && (Server.StaticCharacters[c.ID].hasfas || this.IgnoreFas(c.Image)) || !this.Tab.allMonsters.fasedonly.Checked) && (this.Tab.allMonsters.ardedonly.Checked && (Server.StaticCharacters[c.ID].hasbeagcradh || Server.StaticCharacters[c.ID].hasbardo || Server.StaticCharacters[c.ID].hascradh || Server.StaticCharacters[c.ID].hasmorcradh || Server.StaticCharacters[c.ID].hasardcradh || Server.StaticCharacters[c.ID].hasdarkseal || Server.StaticCharacters[c.ID].hasdarkerseal || Server.StaticCharacters[c.ID].hasdemise || Server.StaticCharacters[c.ID].hasdemonseal) || !this.Tab.allMonsters.ardedonly.Checked) && (this.Tab.allMonsters.pramh.Checked ? (Server.StaticCharacters[c.ID].haspramh || Server.StaticCharacters[c.ID].haswff || Server.StaticCharacters[c.ID].hassuain ? 1 : (Server.StaticCharacters[c.ID].hasdall ? 1 : 0)) : (!this.Tab.allMonsters.pramh.Checked ? 1 : 0)) != 0 && ((Server.StaticCharacters[c.ID].hasdemonseal || Server.StaticCharacters[c.ID].hasdemise || Server.StaticCharacters[c.ID].hasdarkerseal || Server.StaticCharacters[c.ID].hasardcradh || Server.StaticCharacters[c.ID].hasdarkseal || Server.StaticCharacters[c.ID].hasmorcradh || Server.StaticCharacters[c.ID].hascradh || Server.StaticCharacters[c.ID].hasbardo || Server.StaticCharacters[c.ID].hasbeagcradh) && this.Tab.allMonsters.cradh.Checked || !this.Tab.allMonsters.cradh.Checked) && ((Server.StaticCharacters[c.ID].hasfas || this.IgnoreFas(c.Image)) && this.Tab.allMonsters.fas.Checked || !this.Tab.allMonsters.fas.Checked) && (this.Tab.allMonsters.attack1type.Text.Contains("pian na dion") || this.Tab.allMonsters.attack1type.Text == "mor strioch pian gar" || !Server.StaticCharacters[c.ID].hasmonsterdion && !Server.StaticCharacters[c.ID].hasdion) && (this.MapInfo.Name.Contains("Chaos") ? (this.Tab.allMonsters.attack1type.Text.Contains("pian na dion") ? ((c.Image == 202 ? (Server.StaticCharacters[c.ID].hasdion ? 1 : 0) : (c.Image != 202 ? 1 : 0)) == 0 ? 0 : (c.Image == 210 || c.Image == 190 ? (Server.StaticCharacters[c.ID].HasSummoned ? 1 : 0) : (c.Image == 210 ? 0 : (c.Image != 190 ? 1 : 0)))) : (c != null ? 1 : 0)) : (c != null ? 1 : 0)) != 0 && (this.MapInfo.Name.Contains("Cthonic Remains") ? (!this.MonsterInWall(c) ? 1 : 0) : (c != null ? 1 : 0)) != 0){
+                      if (c != null && this.Tab.allMonsters.attack1.Checked && c != null && c.IsOnScreen && c.Image != 668 && (long)this.Statistics.CurrentMP > (long)this.Tab.allMonsters.attackwith.ManaCost && !this.HasInfiniteMR(c.Image) && (this.Tab.allMonsters.diondonly.Checked && (Server.StaticCharacters[c.ID].hasmonsterdion || Server.StaticCharacters[c.ID].hasdion) || !this.Tab.allMonsters.diondonly.Checked) && (this.Tab.allMonsters.ctd.Checked && Server.StaticCharacters[c.ID].hasct || !this.Tab.allMonsters.ctd.Checked) && (this.Tab.allMonsters.fasedonly.Checked && (Server.StaticCharacters[c.ID].hasfas || this.IgnoreFas(c.Image)) || !this.Tab.allMonsters.fasedonly.Checked) && (this.Tab.allMonsters.ardedonly.Checked && (Server.StaticCharacters[c.ID].hasbeagcradh || Server.StaticCharacters[c.ID].hasbardo || Server.StaticCharacters[c.ID].hascradh || Server.StaticCharacters[c.ID].hasmorcradh || Server.StaticCharacters[c.ID].hasardcradh || Server.StaticCharacters[c.ID].hasdarkseal || Server.StaticCharacters[c.ID].hasdarkerseal || Server.StaticCharacters[c.ID].hasdemise || Server.StaticCharacters[c.ID].hasdemonseal) || !this.Tab.allMonsters.ardedonly.Checked) && (this.Tab.allMonsters.pramh.Checked ? (Server.StaticCharacters[c.ID].haspramh || Server.StaticCharacters[c.ID].haswff || Server.StaticCharacters[c.ID].hassuain ? 1 : (Server.StaticCharacters[c.ID].hasdall ? 1 : 0)) : (!this.Tab.allMonsters.pramh.Checked ? 1 : 0)) != 0 && ((Server.StaticCharacters[c.ID].hasdemonseal || Server.StaticCharacters[c.ID].hasdemise || Server.StaticCharacters[c.ID].hasdarkerseal || Server.StaticCharacters[c.ID].hasardcradh || Server.StaticCharacters[c.ID].hasdarkseal || Server.StaticCharacters[c.ID].hasmorcradh || Server.StaticCharacters[c.ID].hascradh || Server.StaticCharacters[c.ID].hasbardo || Server.StaticCharacters[c.ID].hasbeagcradh) && this.Tab.allMonsters.cradh.Checked || !this.Tab.allMonsters.cradh.Checked) && ((Server.StaticCharacters[c.ID].hasfas || this.IgnoreFas(c.Image)) && this.Tab.allMonsters.fas.Checked || !this.Tab.allMonsters.fas.Checked) && (this.Tab.allMonsters.attack1type.Text.Contains("pian na dion") || this.Tab.allMonsters.attack1type.Text == "mor strioch pian gar" || !Server.StaticCharacters[c.ID].hasmonsterdion && !Server.StaticCharacters[c.ID].hasdion) && (this.MapInfo.Name.Contains("Chaos") ? (this.Tab.allMonsters.attack1type.Text.Contains("pian na dion") ? ((c.Image == 202 ? (Server.StaticCharacters[c.ID].hasdion ? 1 : 0) : (c.Image != 202 ? 1 : 0)) == 0 ? 0 : (c.Image == 210 || c.Image == 190 ? (Server.StaticCharacters[c.ID].HasSummoned ? 1 : 0) : (c.Image == 210 ? 0 : (c.Image != 190 ? 1 : 0)))) : (c != null ? 1 : 0)) : (c != null ? 1 : 0)) != 0 && (this.MapInfo.Name.Contains("Cthonic Remains") ? (!this.MonsterInWall(c) ? 1 : 0) : (c != null ? 1 : 0)) != 0)
+                      {
                         bool flag = false;
                         if ((!this.Tab.walktowards.Checked || c.DistanceFrom(this.ServerLocation) < 6) && !flag && (!(this.Tab.allMonsters.attackwith.Name == "mor strioch pian gar") || !Server.StaticCharacters[c.ID].hasmonsterdion && !Server.StaticCharacters[c.ID].hasdion))
                         {
-                          if (this.Tab.allMonsters.spellsilenced.Checked && this.SpellBar.Contains((ushort) 143) && !this.Tab.allMonsters.attackwith.Name.Contains("pian na dion"))
+                          if (this.Tab.allMonsters.spellsilenced.Checked && this.SpellBar.Contains((ushort)143) && !this.Tab.allMonsters.attackwith.Name.Contains("pian na dion"))
                           {
                             if (this.Tab.fs.Checked && this.Statistics.CurrentMP < this.Statistics.MaximumMP / 2U)
                               this.CastSpell("fas spiorad");
@@ -24086,6 +24090,16 @@ label_860:
       {
         if (spell != null && spell.Name.Contains("Cursed Tune"))
           this.YourAttacks2.Add("Cursed Tune");
+      }
+      foreach (Spell spell in this.SpellBook)
+      {
+        if (spell != null && spell.Name.Equals("Chadul's Shot"))
+          this.YourAttacks2.Add(spell.Name);
+      }
+      foreach (Spell spell in this.SpellBook)
+      {
+        if (spell != null && spell.Name.Equals("Supernova Shot"))
+          this.YourAttacks2.Add(spell.Name);
       }
       foreach (Spell spell in this.SpellBook)
       {

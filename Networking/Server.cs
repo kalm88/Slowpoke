@@ -501,6 +501,8 @@ namespace Flintstones
       Server.SpellList.Add("Frost Arrow 2", new SpellData("Frost Arrow 2", 700, 1));
       Server.SpellList.Add("Frost Arrow 1", new SpellData("Frost Arrow 1", 700, 1));
       Server.SpellList.Add("Supernova Shot", new SpellData("Supernova Shot", 1500, 0));
+      Server.SpellList.Add("Hypernova Shot", new SpellData("Hypernova Shot", 5000, 0));
+      Server.SpellList.Add("Chadul's Shot", new SpellData("Chadul's Shot", 5000, 0));
       Server.SpellList.Add("Fiosachd Prayer", new SpellData("Fiosachd Prayer", 2, 1));
       Server.SpellList.Add("Glioca Prayer", new SpellData("Glioca Prayer", 2, 1));
       Server.SpellList.Add("Ceannlaidir Prayer", new SpellData("Ceannlaidir Prayer", 2, 1));
