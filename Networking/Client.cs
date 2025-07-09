@@ -20700,7 +20700,10 @@ label_146:
             //little spaghetti bitch
             if ((this.Tab.allMonsters.groupedmembers.Checked ? (this.GroupMembers.Count > 0 ? (this.GroupIsInRange((int)this.Tab.allMonsters.groupedmembersrange.Value) ? 1 : 0) : (this.GroupMembers.Count == 0 ? 1 : 0)) : (!this.Tab.allMonsters.groupedmembers.Checked ? 1 : 0)) != 0)
             {
-              if (this.Tab.allMonsters.attack2.Checked && this.Tab.allMonsters.attack2type.Text == "Supernova Shot")
+              if (this.Tab.allMonsters.attack2.Checked &&
+              (this.Tab.allMonsters.attack2type.Text == "Supernova Shot" ||
+              this.Tab.allMonsters.attack2type.Text == "Chadul's Shot" ||
+              this.Tab.allMonsters.attack2type.Text == "Hypernova Shot" ))
               {
                 foreach (Npc npc in (IEnumerable<Npc>)((IEnumerable<Npc>)npcArray1).OrderBy<Npc, double>((Func<Npc, double>)(c => c.HpAmount)))
                 {
@@ -24098,7 +24101,7 @@ label_860:
       }
       foreach (Spell spell in this.SpellBook)
       {
-        if (spell != null && spell.Name.Equals("Supernova Shot"))
+        if (spell != null && spell.Name.Equals("Hypernova Shot"))
           this.YourAttacks2.Add(spell.Name);
       }
       foreach (Spell spell in this.SpellBook)
