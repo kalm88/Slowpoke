@@ -2420,16 +2420,16 @@ namespace Flintstones
       doc.Element((XName) "Settings").Add((object) new XElement((XName) "throwtotems", (object) this.throwtotems.Checked));
       if (toSave != "default")
         doc.Element((XName) "Settings").Add((object) new XElement((XName) "reequiparmor", (object) this.reequiparmor.Checked));
-      if (OnDC)
-      {
-        doc.Element((XName) "Settings").Add((object) new XElement((XName) "useexpgem", (object) this.useexpgem.Checked));
-        doc.Element((XName) "Settings").Add((object) new XElement((XName) "expgemmp", (object) this.expgemmp.Checked));
-        doc.Element((XName) "Settings").Add((object) new XElement((XName) "UseEXPAPBonus", (object) this.expapbonus.Checked));
-        doc.Element((XName) "Settings").Add((object) new XElement((XName) "ABRune", (object) this.abrune.Checked));
-        doc.Element((XName) "Settings").Add((object) new XElement((XName) "XPShroom", (object) this.xpshroom.Checked));
-        doc.Element((XName) "Settings").Add((object) new XElement((XName) "destroytonics", (object) this.destroytonics.Checked));
-        doc.Element((XName) "Settings").Add((object) new XElement((XName) "uncheckloot", (object) this.uncheckloot.Checked));
-      }
+      
+      
+      doc.Element((XName) "Settings").Add((object) new XElement((XName) "useexpgem", (object) this.useexpgem.Checked));
+      doc.Element((XName) "Settings").Add((object) new XElement((XName) "expgemmp", (object) this.expgemmp.Checked));
+      doc.Element((XName) "Settings").Add((object) new XElement((XName) "UseEXPAPBonus", (object) this.expapbonus.Checked));
+      doc.Element((XName) "Settings").Add((object) new XElement((XName) "ABRune", (object) this.abrune.Checked));
+      doc.Element((XName) "Settings").Add((object) new XElement((XName) "XPShroom", (object) this.xpshroom.Checked));
+      doc.Element((XName) "Settings").Add((object) new XElement((XName) "destroytonics", (object) this.destroytonics.Checked));
+      doc.Element((XName) "Settings").Add((object) new XElement((XName) "uncheckloot", (object) this.uncheckloot.Checked));
+    
       doc.Element((XName) "Settings").Add((object) new XElement((XName) "respondflower", (object) this.respondflower.Checked));
       if (OnDC)
       {
@@ -3239,23 +3239,20 @@ namespace Flintstones
             this.openmedchest.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "openmedchest").Value);
           if (xdocument.Element((XName) "Settings").Element((XName) "throwtotems") != null)
             this.throwtotems.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "throwtotems").Value);
-          if (AfterRelog)
-          {
-            if (xdocument.Element((XName) "Settings").Element((XName) "useexpgem") != null)
-              this.useexpgem.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "useexpgem").Value);
-            if (xdocument.Element((XName) "Settings").Element((XName) "expgemmp") != null)
-              this.expgemmp.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "expgemmp").Value);
-            if (xdocument.Element((XName) "Settings").Element((XName) "UseEXPAPBonus") != null)
-              this.expapbonus.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "UseEXPAPBonus").Value);
-            if (xdocument.Element((XName) "Settings").Element((XName) "ABRune") != null)
-              this.abrune.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "ABRune").Value);
-            if (xdocument.Element((XName) "Settings").Element((XName) "XPShroom") != null)
-              this.xpshroom.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "XPShroom").Value);
-            if (xdocument.Element((XName) "Settings").Element((XName) "destroytonics") != null)
-              this.destroytonics.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "destroytonics").Value);
-            if (xdocument.Element((XName) "Settings").Element((XName) "uncheckloot") != null)
-              this.uncheckloot.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "uncheckloot").Value);
-          }
+          if (xdocument.Element((XName) "Settings").Element((XName) "useexpgem") != null)
+            this.useexpgem.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "useexpgem").Value);
+          if (xdocument.Element((XName) "Settings").Element((XName) "expgemmp") != null)
+            this.expgemmp.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "expgemmp").Value);
+          if (xdocument.Element((XName) "Settings").Element((XName) "UseEXPAPBonus") != null)
+            this.expapbonus.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "UseEXPAPBonus").Value);
+          if (xdocument.Element((XName) "Settings").Element((XName) "ABRune") != null)
+            this.abrune.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "ABRune").Value);
+          if (xdocument.Element((XName) "Settings").Element((XName) "XPShroom") != null)
+            this.xpshroom.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "XPShroom").Value);
+          if (xdocument.Element((XName) "Settings").Element((XName) "destroytonics") != null)
+            this.destroytonics.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "destroytonics").Value);
+          if (xdocument.Element((XName) "Settings").Element((XName) "uncheckloot") != null)
+            this.uncheckloot.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "uncheckloot").Value);
           if (xdocument.Element((XName) "Settings").Element((XName) "respondflower") != null)
             this.respondflower.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "respondflower").Value);
           if (AfterRelog)
