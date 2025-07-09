@@ -93,7 +93,7 @@ namespace Flintstones
 
     public bool canbetaken => DateTime.UtcNow.Subtract(this.CreateTime).TotalSeconds < 3.0;
 
-    public bool hascurse => this.hasardcradh || this.hasdemise || this.hasdarkerseal || this.hasdarkseal || this.hasmorcradh;
+    public bool hascurse => this.hasardcradh || this.hasdemonseal || this.hasdemise || this.hasdarkerseal || this.hasdarkseal || this.hasmorcradh;
 
     public bool hasardcradh => this.SpellAnimationHistory.ContainsKey(257) && DateTime.UtcNow.Subtract(this.SpellAnimationHistory[257]).TotalSeconds < 240.0;
 
@@ -110,6 +110,8 @@ namespace Flintstones
     public bool hasdarkerseal => this.SpellAnimationHistory.ContainsKey(82) && DateTime.UtcNow.Subtract(this.SpellAnimationHistory[82]).TotalSeconds < 153.0;
 
     public bool hasdemise => this.SpellAnimationHistory.ContainsKey(75) && DateTime.UtcNow.Subtract(this.SpellAnimationHistory[75]).TotalSeconds < 153.0;
+
+    public bool hasdemonseal => this.SpellAnimationHistory.ContainsKey(76) && DateTime.UtcNow.Subtract(this.SpellAnimationHistory[76]).TotalSeconds < 153.0;
 
     public bool hasaite
     {

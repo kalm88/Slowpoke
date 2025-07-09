@@ -287,6 +287,7 @@ namespace Flintstones
       Server.SpellList.Add("Dark Seal", new SpellData("Dark Seal", 350, 6));
       Server.SpellList.Add("Darker Seal", new SpellData("Darker Seal", 450, 6));
       Server.SpellList.Add("Demise", new SpellData("Demise", 500, 6));
+      Server.SpellList.Add("Demon Seal", new SpellData("Demon Seal", 600, 6));
       Server.SpellList.Add("Mesmerize", new SpellData("Mesmerize", 800, 7));
       Server.SpellList.Add("Cursed Tune 12", new SpellData("Cursed Tune 12", 3960, 0));
       Server.SpellList.Add("Cursed Tune 11", new SpellData("Cursed Tune 11", 3960, 0));
@@ -500,6 +501,8 @@ namespace Flintstones
       Server.SpellList.Add("Frost Arrow 2", new SpellData("Frost Arrow 2", 700, 1));
       Server.SpellList.Add("Frost Arrow 1", new SpellData("Frost Arrow 1", 700, 1));
       Server.SpellList.Add("Supernova Shot", new SpellData("Supernova Shot", 1500, 0));
+      Server.SpellList.Add("Hypernova Shot", new SpellData("Hypernova Shot", 5000, 0));
+      Server.SpellList.Add("Chadul's Shot", new SpellData("Chadul's Shot", 5000, 0));
       Server.SpellList.Add("Fiosachd Prayer", new SpellData("Fiosachd Prayer", 2, 1));
       Server.SpellList.Add("Glioca Prayer", new SpellData("Glioca Prayer", 2, 1));
       Server.SpellList.Add("Ceannlaidir Prayer", new SpellData("Ceannlaidir Prayer", 2, 1));
@@ -4014,6 +4017,15 @@ label_268:
                 if (client.Tab.vmonitorcurses && client.Characters[client.LastTarget] is Player)
                   client.UpdatePlayerImage(client.Characters[client.LastTarget] as Player);
               }
+              if (str1.Contains("Demon Seal"))
+              {
+                if (Server.StaticCharacters[client.LastTarget].SpellAnimationHistory.ContainsKey(76))
+                  Server.StaticCharacters[client.LastTarget].SpellAnimationHistory[76] = DateTime.UtcNow;
+                else
+                  Server.StaticCharacters[client.LastTarget].SpellAnimationHistory.Add(76, DateTime.UtcNow);
+                if (client.Tab.vmonitorcurses && client.Characters[client.LastTarget] is Player)
+                  client.UpdatePlayerImage(client.Characters[client.LastTarget] as Player);
+              }
               client.Characters[client.LastTarget].AnotherCurseCount = 0;
             }
           }
@@ -4076,6 +4088,13 @@ label_268:
                 Server.StaticCharacters[client.LastTarget].SpellAnimationHistory[75] = DateTime.UtcNow;
               else
                 Server.StaticCharacters[client.LastTarget].SpellAnimationHistory.Add(75, DateTime.UtcNow);
+            }
+            if (str1.Contains("Demon Seal"))
+            {
+              if (Server.StaticCharacters[client.LastTarget].SpellAnimationHistory.ContainsKey(76))
+                Server.StaticCharacters[client.LastTarget].SpellAnimationHistory[76] = DateTime.UtcNow;
+              else
+                Server.StaticCharacters[client.LastTarget].SpellAnimationHistory.Add(76, DateTime.UtcNow);
             }
             client.Characters[client.LastTarget].AnotherCurseCount = 0;
           }
@@ -5787,8 +5806,8 @@ label_268:
                     break;
                 }
               }
-label_149:
-              if ((int) key1 == (int) client.PlayerID && Server.StaticCharacters.ContainsKey(key2) && (key3 == (ushort) 245 || key3 == (ushort) 243 || key3 == (ushort) 258 || key3 == (ushort) 259 || key3 == (ushort) 104 || key3 == (ushort) 82))
+            label_149:
+              if ((int)key1 == (int)client.PlayerID && Server.StaticCharacters.ContainsKey(key2) && (key3 == (ushort)245 || key3 == (ushort)243 || key3 == (ushort)258 || key3 == (ushort)259 || key3 == (ushort)104 || key3 == (ushort)82))
               {
                 int num8;
                 if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(257))
@@ -5801,15 +5820,15 @@ label_149:
                     case 257:
                       break;
                     default:
-                      num8 = key3 != (ushort) 245 ? 1 : 0;
+                      num8 = key3 != (ushort)245 ? 1 : 0;
                       goto label_155;
                   }
                 }
                 num8 = 0;
-label_155:
+              label_155:
                 if (num8 != 0)
                   Server.StaticCharacters[key2].SpellAnimationHistory.Remove(257);
-                if ((!Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(243) || key3 == (ushort) 243 ? 0 : (key3 != (ushort) 245 ? (key3 != (ushort) 245 ? 1 : 0) : (client.LastSpell == "ao mor cradh" ? 1 : 0))) != 0)
+                if ((!Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(243) || key3 == (ushort)243 ? 0 : (key3 != (ushort)245 ? (key3 != (ushort)245 ? 1 : 0) : (client.LastSpell == "ao mor cradh" ? 1 : 0))) != 0)
                   Server.StaticCharacters[key2].SpellAnimationHistory.Remove(243);
                 int num9;
                 if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(258))
@@ -5822,12 +5841,12 @@ label_155:
                     case 258:
                       break;
                     default:
-                      num9 = key3 != (ushort) 245 ? 1 : 0;
+                      num9 = key3 != (ushort)245 ? 1 : 0;
                       goto label_164;
                   }
                 }
                 num9 = 0;
-label_164:
+              label_164:
                 if (num9 != 0)
                   Server.StaticCharacters[key2].SpellAnimationHistory.Remove(258);
                 int num10;
@@ -5841,20 +5860,22 @@ label_164:
                     case 259:
                       break;
                     default:
-                      num10 = key3 != (ushort) 245 ? 1 : 0;
+                      num10 = key3 != (ushort)245 ? 1 : 0;
                       goto label_171;
                   }
                 }
                 num10 = 0;
-label_171:
+              label_171:
                 if (num10 != 0)
                   Server.StaticCharacters[key2].SpellAnimationHistory.Remove(259);
-                if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(104) && key3 != (ushort) 245 && key3 != (ushort) 104)
+                if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(104) && key3 != (ushort)245 && key3 != (ushort)104)
                   Server.StaticCharacters[key2].SpellAnimationHistory.Remove(104);
-                if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(82) && key3 != (ushort) 245 && key3 != (ushort) 82)
+                if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(82) && key3 != (ushort)245 && key3 != (ushort)82)
                   Server.StaticCharacters[key2].SpellAnimationHistory.Remove(82);
-                if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(75) && key3 != (ushort) 245 && key3 != (ushort) 75)
+                if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(75) && key3 != (ushort)245 && key3 != (ushort)75)
                   Server.StaticCharacters[key2].SpellAnimationHistory.Remove(75);
+                if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(76) && key3 != (ushort)245 && key3 != (ushort)76)
+                  Server.StaticCharacters[key2].SpellAnimationHistory.Remove(76);
               }
               if (flag)
               {
@@ -6816,13 +6837,13 @@ label_171:
       Server.StaticCharacters[player.ID].NameIsRed = false;
       if (!client.safemode)
       {
-        if (client.Tab.monitords.Checked && player.Head != ushort.MaxValue && Server.StaticCharacters.ContainsKey(player.ID) && (Server.StaticCharacters[player.ID].hasdemise || Server.StaticCharacters[player.ID].hasdarkerseal || Server.StaticCharacters[player.ID].hasdarkseal))
+        if (client.Tab.monitords.Checked && player.Head != ushort.MaxValue && Server.StaticCharacters.ContainsKey(player.ID) && (Server.StaticCharacters[player.ID].hasdemonseal || Server.StaticCharacters[player.ID].hasdemise || Server.StaticCharacters[player.ID].hasdarkerseal || Server.StaticCharacters[player.ID].hasdarkseal))
         {
           client.Characters[player.ID].NameIsRed = true;
           Server.StaticCharacters[player.ID].NameIsRed = true;
           msg2.BodyData[39] = (byte) 1;
         }
-        else if (client.Tab.monitords.Checked && player.Head == ushort.MaxValue && Server.StaticCharacters.ContainsKey(player.ID) && (Server.StaticCharacters[player.ID].hasdemise || Server.StaticCharacters[player.ID].hasdarkerseal || Server.StaticCharacters[player.ID].hasdarkseal))
+        else if (client.Tab.monitords.Checked && player.Head == ushort.MaxValue && Server.StaticCharacters.ContainsKey(player.ID) && (Server.StaticCharacters[player.ID].hasdemonseal || Server.StaticCharacters[player.ID].hasdemise || Server.StaticCharacters[player.ID].hasdarkerseal || Server.StaticCharacters[player.ID].hasdarkseal))
         {
           client.Characters[player.ID].NameIsRed = true;
           Server.StaticCharacters[player.ID].NameIsRed = true;
@@ -6942,7 +6963,7 @@ label_171:
           }
           client.Characters[key].NameIsRed = false;
           Server.StaticCharacters[key].NameIsRed = false;
-          if (client.Tab.vmonitorcurses && Server.StaticCharacters.ContainsKey(key) && Server.StaticCharacters[key] != null && (Server.StaticCharacters[key].hasardcradh || Server.StaticCharacters[key].hasdemise || Server.StaticCharacters[key].hasdarkerseal || Server.StaticCharacters[key].hasdarkseal))
+          if (client.Tab.vmonitorcurses && Server.StaticCharacters.ContainsKey(key) && Server.StaticCharacters[key] != null && (Server.StaticCharacters[key].hasardcradh || Server.StaticCharacters[key].hasdemonseal || Server.StaticCharacters[key].hasdemise || Server.StaticCharacters[key].hasdarkerseal || Server.StaticCharacters[key].hasdarkseal))
           {
             client.Characters[key].NameIsRed = true;
             Server.StaticCharacters[key].NameIsRed = true;

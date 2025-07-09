@@ -115,6 +115,11 @@ namespace Flintstones
     public void BestCradhs()
     {
       int num = 0;
+      if (this.ClientTab.Client.YourCradhs.Contains("Demon Seal"))
+      {
+        this.cradhtype.Items.Add((object) "Demon Seal");
+        ++num;
+      }
       if (this.ClientTab.Client.YourCradhs.Contains("Demise"))
       {
         this.cradhtype.Items.Add((object) "Demise");
@@ -350,9 +355,19 @@ namespace Flintstones
         this.attack2type.Items.Add((object) "Cursed Tune");
         ++num;
       }
+      if (this.ClientTab.Client.YourAttacks2.Contains("Chadul's Shot"))
+      {
+        this.attack2type.Items.Add((object) "Chadul's Shot");
+        ++num;
+      }
+            if (this.ClientTab.Client.YourAttacks2.Contains("Hypernova Shot"))
+      {
+        this.attack2type.Items.Add((object) "Hypernova Shot");
+        ++num;
+      }
       if (this.ClientTab.Client.YourAttacks2.Contains("Supernova Shot"))
       {
-        this.attack2type.Items.Add((object) "Supernova Shot");
+        this.attack2type.Items.Add((object)"Supernova Shot");
         ++num;
       }
       if (num > 0)

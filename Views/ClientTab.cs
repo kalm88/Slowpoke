@@ -8973,7 +8973,7 @@ namespace Flintstones
             this.monitords.Name = "monitords";
             this.monitords.Size = new System.Drawing.Size(149, 19);
             this.monitords.TabIndex = 87;
-            this.monitords.Text = "DS/DS2/Demise Tracker";
+            this.monitords.Text = "DS/DS2/Demise/Demon Seal Tracker";
             this.monitords.UseVisualStyleBackColor = true;
             this.monitords.CheckedChanged += new System.EventHandler(this.monitords_CheckedChanged);
             // 
@@ -9040,7 +9040,7 @@ namespace Flintstones
             // 
             // opencomboform
             // 
-            this.opencomboform.Location = new System.Drawing.Point(455, 88);
+            this.opencomboform.Location = new System.Drawing.Point(455, 90);
             this.opencomboform.Name = "opencomboform";
             this.opencomboform.Size = new System.Drawing.Size(117, 32);
             this.opencomboform.TabIndex = 80;
