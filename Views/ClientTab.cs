@@ -10638,16 +10638,27 @@ namespace Flintstones
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(632, 25);
             this.toolStrip1.TabIndex = 0;
+            
             // 
             // btnPlay
-            // 
+            //
+            this.btnPlay.Image = Image.FromFile("Resources\\btnPlay.png");
+            this.btnPlay.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.btnPlay.Name = "btnPlay";
             this.btnPlay.Size = new System.Drawing.Size(23, 23);
+            this.btnPlay.Click += new System.EventHandler(this.Play_Click);
+            this.toolStrip1.Items.Add(this.btnPlay);
+            
             // 
             // btnStop
             // 
+            this.btnStop.Image = Image.FromFile("Resources\\btnStop.png");
+            this.btnStop.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(23, 23);
+            this.btnStop.Click += new System.EventHandler(this.Stop_Click);
+            this.toolStrip1.Items.Add(this.btnStop);
+            
             // 
             // btnPlay2
             // 
