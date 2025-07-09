@@ -272,11 +272,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="199.ico" />
-    <Resource Include="Resources\btnStop.png" />
-    <Resource Include="Resources\btnPlay.png" />
     <None Include="Resources\label12.text" />
     <None Include="Resources\richTextBox1.text" />
   </ItemGroup>
+  <ItemGroup>
+  <Content Include="Resources\btnPlay.png">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
+  <Content Include="Resources\btnStop.png">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
+</ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
       <Visible>False</Visible>
