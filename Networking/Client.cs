@@ -23899,6 +23899,11 @@ label_860:
     {
       foreach (Spell spell in this.SpellBook)
       {
+        if (spell != null && spell.Name.Equals("Demon Seal"))
+          this.YourCradhs.Add(spell.Name);
+      }
+      foreach (Spell spell in this.SpellBook)
+      {
         if (spell != null && spell.Name.Equals("Demise"))
           this.YourCradhs.Add(spell.Name);
       }
