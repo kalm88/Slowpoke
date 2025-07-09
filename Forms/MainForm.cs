@@ -193,6 +193,7 @@ namespace Flintstones
     {
       this.ThreadID = Thread.CurrentThread.ManagedThreadId;
       this.InitializeComponent();
+      this.Icon = new Icon("Resources\\199.ico"); // Path relative to output directory
       this.lvwColumnSorter = new ListViewColumnSorter();
       this.recenttaskslist.ListViewItemSorter = (IComparer) this.lvwColumnSorter;
       this.ProcList = new List<int>();
