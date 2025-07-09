@@ -47,7 +47,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>199.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\199.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -271,11 +271,13 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="199.ico" />
     <None Include="Resources\label12.text" />
     <None Include="Resources\richTextBox1.text" />
   </ItemGroup>
   <ItemGroup>
+  <Content Include="Resources\199.ico">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
   <Content Include="Resources\btnPlay.png">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
