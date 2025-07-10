@@ -228,6 +228,7 @@ namespace Flintstones
     public bool waitingonlore;
     public DateTime ascendtime = DateTime.MinValue;
     public DateTime rescuedtime = DateTime.MinValue;
+    public DateTime killedtime = DateTime.MinValue;
     public uint pathmaxhp;
     public uint pathstr;
     public uint pathint;
@@ -8266,6 +8267,7 @@ label_2062:
               }
             }
           }
+          //vikki
           if (!this.pause && this.Tab.vrescueascender)
           {
             Player characterByName = this.FindCharacterByName<Player>(this.Tab.vrescueascendername);
@@ -8342,9 +8344,10 @@ label_2062:
                   }
                 }
               }
+              //vikki
               if (this.MapInfo.Number == 393 && !this.needsmats)
               {
-                if (Math.Floor((double) (this.Statistics.MaximumHP - this.pathmaxhp) / 150.0) > 0.0)
+                if (Math.Floor((double)(this.Statistics.MaximumHP - this.pathmaxhp) / 150.0) > 0.0)
                 {
                   Player characterByName = this.FindCharacterByName<Player>(this.Tab.AscendOptions.rescuername.Text);
                   if (characterByName != null && characterByName.IsOnScreen && characterByName.Location.DistanceFrom(this.ServerLocation) > 1)
@@ -8362,22 +8365,22 @@ label_2062:
                         this.habab = true;
                       }
                       if (this.Currentnpctext.StartsWith("So, Master Aisling,"))
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 157, (byte) 0, (byte) 38);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)157, (byte)0, (byte)38);
                       if (this.Currentnpctext.StartsWith("Realize that it is through"))
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 157, (byte) 0, (byte) 39);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)157, (byte)0, (byte)39);
                       if (this.Currentnpctext.StartsWith("And you will suffer"))
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 157, (byte) 0, (byte) 40);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)157, (byte)0, (byte)40);
                       if (this.Currentnpctext.StartsWith("Do you wish to"))
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 157, (byte) 0, (byte) 41, (byte) 1, (byte) 1);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)157, (byte)0, (byte)41, (byte)1, (byte)1);
                       if (this.Currentnpctext.StartsWith("You are too weak"))
                       {
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 157, (byte) 0, (byte) 122);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)157, (byte)0, (byte)122);
                         this.Tab.AscendOptions.buystatsbtn.Text = "Start";
                         goto label_3045;
                       }
                       else if (this.Currentnpctext.StartsWith("One of your abilities"))
                       {
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 157, (byte) 0, (byte) 230);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)157, (byte)0, (byte)230);
                         this.Tab.AscendOptions.buystatsbtn.Text = "Start";
                         goto label_3045;
                       }
@@ -8385,48 +8388,48 @@ label_2062:
                       {
                         byte action = 0;
                         byte un = 0;
-                        if (this.Path == (byte) 3)
-                          action = (byte) 186;
-                        else if (this.Path == (byte) 4)
-                          action = (byte) 237;
-                        else if (this.Path == (byte) 1)
-                          action = (byte) 84;
-                        else if (this.Path == (byte) 2)
-                          action = (byte) 135;
-                        else if (this.Path == (byte) 5)
+                        if (this.Path == (byte)3)
+                          action = (byte)186;
+                        else if (this.Path == (byte)4)
+                          action = (byte)237;
+                        else if (this.Path == (byte)1)
+                          action = (byte)84;
+                        else if (this.Path == (byte)2)
+                          action = (byte)135;
+                        else if (this.Path == (byte)5)
                         {
-                          action = (byte) 45;
-                          un = (byte) 1;
+                          action = (byte)45;
+                          un = (byte)1;
                         }
-                        if (this.Tab.AscendOptions.strt.Text != string.Empty && int.Parse(this.Tab.AscendOptions.strt.Text) > 0 && (long) int.Parse(this.Tab.AscendOptions.strt.Text) < (long) this.pathstr)
+                        if (this.Tab.AscendOptions.strt.Text != string.Empty && int.Parse(this.Tab.AscendOptions.strt.Text) > 0 && (long)int.Parse(this.Tab.AscendOptions.strt.Text) < (long)this.pathstr)
                         {
                           this.Tab.AscendOptions.strl.Text = (int.Parse(this.Tab.AscendOptions.strl.Text) + 1).ToString();
                           this.Tab.AscendOptions.strt.Text = (int.Parse(this.Tab.AscendOptions.strt.Text) - 1).ToString();
-                          this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 157, un, action, (byte) 1, (byte) 1);
+                          this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)157, un, action, (byte)1, (byte)1);
                         }
-                        else if (this.Tab.AscendOptions.intt.Text != string.Empty && int.Parse(this.Tab.AscendOptions.intt.Text) > 0 && (long) int.Parse(this.Tab.AscendOptions.intt.Text) < (long) this.pathint)
+                        else if (this.Tab.AscendOptions.intt.Text != string.Empty && int.Parse(this.Tab.AscendOptions.intt.Text) > 0 && (long)int.Parse(this.Tab.AscendOptions.intt.Text) < (long)this.pathint)
                         {
                           this.Tab.AscendOptions.intl.Text = (int.Parse(this.Tab.AscendOptions.intl.Text) + 1).ToString();
                           this.Tab.AscendOptions.intt.Text = (int.Parse(this.Tab.AscendOptions.intt.Text) - 1).ToString();
-                          this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 157, un, action, (byte) 1, (byte) 3);
+                          this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)157, un, action, (byte)1, (byte)3);
                         }
-                        else if (this.Tab.AscendOptions.wist.Text != string.Empty && int.Parse(this.Tab.AscendOptions.wist.Text) > 0 && (long) int.Parse(this.Tab.AscendOptions.wist.Text) < (long) this.pathwis)
+                        else if (this.Tab.AscendOptions.wist.Text != string.Empty && int.Parse(this.Tab.AscendOptions.wist.Text) > 0 && (long)int.Parse(this.Tab.AscendOptions.wist.Text) < (long)this.pathwis)
                         {
                           this.Tab.AscendOptions.wisl.Text = (int.Parse(this.Tab.AscendOptions.wisl.Text) + 1).ToString();
                           this.Tab.AscendOptions.wist.Text = (int.Parse(this.Tab.AscendOptions.wist.Text) - 1).ToString();
-                          this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 157, un, action, (byte) 1, (byte) 4);
+                          this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)157, un, action, (byte)1, (byte)4);
                         }
-                        else if (this.Tab.AscendOptions.cont.Text != string.Empty && int.Parse(this.Tab.AscendOptions.cont.Text) > 0 && (long) int.Parse(this.Tab.AscendOptions.cont.Text) < (long) this.pathcon)
+                        else if (this.Tab.AscendOptions.cont.Text != string.Empty && int.Parse(this.Tab.AscendOptions.cont.Text) > 0 && (long)int.Parse(this.Tab.AscendOptions.cont.Text) < (long)this.pathcon)
                         {
                           this.Tab.AscendOptions.conl.Text = (int.Parse(this.Tab.AscendOptions.conl.Text) + 1).ToString();
                           this.Tab.AscendOptions.cont.Text = (int.Parse(this.Tab.AscendOptions.cont.Text) - 1).ToString();
-                          this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 157, un, action, (byte) 1, (byte) 2);
+                          this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)157, un, action, (byte)1, (byte)2);
                         }
-                        else if (this.Tab.AscendOptions.dext.Text != string.Empty && int.Parse(this.Tab.AscendOptions.dext.Text) > 0 && (long) int.Parse(this.Tab.AscendOptions.dext.Text) < (long) this.pathdex)
+                        else if (this.Tab.AscendOptions.dext.Text != string.Empty && int.Parse(this.Tab.AscendOptions.dext.Text) > 0 && (long)int.Parse(this.Tab.AscendOptions.dext.Text) < (long)this.pathdex)
                         {
                           this.Tab.AscendOptions.dexl.Text = (int.Parse(this.Tab.AscendOptions.dexl.Text) + 1).ToString();
                           this.Tab.AscendOptions.dext.Text = (int.Parse(this.Tab.AscendOptions.dext.Text) - 1).ToString();
-                          this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 157, un, action, (byte) 1, (byte) 5);
+                          this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)157, un, action, (byte)1, (byte)5);
                         }
                       }
                     }
@@ -8453,13 +8456,13 @@ label_2062:
                           {
                             timeSpan = DateTime.Now.Subtract(this.ascendtime);
                             if (timeSpan.TotalMinutes < 210.0)
-                            {
+                            { //vikki
                               if (this.rescuedtime != DateTime.MinValue)
                               {
                                 timeSpan = DateTime.UtcNow.Subtract(this.rescuedtime);
                                 if (timeSpan.TotalSeconds < 30.0)
                                 {
-                                  this.SendMessage("", (byte) 18);
+                                  this.SendMessage("", (byte)18);
                                   if (this.HasItem("Hemloch"))
                                   {
                                     if (this.HasItem("Wine"))
@@ -8518,7 +8521,7 @@ label_2062:
                                   }
                                 }
                               }
-                              this.SendMessage("Waiting for Rescue", (byte) 18);
+                              this.SendMessage("Waiting for Rescue", (byte)18);
                               goto label_975;
                             }
                           }
@@ -28786,7 +28789,7 @@ label_20:
           this.autowalkon = false;
         }
         if (this.MapInfo.Number == 500)
-          this.AutoWalker(54, 69);
+          this.AutoWalker(54, 69); //bank
         if (this.MapInfo.Number == 135 && (this.ServerLocation.Y >= 9 && (this.ServerLocation.X == 5 || this.ServerLocation.X == 6) || this.ServerLocation.Y == 11))
           this.AutoWalkWithinRange(6, 6, 2);
         else if (this.MapInfo.Number == 135)
@@ -33449,7 +33452,7 @@ label_31:
         }
         else
         {
-          this.CurAWDest = (Location) null;
+          this.CurAWDest = (Location)null;
           this.HasAWPath = false;
           this.Tab.autowalker_button.Text = "Start";
           this.autowalkon = false;
@@ -33459,86 +33462,86 @@ label_31:
         return;
       foreach (MappedMaps mappedMaps in this.AutoWalkMaps.Values)
         mappedMaps.Checked = false;
-      List<int> intList1 = new List<int>();
-      List<int> intList2 = new List<int>();
-      int num1 = 0;
+      List<int> finalPath = new List<int>();
+      List<int> queuedMaps = new List<int>();
+      int steps = 0;
 label_11:
       bool flag = false;
-      List<int> intList3 = new List<int>();
-      intList3.Add(this.MapInfo.Number);
-      while (!intList3.Contains(destmap))
+      List<int> visitedMaps = new List<int>();
+      visitedMaps.Add(this.MapInfo.Number);
+      while (!visitedMaps.Contains(destmap))
       {
-        ++num1;
-        int num2 = 0;
+        ++steps;
+        int newlyVisitedCount = 0;
         foreach (MappedMaps mappedMaps in this.AutoWalkMaps.Values)
         {
-          if (mappedMaps != null && intList3.Contains(mappedMaps.Number) && mappedMaps.ConnectedTo.Count > 0)
+          if (mappedMaps != null && visitedMaps.Contains(mappedMaps.Number) && mappedMaps.ConnectedTo.Count > 0)
           {
             foreach (int key in mappedMaps.ConnectedTo.Keys)
             {
               string str = mappedMaps.Number.ToString() + "," + key.ToString();
-              if (this.AutoWalkMaps.ContainsKey(key) && !this.AutoWalkMaps[key].Deadend && !this.AutoWalkMaps[mappedMaps.Number].Checked && !intList3.Contains(key))
+              if (this.AutoWalkMaps.ContainsKey(key) && !this.AutoWalkMaps[key].Deadend && !this.AutoWalkMaps[mappedMaps.Number].Checked && !visitedMaps.Contains(key))
               {
                 this.AutoWalkMaps[mappedMaps.Number].Checked = true;
-                ++num2;
-                intList2.Add(key);
-                intList3.Add(key);
+                ++newlyVisitedCount;
+                queuedMaps.Add(key);
+                visitedMaps.Add(key);
                 break;
               }
             }
           }
-          if (intList3.Contains(destmap))
+          if (visitedMaps.Contains(destmap))
           {
-            this.AutoWalkMaps[intList3.Last<int>()].Deadend = true;
+            this.AutoWalkMaps[visitedMaps.Last<int>()].Deadend = true;
             break;
           }
         }
-        if (num2 == 0)
+        if (newlyVisitedCount == 0)
         {
-          this.AutoWalkMaps[intList3.Last<int>()].Deadend = true;
+          this.AutoWalkMaps[visitedMaps.Last<int>()].Deadend = true;
           flag = true;
           break;
         }
       }
       foreach (MappedMaps mappedMaps in this.AutoWalkMaps.Values)
         mappedMaps.Checked = false;
-      if (intList3.Count<int>() > 0)
+      if (visitedMaps.Count<int>() > 0)
       {
-        List<int> intList4 = new List<int>((IEnumerable<int>) intList3);
+        List<int> candidatePath = new List<int>((IEnumerable<int>) visitedMaps);
         if (!flag)
         {
           ++this.AutoWalkMaps[this.MapInfo.Number].Routes;
-          this.AutoWalkMaps[this.MapInfo.Number].RoutesDic[this.AutoWalkMaps[this.MapInfo.Number].Routes] = intList4;
+          this.AutoWalkMaps[this.MapInfo.Number].RoutesDic[this.AutoWalkMaps[this.MapInfo.Number].Routes] = candidatePath;
         }
         foreach (MappedMaps mappedMaps in this.AutoWalkMaps.Values)
         {
-          if (mappedMaps != null && intList3.Contains(mappedMaps.Number) && mappedMaps.ConnectedTo.Count > 0)
+          if (mappedMaps != null && visitedMaps.Contains(mappedMaps.Number) && mappedMaps.ConnectedTo.Count > 0)
           {
             foreach (int key in mappedMaps.ConnectedTo.Keys)
             {
               if (this.AutoWalkMaps.ContainsKey(key) && !this.AutoWalkMaps[key].Deadend)
               {
-                if (!intList2.Contains(key))
+                if (!queuedMaps.Contains(key))
                   goto label_11;
               }
             }
           }
         }
-        intList3.Clear();
+        visitedMaps.Clear();
       }
       if (this.AutoWalkMaps[this.MapInfo.Number].Routes > 0)
       {
-        foreach (List<int> intList5 in (IEnumerable<List<int>>) this.AutoWalkMaps[this.MapInfo.Number].RoutesDic.Values.OrderBy<List<int>, int>((Func<List<int>, int>) (p => p.Count)))
+        foreach (List<int> possibleRoute in (IEnumerable<List<int>>) this.AutoWalkMaps[this.MapInfo.Number].RoutesDic.Values.OrderBy<List<int>, int>((Func<List<int>, int>) (p => p.Count)))
         {
-          if (intList5 != null && intList5.Contains(destmap))
+          if (possibleRoute != null && possibleRoute.Contains(destmap))
           {
-            intList1 = intList5;
+            finalPath = possibleRoute;
             break;
           }
         }
         this.AutoWalkMaps[this.MapInfo.Number].Routes = 0;
         this.AutoWalkMaps[this.MapInfo.Number].RoutesDic.Clear();
-        foreach (int key in intList1)
+        foreach (int key in finalPath)
         {
           if (this.AutoWalkMaps[this.MapInfo.Number].ConnectedTo.ContainsKey(key))
           {
@@ -33643,16 +33646,27 @@ label_11:
           this.FindAutoWalkPath(136);
         if (this.Tab.vwalklocaleslist == "Altar")
         {
-          if (this.MapInfo.Number == 135 && this.HasItem("Warranty Bag"))
+          bool hasWarrantyBag = this.HasItem("Warranty Bag");
+          bool hasSuccubusHair = this.HasItem("Succubus's Hair");
+          bool notAtbank = this.MapInfo.Number != 135;
+
+          // Move to bank if needed
+          if ((hasWarrantyBag || !hasSuccubusHair) && notAtbank)
+              this.FindAutoWalkPath(135);
+
+          if (hasWarrantyBag && !notAtbank)
           {
             this.SkillSpellCaption("I will deposit warranty bag");
+            if (!hasSuccubusHair)
+              this.SkillSpellCaption("Give my succubus's hair back");
+            Thread.Sleep(500);
+          }
+          else if (!hasSuccubusHair && !notAtbank)
+          {
             this.SkillSpellCaption("Give my succubus's hair back");
             Thread.Sleep(500);
           }
-          if (!this.HasItem("Warranty Bag"))
-            this.FindAutoWalkPath(500);
-          else if (this.MapInfo.Number != 135)
-            this.FindAutoWalkPath(135);
+          this.FindAutoWalkPath(500);
         }
         if (this.Tab.vwalklocaleslist == "Bank")
           this.FindAutoWalkPath(135);

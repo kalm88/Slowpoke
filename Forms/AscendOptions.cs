@@ -20,8 +20,10 @@ namespace Flintstones
     private GroupBox groupBox49;
     public CheckBox withdrawwine;
     public CheckBox withdrawhem;
+    public TextBox killername;
+    private Label killerlabel;
     public TextBox rescuername;
-    private Label label55;
+    private Label rescuerlabel;
     public Button maxdex;
     public Button maxcon;
     public Button maxwis;
@@ -58,6 +60,7 @@ namespace Flintstones
     private Label label1;
     public Label currentexpboxed;
     public CheckBox instantascend;
+    public CheckBox suchairascend;
     private Label label2;
     private Label label3;
     public Label currentbasehp;
@@ -176,7 +179,7 @@ namespace Flintstones
         this.Client.SendMessage("Dex cannot exceed " + this.Client.pathdex.ToString());
         return true;
       }
-      if (!(this.rescuername.Text == string.Empty))
+      if (!(this.rescuername.Text == string.Empty)) // && !(this.killername.Text == string.Empty) maybe
         return false;
       this.Client.SendMessage("You need a Rescuer.");
       return true;
@@ -463,8 +466,10 @@ namespace Flintstones
       this.groupBox49 = new GroupBox();
       this.withdrawwine = new CheckBox();
       this.withdrawhem = new CheckBox();
+      this.killername = new TextBox();
+      this.killerlabel = new Label();
       this.rescuername = new TextBox();
-      this.label55 = new Label();
+      this.rescuerlabel = new Label();
       this.maxdex = new Button();
       this.maxcon = new Button();
       this.maxwis = new Button();
@@ -503,6 +508,7 @@ namespace Flintstones
       this.label2 = new Label();
       this.label4 = new Label();
       this.instantascend = new CheckBox();
+      this.suchairascend = new CheckBox();
       this.ascendbutton = new Button();
       this.label28 = new Label();
       this.buytompvalue = new NumericUpDown();
@@ -524,8 +530,10 @@ namespace Flintstones
       this.groupBox49.Controls.Add((Control) this.powermonk);
       this.groupBox49.Controls.Add((Control) this.withdrawwine);
       this.groupBox49.Controls.Add((Control) this.withdrawhem);
+      this.groupBox49.Controls.Add((Control) this.killername);
+      this.groupBox49.Controls.Add((Control) this.killerlabel);
       this.groupBox49.Controls.Add((Control) this.rescuername);
-      this.groupBox49.Controls.Add((Control) this.label55);
+      this.groupBox49.Controls.Add((Control) this.rescuerlabel);
       this.groupBox49.Controls.Add((Control) this.maxdex);
       this.groupBox49.Controls.Add((Control) this.maxcon);
       this.groupBox49.Controls.Add((Control) this.maxwis);
@@ -565,16 +573,31 @@ namespace Flintstones
       this.withdrawhem.Text = "Withdraw Hem";
       this.withdrawhem.UseVisualStyleBackColor = true;
       this.withdrawhem.CheckedChanged += new EventHandler(this.withdrawhem_CheckedChanged);
-      this.rescuername.Location = new System.Drawing.Point(233, 63);
+
+      /* Killer */
+      this.killername.Location = new System.Drawing.Point(233, 42);
+      this.killername.Name = "killername";
+      this.killername.Size = new Size(100, 20);
+      this.killername.TabIndex = 25;
+      this.killerlabel.AutoSize = true;
+      this.killerlabel.Location = new System.Drawing.Point(249, 22);
+      this.killerlabel.Name = "killerlabel";
+      this.killerlabel.Size = new Size(50, 13);
+      this.killerlabel.TabIndex = 24;
+      this.killerlabel.Text = "Killer:";
+
+      /* Rescuer */
+      this.rescuername.Location = new System.Drawing.Point(233, 87);
       this.rescuername.Name = "rescuername";
       this.rescuername.Size = new Size(100, 20);
       this.rescuername.TabIndex = 25;
-      this.label55.AutoSize = true;
-      this.label55.Location = new System.Drawing.Point(249, 43);
-      this.label55.Name = "label55";
-      this.label55.Size = new Size(50, 13);
-      this.label55.TabIndex = 24;
-      this.label55.Text = "Rescuer:";
+      this.rescuerlabel.AutoSize = true;
+      this.rescuerlabel.Location = new System.Drawing.Point(249, 67);
+      this.rescuerlabel.Name = "rescuerlabel";
+      this.rescuerlabel.Size = new Size(50, 13);
+      this.rescuerlabel.TabIndex = 24;
+      this.rescuerlabel.Text = "Rescuer:";
+
       this.maxdex.Location = new System.Drawing.Point(161, 149);
       this.maxdex.Name = "maxdex";
       this.maxdex.Size = new Size(45, 23);
@@ -797,6 +820,7 @@ namespace Flintstones
       this.groupBox23.Controls.Add((Control) this.label2);
       this.groupBox23.Controls.Add((Control) this.label4);
       this.groupBox23.Controls.Add((Control) this.instantascend);
+      this.groupBox23.Controls.Add((Control) this.suchairascend);
       this.groupBox23.Controls.Add((Control) this.ascendbutton);
       this.groupBox23.Controls.Add((Control) this.label28);
       this.groupBox23.Controls.Add((Control) this.buytompvalue);
@@ -858,14 +882,27 @@ namespace Flintstones
       this.label4.Size = new Size(25, 13);
       this.label4.TabIndex = 14;
       this.label4.Text = "HP:";
+
+      /* Ascend using Succubus's Hair */
+      this.suchairascend.AutoSize = true;
+      this.suchairascend.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Bold, GraphicsUnit.Point, (byte) 0);
+      this.suchairascend.Location = new System.Drawing.Point(6, 46);
+      this.suchairascend.Name = "suchairascend";
+      this.suchairascend.Size = new Size(111, 17);
+      this.suchairascend.TabIndex = 13;
+      this.suchairascend.Text = "Use Suc Hair";
+      this.suchairascend.UseVisualStyleBackColor = true;
+
+      /* Ascend using EXP Gem */
       this.instantascend.AutoSize = true;
       this.instantascend.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Bold, GraphicsUnit.Point, (byte) 0);
-      this.instantascend.Location = new System.Drawing.Point(6, 63);
+      this.instantascend.Location = new System.Drawing.Point(6, 69);
       this.instantascend.Name = "instantascend";
       this.instantascend.Size = new Size(111, 17);
       this.instantascend.TabIndex = 13;
       this.instantascend.Text = "Instant Ascend";
       this.instantascend.UseVisualStyleBackColor = true;
+
       this.ascendbutton.Location = new System.Drawing.Point(38, 20);
       this.ascendbutton.Name = "ascendbutton";
       this.ascendbutton.Size = new Size(94, 27);
@@ -927,7 +964,7 @@ namespace Flintstones
       this.buyto.Text = "Buy to:";
       this.buyto.UseVisualStyleBackColor = true;
       this.ascendmp.AutoSize = true;
-      this.ascendmp.Location = new System.Drawing.Point(6, 109);
+      this.ascendmp.Location = new System.Drawing.Point(6, 115);
       this.ascendmp.Name = "ascendmp";
       this.ascendmp.Size = new Size(86, 17);
       this.ascendmp.TabIndex = 1;
@@ -936,7 +973,7 @@ namespace Flintstones
       this.ascendmp.UseVisualStyleBackColor = true;
       this.ascendmp.CheckedChanged += new EventHandler(this.ascendmp_CheckedChanged);
       this.ascendhp.AutoSize = true;
-      this.ascendhp.Location = new System.Drawing.Point(6, 86);
+      this.ascendhp.Location = new System.Drawing.Point(6, 92);
       this.ascendhp.Name = "ascendhp";
       this.ascendhp.Size = new Size(90, 17);
       this.ascendhp.TabIndex = 0;
