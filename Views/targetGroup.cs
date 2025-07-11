@@ -4,6 +4,7 @@
 //SlowPoke
 //SlowPoke
 
+using slowpoke.ControlHelpers;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -195,15 +196,16 @@ namespace Flintstones
       }
     }
 
-    private void removeallgroup_Click(object sender, EventArgs e)
-    {
-      --this.ClientTab.spellTargets.SelectedIndex;
-      this.ClientTab.spellTargets.TabPages.Remove((TabPage) this);
-      this.ClientTab.newallgrouped.Enabled = true;
-      this.ClientTab.targetgroup = (targetGroup) null;
-    }
+        private void removeallgroup_Click(object sender, EventArgs e)
+        {
+            --this.ClientTab.spellTargets.SelectedIndex;
+           
+            this.ClientTab.newallgrouped.Enabled = true;
+            this.ClientTab.targetgroup = null;
+        }
 
-    private void iocgroup_CheckedChanged(object sender, EventArgs e)
+
+        private void iocgroup_CheckedChanged(object sender, EventArgs e)
     {
       if (this.iocgroup.Checked)
         this.iocgroupcond.Enabled = true;

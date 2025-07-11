@@ -4,6 +4,7 @@
 //SlowPoke
 //SlowPoke
 
+using slowpoke.ControlHelpers;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -214,15 +215,16 @@ namespace Flintstones
       }
     }
 
-    private void removeallalts_Click(object sender, EventArgs e)
-    {
-      --this.ClientTab.spellTargets.SelectedIndex;
-      this.ClientTab.spellTargets.TabPages.Remove((TabPage) this);
-      this.ClientTab.allalts = (targetAlts) null;
-      this.ClientTab.newalts.Enabled = true;
-    }
+        private void removeallalts_Click(object sender, EventArgs e)
+        {
+            --this.ClientTab.spellTargets.SelectedIndex;
+      
+            this.ClientTab.allalts = null;
+            this.ClientTab.newalts.Enabled = true;
+        }
 
-    private void iocalts_CheckedChanged(object sender, EventArgs e)
+
+        private void iocalts_CheckedChanged(object sender, EventArgs e)
     {
       if (this.iocalts.Checked)
       {

@@ -4,6 +4,7 @@
 //SlowPoke
 //SlowPoke
 
+using slowpoke.ControlHelpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,7 +22,8 @@ namespace Flintstones
 {
   public class ClientTab : TabPage
   {
-    public Wayregion Wayregion;
+
+        public Wayregion Wayregion;
     public System.Windows.Forms.Timer TemplateSaveTimer;
     public targetGroup targetgroup;
     public targetAllMonster allMonsters;
@@ -591,35 +593,36 @@ namespace Flintstones
     public ClientTab(Client client)
     {
 
-      this.InitializeComponent();
-
+            this.InitializeComponent();
             this.Client = client;
-      this.newTarget.TabIndex = 2;
-      this.Wayregion = new Wayregion(client);
-      this.SkillSwap = new SkillSwap(client);
-      this.LegendMarks = new LegendMarks(client);
-      this.ArenaCounter = new ArenaCounter(client);
-      this.HideTrinketOptions = new HideTrinketOptions(client);
-      this.SpellPriority = new SpellPriority(client);
-      this.MacroOptions = new MacroOptions(client);
-      this.ComboOptions = new ComboOptions1(client);
-      this.AscendOptions = new AscendOptions(client);
-      this.ExternalChat = new ExternalChat(client);
-      this.TemplateSaveTimer = new System.Windows.Forms.Timer();
-      this.TemplateSaveTimer.Interval = 2100;
-      this.TemplateSaveTimer.Tick += new EventHandler(this.TemplateSaveMessage_Opacity);
-      this.calctimer = new System.Timers.Timer(20000.0);
-      this.calctimer.Elapsed += new ElapsedEventHandler(this.Update_Calculator);
-      this.lootlocale.SelectedIndex = 2;
-      this.improveskill.SelectedIndex = 0;
-      this.autowalker_locales.SelectedIndex = 0;
-      if (Map.LoadSotp(Options.DarkAgesDirectoryName + "\\ia.dat"))
-        return;
-      int num = (int) MessageBox.Show("Dark Ages path is incorrect; map pathfinding functions will not work for this client.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-    }
+            this.newTarget.TabIndex = 2;
+            this.Wayregion = new Wayregion(client);
+            this.SkillSwap = new SkillSwap(client);
+            this.LegendMarks = new LegendMarks(client);
+            this.ArenaCounter = new ArenaCounter(client);
+            this.HideTrinketOptions = new HideTrinketOptions(client);
+            this.SpellPriority = new SpellPriority(client);
+            this.MacroOptions = new MacroOptions(client);
+            this.ComboOptions = new ComboOptions1(client);
+            this.AscendOptions = new AscendOptions(client);
+            this.ExternalChat = new ExternalChat(client);
+            this.TemplateSaveTimer = new System.Windows.Forms.Timer();
+            this.TemplateSaveTimer.Interval = 2100;
+            this.TemplateSaveTimer.Tick += new EventHandler(this.TemplateSaveMessage_Opacity);
+            this.calctimer = new System.Timers.Timer(20000.0);
+            this.calctimer.Elapsed += new ElapsedEventHandler(this.Update_Calculator);
+            this.lootlocale.SelectedIndex = 2;
+            this.improveskill.SelectedIndex = 0;
+            this.autowalker_locales.SelectedIndex = 0;
+            if (Map.LoadSotp(Options.DarkAgesDirectoryName + "\\ia.dat"))
+                return;
+            int num = (int)MessageBox.Show("Dark Ages path is incorrect; map pathfinding functions will not work for this client.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        }
+
+
 
         //play and stop
-    private void Play_Click(object sender, EventArgs e)
+        private void Play_Click(object sender, EventArgs e)
     {
       this.btnPlay.Enabled = false;
       this.btnStop.Enabled = true;
@@ -1635,43 +1638,45 @@ namespace Flintstones
 
     private void MakePlayerTarget(targetPlayer newPlayers)
     {
-      this.Client.targetplayer.Add(newPlayers);
-      this.alreadyexists.Visible = false;
-      this.newplayer.Checked = false;
-      this.newplayername.Text = "";
-      if (this.Client.targetplayer != null)
-      {
-        foreach (targetPlayer targetPlayer in this.Client.targetplayer)
-          targetPlayer.updatePlayerTargets();
-      }
-      this.spellTargets.SelectedIndex = 0;
-    }
+            this.Client.targetplayer.Add(newPlayers);
+            this.alreadyexists.Visible = false;
+            this.newplayer.Checked = false;
+            this.newplayername.Text = "";
+            if (this.Client.targetplayer != null)
+            {
+                foreach (targetPlayer targetPlayer in this.Client.targetplayer)
+                    targetPlayer.updatePlayerTargets();
+            }
+            this.spellTargets.SelectedIndex = 0;
+        }
 
     private void MakeThePlayers(string thename) => this.Players = new targetPlayer(thename, this, false);
 
-    private void CreateGroupTarget(ClientTab newText)
-    {
-      this.targetgroup = new targetGroup(this);
-      this.alreadyexists.Visible = false;
-      this.spellTargets.TabPages.Add((TabPage) this.targetgroup);
-      this.spellTargets.SelectedTab = (TabPage) this.targetgroup;
-      this.targetgroup.TabIndex = this.spellTargets.TabCount + 1;
-      this.newallgrouped.Checked = false;
-      this.newallgrouped.Enabled = false;
-    }
+        private void CreateGroupTarget(ClientTab newText)
+        {
+            this.targetgroup = new targetGroup(this);
+            this.alreadyexists.Visible = false;
+            this.spellTargets.TabPages.Add((TabPage)this.targetgroup);
+            this.spellTargets.SelectedTab = (TabPage)this.targetgroup;
+            this.targetgroup.TabIndex = this.spellTargets.TabCount + 1;
+            this.newallgrouped.Checked = false;
+            this.newallgrouped.Enabled = false;
+        }
 
-    private void MakeAlts(ClientTab newText)
-    {
-      this.allalts = new targetAlts(this);
-      this.alreadyexists.Visible = false;
-      this.spellTargets.TabPages.Add((TabPage) this.allalts);
-      this.spellTargets.SelectedTab = (TabPage) this.allalts;
-      this.allalts.TabIndex = this.spellTargets.TabCount + 1;
-      this.newalts.Checked = false;
-      this.newalts.Enabled = false;
-    }
 
-    private void newplayer_CheckedChanged(object sender, EventArgs e)
+        private void MakeAlts(ClientTab newText)
+        {
+            this.allalts = new targetAlts(this);
+            this.alreadyexists.Visible = false;
+            this.spellTargets.TabPages.Add((TabPage)this.allalts);
+            this.spellTargets.SelectedTab = (TabPage)this.allalts;
+            this.allalts.TabIndex = this.spellTargets.TabCount + 1;
+            this.newalts.Checked = false;
+            this.newalts.Enabled = false;
+        }
+
+
+        private void newplayer_CheckedChanged(object sender, EventArgs e)
     {
       if (this.newplayer.Checked && !this.newplayer.Text.Equals(""))
       {
@@ -1689,18 +1694,17 @@ namespace Flintstones
 
     private void newplayername_KeyPress(object sender, KeyPressEventArgs e)
     {
-      if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar))
-      {
-        e.Handled = true;
-      }
-      else
-      {
-        if (e.KeyChar != '\r')
-          return;
-        e.Handled = true;
-        this.createnewtarget.PerformClick();
-      }
-    }
+            if (this.newplayername.Text != "")
+            {
+                this.createnewtarget.Enabled = true;
+            }
+            else
+            {
+                if (!(this.newplayername.Text == ""))
+                    return;
+                this.createnewtarget.Enabled = false;
+            }
+        }
 
     private void newplayername_TextChanged(object sender, EventArgs e)
     {
@@ -1741,100 +1745,108 @@ namespace Flintstones
 
     private void createnewtarget_Click(object sender, EventArgs e)
     {
-      if (this.newallgrouped.Checked && this.targetgroup == null)
-        this.BeginInvoke((Delegate) new ClientTab.MakeGroupTarget(this.CreateGroupTarget), (object) this);
-      else if (this.targetgroup != null)
-        this.alreadyexists.Visible = true;
-      if (this.newalts.Checked && this.allalts == null)
-        this.BeginInvoke((Delegate) new ClientTab.MakeGroupTarget(this.MakeAlts), (object) this);
-      else if (this.allalts != null)
-        this.alreadyexists.Visible = true;
-      if (this.newplayer.Checked && this.newplayername.Text != "" && this.newplayername.Text != this.Client.Name)
-      {
-        bool match = false;
-        if (this.Client.targetplayer.Count > 0)
-        {
-          int matched = 0;
-          this.Client.targetplayer.ForEach((Action<targetPlayer>) (player =>
-          {
-            if (!string.Equals(player.Text, this.newplayername.Text, StringComparison.CurrentCultureIgnoreCase))
-              return;
-            ++matched;
-          }));
-          if (matched == 0)
-          {
-            Server.Clients.ForEach((Action<Client>) (ident =>
+            if (this.newallgrouped.Checked && this.targetgroup == null)
+                this.BeginInvoke((Delegate)new ClientTab.MakeGroupTarget(this.CreateGroupTarget), (object)this);
+            else if (this.targetgroup != null)
+                this.alreadyexists.Visible = true;
+            if (this.newalts.Checked && this.allalts == null)
+                this.BeginInvoke((Delegate)new ClientTab.MakeGroupTarget(this.MakeAlts), (object)this);
+            else if (this.allalts != null)
+                this.alreadyexists.Visible = true;
+            if (this.newplayer.Checked && this.newplayername.Text != "" && this.newplayername.Text != this.Client.Name)
             {
-              if (!this.newplayername.Text.Equals(ident.Name, StringComparison.OrdinalIgnoreCase))
-                return;
-              match = true;
-            }));
-            if (match)
-            {
-              this.Client.targetplayer.Add(new targetPlayer(this.newplayername.Text, this, true));
-              this.Client.alts.Add((object) this.newplayername.Text.ToLower());
-              this.alreadyexists.Visible = false;
-              this.newplayer.Checked = false;
-              this.newplayername.Text = "";
+                bool match = false;
+                if (this.Client.targetplayer.Count > 0)
+                {
+                    int matched = 0;
+                    this.Client.targetplayer.ForEach((Action<targetPlayer>)(player =>
+                    {
+                        if (!string.Equals(player.Text, this.newplayername.Text, StringComparison.CurrentCultureIgnoreCase))
+                            return;
+                        ++matched;
+                    }));
+                    if (matched == 0)
+                    {
+                        Server.Clients.ForEach((Action<Client>)(ident =>
+                        {
+                            if (!this.newplayername.Text.Equals(ident.Name, StringComparison.OrdinalIgnoreCase))
+                                return;
+                            match = true;
+                        }));
+                        if (match)
+                        {
+                            this.Client.targetplayer.Add(new targetPlayer(this.newplayername.Text, this, true));
+                            this.Client.alts.Add((object)this.newplayername.Text.ToLower());
+                            this.alreadyexists.Visible = false;
+                            this.newplayer.Checked = false;
+                            this.newplayername.Text = "";
+                        }
+                        else
+                        {
+                            this.Client.targetplayer.Add(new targetPlayer(this.newplayername.Text, this, false));
+                            this.alreadyexists.Visible = false;
+                            this.newplayer.Checked = false;
+                            this.newplayername.Text = "";
+                        }
+                    }
+                    else
+                        this.alreadyexists.Visible = true;
+                }
+                else
+                {
+                    Server.Clients.ForEach((Action<Client>)(ident =>
+                    {
+                        if (!this.newplayername.Text.Equals(ident.Name, StringComparison.CurrentCultureIgnoreCase))
+                            return;
+                        match = true;
+                    }));
+                    if (match)
+                    {
+                        this.Client.targetplayer.Add(new targetPlayer(this.newplayername.Text, this, true));
+                        this.Client.alts.Add((object)this.newplayername.Text.ToLower());
+                        this.alreadyexists.Visible = false;
+                        this.newplayer.Checked = false;
+                        this.newplayername.Text = "";
+                    }
+                    else
+                    {
+                        this.Client.targetplayer.Add(new targetPlayer(this.newplayername.Text, this, false));
+                        this.alreadyexists.Visible = false;
+                        this.newplayer.Checked = false;
+                        this.newplayername.Text = "";
+                    }
+                }
             }
             else
             {
-              this.Client.targetplayer.Add(new targetPlayer(this.newplayername.Text, this, false));
-              this.alreadyexists.Visible = false;
-              this.newplayer.Checked = false;
-              this.newplayername.Text = "";
+                if (!this.newplayername.Text.Equals(this.Client.Name, StringComparison.CurrentCultureIgnoreCase))
+                    return;
+                this.alreadyexists.Visible = true;
             }
-          }
-          else
-            this.alreadyexists.Visible = true;
         }
-        else
+
+        private void MakeAllMonsters()
         {
-          Server.Clients.ForEach((Action<Client>) (ident =>
-          {
-            if (!this.newplayername.Text.Equals(ident.Name, StringComparison.CurrentCultureIgnoreCase))
-              return;
-            match = true;
-          }));
-          if (match)
-          {
-            this.Client.targetplayer.Add(new targetPlayer(this.newplayername.Text, this, true));
-            this.Client.alts.Add((object) this.newplayername.Text.ToLower());
-            this.alreadyexists.Visible = false;
-            this.newplayer.Checked = false;
-            this.newplayername.Text = "";
-          }
-          else
-          {
-            this.Client.targetplayer.Add(new targetPlayer(this.newplayername.Text, this, false));
-            this.alreadyexists.Visible = false;
-            this.newplayer.Checked = false;
-            this.newplayername.Text = "";
-          }
+            this.allMonsters = new targetAllMonster(this);
+
+            var tab = new TabPage();
+            tab.Controls.Add(this.allMonsters);
+            this.allMonsters.Dock = DockStyle.Fill;
+
+            this.spellMonsters.TabPages.Add(tab);
+            this.spellMonsters.SelectedTab = tab;
+
+            this.monsterexists.Visible = false;
+            this.allMonsters.TabIndex = this.spellTargets.TabCount + 1;
+
+            this.newmonsterbyplayer.Checked = false;
+            this.newmonster.Checked = false;
+            this.newallmonsters.Checked = false;
+            this.newallmonsters.Enabled = false;
         }
-      }
-      else
-      {
-        if (!this.newplayername.Text.Equals(this.Client.Name, StringComparison.CurrentCultureIgnoreCase))
-          return;
-        this.alreadyexists.Visible = true;
-      }
-    }
 
-    private void MakeAllMonsters()
-    {
-      this.allMonsters = new targetAllMonster(this);
-      this.spellMonsters.TabPages.Add((TabPage) this.allMonsters);
-      this.spellMonsters.SelectedTab = (TabPage) this.allMonsters;
-      this.monsterexists.Visible = false;
-      this.allMonsters.TabIndex = this.spellTargets.TabCount + 1;
-      this.newmonsterbyplayer.Checked = false;
-      this.newmonster.Checked = false;
-      this.newallmonsters.Checked = false;
-      this.newallmonsters.Enabled = false;
-    }
 
-    private void newmonsterbyplayer_Click(object sender, EventArgs e)
+        private void newmonsterbyplayer_Click(object sender, EventArgs e)
     {
       if (this.newmonsterbyplayer.Checked)
       {
@@ -1943,68 +1955,69 @@ namespace Flintstones
       }
     }
 
-    private void createnewmonster_Click(object sender, EventArgs e)
-    {
-      if (this.newallmonsters.Checked && this.allMonsters == null)
-        this.Invoke((Delegate) new ClientTab.MakeAllMonster(this.MakeAllMonsters));
-      else if (this.allMonsters != null)
-        this.monsterexists.Visible = true;
-      this.CreateMonsterTabs();
-    }
-
-    public void CreateMonsterTabs()
-    {
-      this.getimage.Checked = false;
-      if (this.newmonster.Checked && this.newmonstername.Text != "")
-      {
-        if (this.Client.targetmonster.Count > 0)
+        private void createnewmonster_Click(object sender, EventArgs e)
         {
-          int matched = 0;
-          this.Client.targetmonster.ForEach((Action<targetMonster>) (monster =>
-          {
-            if (!string.Equals(monster.Text, this.newmonstername.Text, StringComparison.CurrentCulture))
-              return;
-            ++matched;
-          }));
-          if (matched == 0)
-          {
-            this.Monsters = new targetMonster(this.newmonstername.Text, this);
-            this.Client.targetmonster.Add(this.Monsters);
-            this.newmonster.Checked = false;
-            this.monsterexists.Visible = false;
-          }
-          else
-            this.monsterexists.Visible = true;
+            if (this.newallmonsters.Checked && this.allMonsters == null)
+                this.Invoke((Delegate)new ClientTab.MakeAllMonster(this.MakeAllMonsters));
+            else if (this.allMonsters != null)
+                this.monsterexists.Visible = true;
+            this.CreateMonsterTabs();
         }
-        else
-        {
-          this.Monsters = new targetMonster(this.newmonstername.Text, this);
-          this.Client.targetmonster.Add(this.Monsters);
-          this.newmonster.Checked = false;
-          this.monsterexists.Visible = false;
-        }
-      }
-      if (this.newmonsterbyplayer.Checked && this.newmonsterbyplayername.Text != "")
-      {
-        this.Client.targetmonster.ForEach((Action<targetMonster>) (monster => this.spellMonsters.TabPages.Remove((TabPage) monster)));
-        this.Client.targetmonster.Clear();
-        this.MonstersByPlayer = new targetMonsterbyPlayer(this.newmonsterbyplayername.Text, this);
-        this.spellMonsters.TabPages.Add((TabPage) this.MonstersByPlayer);
-        this.spellMonsters.SelectedTab = (TabPage) this.MonstersByPlayer;
-        this.monsterexists.Visible = false;
-        this.newmonsterbyplayer.Checked = false;
-        this.newmonsterbyplayername.Enabled = false;
-        this.newmonster.Checked = false;
-        this.newmonster.Enabled = false;
-        this.newallmonsters.Checked = false;
-        this.newallmonsters.Enabled = false;
-        this.createnewmonster.Enabled = false;
-      }
-      this.newmonsterbyplayername.Text = "";
-      this.newmonstername.Text = "";
-    }
 
-    public void TemplateSaveMessage_Opacity(object sender, EventArgs e)
+        public void CreateMonsterTabs()
+        {
+            this.getimage.Checked = false;
+            if (this.newmonster.Checked && this.newmonstername.Text != "")
+            {
+                if (this.Client.targetmonster.Count > 0)
+                {
+                    int matched = 0;
+                    this.Client.targetmonster.ForEach((Action<targetMonster>)(monster =>
+                    {
+                        if (!string.Equals(monster.Text, this.newmonstername.Text, StringComparison.CurrentCulture))
+                            return;
+                        ++matched;
+                    }));
+                    if (matched == 0)
+                    {
+                        this.Monsters = new targetMonster(this.newmonstername.Text, this);
+                        this.Client.targetmonster.Add(this.Monsters);
+                        this.newmonster.Checked = false;
+                        this.monsterexists.Visible = false;
+                    }
+                    else
+                        this.monsterexists.Visible = true;
+                }
+                else
+                {
+                    this.Monsters = new targetMonster(this.newmonstername.Text, this);
+                    this.Client.targetmonster.Add(this.Monsters);
+                    this.newmonster.Checked = false;
+                    this.monsterexists.Visible = false;
+                }
+            }
+            if (this.newmonsterbyplayer.Checked && this.newmonsterbyplayername.Text != "")
+            {
+                this.Client.targetmonster.ForEach((Action<targetMonster>)(monster => this.spellMonsters.TabPages.Remove((TabPage)monster)));
+                this.Client.targetmonster.Clear();
+                this.MonstersByPlayer = new targetMonsterbyPlayer(this.newmonsterbyplayername.Text, this);
+                this.spellMonsters.TabPages.Add((TabPage)this.MonstersByPlayer);
+                this.spellMonsters.SelectedTab = (TabPage)this.MonstersByPlayer;
+                this.monsterexists.Visible = false;
+                this.newmonsterbyplayer.Checked = false;
+                this.newmonsterbyplayername.Enabled = false;
+                this.newmonster.Checked = false;
+                this.newmonster.Enabled = false;
+                this.newallmonsters.Checked = false;
+                this.newallmonsters.Enabled = false;
+                this.createnewmonster.Enabled = false;
+            }
+            this.newmonsterbyplayername.Text = "";
+            this.newmonstername.Text = "";
+        }
+
+
+        public void TemplateSaveMessage_Opacity(object sender, EventArgs e)
     {
       this.templatesaved.Visible = false;
       this.currenttemplateupdated.Visible = false;
@@ -3569,18 +3582,27 @@ namespace Flintstones
             if (xdocument.Element((XName) "Settings").Element((XName) "pramhbasherstarget") != null)
               this.allMonsters.pramhbasherstarget.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "pramhbasherstarget").Value);
           }
-          if (Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "MonsterByPlayerExists").Value))
-          {
-            this.MonstersByPlayer = new targetMonsterbyPlayer(xdocument.Element((XName) "Settings").Element((XName) "player_name").Value, this);
-            this.spellMonsters.TabPages.Add((TabPage) this.MonstersByPlayer);
-            this.monsterexists.Visible = false;
-            this.newmonsterbyplayer.Checked = false;
-            this.newmonsterbyplayername.Text = "";
-            this.newmonsterbyplayername.Enabled = false;
-            this.newmonster.Checked = false;
-            this.newallmonsters.Checked = false;
-            this.createnewmonster.Enabled = false;
-            if (xdocument.Element((XName) "Settings").Element((XName) "player_attack1type") != null)
+                    if (Convert.ToBoolean(xdocument.Element((XName)"Settings").Element((XName)"MonsterByPlayerExists").Value))
+                    {
+                        this.MonstersByPlayer = new targetMonsterbyPlayer(
+                            xdocument.Element((XName)"Settings").Element((XName)"player_name").Value, this);
+
+                        var tab = new TabPage();
+                        tab.Controls.Add(this.MonstersByPlayer);
+                        this.MonstersByPlayer.Dock = DockStyle.Fill;
+
+                        this.spellMonsters.TabPages.Add(tab);
+
+                        this.monsterexists.Visible = false;
+                        this.newmonsterbyplayer.Checked = false;
+                        this.newmonsterbyplayername.Text = "";
+                        this.newmonsterbyplayername.Enabled = false;
+                        this.newmonster.Checked = false;
+                        this.newallmonsters.Checked = false;
+                        this.createnewmonster.Enabled = false;
+                    
+
+                    if (xdocument.Element((XName) "Settings").Element((XName) "player_attack1type") != null)
               this.MonstersByPlayer.attack1type.SelectedItem = (object) xdocument.Element((XName) "Settings").Element((XName) "player_attack1type").Value;
             if (xdocument.Element((XName) "Settings").Element((XName) "player_attack2type") != null)
               this.MonstersByPlayer.attack2type.SelectedItem = (object) xdocument.Element((XName) "Settings").Element((XName) "player_attack2type").Value;

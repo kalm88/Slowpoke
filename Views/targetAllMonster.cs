@@ -4,6 +4,7 @@
 //SlowPoke
 //SlowPoke
 
+using slowpoke.ControlHelpers;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -13,6 +14,7 @@ namespace Flintstones
 {
   public class targetAllMonster : TabPage
   {
+
     public SpellData attackwith;
     public SpellData secattackwith;
     public SpellData cursewith = Server.SpellList["ard cradh"];
@@ -75,6 +77,7 @@ namespace Flintstones
       this.BestPramhs();
       this.BestAttacks1();
       this.BestAttacks2();
+
     }
 
     public void BestFases()
@@ -387,18 +390,20 @@ namespace Flintstones
       }
     }
 
-    private void removeallmonsters_Click(object sender, EventArgs e)
-    {
-      --this.ClientTab.spellMonsters.SelectedIndex;
-      this.ClientTab.spellMonsters.TabPages.Remove((TabPage) this);
-      this.ClientTab.allMonsters = (targetAllMonster) null;
-      this.ClientTab.newmonster.Enabled = true;
-      this.ClientTab.newallmonsters.Enabled = true;
-      this.ClientTab.newmonsterbyplayer.Enabled = true;
-      this.ClientTab.createnewmonster.Enabled = true;
-    }
+        private void removeallmonsters_Click(object sender, EventArgs e)
+        {
+            --this.ClientTab.spellMonsters.SelectedIndex;
+            
+            this.ClientTab.allMonsters = null;
 
-    private void pramh_CheckedChanged(object sender, EventArgs e)
+            this.ClientTab.newmonster.Enabled = true;
+            this.ClientTab.newallmonsters.Enabled = true;
+            this.ClientTab.newmonsterbyplayer.Enabled = true;
+            this.ClientTab.createnewmonster.Enabled = true;
+        }
+
+
+        private void pramh_CheckedChanged(object sender, EventArgs e)
     {
       if (this.pramh.Checked)
       {

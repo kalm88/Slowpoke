@@ -4,6 +4,7 @@
 //SlowPoke
 //SlowPoke
 
+using slowpoke.ControlHelpers;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -187,17 +188,19 @@ namespace Flintstones
       }
     }
 
-    private void removeallmonsters_Click(object sender, EventArgs e)
-    {
-      --this.ClientTab.spellMonsters.SelectedIndex;
-      this.ClientTab.spellMonsters.TabPages.Remove((TabPage) this);
-      this.ClientTab.MonstersByPlayer = (targetMonsterbyPlayer) null;
-      this.ClientTab.newmonster.Enabled = true;
-      this.ClientTab.newallmonsters.Enabled = true;
-      this.ClientTab.newmonsterbyplayer.Enabled = true;
-    }
+        private void removeallmonsters_Click(object sender, EventArgs e)
+        {
+            --this.ClientTab.spellMonsters.SelectedIndex;
+           
+            this.ClientTab.MonstersByPlayer = null;
 
-    private void attack1type_SelectedIndexChanged(object sender, EventArgs e)
+            this.ClientTab.newmonster.Enabled = true;
+            this.ClientTab.newallmonsters.Enabled = true;
+            this.ClientTab.newmonsterbyplayer.Enabled = true;
+        }
+
+
+        private void attack1type_SelectedIndexChanged(object sender, EventArgs e)
     {
       if (this.attack1.Checked)
       {

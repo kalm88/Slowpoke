@@ -4,6 +4,7 @@
 //SlowPoke
 //SlowPoke
 
+using slowpoke.ControlHelpers;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -13,6 +14,7 @@ namespace Flintstones
 {
   public class targetPlayer : TabPage
   {
+
     public bool Typeof;
     private IContainer components;
     public CheckBox iocplayer;
@@ -49,42 +51,48 @@ namespace Flintstones
 
     public ClientTab ClientTab { get; private set; }
 
-    public targetPlayer(string title, ClientTab clienttab, bool type)
-    {
-      this.InitializeComponent();
-      this.Text = title;
-      this.ClientTab = clienttab;
-      this.Typeof = type;
-      this.playername.Text = title;
-      if (this.Typeof)
-      {
-        this.status.Text = "You are logged in as this player.";
-        this.status.ForeColor = Color.RoyalBlue;
-        this.fasdeireasplayer.Enabled = true;
-        this.label2.Text = "when Mp <";
-        this.label4.Text = "when Mp <";
-        this.lyliacplayercond.Text = "10000";
-        this.vineyardcond.Text = "10000";
-        this.mdclowmp.Visible = true;
-        this.mdclowmpNum.Visible = true;
-      }
-      else
-      {
-        this.status.Text = "You are not logged in as this player.";
-        this.status.ForeColor = SystemColors.WindowFrame;
-        this.label2.Text = "delay in ms";
-        this.label4.Text = "delay in ms";
-        this.lyliacplayercond.Text = "5000";
-        this.vineyardcond.Text = "5000";
-        this.mdclowmp.Visible = false;
-        this.mdclowmpNum.Visible = false;
-      }
-      this.ClientTab.spellTargets.TabPages.Add((TabPage) this);
-      this.ClientTab.spellTargets.SelectedTab = (TabPage) this;
-      this.BestAites();
-      this.BestFases();
-      this.BestIocs();
-    }
+        public targetPlayer(string title, ClientTab clienttab, bool type)
+        {
+            this.InitializeComponent();
+            this.Text = title;
+            this.ClientTab = clienttab;
+            this.Typeof = type;
+            this.playername.Text = title;
+            if (this.Typeof)
+            {
+                this.status.Text = "You are logged in as this player.";
+                this.status.ForeColor = Color.RoyalBlue;
+                this.fasdeireasplayer.Enabled = true;
+                this.label2.Text = "when Mp <";
+                this.label4.Text = "when Mp <";
+                this.lyliacplayercond.Text = "10000";
+                this.vineyardcond.Text = "10000";
+                this.mdclowmp.Visible = true;
+                this.mdclowmpNum.Visible = true;
+            }
+            else
+            {
+                this.status.Text = "You are not logged in as this player.";
+                this.status.ForeColor = SystemColors.WindowFrame;
+                this.label2.Text = "delay in ms";
+                this.label4.Text = "delay in ms";
+                this.lyliacplayercond.Text = "5000";
+                this.vineyardcond.Text = "5000";
+                this.mdclowmp.Visible = false;
+                this.mdclowmpNum.Visible = false;
+            }
+
+            var tab = new TabPage();
+            tab.Controls.Add(this);
+            this.Dock = DockStyle.Fill;
+
+            this.ClientTab.spellTargets.TabPages.Add(tab);
+            this.ClientTab.spellTargets.SelectedTab = tab;
+
+            this.BestAites();
+            this.BestFases();
+            this.BestIocs();
+        }
 
     public void BestAites()
     {
@@ -271,15 +279,16 @@ namespace Flintstones
       this.mdclowmpNum.Visible = false;
     }
 
-    private void removetargetplayer_Click(object sender, EventArgs e)
-    {
-      --this.ClientTab.spellTargets.SelectedIndex;
-      this.ClientTab.spellTargets.TabPages.Remove((TabPage) this);
-      this.ClientTab.Client.targetplayer.Remove(this);
-      this.ClientTab.Client.alts.Remove((object) this);
-    }
+        private void removetargetplayer_Click(object sender, EventArgs e)
+        {
+            --this.ClientTab.spellTargets.SelectedIndex;
+           
+            this.ClientTab.Client.targetplayer.Remove(this);
+            this.ClientTab.Client.alts.Remove((object)this);
+        }
 
-    private void iocplayer_CheckedChanged(object sender, EventArgs e)
+
+        private void iocplayer_CheckedChanged(object sender, EventArgs e)
     {
       if (this.iocplayer.Checked)
         this.iocplayercond.Enabled = true;

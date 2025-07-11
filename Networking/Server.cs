@@ -1468,8 +1468,8 @@ namespace Flintstones
       string str = msg.ReadString((int) msg.ReadByte());
       int num2 = (int) msg.ReadUInt32();
       client.Name = str;
-      client.Tab.Text = str;
-      string hashString = Program.GetHashString(Program.GetHashString(str));
+            client.Tab.Text = str;
+            string hashString = Program.GetHashString(Program.GetHashString(str));
       for (int index = 0; index < 31; ++index)
         hashString += Program.GetHashString(hashString);
       client.Seed = num1;
@@ -1900,7 +1900,7 @@ namespace Flintstones
       client.LoadMacroList();
       client.MacroSpells();
       Program.MainForm.AddTab(client.Tab);
-      if (!Server.Alts.ContainsKey(client.Name.ToLower()))
+            if (!Server.Alts.ContainsKey(client.Name.ToLower()))
         Server.Alts.Add(client.Name.ToLower(), client);
       if (!Server.friendlist.Contains(client.Name.ToLower()))
       {

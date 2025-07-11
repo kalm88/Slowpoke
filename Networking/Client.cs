@@ -4,6 +4,7 @@
 //SlowPoke
 //SlowPoke
 
+using slowpoke.ControlHelpers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -4556,24 +4557,26 @@ namespace Flintstones
               this.SendMessage("Now set to attack Countess.", "pink");
             }
           }
-          else if (this.SpeakMessage.Equals("/ram", StringComparison.CurrentCultureIgnoreCase))
-          {
-            Client[] array = Server.Alts.Values.ToArray<Client>();
-            for (result1 = 0; result1 < array.Length; ++result1)
-            {
-              Client client = array[result1];
-              if (client.Tab.allMonsters != null)
-              {
-                --client.Tab.spellMonsters.SelectedIndex;
-                client.Tab.spellMonsters.TabPages.Remove((TabPage) client.Tab.allMonsters);
-                client.Tab.allMonsters = (targetAllMonster) null;
-                client.Tab.newmonster.Enabled = true;
-                client.Tab.newallmonsters.Enabled = true;
-                client.Tab.newmonsterbyplayer.Enabled = true;
-                client.Tab.createnewmonster.Enabled = true;
-              }
-            }
-            this.SendMessage("Removed All Monsters Tabs from all clients", "grey");
+                    else if (this.SpeakMessage.Equals("/ram", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        Client[] array = Server.Alts.Values.ToArray<Client>();
+                        for (result1 = 0; result1 < array.Length; ++result1)
+                        {
+                            Client client = array[result1];
+                            if (client.Tab.allMonsters != null)
+                            {
+                                --client.Tab.spellMonsters.SelectedIndex;
+                                client.Tab.spellMonsters.TabPages.Remove((TabPage)client.Tab.allMonsters);
+                                client.Tab.allMonsters = (targetAllMonster)null;
+                                client.Tab.newmonster.Enabled = true;
+                                client.Tab.newallmonsters.Enabled = true;
+                                client.Tab.newmonsterbyplayer.Enabled = true;
+                                client.Tab.createnewmonster.Enabled = true;
+                            }
+                        }
+                    
+
+                    this.SendMessage("Removed All Monsters Tabs from all clients", "grey");
           }
           else if (this.SpeakMessage.Equals("/s", StringComparison.CurrentCultureIgnoreCase))
           {
@@ -7085,7 +7088,8 @@ label_2062:
                 }
                 if (this.Currentnpctext.StartsWith("Do you want to enter"))
                   this.PopupRespond(new uint?(npcByName.ID), (byte) 0, (byte) 0, (byte) 0, (byte) 2, (byte) 1, (byte) 1);
-              }
+                                this.PopupRespond(new uint?(npcByName.ID), (byte)0, (byte)0, (byte)0, (byte)2, (byte)1, (byte)1);
+                            }
             }
           }
           if (!this.pause && !this.needsrepaired && !this.repairmode && this.Tab.enterbugs.Checked)
