@@ -269,12 +269,14 @@ namespace Flintstones
       Server.SpellList.Add("naomh aite", new SpellData("naomh aite", 30, 2));
       Server.SpellList.Add("mor naomh aite", new SpellData("mor naomh aite", 200, 4));
       Server.SpellList.Add("ard naomh aite", new SpellData("ard naomh aite", 600, 4));
-      Server.SpellList.Add("ard ioc comlha", new SpellData("ard ioc comlha", 2000, 2));
+            Server.SpellList.Add("ard ioc comlha", new SpellData("ard ioc comlha", 2000, 2));
+            Server.SpellList.Add("Nuadhiach Le Cheile", new SpellData("Nuadhiach Le Cheile", 5000, 1));
       Server.SpellList.Add("mor ioc comlha", new SpellData("mor ioc comlha", 1100, 2));
       Server.SpellList.Add("ioc comlha", new SpellData("ioc comlha", 450, 2));
       Server.SpellList.Add("beag ioc comlha", new SpellData("beag ioc comlha", 70, 1));
       Server.SpellList.Add("Spirit Essence", new SpellData("Spirit Essence", 0, 3));
-      Server.SpellList.Add("nuadhaich", new SpellData("nuadhaich", 1260, 2));
+            Server.SpellList.Add("Leigheas", new SpellData("Leigheas", 5000, 1));
+            Server.SpellList.Add("nuadhaich", new SpellData("nuadhaich", 1260, 2));
       Server.SpellList.Add("ard ioc", new SpellData("ard ioc", 800, 2));
       Server.SpellList.Add("mor ioc", new SpellData("mor ioc", 600, 2));
       Server.SpellList.Add("ioc", new SpellData("ioc", 200, 1));
@@ -1468,8 +1470,8 @@ namespace Flintstones
       string str = msg.ReadString((int) msg.ReadByte());
       int num2 = (int) msg.ReadUInt32();
       client.Name = str;
-            client.Tab.Text = str;
-            string hashString = Program.GetHashString(Program.GetHashString(str));
+      client.Tab.Text = str;
+      string hashString = Program.GetHashString(Program.GetHashString(str));
       for (int index = 0; index < 31; ++index)
         hashString += Program.GetHashString(hashString);
       client.Seed = num1;
@@ -1900,7 +1902,7 @@ namespace Flintstones
       client.LoadMacroList();
       client.MacroSpells();
       Program.MainForm.AddTab(client.Tab);
-            if (!Server.Alts.ContainsKey(client.Name.ToLower()))
+      if (!Server.Alts.ContainsKey(client.Name.ToLower()))
         Server.Alts.Add(client.Name.ToLower(), client);
       if (!Server.friendlist.Contains(client.Name.ToLower()))
       {

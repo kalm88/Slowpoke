@@ -4,7 +4,6 @@
 //SlowPoke
 //SlowPoke
 
-using slowpoke.ControlHelpers;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -158,7 +157,12 @@ namespace Flintstones
         this.ioctype.Items.Add((object) "Spirit Essence");
         ++num;
       }
-      if (this.ClientTab.Client.YourIocs.Contains("nuadhaich"))
+            if (this.ClientTab.Client.YourIocs.Contains("Leigheas"))
+            {
+                this.ioctype.Items.Add((object)"Leigheas");
+                ++num;
+            }
+            if (this.ClientTab.Client.YourIocs.Contains("nuadhaich"))
       {
         this.ioctype.Items.Add((object) "nuadhaich");
         ++num;
@@ -183,7 +187,12 @@ namespace Flintstones
         this.ioctype.Items.Add((object) "beag ioc");
         ++num;
       }
-      if (this.ClientTab.Client.YourGIocs.Contains("ard ioc comlha"))
+            if (this.ClientTab.Client.YourGIocs.Contains("Nuadhiach Le Cheile"))
+            {
+                this.ioctype.Items.Add((object)"Nuadhiach Le Cheile");
+                ++num;
+            }
+            if (this.ClientTab.Client.YourGIocs.Contains("ard ioc comlha"))
       {
         this.ioctype.Items.Add((object) "ard ioc comlha");
         ++num;
@@ -215,16 +224,15 @@ namespace Flintstones
       }
     }
 
-        private void removeallalts_Click(object sender, EventArgs e)
-        {
-            --this.ClientTab.spellTargets.SelectedIndex;
-      
-            this.ClientTab.allalts = null;
-            this.ClientTab.newalts.Enabled = true;
-        }
+    private void removeallalts_Click(object sender, EventArgs e)
+    {
+      --this.ClientTab.spellTargets.SelectedIndex;
+      this.ClientTab.spellTargets.TabPages.Remove((TabPage) this);
+      this.ClientTab.allalts = (targetAlts) null;
+      this.ClientTab.newalts.Enabled = true;
+    }
 
-
-        private void iocalts_CheckedChanged(object sender, EventArgs e)
+    private void iocalts_CheckedChanged(object sender, EventArgs e)
     {
       if (this.iocalts.Checked)
       {

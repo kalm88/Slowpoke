@@ -4,7 +4,6 @@
 //SlowPoke
 //SlowPoke
 
-using slowpoke.ControlHelpers;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -61,25 +60,24 @@ namespace Flintstones
 
     public ClientTab ClientTab { get; private set; }
 
-        public targetMonster(string title, ClientTab clienttab)
-        {
-            this.InitializeComponent();
-            this.Text = title;
-            this.monstername.Text = title;
-            this.ClientTab = clienttab;
-            this.ClientTab.spellMonsters.TabPages.Add((TabPage)this);
-            this.ClientTab.spellMonsters.SelectedTab = (TabPage)this;
-            this.targettype.SelectedIndex = 0;
-            this.fascursetargettype.SelectedIndex = 0;
-            this.BestFases();
-            this.BestCradhs();
-            this.BestPramhs();
-            this.BestAttacks1();
-            this.BestAttacks2();
-        }
+    public targetMonster(string title, ClientTab clienttab)
+    {
+      this.InitializeComponent();
+      this.Text = title;
+      this.monstername.Text = title;
+      this.ClientTab = clienttab;
+      this.ClientTab.spellMonsters.TabPages.Add((TabPage) this);
+      this.ClientTab.spellMonsters.SelectedTab = (TabPage) this;
+      this.targettype.SelectedIndex = 0;
+      this.fascursetargettype.SelectedIndex = 0;
+      this.BestFases();
+      this.BestCradhs();
+      this.BestPramhs();
+      this.BestAttacks1();
+      this.BestAttacks2();
+    }
 
-
-        public void BestFases()
+    public void BestFases()
     {
       int num = 0;
       if (this.ClientTab.Client.YourFases.Contains("ard fas nadur"))
@@ -384,20 +382,17 @@ namespace Flintstones
       }
     }
 
-        private void removemonster_Click(object sender, EventArgs e)
-        {
-            --this.ClientTab.spellMonsters.SelectedIndex;
-            
-            this.ClientTab.Client.targetmonster.Remove(this);
+    private void removemonster_Click(object sender, EventArgs e)
+    {
+      --this.ClientTab.spellMonsters.SelectedIndex;
+      this.ClientTab.spellMonsters.TabPages.Remove((TabPage) this);
+      this.ClientTab.Client.targetmonster.Remove(this);
+      if (this.ClientTab.spellMonsters.TabCount != 1)
+        return;
+      this.ClientTab.Monsters = (targetMonster) null;
+    }
 
-            if (this.ClientTab.spellMonsters.TabCount != 1)
-                return;
-
-            this.ClientTab.Monsters = null;
-        }
-
-
-        private void monstername_KeyPress(object sender, KeyPressEventArgs e)
+    private void monstername_KeyPress(object sender, KeyPressEventArgs e)
     {
       if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && e.KeyChar != ' ')
       {
@@ -511,7 +506,7 @@ namespace Flintstones
         {
           foreach (Spell spell in this.ClientTab.Client.SpellBook)
           {
-            if (spell != null && spell.Name.Contains("Star Arrow") && spell.Name != "Star Arrow 11")
+            if (spell != null && spell.Name.Contains("Star Arrow"))
             {
               this.attackwith = Server.SpellList[spell.Name];
               break;
@@ -663,7 +658,7 @@ namespace Flintstones
         {
           foreach (Spell spell in this.ClientTab.Client.SpellBook)
           {
-            if (spell != null && spell.Name.Contains("Star Arrow") && spell.Name != "Star Arrow 11")
+            if (spell != null && spell.Name.Contains("Star Arrow"))
             {
               this.attackwith = Server.SpellList[spell.Name];
               break;

@@ -15,12 +15,12 @@ using System.Linq;
 using System.Media;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
 
 namespace Flintstones
 {
@@ -269,8 +269,6 @@ namespace Flintstones
         this.Launch();
     }
 
-       
-
         private void Launch()
         {
             string exePath = Options.FullDarkAgesPath;
@@ -322,7 +320,6 @@ namespace Flintstones
                 Kernel32.CloseHandle(remoteThread);
                 Kernel32.VirtualFreeEx(hProcess, remoteString, 0, AllocationType.Release);
             }
-
             using (ProcessMemoryStream processMemoryStream = new ProcessMemoryStream(
                 processInfo.ProcessId,
                 ProcessAccess.VmOperation | ProcessAccess.VmRead | ProcessAccess.VmWrite))
@@ -357,15 +354,11 @@ namespace Flintstones
             }
         }
 
-       public void AddTab(ClientTab clientTab) => this.BeginInvoke((Action)(() => this.clientTabs.TabPages.Add((TabPage)clientTab)));
+        public void AddTab(ClientTab clientTab) => this.BeginInvoke((Action) (() => this.clientTabs.TabPages.Add((TabPage) clientTab)));
 
-        public void RemoveTab(ClientTab clientTab) => this.BeginInvoke((Action) (() => clientTab.Dispose()));
+    public void RemoveTab(ClientTab clientTab) => this.BeginInvoke((Action) (() => clientTab.Dispose()));
 
-    
-
-
-
-        private void HotKey(string combot)
+    private void HotKey(string combot)
     {
       if (!this.hotkeyokay)
         return;
@@ -3240,11 +3233,11 @@ namespace Flintstones
             this.InjectDawnd.AutoSize = true;
             this.InjectDawnd.Checked = true;
             this.InjectDawnd.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.InjectDawnd.Location = new System.Drawing.Point(359, 3);
+            this.InjectDawnd.Location = new System.Drawing.Point(384, 6);
             this.InjectDawnd.Name = "InjectDawnd";
-            this.InjectDawnd.Size = new System.Drawing.Size(111, 19);
+            this.InjectDawnd.Size = new System.Drawing.Size(110, 19);
             this.InjectDawnd.TabIndex = 4;
-            this.InjectDawnd.Text = "Inject Dawnd.dll";
+            this.InjectDawnd.Text = "Inject dawnd.dll";
             this.InjectDawnd.UseVisualStyleBackColor = true;
             this.InjectDawnd.CheckedChanged += new System.EventHandler(this.InjectDawnd_CheckedChanged);
             // 
@@ -3301,8 +3294,10 @@ namespace Flintstones
 
     }
 
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
 
-
+        }
 
         private void InjectDawnd_CheckedChanged(object sender, EventArgs e)
         {

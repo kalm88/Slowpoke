@@ -4,7 +4,6 @@
 //SlowPoke
 //SlowPoke
 
-using slowpoke.ControlHelpers;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -134,7 +133,12 @@ namespace Flintstones
     public void BestIocs()
     {
       int num = 0;
-      if (this.ClientTab.Client.YourGIocs.Contains("ard ioc comlha"))
+            if (this.ClientTab.Client.YourGIocs.Contains("Nuadhiach Le Cheile"))
+            {
+                this.ioctype.Items.Add((object)"Nuadhiach Le Cheile");
+                ++num;
+            }
+            if (this.ClientTab.Client.YourGIocs.Contains("ard ioc comlha"))
       {
         this.ioctype.Items.Add((object) "ard ioc comlha");
         ++num;
@@ -159,7 +163,12 @@ namespace Flintstones
         this.ioctype.Items.Add((object) "Spirit Essence");
         ++num;
       }
-      if (this.ClientTab.Client.YourIocs.Contains("nuadhaich"))
+            if (this.ClientTab.Client.YourIocs.Contains("Leigheas"))
+            {
+                this.ioctype.Items.Add((object)"Leigheas");
+                ++num;
+            }
+            if (this.ClientTab.Client.YourIocs.Contains("nuadhaich"))
       {
         this.ioctype.Items.Add((object) "nuadhaich");
         ++num;
@@ -196,16 +205,15 @@ namespace Flintstones
       }
     }
 
-        private void removeallgroup_Click(object sender, EventArgs e)
-        {
-            --this.ClientTab.spellTargets.SelectedIndex;
-           
-            this.ClientTab.newallgrouped.Enabled = true;
-            this.ClientTab.targetgroup = null;
-        }
+    private void removeallgroup_Click(object sender, EventArgs e)
+    {
+      --this.ClientTab.spellTargets.SelectedIndex;
+      this.ClientTab.spellTargets.TabPages.Remove((TabPage) this);
+      this.ClientTab.newallgrouped.Enabled = true;
+      this.ClientTab.targetgroup = (targetGroup) null;
+    }
 
-
-        private void iocgroup_CheckedChanged(object sender, EventArgs e)
+    private void iocgroup_CheckedChanged(object sender, EventArgs e)
     {
       if (this.iocgroup.Checked)
         this.iocgroupcond.Enabled = true;

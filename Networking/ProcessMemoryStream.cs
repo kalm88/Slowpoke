@@ -10,8 +10,8 @@ using System.Runtime.InteropServices;
 
 namespace Flintstones
 {
-    public class ProcessMemoryStream : Stream, IDisposable
-    {
+  public class ProcessMemoryStream : Stream, IDisposable
+  {
         private ProcessAccess access;
         private bool disposed;
         private IntPtr hProcess;
@@ -27,7 +27,7 @@ namespace Flintstones
 
         ~ProcessMemoryStream() => this.Dispose(false);
 
-        public override void Flush() => throw new NotSupportedException("Flush is not supported.");
+    public override void Flush() => throw new NotSupportedException("Flush is not supported.");
 
         public override int Read(byte[] buffer, int offset, int count)
         {
@@ -83,9 +83,9 @@ namespace Flintstones
         }
 
         public override void WriteByte(byte value) => this.Write(new byte[1]
-        {
+    {
       value
-        }, 0, 1);
+    }, 0, 1);
 
         public override void Close()
         {
@@ -100,29 +100,29 @@ namespace Flintstones
         }
 
         protected override void Dispose(bool disposing)
+    {
+      if (!this.disposed)
+      {
+        if (this.hProcess != IntPtr.Zero)
         {
-            if (!this.disposed)
-            {
-                if (this.hProcess != IntPtr.Zero)
-                {
-                    Kernel32.CloseHandle(this.hProcess);
-                    this.hProcess = IntPtr.Zero;
-                }
-                base.Dispose(disposing);
-            }
-            this.disposed = true;
+          Kernel32.CloseHandle(this.hProcess);
+          this.hProcess = IntPtr.Zero;
         }
-
-        public override bool CanRead => (this.access & ProcessAccess.VmRead) > ProcessAccess.None;
-
-        public override bool CanSeek => true;
-
-        public override bool CanWrite => (this.access & (ProcessAccess.VmOperation | ProcessAccess.VmWrite)) > ProcessAccess.None;
-
-        public override long Length => throw new NotSupportedException("Length is not supported.");
-
-        public override long Position { get; set; }
-
-        public int ProcessId { get; set; }
+        base.Dispose(disposing);
+      }
+      this.disposed = true;
     }
+
+    public override bool CanRead => (this.access & ProcessAccess.VmRead) > ProcessAccess.None;
+
+    public override bool CanSeek => true;
+
+    public override bool CanWrite => (this.access & (ProcessAccess.VmOperation | ProcessAccess.VmWrite)) > ProcessAccess.None;
+
+    public override long Length => throw new NotSupportedException("Length is not supported.");
+
+    public override long Position { get; set; }
+
+    public int ProcessId { get; set; }
+  }
 }
