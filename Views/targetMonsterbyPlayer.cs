@@ -271,7 +271,7 @@ namespace Flintstones
         {
           foreach (Spell spell in this.ClientTab.Client.SpellBook)
           {
-            if (spell != null && spell.Name.Contains("Star Arrow") && spell.Name != "Star Arrow 11")
+            if (spell != null && spell.Name.Contains("Star Arrow"))
             {
               this.attackwith = Server.SpellList[spell.Name];
               break;
@@ -392,7 +392,7 @@ namespace Flintstones
         {
           foreach (Spell spell in this.ClientTab.Client.SpellBook)
           {
-            if (spell != null && spell.Name.Contains("Star Arrow") && spell.Name != "Star Arrow 11")
+            if (spell != null && spell.Name.Contains("Star Arrow"))
             {
               this.attackwith = Server.SpellList[spell.Name];
               break;

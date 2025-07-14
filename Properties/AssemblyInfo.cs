@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SlowPoke")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Strawberry Inc")]
-[assembly: AssemblyProduct("SlowPoke")]
-[assembly: AssemblyCopyright("Strawberry Inc. 2025")]
+[assembly: AssemblyCompany("Kalm Enterprises")]
+[assembly: AssemblyProduct("slowpoke.Properties")]
+[assembly: AssemblyCopyright("2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("53577bc4-521e-4114-8203-438bae933642")]
+[assembly: Guid("ec40ecc7-9706-4349-90d8-c900d0e30ed2")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -157,7 +157,12 @@ namespace Flintstones
         this.ioctype.Items.Add((object) "Spirit Essence");
         ++num;
       }
-      if (this.ClientTab.Client.YourIocs.Contains("nuadhaich"))
+            if (this.ClientTab.Client.YourIocs.Contains("Leigheas"))
+            {
+                this.ioctype.Items.Add((object)"Leigheas");
+                ++num;
+            }
+            if (this.ClientTab.Client.YourIocs.Contains("nuadhaich"))
       {
         this.ioctype.Items.Add((object) "nuadhaich");
         ++num;
@@ -182,7 +187,12 @@ namespace Flintstones
         this.ioctype.Items.Add((object) "beag ioc");
         ++num;
       }
-      if (this.ClientTab.Client.YourGIocs.Contains("ard ioc comlha"))
+            if (this.ClientTab.Client.YourGIocs.Contains("Nuadhiach Le Cheile"))
+            {
+                this.ioctype.Items.Add((object)"Nuadhiach Le Cheile");
+                ++num;
+            }
+            if (this.ClientTab.Client.YourGIocs.Contains("ard ioc comlha"))
       {
         this.ioctype.Items.Add((object) "ard ioc comlha");
         ++num;

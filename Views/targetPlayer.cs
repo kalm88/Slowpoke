@@ -164,7 +164,12 @@ namespace Flintstones
         this.ioctype.Items.Add((object) "Spirit Essence");
         ++num;
       }
-      if (this.ClientTab.Client.YourIocs.Contains("nuadhaich"))
+            if (this.ClientTab.Client.YourIocs.Contains("Leigheas"))
+            {
+                this.ioctype.Items.Add((object)"Leigheas");
+                ++num;
+            }
+            if (this.ClientTab.Client.YourIocs.Contains("nuadhaich"))
       {
         this.ioctype.Items.Add((object) "nuadhaich");
         ++num;

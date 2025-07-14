@@ -24,5 +24,6 @@ namespace Flintstones
     QueryInformation = 1024, // 0x00000400
     SuspendResume = 2048, // 0x00000800
     QueryLimitedInformation = 4096, // 0x00001000
-  }
+        AllAccess = 8192,
+    }
 }

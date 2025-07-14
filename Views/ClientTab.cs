@@ -4484,7 +4484,7 @@ namespace Flintstones
         {
           foreach (Spell spell in this.Client.SpellBook)
           {
-            if (spell != null && spell.Name.Contains("Star Arrow") && spell.Name != "Star Arrow 11")
+            if (spell != null && spell.Name.Contains("Star Arrow"))
             {
               this.lurespellwith = Server.SpellList[spell.Name];
               break;

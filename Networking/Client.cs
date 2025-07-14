@@ -23730,7 +23730,15 @@ label_860:
     public void BestIocs()
     {
       int num = 0;
-      foreach (Spell spell in this.SpellBook)
+            foreach (Spell spell in this.SpellBook)
+            {
+                if (spell != null && spell.Name.Equals("Nuadhiach Le Cheile"))
+                {
+                    this.YourGIocs.Add(spell.Name);
+                    ++num;
+                }
+            }
+            foreach (Spell spell in this.SpellBook)
       {
         if (spell != null && spell.Name.Equals("ard ioc comlha"))
         {
@@ -23772,7 +23780,17 @@ label_860:
           ++num;
         }
       }
-      foreach (Spell spell in this.SpellBook)
+            foreach (Spell spell in this.SpellBook)
+            {
+                if (spell != null && spell.Name.Equals("Leigheas"))
+                {
+                    this.Tab.ioctype.Items.Add((object)spell.Name);
+                    this.YourGIocs.Add(spell.Name);
+                    this.YourIocs.Add(spell.Name);
+                    ++num;
+                }
+            }
+            foreach (Spell spell in this.SpellBook)
       {
         if (spell != null && spell.Name.Equals("nuadhaich"))
         {
