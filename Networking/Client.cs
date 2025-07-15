@@ -8267,12 +8267,19 @@ label_2062:
               }
             }
           }
-          //vikki
+          
           if (!this.pause && this.Tab.vrescueascender)
           {
             Player characterByName = this.FindCharacterByName<Player>(this.Tab.vrescueascendername);
             if (characterByName != null && characterByName.IsOnScreen && characterByName.Location.DistanceFrom(this.ServerLocation) == 1 && this.CanSkill("Rescue"))
               this.UseSkill("Rescue", characterByName.ID);
+          }
+          //vikki change to use all skills
+          if (!this.pause && this.Tab.vkillascender)
+          {
+            Player characterByName = this.FindCharacterByName<Player>(this.Tab.vkillascendername);
+            if (characterByName != null && characterByName.IsOnScreen && characterByName.Location.DistanceFrom(this.ServerLocation) == 1)
+              this.UseSkills();
           }
           if (!this.pause && this.Tab.AscendOptions.vbuystatsbtn)
           {
@@ -8344,7 +8351,6 @@ label_2062:
                   }
                 }
               }
-              //vikki
               if (this.MapInfo.Number == 393 && !this.needsmats)
               {
                 if (Math.Floor((double)(this.Statistics.MaximumHP - this.pathmaxhp) / 150.0) > 0.0)
@@ -8403,31 +8409,31 @@ label_2062:
                         }
                         if (this.Tab.AscendOptions.strt.Text != string.Empty && int.Parse(this.Tab.AscendOptions.strt.Text) > 0 && (long)int.Parse(this.Tab.AscendOptions.strt.Text) < (long)this.pathstr)
                         {
-                          this.Tab.AscendOptions.strl.Text = (int.Parse(this.Tab.AscendOptions.strl.Text) + 1).ToString();
+                          this.Tab.AscendOptions.currStr.Text = (int.Parse(this.Tab.AscendOptions.currStr.Text) + 1).ToString();
                           this.Tab.AscendOptions.strt.Text = (int.Parse(this.Tab.AscendOptions.strt.Text) - 1).ToString();
                           this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)157, un, action, (byte)1, (byte)1);
                         }
                         else if (this.Tab.AscendOptions.intt.Text != string.Empty && int.Parse(this.Tab.AscendOptions.intt.Text) > 0 && (long)int.Parse(this.Tab.AscendOptions.intt.Text) < (long)this.pathint)
                         {
-                          this.Tab.AscendOptions.intl.Text = (int.Parse(this.Tab.AscendOptions.intl.Text) + 1).ToString();
+                          this.Tab.AscendOptions.currInt.Text = (int.Parse(this.Tab.AscendOptions.currInt.Text) + 1).ToString();
                           this.Tab.AscendOptions.intt.Text = (int.Parse(this.Tab.AscendOptions.intt.Text) - 1).ToString();
                           this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)157, un, action, (byte)1, (byte)3);
                         }
                         else if (this.Tab.AscendOptions.wist.Text != string.Empty && int.Parse(this.Tab.AscendOptions.wist.Text) > 0 && (long)int.Parse(this.Tab.AscendOptions.wist.Text) < (long)this.pathwis)
                         {
-                          this.Tab.AscendOptions.wisl.Text = (int.Parse(this.Tab.AscendOptions.wisl.Text) + 1).ToString();
+                          this.Tab.AscendOptions.currWis.Text = (int.Parse(this.Tab.AscendOptions.currWis.Text) + 1).ToString();
                           this.Tab.AscendOptions.wist.Text = (int.Parse(this.Tab.AscendOptions.wist.Text) - 1).ToString();
                           this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)157, un, action, (byte)1, (byte)4);
                         }
                         else if (this.Tab.AscendOptions.cont.Text != string.Empty && int.Parse(this.Tab.AscendOptions.cont.Text) > 0 && (long)int.Parse(this.Tab.AscendOptions.cont.Text) < (long)this.pathcon)
                         {
-                          this.Tab.AscendOptions.conl.Text = (int.Parse(this.Tab.AscendOptions.conl.Text) + 1).ToString();
+                          this.Tab.AscendOptions.currCon.Text = (int.Parse(this.Tab.AscendOptions.currCon.Text) + 1).ToString();
                           this.Tab.AscendOptions.cont.Text = (int.Parse(this.Tab.AscendOptions.cont.Text) - 1).ToString();
                           this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)157, un, action, (byte)1, (byte)2);
                         }
                         else if (this.Tab.AscendOptions.dext.Text != string.Empty && int.Parse(this.Tab.AscendOptions.dext.Text) > 0 && (long)int.Parse(this.Tab.AscendOptions.dext.Text) < (long)this.pathdex)
                         {
-                          this.Tab.AscendOptions.dexl.Text = (int.Parse(this.Tab.AscendOptions.dexl.Text) + 1).ToString();
+                          this.Tab.AscendOptions.currDex.Text = (int.Parse(this.Tab.AscendOptions.currDex.Text) + 1).ToString();
                           this.Tab.AscendOptions.dext.Text = (int.Parse(this.Tab.AscendOptions.dext.Text) - 1).ToString();
                           this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)157, un, action, (byte)1, (byte)5);
                         }
@@ -20700,7 +20706,7 @@ label_146:
                   break;
               }
             }
-            //little spaghetti bitch
+
             if ((this.Tab.allMonsters.groupedmembers.Checked ? (this.GroupMembers.Count > 0 ? (this.GroupIsInRange((int)this.Tab.allMonsters.groupedmembersrange.Value) ? 1 : 0) : (this.GroupMembers.Count == 0 ? 1 : 0)) : (!this.Tab.allMonsters.groupedmembers.Checked ? 1 : 0)) != 0)
             {
               if (this.Tab.allMonsters.attack2.Checked &&
@@ -33670,7 +33676,7 @@ label_11:
 
           // Move to bank if needed
           if ((hasWarrantyBag || !hasSuccubusHair) && notAtbank)
-              this.FindAutoWalkPath(135);
+            this.FindAutoWalkPath(135);
 
           if (hasWarrantyBag && !notAtbank)
           {
@@ -33685,6 +33691,21 @@ label_11:
             Thread.Sleep(500);
           }
           this.FindAutoWalkPath(500);
+
+          Thread.Sleep(1000);
+          //vikki
+          //unequip belt
+          this.UnequipSlot((byte)11);
+          //drop hair in altar
+          this.Drop(31, 52, 1, 1); //TODO make sure succ hair is in slot 1; any more checks?
+          //find killer and walk in front of them
+          Player killerName = this.FindCharacterByName<Player>(this.Tab.AscendOptions.killername.Text);
+          if (killerName != null && killerName.IsOnScreen && killerName.Location.DistanceFrom(this.ServerLocation) > 1)
+          {
+            this.WalkToPlayer(killerName.Location.X, killerName.Location.Y, 1);
+          }
+          
+
         }
         if (this.Tab.vwalklocaleslist == "Bank")
           this.FindAutoWalkPath(135);

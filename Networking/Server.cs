@@ -5661,7 +5661,7 @@ label_268:
             Server.StaticCharacters[key2].SpellAnimationHistory.Remove(32);
             Server.StaticCharacters[key2].SpellAnimationHistory.Remove(117);
           }
-          //TODO what is playerID and actionID so i can rename them? presumably 274 means rescue? where do i find that?
+
           /* Rescue Logic */
           if (client.Tab.AscendOptions.rescuername.Text != string.Empty)
           {
