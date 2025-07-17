@@ -11,6 +11,7 @@ namespace Flintstones
   {
     public MainForm parent;
     public bool vascendbutton;
+    public bool vsuchairascend;
     public bool vascendhp;
     public bool vascendmp;
     public bool vbuystatsbtn;
@@ -105,6 +106,7 @@ namespace Flintstones
       else
         this.ascendbutton.Text = "Start";
     }
+    private void suchairascend_CheckChanged(object sender, EventArgs e) => this.vsuchairascend = this.suchairascend.Checked;
 
     private void ascendhp_CheckedChanged(object sender, EventArgs e) => this.vascendhp = this.ascendhp.Checked;
 
@@ -980,7 +982,7 @@ namespace Flintstones
             this.instantascend.Text = "Instant Ascend";
             this.instantascend.UseVisualStyleBackColor = true;
 
-            /* suchairascend */
+            /* suchairascend */ //vikki
             this.suchairascend.AutoSize = true;
             this.suchairascend.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.suchairascend.Location = new System.Drawing.Point(6, 50);
@@ -989,6 +991,7 @@ namespace Flintstones
             this.suchairascend.TabIndex = 13;
             this.suchairascend.Text = "Use Suc Hair";
             this.suchairascend.UseVisualStyleBackColor = true;
+            this.suchairascend.CheckedChanged += new System.EventHandler(this.suchairascend_CheckChanged);
 
             /* ascendbutton */
             this.ascendbutton.Location = new System.Drawing.Point(38, 20);

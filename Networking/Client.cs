@@ -34,6 +34,9 @@ namespace Flintstones
     public Dictionary<int, Location> LastMapLocation = new Dictionary<int, Location>();
     public DateTime portalani = DateTime.MinValue;
     public DateTime expgemtimer = DateTime.MinValue;
+    bool hairDropped = false;
+    bool walkedToKiller = false;
+    bool waitingForKillerWalk = false;
     public uint beforeascend;
     public bool ascendexp;
     public bool outofwine;
@@ -7918,11 +7921,109 @@ label_2062:
           }
           if (!this.pause && this.Tab.AscendOptions.vascendbutton)
           {
-            if (this.HasItem("Warranty Bag"))
+            /*Succ hair ascending logic start*/
+            if (this.Tab.AscendOptions.vsuchairascend)
             {
-              this.SendMessage("Deposit your Warranty Bag!");
-              this.Tab.AscendOptions.ascendbutton.Text = "Start";
+              //vikki
+              if (!hairDropped)
+              {
+                bool hasWarrantyBag = this.HasItem("Warranty Bag");
+                bool hasSuccubusHair = this.HasItem("Succubus's Hair");
+                bool needsBankTrip = hasWarrantyBag || !hasSuccubusHair;
+                bool atBank = this.MapInfo.Number == 135;
+
+                // Move to bank if needed
+                if (needsBankTrip && !atBank)
+                {
+                  this.Tab.autowalker_locales.SelectedItem = (object)"Mileth";
+                  this.Tab.walklocaleslist.SelectedItem = (object)"Bank";
+                  this.Tab.autowalker_button.Text = "Stop";
+                  this.autowalkon = true;
+                }
+                else //walk to mileth altar area
+                {
+                  this.Tab.autowalker_locales.SelectedItem = (object)"Mileth";
+                  this.Tab.walklocaleslist.SelectedItem = (object)"Altar";
+                  this.Tab.autowalker_button.Text = "Stop";
+                  this.autowalkon = true;
+                }
+                //bank actions
+                if (atBank && hasWarrantyBag)
+                {
+                  this.SkillSpellCaption("I will deposit warranty bag");
+                  if (!hasSuccubusHair)
+                    this.SkillSpellCaption("Give my succubus's hair back");
+                }
+
+                else if (atBank && !hasSuccubusHair)
+                  this.SkillSpellCaption("Give my succubus's hair back");
+
+                //LETS ASCEND BOIS
+                if (this.MapInfo.Number == 500 && !hasWarrantyBag && hasSuccubusHair)
+                {
+                  //unequip belt and armor
+                  this.UnequipSlot((byte)11); //belt
+                  this.UnequipSlot((byte)2); //armor
+                  Thread.Sleep(500);
+                  //walk within dropping range of the altar
+                  if (this.Tab.autowalker_button.Text.Equals("Start") && this.MapInfo.Number == 500 && (!this.WithinRange(31, 52, 2) && !this.WithinRange(31, 53, 2)))
+                  {
+                    this.WalkWithinRange(31, 52, 1);
+                    Thread.Sleep(500);
+                    if (!this.WithinRange(31, 52, 2) && !this.WithinRange(31, 53, 2))
+                    {
+                      this.WalkWithinRange(31, 53, 1);
+                      Thread.Sleep(500);
+                    }
+                  }
+
+                  //drop dat shit
+                  if (this.WithinRange(31, 52, 2) || this.WithinRange(31, 53, 2))
+                  {
+                    int slot = this.ItemSlot("Succubus's Hair");
+                    if (slot >= 0)
+                    {
+                      //what the fuck
+                      if (this.WithinRange(31, 52, 2))
+                        this.Drop(31, 52, slot, 1);
+                      else
+                        this.WalkWithinRange(31, 52, 2);
+                      if (this.WithinRange(31, 53, 2))
+                        this.Drop(31, 53, slot, 1);
+                      else
+                        this.WalkWithinRange(31, 53, 2);
+                      Thread.Sleep(1000);
+                      this.Refresh();
+                      hairDropped = true;
+                    }
+                  }
+                }
+                //send esc to client to clear the popup
+                this.Escape();
+                Thread.Sleep(1100);
+              }
+
+              if (hairDropped && !walkedToKiller)
+              {
+                Player killerName = this.FindCharacterByName<Player>(this.Tab.AscendOptions.killername.Text);
+                if (killerName != null && killerName.IsOnScreen && killerName.Location.DistanceFrom(this.ServerLocation) > 1)
+                {
+                  this.WalkToPlayer(killerName.Location.X, killerName.Location.Y, 1);
+                }
+                if (killerName.Location.DistanceFrom(this.ServerLocation) <= 1)
+                {
+                  walkedToKiller = true;
+                }
+              }
+              if (hairDropped && walkedToKiller)
+              {
+                this.SendMessage("Ascension sequence complete! Re-equip yo shit", "orange");
+                hairDropped = false;
+                walkedToKiller = false;
+                this.Tab.AscendOptions.vsuchairascend = false;
+              }
             }
+            /*Succ hair ascending logic end*/
             if (this.Tab.AscendOptions.vascendhp)
             {
               if (this.MapInfo.Number == 435)
@@ -7955,19 +8056,19 @@ label_2062:
                     if (this.Tab.AscendOptions.instantascend.Checked && this.SafeToWalkFast)
                     {
                       if (this.Currentnpctext.StartsWith("Aisling, do."))
-                        this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 2, (byte) 1, (byte) 1);
+                        this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)2, (byte)1, (byte)1);
                       if (this.Currentnpctext.StartsWith("You will transform your Work"))
-                        this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 28);
+                        this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)28);
                       if (this.Currentnpctext.StartsWith("((It costs "))
                       {
                         uint num5 = uint.Parse(this.Currentnpctext.Split(' ')[2].ToString());
-                        this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 30);
+                        this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)30);
                         uint num6 = 0;
                         ulong num7 = 0;
                         while (true)
                         {
-                          num7 += (ulong) (num5 * 500U);
-                          if (num7 <= (ulong) this.Statistics.Experience)
+                          num7 += (ulong)(num5 * 500U);
+                          if (num7 <= (ulong)this.Statistics.Experience)
                           {
                             num5 += 50U;
                             ++num6;
@@ -7977,13 +8078,13 @@ label_2062:
                         }
                         for (uint index = 0; index < num6; ++index)
                         {
-                          this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 51, (byte) 1, (byte) 2);
-                          this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 80, (byte) 1, (byte) 2);
+                          this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)51, (byte)1, (byte)2);
+                          this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)80, (byte)1, (byte)2);
                           Thread.Sleep(10);
                         }
                         Thread.Sleep(1000);
-                        this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 47);
-                        this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 85, (byte) 1, (byte) 3);
+                        this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)47);
+                        this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)85, (byte)1, (byte)3);
                         this.Tab.AscendOptions.ascendbutton.Text = "Start";
                         Thread.Sleep(1000);
                       }
@@ -7991,20 +8092,20 @@ label_2062:
                     else
                     {
                       if (this.Currentnpctext.StartsWith("Aisling, do."))
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 114, (byte) 0, (byte) 2, (byte) 1, (byte) 1);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)114, (byte)0, (byte)2, (byte)1, (byte)1);
                       if (this.Currentnpctext.StartsWith("You will transform your Work"))
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 114, (byte) 0, (byte) 28);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)114, (byte)0, (byte)28);
                       if (this.Currentnpctext.StartsWith("((It costs "))
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 114, (byte) 0, (byte) 30);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)114, (byte)0, (byte)30);
                       if (this.Currentnpctext.StartsWith("You remember that you cannot"))
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 114, (byte) 0, (byte) 51, (byte) 1, (byte) 2);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)114, (byte)0, (byte)51, (byte)1, (byte)2);
                       if (this.Currentnpctext.StartsWith("Do you prostrate yourself"))
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 114, (byte) 0, (byte) 80, (byte) 1, (byte) 2);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)114, (byte)0, (byte)80, (byte)1, (byte)2);
                       if (this.Currentnpctext.StartsWith("You lack experience"))
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 114, (byte) 0, (byte) 47);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)114, (byte)0, (byte)47);
                       if (this.Currentnpctext.StartsWith("Do you now descend"))
                       {
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 114, (byte) 0, (byte) 85, (byte) 1, (byte) 3);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)114, (byte)0, (byte)85, (byte)1, (byte)3);
                         this.Tab.AscendOptions.ascendbutton.Text = "Start";
                       }
                     }
@@ -8023,14 +8124,14 @@ label_2062:
               }
               if (this.MapInfo.Number == 3085)
               {
-                if (this.Tab.AscendOptions.buytohpvalue.Value > 0M && this.Tab.AscendOptions.buytohpvalue.Value > (Decimal) this.Statistics.MaximumHP)
+                if (this.Tab.AscendOptions.buytohpvalue.Value > 0M && this.Tab.AscendOptions.buytohpvalue.Value > (Decimal)this.Statistics.MaximumHP)
                   this.WalkToExact(10, 13);
-                else if (this.Tab.AscendOptions.buytompvalue.Value > 0M && this.Tab.AscendOptions.buytompvalue.Value > (Decimal) this.Statistics.MaximumMP)
+                else if (this.Tab.AscendOptions.buytompvalue.Value > 0M && this.Tab.AscendOptions.buytompvalue.Value > (Decimal)this.Statistics.MaximumMP)
                   this.WalkToExact(10, 6);
               }
               if (this.MapInfo.Number == 3086)
               {
-                if (this.Tab.AscendOptions.buytohpvalue.Value > 0M && this.Tab.AscendOptions.buytohpvalue.Value > (Decimal) this.Statistics.MaximumHP)
+                if (this.Tab.AscendOptions.buytohpvalue.Value > 0M && this.Tab.AscendOptions.buytohpvalue.Value > (Decimal)this.Statistics.MaximumHP)
                 {
                   if (this.ServerLocation.Y == 5 && (this.ServerLocation.X == 7 || this.ServerLocation.X == 6))
                     this.WalkWithinRange(6, 2, 2);
@@ -8052,15 +8153,15 @@ label_2062:
                       {
                         if (this.Currentnpctext.StartsWith("Aisling, do."))
                         {
-                          this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 2, (byte) 1, (byte) 1);
-                          this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 28);
-                          this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 30);
+                          this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)2, (byte)1, (byte)1);
+                          this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)28);
+                          this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)30);
                           Thread.Sleep(200);
-                          int num = (int) Math.Ceiling(((double) this.Tab.AscendOptions.buytohpvalue.Value - (double) this.Statistics.MaximumHP) / 50.0);
+                          int num = (int)Math.Ceiling(((double)this.Tab.AscendOptions.buytohpvalue.Value - (double)this.Statistics.MaximumHP) / 50.0);
                           for (int index = 0; index < num; ++index)
                           {
-                            this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 51, (byte) 1, (byte) 2);
-                            this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 80, (byte) 1, (byte) 2);
+                            this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)51, (byte)1, (byte)2);
+                            this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)80, (byte)1, (byte)2);
                             Thread.Sleep(10);
                           }
                           Thread.Sleep(1000);
@@ -8068,27 +8169,27 @@ label_2062:
                       }
                       else if (this.Currentnpctext.StartsWith("Aisling, do."))
                       {
-                        this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 2, (byte) 1, (byte) 1);
+                        this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)2, (byte)1, (byte)1);
                         Thread.Sleep(1000);
-                        this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 28);
+                        this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)28);
                         Thread.Sleep(1000);
-                        this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 30);
+                        this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)30);
                         Thread.Sleep(1000);
-                        int num = (int) Math.Ceiling(((double) this.Tab.AscendOptions.buytohpvalue.Value - (double) this.Statistics.MaximumHP) / 50.0);
+                        int num = (int)Math.Ceiling(((double)this.Tab.AscendOptions.buytohpvalue.Value - (double)this.Statistics.MaximumHP) / 50.0);
                         for (int index = 0; index < num; ++index)
                         {
-                          this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 51, (byte) 1, (byte) 2);
-                          this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 80, (byte) 1, (byte) 2);
+                          this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)51, (byte)1, (byte)2);
+                          this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)80, (byte)1, (byte)2);
                           Thread.Sleep(2000);
                         }
                       }
                     }
                   }
                 }
-                else if (this.Tab.AscendOptions.buytompvalue.Value > 0M && this.Tab.AscendOptions.buytompvalue.Value > (Decimal) this.Statistics.MaximumMP)
+                else if (this.Tab.AscendOptions.buytompvalue.Value > 0M && this.Tab.AscendOptions.buytompvalue.Value > (Decimal)this.Statistics.MaximumMP)
                 {
                   if (this.Currentnpctext != string.Empty)
-                    this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 114, (byte) 0, (byte) 50);
+                    this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)114, (byte)0, (byte)50);
                   this.WalkToExact(8, 5);
                 }
                 else if (this.Currentnpctext.StartsWith("You remember that you cannot"))
@@ -8096,9 +8197,9 @@ label_2062:
                   Npc npcByName = this.FindNpcByName<Npc>("Deoch");
                   if (npcByName != null)
                   {
-                    this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 51, (byte) 1, (byte) 1);
-                    this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 114, (byte) 0, (byte) 85, (byte) 1, (byte) 3);
-                    if (this.Tab.AscendOptions.buytompvalue.Value == 0M || this.Tab.AscendOptions.buytompvalue.Value <= (Decimal) this.Statistics.MaximumMP)
+                    this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)51, (byte)1, (byte)1);
+                    this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)114, (byte)0, (byte)85, (byte)1, (byte)3);
+                    if (this.Tab.AscendOptions.buytompvalue.Value == 0M || this.Tab.AscendOptions.buytompvalue.Value <= (Decimal)this.Statistics.MaximumMP)
                       this.Tab.AscendOptions.ascendbutton.Text = "Start";
                     Thread.Sleep(1000);
                   }
@@ -8106,7 +8207,7 @@ label_2062:
               }
               if (this.MapInfo.Number == 3087)
               {
-                if (this.Tab.AscendOptions.buytompvalue.Value > 0M && this.Tab.AscendOptions.buytompvalue.Value > (Decimal) this.Statistics.MaximumMP)
+                if (this.Tab.AscendOptions.buytompvalue.Value > 0M && this.Tab.AscendOptions.buytompvalue.Value > (Decimal)this.Statistics.MaximumMP)
                 {
                   if (this.ServerLocation.Y == 5 && (this.ServerLocation.X == 7 || this.ServerLocation.X == 6))
                     this.WalkWithinRange(6, 2, 2);
@@ -8128,15 +8229,15 @@ label_2062:
                       {
                         if (this.Currentnpctext.StartsWith("Aisling, live true."))
                         {
-                          this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 2, (byte) 1, (byte) 1);
-                          this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 28);
-                          this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 30);
+                          this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)2, (byte)1, (byte)1);
+                          this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)28);
+                          this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)30);
                           Thread.Sleep(200);
-                          int num = (int) Math.Ceiling(((double) this.Tab.AscendOptions.buytompvalue.Value - (double) this.Statistics.MaximumMP) / 25.0);
+                          int num = (int)Math.Ceiling(((double)this.Tab.AscendOptions.buytompvalue.Value - (double)this.Statistics.MaximumMP) / 25.0);
                           for (int index = 0; index < num; ++index)
                           {
-                            this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 47, (byte) 1, (byte) 2);
-                            this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 73, (byte) 1, (byte) 2);
+                            this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)47, (byte)1, (byte)2);
+                            this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)73, (byte)1, (byte)2);
                             Thread.Sleep(10);
                           }
                           Thread.Sleep(1000);
@@ -8144,33 +8245,33 @@ label_2062:
                       }
                       else if (this.Currentnpctext.StartsWith("Aisling, live true."))
                       {
-                        this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 2, (byte) 1, (byte) 1);
+                        this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)2, (byte)1, (byte)1);
                         Thread.Sleep(1000);
-                        this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 28);
+                        this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)28);
                         Thread.Sleep(1000);
-                        this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 30);
+                        this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)30);
                         Thread.Sleep(1000);
-                        int num = (int) Math.Ceiling(((double) this.Tab.AscendOptions.buytompvalue.Value - (double) this.Statistics.MaximumMP) / 25.0);
+                        int num = (int)Math.Ceiling(((double)this.Tab.AscendOptions.buytompvalue.Value - (double)this.Statistics.MaximumMP) / 25.0);
                         for (int index = 0; index < num; ++index)
                         {
-                          this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 47, (byte) 1, (byte) 2);
-                          this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 73, (byte) 1, (byte) 2);
+                          this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)47, (byte)1, (byte)2);
+                          this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)73, (byte)1, (byte)2);
                           Thread.Sleep(2000);
                         }
                       }
                     }
                   }
                 }
-                else if (this.Tab.AscendOptions.buytohpvalue.Value > 0M && this.Tab.AscendOptions.buytohpvalue.Value > (Decimal) this.Statistics.MaximumHP)
+                else if (this.Tab.AscendOptions.buytohpvalue.Value > 0M && this.Tab.AscendOptions.buytohpvalue.Value > (Decimal)this.Statistics.MaximumHP)
                   this.WalkToExact(8, 6);
                 else if (this.Currentnpctext.StartsWith("You remember that you cannot"))
                 {
                   Npc npcByName = this.FindNpcByName<Npc>("Gramail");
                   if (npcByName != null)
                   {
-                    this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 47, (byte) 1, (byte) 1);
-                    this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 78, (byte) 1, (byte) 3);
-                    if (this.Tab.AscendOptions.buytohpvalue.Value == 0M || this.Tab.AscendOptions.buytohpvalue.Value <= (Decimal) this.Statistics.MaximumHP)
+                    this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)47, (byte)1, (byte)1);
+                    this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)78, (byte)1, (byte)3);
+                    if (this.Tab.AscendOptions.buytohpvalue.Value == 0M || this.Tab.AscendOptions.buytohpvalue.Value <= (Decimal)this.Statistics.MaximumHP)
                       this.Tab.AscendOptions.ascendbutton.Text = "Start";
                     Thread.Sleep(1000);
                   }
@@ -8209,19 +8310,19 @@ label_2062:
                     if (this.Tab.AscendOptions.instantascend.Checked && this.SafeToWalkFast)
                     {
                       if (this.Currentnpctext.StartsWith("Aisling, live true."))
-                        this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 2, (byte) 1, (byte) 1);
+                        this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)2, (byte)1, (byte)1);
                       if (this.Currentnpctext.StartsWith("You will transform your Work"))
-                        this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 28);
+                        this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)28);
                       if (this.Currentnpctext.StartsWith("((It costs "))
                       {
                         uint num8 = uint.Parse(this.Currentnpctext.Split(' ')[2].ToString());
-                        this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 30);
+                        this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)30);
                         uint num9 = 0;
                         ulong num10 = 0;
                         while (true)
                         {
-                          num10 += (ulong) (num8 * 500U);
-                          if (num10 <= (ulong) this.Statistics.Experience)
+                          num10 += (ulong)(num8 * 500U);
+                          if (num10 <= (ulong)this.Statistics.Experience)
                           {
                             num8 += 25U;
                             ++num9;
@@ -8231,13 +8332,13 @@ label_2062:
                         }
                         for (uint index = 0; index < num9; ++index)
                         {
-                          this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 47, (byte) 1, (byte) 2);
-                          this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 73, (byte) 1, (byte) 2);
+                          this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)47, (byte)1, (byte)2);
+                          this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)73, (byte)1, (byte)2);
                           Thread.Sleep(10);
                         }
                         Thread.Sleep(1000);
-                        this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 43);
-                        this.PopupRespond(new uint?(npcByName.ID), (byte) 2, (byte) 115, (byte) 0, (byte) 78, (byte) 1, (byte) 3);
+                        this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)43);
+                        this.PopupRespond(new uint?(npcByName.ID), (byte)2, (byte)115, (byte)0, (byte)78, (byte)1, (byte)3);
                         this.Tab.AscendOptions.ascendbutton.Text = "Start";
                         Thread.Sleep(1000);
                       }
@@ -8245,20 +8346,20 @@ label_2062:
                     else
                     {
                       if (this.Currentnpctext.StartsWith("Aisling, live true."))
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 115, (byte) 0, (byte) 2, (byte) 1, (byte) 1);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)115, (byte)0, (byte)2, (byte)1, (byte)1);
                       if (this.Currentnpctext.StartsWith("You will transform your Work"))
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 115, (byte) 0, (byte) 28);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)115, (byte)0, (byte)28);
                       if (this.Currentnpctext.StartsWith("((It costs "))
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 115, (byte) 0, (byte) 30);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)115, (byte)0, (byte)30);
                       if (this.Currentnpctext.StartsWith("You remember that you cannot"))
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 115, (byte) 0, (byte) 47, (byte) 1, (byte) 2);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)115, (byte)0, (byte)47, (byte)1, (byte)2);
                       if (this.Currentnpctext.StartsWith("Do you prostrate yourself"))
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 115, (byte) 0, (byte) 73, (byte) 1, (byte) 2);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)115, (byte)0, (byte)73, (byte)1, (byte)2);
                       if (this.Currentnpctext.StartsWith("You lack experience"))
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 115, (byte) 0, (byte) 43);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)115, (byte)0, (byte)43);
                       if (this.Currentnpctext.StartsWith("Do you now descend"))
                       {
-                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 2, (byte) 115, (byte) 0, (byte) 78, (byte) 1, (byte) 3);
+                        this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte)2, (byte)115, (byte)0, (byte)78, (byte)1, (byte)3);
                         this.Tab.AscendOptions.ascendbutton.Text = "Start";
                       }
                     }
@@ -8279,7 +8380,51 @@ label_2062:
           {
             Player characterByName = this.FindCharacterByName<Player>(this.Tab.vkillascendername);
             if (characterByName != null && characterByName.IsOnScreen && characterByName.Location.DistanceFrom(this.ServerLocation) == 1)
-              this.UseSkills();
+            {
+              //fuck you
+              if (this.CanSkill("Cyclone Kick"))
+              {
+                this.WFF();
+                this.UseSkill("Cyclone Kick");
+                this.strongskilldelay = DateTime.UtcNow;
+              }
+              else if (this.CanSkill("Wheel Kick", true))
+              {
+                this.WFF();
+                this.UseMedSkill("Wheel Kick");
+                this.strongskilldelay = DateTime.UtcNow;
+              }
+              if (this.CanSkill("Raging Attack"))
+              {
+                this.WFF();
+                this.UseMedSkill("Raging Attack");
+                this.strongskilldelay = DateTime.UtcNow;
+              }
+              else if (this.CanSkill("Furious Bash", true))
+              {
+                this.WFF();
+                this.UseMedSkill("Furious Bash");
+                this.strongskilldelay = DateTime.UtcNow;
+              }
+              else if (this.CanSkill("Mass Strike", true))
+              {
+                this.WFF();
+                this.UseMedSkill("Mass Strike");
+                this.strongskilldelay = DateTime.UtcNow;
+              }
+              else if (this.CanSkill("Double Rake", true))
+              {
+                this.WFF();
+                this.UseMedSkill("Double Rake");
+                this.strongskilldelay = DateTime.UtcNow;
+              }
+              else if (this.CanSkill("Pounce", true))
+              {
+                this.WFF();
+                this.UseMedSkill("Pounce");
+                this.strongskilldelay = DateTime.UtcNow;
+              }
+            }
           }
           if (!this.pause && this.Tab.AscendOptions.vbuystatsbtn)
           {
@@ -8462,7 +8607,7 @@ label_2062:
                           {
                             timeSpan = DateTime.Now.Subtract(this.ascendtime);
                             if (timeSpan.TotalMinutes < 210.0)
-                            { //vikki
+                            {
                               if (this.rescuedtime != DateTime.MinValue)
                               {
                                 timeSpan = DateTime.UtcNow.Subtract(this.rescuedtime);
@@ -26464,6 +26609,11 @@ label_860:
 
     public bool InALegitForm() => (int) this.ClientForm - 16384 == 433;
 
+    public void Escape()
+    {
+      User32._SendKeys(this.mainProc.MainWindowHandle, "Esc");
+      this.refreshdelay = DateTime.UtcNow;
+    }
     public void Refresh()
     {
       User32._SendKeys(this.mainProc.MainWindowHandle, "F5");
@@ -33669,46 +33819,9 @@ label_11:
         if (this.Tab.vwalklocaleslist == "Inn")
           this.FindAutoWalkPath(136);
         if (this.Tab.vwalklocaleslist == "Altar")
-        {
-          bool hasWarrantyBag = this.HasItem("Warranty Bag");
-          bool hasSuccubusHair = this.HasItem("Succubus's Hair");
-          bool notAtbank = this.MapInfo.Number != 135;
-
-          // Move to bank if needed
-          if ((hasWarrantyBag || !hasSuccubusHair) && notAtbank)
-            this.FindAutoWalkPath(135);
-
-          if (hasWarrantyBag && !notAtbank)
-          {
-            this.SkillSpellCaption("I will deposit warranty bag");
-            if (!hasSuccubusHair)
-              this.SkillSpellCaption("Give my succubus's hair back");
-            Thread.Sleep(500);
-          }
-          else if (!hasSuccubusHair && !notAtbank)
-          {
-            this.SkillSpellCaption("Give my succubus's hair back");
-            Thread.Sleep(500);
-          }
           this.FindAutoWalkPath(500);
-
-          Thread.Sleep(1000);
-          //vikki
-          //unequip belt
-          this.UnequipSlot((byte)11);
-          //drop hair in altar
-          this.Drop(31, 52, 1, 1); //TODO make sure succ hair is in slot 1; any more checks?
-          //find killer and walk in front of them
-          Player killerName = this.FindCharacterByName<Player>(this.Tab.AscendOptions.killername.Text);
-          if (killerName != null && killerName.IsOnScreen && killerName.Location.DistanceFrom(this.ServerLocation) > 1)
-          {
-            this.WalkToPlayer(killerName.Location.X, killerName.Location.Y, 1);
-          }
-          
-
-        }
         if (this.Tab.vwalklocaleslist == "Bank")
-          this.FindAutoWalkPath(135);
+            this.FindAutoWalkPath(135);
         if (this.Tab.vwalklocaleslist == "Tailor")
           this.FindAutoWalkPath(130);
         if (this.Tab.vwalklocaleslist == "Goods Shop")
