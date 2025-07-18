@@ -4322,7 +4322,7 @@ label_268:
     public bool ServerMessage_0x0D_Chat(Client client, ServerPacket msg)
     {
       byte num = msg.ReadByte();
-      uint key1 = msg.ReadUInt32();
+      uint playerID = msg.ReadUInt32();
       string key2 = msg.ReadString((int) msg.ReadByte());
       string str1 = key2;
       if ((num == (byte) 1 || num == (byte) 0) && Server.ignoreaislinglist.Count<string>() > 0)
@@ -4340,32 +4340,32 @@ label_268:
       }
       if (num == (byte) 0 || num == (byte) 1)
         key2 = key2.Remove(0, key2.IndexOf(" ") + 1);
-      if (num == (byte) 0 && (int) key1 == (int) client.PlayerID)
+      if (num == (byte) 0 && (int) playerID == (int) client.PlayerID)
       {
         if (key2.Equals("Don't get lost again.") || key2.StartsWith("Let's go to mommy.") || key2.Equals("You are safe now!") || key2.Equals("Gotcha!") || key2.Equals("Don't be scared."))
           client.losterbiedelay = DateTime.UtcNow;
         if (key2.Equals("I caught one!") || key2.Equals("Victory!") || key2.Equals("Got it!") || key2.Equals("Gotcha!") || key2.Equals("Got one!"))
           client.bugtimer = DateTime.UtcNow;
       }
-      if ((key2.Contains("Kill...") || key2.Contains("Ahhh...")) && Server.StaticCharacters.ContainsKey(key1) && Server.StaticCharacters[key1] != null && !Server.StaticCharacters[key1].HasSummoned)
-        Server.StaticCharacters[key1].HasSummoned = true;
-      if (num == (byte) 2 && client.Characters.ContainsKey(key1) && client.Characters[key1] != null && Server.SpellList.ContainsKey(key2))
-        client.Characters[key1].LastBlueText = key2;
-      if ((num == (byte) 0 || num == (byte) 1) && client.Characters.ContainsKey(key1) && client.Characters[key1] != null && Server.StaticCharacters.ContainsKey(key1) && Server.StaticCharacters[key1] != null && client.Characters[key1].IsOnScreen && (Server.friendlist.Contains(client.Characters[key1].Name.ToLower()) || client.GroupMembers.Contains(client.Characters[key1].Name)))
+      if ((key2.Contains("Kill...") || key2.Contains("Ahhh...")) && Server.StaticCharacters.ContainsKey(playerID) && Server.StaticCharacters[playerID] != null && !Server.StaticCharacters[playerID].HasSummoned)
+        Server.StaticCharacters[playerID].HasSummoned = true;
+      if (num == (byte) 2 && client.Characters.ContainsKey(playerID) && client.Characters[playerID] != null && Server.SpellList.ContainsKey(key2))
+        client.Characters[playerID].LastBlueText = key2;
+      if ((num == (byte) 0 || num == (byte) 1) && client.Characters.ContainsKey(playerID) && client.Characters[playerID] != null && Server.StaticCharacters.ContainsKey(playerID) && Server.StaticCharacters[playerID] != null && client.Characters[playerID].IsOnScreen && (Server.friendlist.Contains(client.Characters[playerID].Name.ToLower()) || client.GroupMembers.Contains(client.Characters[playerID].Name)))
       {
-        if (client.Tab.respondaite.Checked && key2.Equals("aite", StringComparison.CurrentCultureIgnoreCase) && !Server.StaticCharacters[key1].hasaite && client.HasSpell("ard naomh aite"))
-          client.CastSpell("ard naomh aite", new uint?(key1));
-        if (client.Tab.respondfas.Checked && key2.Equals("fas", StringComparison.CurrentCultureIgnoreCase) && !Server.StaticCharacters[key1].hasfas && client.HasSpell("mor fas nadur"))
-          client.CastSpell("mor fas nadur", new uint?(key1));
+        if (client.Tab.respondaite.Checked && key2.Equals("aite", StringComparison.CurrentCultureIgnoreCase) && !Server.StaticCharacters[playerID].hasaite && client.HasSpell("ard naomh aite"))
+          client.CastSpell("ard naomh aite", new uint?(playerID));
+        if (client.Tab.respondfas.Checked && key2.Equals("fas", StringComparison.CurrentCultureIgnoreCase) && !Server.StaticCharacters[playerID].hasfas && client.HasSpell("mor fas nadur"))
+          client.CastSpell("mor fas nadur", new uint?(playerID));
         if (client.Tab.respondflower.Checked && (key2.Equals("flower", StringComparison.CurrentCultureIgnoreCase) || key2.Equals("f", StringComparison.CurrentCultureIgnoreCase)))
-          Server.StaticCharacters[key1].wantsflowered = true;
+          Server.StaticCharacters[playerID].wantsflowered = true;
       }
       if (!client.Tab.chattimestamp.Checked || num != (byte) 0)
         return true;
       DateTime now = DateTime.Now;
       ServerPacket msg1 = new ServerPacket((byte) 13);
       msg1.WriteByte(num);
-      msg1.WriteUInt32(key1);
+      msg1.WriteUInt32(playerID);
       msg1.WriteString8(now.ToString("hh:mm") + ">" + str1);
       msg1.Write(new byte[3]);
       msg1.Write(new byte[3]);
@@ -5492,28 +5492,28 @@ label_268:
     public bool ServerMessage_0x29_SpellAnimation(Client client, ServerPacket msg)
     {
       ushort num1 = 0;
-      uint key1 = 0;
+      uint playerID = 0;
       uint key2 = msg.ReadUInt32();
-      ushort key3;
+      ushort actionID;
       ushort num2;
       if (key2 > 0U)
       {
-        key1 = msg.ReadUInt32();
-        key3 = msg.ReadUInt16();
+        playerID = msg.ReadUInt32();
+        actionID = msg.ReadUInt16();
         num1 = msg.ReadUInt16();
         num2 = msg.ReadUInt16();
       }
       else
       {
-        key3 = msg.ReadUInt16();
+        actionID = msg.ReadUInt16();
         num2 = msg.ReadUInt16();
         int num3 = (int) msg.ReadUInt16();
         int num4 = (int) msg.ReadUInt16();
         int num5 = (int) msg.ReadByte();
       }
-      if (client.Characters.ContainsKey(key1) && client.Characters[key1] is Player && client.Characters.ContainsKey(key2) && client.Characters[key2] is Npc && Server.StaticCharacters.ContainsKey(key2))
+      if (client.Characters.ContainsKey(playerID) && client.Characters[playerID] is Player && client.Characters.ContainsKey(key2) && client.Characters[key2] is Npc && Server.StaticCharacters.ContainsKey(key2))
       {
-        if ((int) key1 == (int) client.PlayerID && (key3 == (ushort) 254 || key3 == (ushort) 137))
+        if ((int) playerID == (int) client.PlayerID && (actionID == (ushort) 254 || actionID == (ushort) 137))
         {
           if (!Server.StaticCharacters[key2].hasdion && !Server.StaticCharacters[key2].hasmonsterdion && Server.StaticCharacters[key2].hascurse)
             ++client.Characters[key2].HitCount;
@@ -5523,15 +5523,15 @@ label_268:
             Server.StaticCharacters[key2].CantAttack = true;
           }
         }
-        if (key3 == (ushort) 25)
+        if (actionID == (ushort) 25)
           Server.StaticCharacters[key2].CantAttack = false;
       }
-      if ((key3 == (ushort) 21 || key3 == (ushort) 22) && (int) key2 == (int) client.PlayerID && client.MapInfo.Number == 421 && !client.Tab.vimpskillbutton && Program.MainForm.laborname.Text != string.Empty && Program.MainForm.getmentored.Checked && Program.MainForm.laborname.Text.ToLower() != client.Name.ToLower())
+      if ((actionID == (ushort) 21 || actionID == (ushort) 22) && (int) key2 == (int) client.PlayerID && client.MapInfo.Number == 421 && !client.Tab.vimpskillbutton && Program.MainForm.laborname.Text != string.Empty && Program.MainForm.getmentored.Checked && Program.MainForm.laborname.Text.ToLower() != client.Name.ToLower())
       {
         client.SaveTimedStuff(34);
         client.LogOff();
       }
-      if (key3 == (ushort) 3 && (int) key2 == (int) client.PlayerID && client.Tab.vautowalker_locales.Equals("Aman Jungle"))
+      if (actionID == (ushort) 3 && (int) key2 == (int) client.PlayerID && client.Tab.vautowalker_locales.Equals("Aman Jungle"))
       {
         if (client.ytquest == 1)
           client.YTQuestStep("YT 3");
@@ -5574,11 +5574,11 @@ label_268:
             client.SendMessage("Get more Dendron Flowers and fresh hide!", "red");
         }
       }
-      if (client.Characters.ContainsKey(key1) && client.Characters[key1] != null)
+      if (client.Characters.ContainsKey(playerID) && client.Characters[playerID] != null)
       {
-        client.Characters[key1].LastAction = DateTime.UtcNow;
-        if (!client.Characters[key1].Moved)
-          client.Characters[key1].Moved = true;
+        client.Characters[playerID].LastAction = DateTime.UtcNow;
+        if (!client.Characters[playerID].Moved)
+          client.Characters[playerID].Moved = true;
       }
       if (client.Characters.ContainsKey(key2) && client.Characters[key2] != null)
         client.Characters[key2].LastAction = DateTime.UtcNow;
@@ -5586,102 +5586,112 @@ label_268:
       {
         if (client.Characters.ContainsKey(key2) && Server.StaticCharacters.ContainsKey(key2) && client.Characters[key2] != null && Server.StaticCharacters[key2] != null)
         {
-          if (client.LastSpell == "asgall faileas" && (int) key2 == (int) client.PlayerID && (key3 == (ushort) 66 || num1 == (ushort) 66))
+          if (client.LastSpell == "asgall faileas" && (int) key2 == (int) client.PlayerID && (actionID == (ushort) 66 || num1 == (ushort) 66))
             client.asgalltime = DateTime.UtcNow;
-          if (client.Tab.MonstersByPlayer != null && (int) key1 == (int) client.playeridformonster)
+          if (client.Tab.MonstersByPlayer != null && (int) playerID == (int) client.playeridformonster)
             client.trackedmonsterID = key2;
-          if (!Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey((int) key3))
-            Server.StaticCharacters[key2].SpellAnimationHistory.Add((int) key3, DateTime.UtcNow);
+          if (!Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey((int) actionID))
+            Server.StaticCharacters[key2].SpellAnimationHistory.Add((int) actionID, DateTime.UtcNow);
           else
-            Server.StaticCharacters[key2].SpellAnimationHistory[(int) key3] = DateTime.UtcNow;
-          if ((int) key1 == (int) client.PlayerID && client.LastSpell != string.Empty)
+            Server.StaticCharacters[key2].SpellAnimationHistory[(int) actionID] = DateTime.UtcNow;
+          if ((int) playerID == (int) client.PlayerID && client.LastSpell != string.Empty)
           {
-            if (!Server.StaticCharacters[key2].ProbableSpellType.ContainsKey((int) key3))
-              Server.StaticCharacters[key2].ProbableSpellType.Add((int) key3, client.LastSpell);
+            if (!Server.StaticCharacters[key2].ProbableSpellType.ContainsKey((int) actionID))
+              Server.StaticCharacters[key2].ProbableSpellType.Add((int) actionID, client.LastSpell);
             else
-              Server.StaticCharacters[key2].ProbableSpellType[(int) key3] = client.LastSpell;
+              Server.StaticCharacters[key2].ProbableSpellType[(int) actionID] = client.LastSpell;
             if (num1 == (ushort) 192)
               client.cttime = DateTime.UtcNow;
           }
-          if (client.Characters.ContainsKey(key1) && Server.StaticCharacters.ContainsKey(key1) && client.Characters[key1] != null && Server.StaticCharacters[key1] != null)
+          if (client.Characters.ContainsKey(playerID) && Server.StaticCharacters.ContainsKey(playerID) && client.Characters[playerID] != null && Server.StaticCharacters[playerID] != null)
           {
-            if (key3 == (ushort) 84 && client.altsneedflowered.Count > 0 && Server.StaticCharacters[key2].Name == client.altsneedflowered[0])
+            if (actionID == (ushort) 84 && client.altsneedflowered.Count > 0 && Server.StaticCharacters[key2].Name == client.altsneedflowered[0])
               client.altsneedflowered.Remove(Server.StaticCharacters[key2].Name);
-            if (key3 == (ushort) 84 && Server.StaticCharacters[key2].wantsflowered)
+            if (actionID == (ushort) 84 && Server.StaticCharacters[key2].wantsflowered)
               Server.StaticCharacters[key2].wantsflowered = false;
-            if ((int) key1 == (int) client.PlayerID && key3 != (ushort) 33 && key3 != (ushort) 32 && key3 != (ushort) 40 && key3 != (ushort) 117 && key3 != (ushort) 257 && key3 != (ushort) 259 && key3 != (ushort) 104 && key3 != (ushort) 243 && key3 != (ushort) 258 && key3 != (ushort) 82 && key3 != (ushort) 75 && key3 != (ushort) 273)
+            if ((int) playerID == (int) client.PlayerID && actionID != (ushort) 33 && actionID != (ushort) 32 && actionID != (ushort) 40 && actionID != (ushort) 117 && actionID != (ushort) 257 && actionID != (ushort) 259 && actionID != (ushort) 104 && actionID != (ushort) 243 && actionID != (ushort) 258 && actionID != (ushort) 82 && actionID != (ushort) 75 && actionID != (ushort) 273)
             {
               client.Characters[key2].Lured = true;
               if (client.MainTarget != null && (int) client.MainTarget.ID == (int) key2)
                 client.follow_walk = 2;
             }
-            if (key3 != (ushort) 33 && key3 != (ushort) 32 && key3 != (ushort) 40 && key3 != (ushort) 117 && key3 != (ushort) 257 && key3 != (ushort) 259 && key3 != (ushort) 104 && key3 != (ushort) 243 && key3 != (ushort) 258 && key3 != (ushort) 82 && key3 != (ushort) 75 && key3 != (ushort) 273 && key3 != (ushort) 235)
-              client.Characters[key2].LastHitByID = key1;
-            if ((int) key1 == (int) client.PlayerID && (key3 == (ushort) 25 || key3 == (ushort) 274))
+            if (actionID != (ushort) 33 && actionID != (ushort) 32 && actionID != (ushort) 40 && actionID != (ushort) 117 && actionID != (ushort) 257 && actionID != (ushort) 259 && actionID != (ushort) 104 && actionID != (ushort) 243 && actionID != (ushort) 258 && actionID != (ushort) 82 && actionID != (ushort) 75 && actionID != (ushort) 273 && actionID != (ushort) 235)
+              client.Characters[key2].LastHitByID = playerID;
+            if ((int) playerID == (int) client.PlayerID && (actionID == (ushort) 25 || actionID == (ushort) 274))
               client.Characters[key2].LastHitByID = 0U;
-            if (Server.StaticCharacters[key1] is Npc && Server.StaticCharacters[key2] is Player && !Server.StaticCharacters[key2].AnimationFrom.ContainsKey((int) key3))
-              Server.StaticCharacters[key2].AnimationFrom.Add((int) key3, (Server.StaticCharacters[key1] as Npc).Image);
-            if (Server.StaticCharacters[key1] is Player && key3 == (ushort) 48)
+            if (Server.StaticCharacters[playerID] is Npc && Server.StaticCharacters[key2] is Player && !Server.StaticCharacters[key2].AnimationFrom.ContainsKey((int) actionID))
+              Server.StaticCharacters[key2].AnimationFrom.Add((int) actionID, (Server.StaticCharacters[playerID] as Npc).Image);
+            if (Server.StaticCharacters[playerID] is Player && actionID == (ushort) 48)
             {
-              if (!Server.StaticCharacters[key1].SpellAnimationHistory.ContainsKey((int) key3))
-                Server.StaticCharacters[key1].SpellAnimationHistory.Add((int) key3, DateTime.UtcNow);
+              if (!Server.StaticCharacters[playerID].SpellAnimationHistory.ContainsKey((int) actionID))
+                Server.StaticCharacters[playerID].SpellAnimationHistory.Add((int) actionID, DateTime.UtcNow);
               else
-                Server.StaticCharacters[key1].SpellAnimationHistory[(int) key3] = DateTime.UtcNow;
+                Server.StaticCharacters[playerID].SpellAnimationHistory[(int) actionID] = DateTime.UtcNow;
             }
-            if (Server.StaticCharacters[key1] is Player && (int) key1 != (int) client.PlayerID)
+            if (Server.StaticCharacters[playerID] is Player && (int) playerID != (int) client.PlayerID)
             {
-              if (key3 == (ushort) 19 && num1 != (ushort) 19 && (int) key2 == (int) client.PlayerID && client.MapInfo.Name.StartsWith("Training Dojo "))
+              if (actionID == (ushort) 19 && num1 != (ushort) 19 && (int) key2 == (int) client.PlayerID && client.MapInfo.Name.StartsWith("Training Dojo "))
               {
                 client.throwss = true;
-                client.throwername = Server.StaticCharacters[key1].Name;
+                client.throwername = Server.StaticCharacters[playerID].Name;
               }
-              if (!Server.StaticCharacters[key2].ProbableSpellType.ContainsKey((int) key3))
-                Server.StaticCharacters[key2].ProbableSpellType.Add((int) key3, Server.StaticCharacters[key1].LastBlueText);
+              if (!Server.StaticCharacters[key2].ProbableSpellType.ContainsKey((int) actionID))
+                Server.StaticCharacters[key2].ProbableSpellType.Add((int) actionID, Server.StaticCharacters[playerID].LastBlueText);
               else
-                Server.StaticCharacters[key2].ProbableSpellType[(int) key3] = Server.StaticCharacters[key1].LastBlueText;
+                Server.StaticCharacters[key2].ProbableSpellType[(int) actionID] = Server.StaticCharacters[playerID].LastBlueText;
             }
-            if (key3 == (ushort) 161 || key3 == (ushort) 162)
-              Server.StaticCharacters[key1].IsCupping = true;
-            if ((int) key1 != (int) key2 && key3 == (ushort) 5)
+            if (actionID == (ushort) 161 || actionID == (ushort) 162)
+              Server.StaticCharacters[playerID].IsCupping = true;
+            if ((int) playerID != (int) key2 && actionID == (ushort) 5)
             {
               Server.StaticCharacters[key2].SpellAnimationHistory.Remove(24);
               Server.StaticCharacters[key2].IsSkulled = false;
             }
-            if ((int) key1 == (int) key2 && key3 == (ushort) 245 && client.Characters[key1] is Npc && Server.StaticCharacters[key1].hasardcradh && !client.MapInfo.Name.Contains("Oren Ruin") && !client.MapInfo.Name.Contains("Shinewood") && !client.MapInfo.Name.Contains("Ice Cave"))
+            if ((int) playerID == (int) key2 && actionID == (ushort) 245 && client.Characters[playerID] is Npc && Server.StaticCharacters[playerID].hasardcradh && !client.MapInfo.Name.Contains("Oren Ruin") && !client.MapInfo.Name.Contains("Shinewood") && !client.MapInfo.Name.Contains("Ice Cave"))
               Server.StaticCharacters[key2].SpellAnimationHistory.Remove(257);
-            else if (Server.StaticCharacters[key2] is Npc && (int) key1 == (int) key2 && key3 == (ushort) 232 && !client.MapInfo.Name.Contains("Oren Ruin"))
+            else if (Server.StaticCharacters[key2] is Npc && (int) playerID == (int) key2 && actionID == (ushort) 232 && !client.MapInfo.Name.Contains("Oren Ruin"))
               Server.StaticCharacters[key2].SpellAnimationHistory.Clear();
-            else if (Server.StaticCharacters[key1] is Npc && Server.StaticCharacters[key2] is Player && key3 == (ushort) 232)
+            else if (Server.StaticCharacters[playerID] is Npc && Server.StaticCharacters[key2] is Player && actionID == (ushort) 232)
               Server.StaticCharacters[key2].SpellAnimationHistory.Clear();
-            if (Server.StaticCharacters[key1] is Npc && key3 == (ushort) 1)
-              Server.StaticCharacters[key1].isParentGrime = true;
+            if (Server.StaticCharacters[playerID] is Npc && actionID == (ushort) 1)
+              Server.StaticCharacters[playerID].isParentGrime = true;
           }
-          if (!Server.StaticCharacters[key2].hasdion && !Server.StaticCharacters[key2].hasmonsterdion && key3 != (ushort) 117 && key3 != (ushort) 41 && key3 != (ushort) 32 && key3 != (ushort) 42 && key3 != (ushort) 40 && key3 != (ushort) 259 && key3 != (ushort) 258 && key3 != (ushort) 243 && key3 != (ushort) 257 && key3 != (ushort) 104 && key3 != (ushort) 82 && key3 != (ushort) 75 && key3 != (ushort) 231 && key3 != (ushort) 273 && key3 != (ushort) 263 && key3 != (ushort) 278 && key3 != (ushort) 245 && key3 != (ushort) 44 && key3 != (ushort) 25 && key3 != (ushort) 247 && key3 != (ushort) 295 && key3 != (ushort) 33)
+          if (!Server.StaticCharacters[key2].hasdion && !Server.StaticCharacters[key2].hasmonsterdion && actionID != (ushort) 117 && actionID != (ushort) 41 && actionID != (ushort) 32 && actionID != (ushort) 42 && actionID != (ushort) 40 && actionID != (ushort) 259 && actionID != (ushort) 258 && actionID != (ushort) 243 && actionID != (ushort) 257 && actionID != (ushort) 104 && actionID != (ushort) 82 && actionID != (ushort) 75 && actionID != (ushort) 231 && actionID != (ushort) 273 && actionID != (ushort) 263 && actionID != (ushort) 278 && actionID != (ushort) 245 && actionID != (ushort) 44 && actionID != (ushort) 25 && actionID != (ushort) 247 && actionID != (ushort) 295 && actionID != (ushort) 33)
           {
             Server.StaticCharacters[key2].SpellAnimationHistory.Remove(32);
             Server.StaticCharacters[key2].SpellAnimationHistory.Remove(117);
           }
+
+          /* Rescue Logic */
           if (client.Tab.AscendOptions.rescuername.Text != string.Empty)
           {
             Player characterByName = client.FindCharacterByName<Player>(client.Tab.AscendOptions.rescuername.Text);
-            if (characterByName != null && characterByName.IsOnScreen && (int) key1 == (int) characterByName.ID && key3 == (ushort) 274)
+            if (characterByName != null && characterByName.IsOnScreen && (int)playerID == (int)characterByName.ID && actionID == (ushort)274)
               client.rescuedtime = DateTime.UtcNow;
           }
-          if (!client.safemode && client.Characters[key2] is Player && (int) key2 != (int) client.PlayerID)
+          /* Killer Logic */ //Do we even need it?
+          if (client.Tab.AscendOptions.killername.Text != string.Empty)
           {
-            if (client.Tab.vmonitordion && (key3 == (ushort) 244 || key3 == (ushort) 66 || key3 == (ushort) 89 || key3 == (ushort) 93 || key3 == (ushort) 86))
+            Player characterByName = client.FindCharacterByName<Player>(client.Tab.AscendOptions.killername.Text);
+            if (characterByName != null && characterByName.IsOnScreen && (int)playerID == (int)characterByName.ID && actionID == (ushort)274)
+              client.killedtime = DateTime.UtcNow;
+          }
+
+          if (!client.safemode && client.Characters[key2] is Player && (int)key2 != (int)client.PlayerID)
+          {
+            if (client.Tab.vmonitordion && (actionID == (ushort)244 || actionID == (ushort)66 || actionID == (ushort)89 || actionID == (ushort)93 || actionID == (ushort)86))
               client.UpdatePlayerImage(client.Characters[key2] as Player);
-            else if (client.Tab.vmonitorcurses && (key3 == (ushort) 245 || key3 == (ushort) 257))
+            else if (client.Tab.vmonitorcurses && (actionID == (ushort)245 || actionID == (ushort)257))
               client.UpdatePlayerImage(client.Characters[key2] as Player);
-            else if (client.Tab.monitords.Checked && (key3 == (ushort) 245 || key3 == (ushort) 104 || key3 == (ushort) 82 || key3 == (ushort) 75))
+            else if (client.Tab.monitords.Checked && (actionID == (ushort)245 || actionID == (ushort)104 || actionID == (ushort)82 || actionID == (ushort)75))
               client.UpdatePlayerImage(client.Characters[key2] as Player);
-            else if (client.Tab.vmonitorspells && (key3 == (ushort) 231 || key3 == (ushort) 273))
+            else if (client.Tab.vmonitorspells && (actionID == (ushort)231 || actionID == (ushort)273))
               client.UpdatePlayerImage(client.Characters[key2] as Player);
           }
         }
-        if (client.Characters.ContainsKey(key2) && client.Characters[key2] != null && client.Characters[key2] is Npc && (int) key1 == (int) client.PlayerID)
+        if (client.Characters.ContainsKey(key2) && client.Characters[key2] != null && client.Characters[key2] is Npc && (int) playerID == (int) client.PlayerID)
           client.LastTarget = key2;
-        if (!client.safemode && client.Tab.vdisableallspell && key3 != (ushort) 99 && key3 != (ushort) 24 && key3 != (ushort) 5 && key3 != (ushort) 191 && key3 != (ushort) 112 && key3 != (ushort) 212 && key3 != (ushort) 213 && key3 != (ushort) 362 && key3 != (ushort) 214 && key3 != (ushort) 96)
+        if (!client.safemode && client.Tab.vdisableallspell && actionID != (ushort) 99 && actionID != (ushort) 24 && actionID != (ushort) 5 && actionID != (ushort) 191 && actionID != (ushort) 112 && actionID != (ushort) 212 && actionID != (ushort) 213 && actionID != (ushort) 362 && actionID != (ushort) 214 && actionID != (ushort) 96)
           return false;
         if (msg.Length > (ushort) 13)
         {
@@ -5690,9 +5700,9 @@ label_268:
             if (MainForm.voldanim)
             {
               bool flag = false;
-              ushort num6 = key3;
+              ushort num6 = actionID;
               int num7;
-              switch (key3)
+              switch (actionID)
               {
                 case 231:
                   num6 = (ushort) 21;
@@ -5730,7 +5740,7 @@ label_268:
                   num7 = 1;
                   break;
                 default:
-                  num7 = key3 == (ushort) 232 ? 1 : 0;
+                  num7 = actionID == (ushort) 232 ? 1 : 0;
                   break;
               }
               if (num7 != 0)
@@ -5740,7 +5750,7 @@ label_268:
               }
               else
               {
-                switch (key3)
+                switch (actionID)
                 {
                   case 234:
                     num6 = client.LastSpell == "sal" || client.LastSpell == "beag sal" || client.LastSpell == "beag sal lamh" || client.LastSpell == "sal lamh" ? (ushort) 9 : (ushort) 10;
@@ -5809,12 +5819,12 @@ label_268:
                 }
               }
             label_149:
-              if ((int)key1 == (int)client.PlayerID && Server.StaticCharacters.ContainsKey(key2) && (key3 == (ushort)245 || key3 == (ushort)243 || key3 == (ushort)258 || key3 == (ushort)259 || key3 == (ushort)104 || key3 == (ushort)82))
+              if ((int)playerID == (int)client.PlayerID && Server.StaticCharacters.ContainsKey(key2) && (actionID == (ushort)245 || actionID == (ushort)243 || actionID == (ushort)258 || actionID == (ushort)259 || actionID == (ushort)104 || actionID == (ushort)82))
               {
                 int num8;
                 if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(257))
                 {
-                  switch (key3)
+                  switch (actionID)
                   {
                     case 245:
                       num8 = client.LastSpell == "ao ard cradh" ? 1 : 0;
@@ -5822,7 +5832,7 @@ label_268:
                     case 257:
                       break;
                     default:
-                      num8 = key3 != (ushort)245 ? 1 : 0;
+                      num8 = actionID != (ushort)245 ? 1 : 0;
                       goto label_155;
                   }
                 }
@@ -5830,12 +5840,12 @@ label_268:
               label_155:
                 if (num8 != 0)
                   Server.StaticCharacters[key2].SpellAnimationHistory.Remove(257);
-                if ((!Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(243) || key3 == (ushort)243 ? 0 : (key3 != (ushort)245 ? (key3 != (ushort)245 ? 1 : 0) : (client.LastSpell == "ao mor cradh" ? 1 : 0))) != 0)
+                if ((!Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(243) || actionID == (ushort)243 ? 0 : (actionID != (ushort)245 ? (actionID != (ushort)245 ? 1 : 0) : (client.LastSpell == "ao mor cradh" ? 1 : 0))) != 0)
                   Server.StaticCharacters[key2].SpellAnimationHistory.Remove(243);
                 int num9;
                 if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(258))
                 {
-                  switch (key3)
+                  switch (actionID)
                   {
                     case 245:
                       num9 = client.LastSpell == "ao cradh" ? 1 : 0;
@@ -5843,7 +5853,7 @@ label_268:
                     case 258:
                       break;
                     default:
-                      num9 = key3 != (ushort)245 ? 1 : 0;
+                      num9 = actionID != (ushort)245 ? 1 : 0;
                       goto label_164;
                   }
                 }
@@ -5854,7 +5864,7 @@ label_268:
                 int num10;
                 if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(259))
                 {
-                  switch (key3)
+                  switch (actionID)
                   {
                     case 245:
                       num10 = client.LastSpell == "ao beag cradh" ? 1 : 0;
@@ -5862,7 +5872,7 @@ label_268:
                     case 259:
                       break;
                     default:
-                      num10 = key3 != (ushort)245 ? 1 : 0;
+                      num10 = actionID != (ushort)245 ? 1 : 0;
                       goto label_171;
                   }
                 }
@@ -5870,20 +5880,20 @@ label_268:
               label_171:
                 if (num10 != 0)
                   Server.StaticCharacters[key2].SpellAnimationHistory.Remove(259);
-                if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(104) && key3 != (ushort)245 && key3 != (ushort)104)
+                if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(104) && actionID != (ushort)245 && actionID != (ushort)104)
                   Server.StaticCharacters[key2].SpellAnimationHistory.Remove(104);
-                if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(82) && key3 != (ushort)245 && key3 != (ushort)82)
+                if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(82) && actionID != (ushort)245 && actionID != (ushort)82)
                   Server.StaticCharacters[key2].SpellAnimationHistory.Remove(82);
-                if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(75) && key3 != (ushort)245 && key3 != (ushort)75)
+                if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(75) && actionID != (ushort)245 && actionID != (ushort)75)
                   Server.StaticCharacters[key2].SpellAnimationHistory.Remove(75);
-                if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(76) && key3 != (ushort)245 && key3 != (ushort)76)
+                if (Server.StaticCharacters[key2].SpellAnimationHistory.ContainsKey(76) && actionID != (ushort)245 && actionID != (ushort)76)
                   Server.StaticCharacters[key2].SpellAnimationHistory.Remove(76);
               }
               if (flag)
               {
                 msg = new ServerPacket((byte) 41);
                 msg.WriteUInt32(key2);
-                msg.WriteUInt32(key1);
+                msg.WriteUInt32(playerID);
                 msg.WriteUInt16(num6);
                 msg.WriteUInt16(num1);
                 msg.WriteUInt16(num2);

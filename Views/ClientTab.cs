@@ -132,6 +132,8 @@ namespace Flintstones
     public bool vwalktoloot;
     public string vrescueascendername = string.Empty;
     public bool vrescueascender;
+    public string vkillascendername = string.Empty;
+    public bool vkillascender;
     public bool vassistonthischar;
     public bool vimpskillbutton;
     public bool vlaborbutton;
@@ -395,6 +397,8 @@ namespace Flintstones
     public Button openmacroform;
     public Button opencomboform;
     public Button openascendform;
+    public TextBox killascendername;
+    public CheckBox killascender;
     public TextBox rescueascendername;
     public CheckBox rescueascender;
     private TabPage tabPage13;
@@ -4262,6 +4266,16 @@ namespace Flintstones
       this.rescueascender.Checked = false;
     }
 
+    private void killascendername_TextChanged(object sender, EventArgs e) => this.vkillascendername = this.killascendername.Text;
+    private void killascender_CheckedChanged(object sender, EventArgs e)
+    {
+      //vikki want to use all skills
+      this.vkillascender = this.killascender.Checked;
+      if (!this.killascender.Checked || this.Client.HasSkill("Assail"))
+        return;
+      this.killascender.Checked = false;
+    }
+
     private void assistonthischar_CheckedChanged(object sender, EventArgs e) => this.vassistonthischar = this.assistonthischar.Checked;
 
     private void impskillbutton_TextChanged(object sender, EventArgs e)
@@ -4955,6 +4969,8 @@ namespace Flintstones
             this.coral = new System.Windows.Forms.RadioButton();
             this.beryl = new System.Windows.Forms.RadioButton();
             this.buygems = new System.Windows.Forms.CheckBox();
+            this.killascendername = new System.Windows.Forms.TextBox();
+            this.killascender = new System.Windows.Forms.CheckBox();
             this.rescueascendername = new System.Windows.Forms.TextBox();
             this.rescueascender = new System.Windows.Forms.CheckBox();
             this.openascendform = new System.Windows.Forms.Button();
@@ -5980,7 +5996,7 @@ namespace Flintstones
             this.alreadyexists.ForeColor = System.Drawing.Color.Maroon;
             this.alreadyexists.Location = new System.Drawing.Point(285, 226);
             this.alreadyexists.Name = "alreadyexists";
-            this.alreadyexists.Size = new System.Drawing.Size(165, 15);
+            this.alreadyexists.Size = new System.Drawing.Size(166, 15);
             this.alreadyexists.TabIndex = 17;
             this.alreadyexists.Text = "This player is already targeted.";
             this.alreadyexists.Visible = false;
@@ -6090,7 +6106,7 @@ namespace Flintstones
             this.label44.AutoSize = true;
             this.label44.Location = new System.Drawing.Point(286, 3);
             this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(272, 15);
+            this.label44.Size = new System.Drawing.Size(273, 15);
             this.label44.TabIndex = 28;
             this.label44.Text = "*All Monsters will Target Anything not Hardcoded!";
             // 
@@ -6109,7 +6125,7 @@ namespace Flintstones
             this.label43.AutoSize = true;
             this.label43.Location = new System.Drawing.Point(18, 19);
             this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(91, 240);
+            this.label43.Size = new System.Drawing.Size(92, 240);
             this.label43.TabIndex = 0;
             this.label43.Text = "CR\r\nMTG\r\nNobis\r\nSW 20+\r\nChaos, Chadul\r\nGrass Fields\r\nMuisir\r\nBlackstar\r\nAndor\r\nLo" +
     "st Ruins\r\nWater Dungeon\r\nDesert Dunes\r\nYowien Territory\r\nPlamit\r\nTavaly\r\nMt Merr" +
@@ -6236,7 +6252,7 @@ namespace Flintstones
             this.monsterexists.ForeColor = System.Drawing.Color.Maroon;
             this.monsterexists.Location = new System.Drawing.Point(263, 178);
             this.monsterexists.Name = "monsterexists";
-            this.monsterexists.Size = new System.Drawing.Size(177, 15);
+            this.monsterexists.Size = new System.Drawing.Size(178, 15);
             this.monsterexists.TabIndex = 20;
             this.monsterexists.Text = "This monster is already targeted.";
             this.monsterexists.Visible = false;
@@ -6257,9 +6273,9 @@ namespace Flintstones
             this.tabPage9.Controls.Add(this.equipweapon);
             this.tabPage9.Controls.Add(this.walktomonster);
             this.tabPage9.Controls.Add(this.assail);
-            this.tabPage9.Location = new System.Drawing.Point(4, 24);
+            this.tabPage9.Location = new System.Drawing.Point(4, 22);
             this.tabPage9.Name = "tabPage9";
-            this.tabPage9.Size = new System.Drawing.Size(634, 375);
+            this.tabPage9.Size = new System.Drawing.Size(634, 377);
             this.tabPage9.TabIndex = 7;
             this.tabPage9.Text = "Skills";
             this.tabPage9.UseVisualStyleBackColor = true;
@@ -6549,7 +6565,7 @@ namespace Flintstones
             this.attackinfinitemr.AutoSize = true;
             this.attackinfinitemr.Location = new System.Drawing.Point(188, 30);
             this.attackinfinitemr.Name = "attackinfinitemr";
-            this.attackinfinitemr.Size = new System.Drawing.Size(211, 19);
+            this.attackinfinitemr.Size = new System.Drawing.Size(212, 19);
             this.attackinfinitemr.TabIndex = 7;
             this.attackinfinitemr.Text = "Attack infinite MR mobs (ie; AJ/YT)";
             this.attackinfinitemr.UseVisualStyleBackColor = true;
@@ -6596,9 +6612,9 @@ namespace Flintstones
             this.tabPage7.Controls.Add(this.groupBox46);
             this.tabPage7.Controls.Add(this.trinket_holder);
             this.tabPage7.Controls.Add(this.redaislings);
-            this.tabPage7.Location = new System.Drawing.Point(4, 24);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(634, 375);
+            this.tabPage7.Size = new System.Drawing.Size(634, 377);
             this.tabPage7.TabIndex = 6;
             this.tabPage7.Text = "Items";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -6689,7 +6705,7 @@ namespace Flintstones
             this.walktoloot.AutoSize = true;
             this.walktoloot.Location = new System.Drawing.Point(92, 22);
             this.walktoloot.Name = "walktoloot";
-            this.walktoloot.Size = new System.Drawing.Size(94, 19);
+            this.walktoloot.Size = new System.Drawing.Size(95, 19);
             this.walktoloot.TabIndex = 4;
             this.walktoloot.Text = "Walk To Loot";
             this.walktoloot.UseVisualStyleBackColor = true;
@@ -6753,7 +6769,7 @@ namespace Flintstones
             this.haxdeposit.AutoSize = true;
             this.haxdeposit.Location = new System.Drawing.Point(66, 20);
             this.haxdeposit.Name = "haxdeposit";
-            this.haxdeposit.Size = new System.Drawing.Size(45, 19);
+            this.haxdeposit.Size = new System.Drawing.Size(44, 19);
             this.haxdeposit.TabIndex = 10;
             this.haxdeposit.Text = "hax";
             this.haxdeposit.UseVisualStyleBackColor = true;
@@ -7099,7 +7115,7 @@ namespace Flintstones
             this.tankmount1.AutoSize = true;
             this.tankmount1.Location = new System.Drawing.Point(15, 297);
             this.tankmount1.Name = "tankmount1";
-            this.tankmount1.Size = new System.Drawing.Size(95, 19);
+            this.tankmount1.Size = new System.Drawing.Size(96, 19);
             this.tankmount1.TabIndex = 14;
             this.tankmount1.Text = "Tank Mount1";
             this.tankmount1.UseVisualStyleBackColor = true;
@@ -7111,7 +7127,7 @@ namespace Flintstones
             this.tankmount2.AutoSize = true;
             this.tankmount2.Location = new System.Drawing.Point(15, 297);
             this.tankmount2.Name = "tankmount2";
-            this.tankmount2.Size = new System.Drawing.Size(95, 19);
+            this.tankmount2.Size = new System.Drawing.Size(96, 19);
             this.tankmount2.TabIndex = 14;
             this.tankmount2.Text = "Tank Mount2";
             this.tankmount2.UseVisualStyleBackColor = true;
@@ -7208,7 +7224,7 @@ namespace Flintstones
             this.fungusbeetleextract.AutoSize = true;
             this.fungusbeetleextract.Location = new System.Drawing.Point(15, 122);
             this.fungusbeetleextract.Name = "fungusbeetleextract";
-            this.fungusbeetleextract.Size = new System.Drawing.Size(139, 19);
+            this.fungusbeetleextract.Size = new System.Drawing.Size(138, 19);
             this.fungusbeetleextract.TabIndex = 6;
             this.fungusbeetleextract.Text = "Fungus Beetle Extract";
             this.fungusbeetleextract.UseVisualStyleBackColor = true;
@@ -7286,10 +7302,10 @@ namespace Flintstones
             this.tabPage6.Controls.Add(this.groupBox4);
             this.tabPage6.Controls.Add(this.groupBox45);
             this.tabPage6.Controls.Add(this.groupBox16);
-            this.tabPage6.Location = new System.Drawing.Point(4, 24);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(634, 375);
+            this.tabPage6.Size = new System.Drawing.Size(634, 377);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Hunting";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -7299,7 +7315,7 @@ namespace Flintstones
             this.destroytonics.AutoSize = true;
             this.destroytonics.Location = new System.Drawing.Point(24, 337);
             this.destroytonics.Name = "destroytonics";
-            this.destroytonics.Size = new System.Drawing.Size(125, 19);
+            this.destroytonics.Size = new System.Drawing.Size(126, 19);
             this.destroytonics.TabIndex = 62;
             this.destroytonics.Text = "Destroy ALL Tonics";
             this.destroytonics.UseVisualStyleBackColor = true;
@@ -7319,7 +7335,7 @@ namespace Flintstones
             this.useexpgem.AutoSize = true;
             this.useexpgem.Location = new System.Drawing.Point(24, 170);
             this.useexpgem.Name = "useexpgem";
-            this.useexpgem.Size = new System.Drawing.Size(157, 19);
+            this.useexpgem.Size = new System.Drawing.Size(154, 19);
             this.useexpgem.TabIndex = 60;
             this.useexpgem.Text = "Use Exp Gem at Max Box";
             this.useexpgem.UseVisualStyleBackColor = true;
@@ -7377,7 +7393,7 @@ namespace Flintstones
             this.throwtotems.AutoSize = true;
             this.throwtotems.Location = new System.Drawing.Point(24, 211);
             this.throwtotems.Name = "throwtotems";
-            this.throwtotems.Size = new System.Drawing.Size(192, 19);
+            this.throwtotems.Size = new System.Drawing.Size(194, 19);
             this.throwtotems.TabIndex = 54;
             this.throwtotems.Text = "Tail Slam Totems (yowien vines)";
             this.throwtotems.UseVisualStyleBackColor = true;
@@ -7418,7 +7434,7 @@ namespace Flintstones
             this.expapbonus.AutoSize = true;
             this.expapbonus.Location = new System.Drawing.Point(24, 145);
             this.expapbonus.Name = "expapbonus";
-            this.expapbonus.Size = new System.Drawing.Size(123, 19);
+            this.expapbonus.Size = new System.Drawing.Size(122, 19);
             this.expapbonus.TabIndex = 49;
             this.expapbonus.Text = "Use Exp-Ap Bonus";
             this.expapbonus.UseVisualStyleBackColor = true;
@@ -7722,10 +7738,10 @@ namespace Flintstones
             // 
             this.tabPage11.Controls.Add(this.groupBox11);
             this.tabPage11.Controls.Add(this.groupBox32);
-            this.tabPage11.Location = new System.Drawing.Point(4, 24);
+            this.tabPage11.Location = new System.Drawing.Point(4, 22);
             this.tabPage11.Name = "tabPage11";
             this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage11.Size = new System.Drawing.Size(634, 375);
+            this.tabPage11.Size = new System.Drawing.Size(634, 377);
             this.tabPage11.TabIndex = 8;
             this.tabPage11.Text = "Speech";
             this.tabPage11.UseVisualStyleBackColor = true;
@@ -7933,9 +7949,9 @@ namespace Flintstones
             this.tabPage4.Controls.Add(this.label1);
             this.tabPage4.Controls.Add(this.walksettings);
             this.tabPage4.Controls.Add(this.fastwalk);
-            this.tabPage4.Location = new System.Drawing.Point(4, 24);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(634, 375);
+            this.tabPage4.Size = new System.Drawing.Size(634, 377);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Walk";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -8002,7 +8018,7 @@ namespace Flintstones
             this.walktowards.AutoSize = true;
             this.walktowards.Location = new System.Drawing.Point(376, 112);
             this.walktowards.Name = "walktowards";
-            this.walktowards.Size = new System.Drawing.Size(145, 19);
+            this.walktowards.Size = new System.Drawing.Size(146, 19);
             this.walktowards.TabIndex = 29;
             this.walktowards.Text = "Walk Towards Monster";
             this.walktowards.UseVisualStyleBackColor = true;
@@ -8079,7 +8095,7 @@ namespace Flintstones
             this.walkeverytile.AutoSize = true;
             this.walkeverytile.Location = new System.Drawing.Point(418, 195);
             this.walkeverytile.Name = "walkeverytile";
-            this.walkeverytile.Size = new System.Drawing.Size(104, 19);
+            this.walkeverytile.Size = new System.Drawing.Size(105, 19);
             this.walkeverytile.TabIndex = 21;
             this.walkeverytile.Text = "Walk Every Tile";
             this.walkeverytile.UseVisualStyleBackColor = true;
@@ -8361,6 +8377,8 @@ namespace Flintstones
             // tabPage12
             // 
             this.tabPage12.Controls.Add(this.groupBox13);
+            this.tabPage12.Controls.Add(this.killascendername);
+            this.tabPage12.Controls.Add(this.killascender);
             this.tabPage12.Controls.Add(this.rescueascendername);
             this.tabPage12.Controls.Add(this.rescueascender);
             this.tabPage12.Controls.Add(this.openascendform);
@@ -8381,9 +8399,9 @@ namespace Flintstones
             this.groupBox13.Controls.Add(this.coral);
             this.groupBox13.Controls.Add(this.beryl);
             this.groupBox13.Controls.Add(this.buygems);
-            this.groupBox13.Location = new System.Drawing.Point(19, 100);
+            this.groupBox13.Location = new System.Drawing.Point(19, 108);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(277, 56);
+            this.groupBox13.Size = new System.Drawing.Size(277, 52);
             this.groupBox13.TabIndex = 16;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Black Market";
@@ -8429,19 +8447,34 @@ namespace Flintstones
             this.buygems.TabIndex = 0;
             this.buygems.Text = "Buy Gems";
             this.buygems.UseVisualStyleBackColor = true;
-            // 
-            // rescueascendername
-            // 
-            this.rescueascendername.Location = new System.Drawing.Point(161, 73);
+
+            /* killascendername */
+            this.killascendername.Location = new System.Drawing.Point(161, 59);
+            this.killascendername.Name = "killascendername";
+            this.killascendername.Size = new System.Drawing.Size(100, 23);
+            this.killascendername.TabIndex = 200;
+            this.killascendername.TextChanged += new System.EventHandler(this.killascendername_TextChanged);
+
+            /* killascender */
+            this.killascender.AutoSize = true;
+            this.killascender.Location = new System.Drawing.Point(36, 60);
+            this.killascender.Name = "killascender";
+            this.killascender.Size = new System.Drawing.Size(97, 19);
+            this.killascender.TabIndex = 201;
+            this.killascender.Text = "Kill Ascender:";
+            this.killascender.UseVisualStyleBackColor = true;
+            this.killascender.CheckedChanged += new System.EventHandler(this.killascender_CheckedChanged);
+ 
+            /* rescueascendername */
+            this.rescueascendername.Location = new System.Drawing.Point(161, 83);
             this.rescueascendername.Name = "rescueascendername";
             this.rescueascendername.Size = new System.Drawing.Size(100, 23);
             this.rescueascendername.TabIndex = 15;
             this.rescueascendername.TextChanged += new System.EventHandler(this.rescueascendername_TextChanged);
-            // 
-            // rescueascender
-            // 
+
+            /* rescueascender */
             this.rescueascender.AutoSize = true;
-            this.rescueascender.Location = new System.Drawing.Point(36, 75);
+            this.rescueascender.Location = new System.Drawing.Point(36, 86);
             this.rescueascender.Name = "rescueascender";
             this.rescueascender.Size = new System.Drawing.Size(118, 19);
             this.rescueascender.TabIndex = 14;
@@ -8451,9 +8484,9 @@ namespace Flintstones
             // 
             // openascendform
             // 
-            this.openascendform.Location = new System.Drawing.Point(36, 37);
+            this.openascendform.Location = new System.Drawing.Point(89, 25);
             this.openascendform.Name = "openascendform";
-            this.openascendform.Size = new System.Drawing.Size(148, 32);
+            this.openascendform.Size = new System.Drawing.Size(118, 32);
             this.openascendform.TabIndex = 13;
             this.openascendform.Text = "Ascension Options";
             this.openascendform.UseVisualStyleBackColor = true;
@@ -8462,7 +8495,7 @@ namespace Flintstones
             // assistonthischar
             // 
             this.assistonthischar.AutoSize = true;
-            this.assistonthischar.Location = new System.Drawing.Point(36, 12);
+            this.assistonthischar.Location = new System.Drawing.Point(36, 3);
             this.assistonthischar.Name = "assistonthischar";
             this.assistonthischar.Size = new System.Drawing.Size(194, 19);
             this.assistonthischar.TabIndex = 12;
@@ -8522,7 +8555,7 @@ namespace Flintstones
             this.prayxy.Enabled = false;
             this.prayxy.Location = new System.Drawing.Point(9, 46);
             this.prayxy.Name = "prayxy";
-            this.prayxy.Size = new System.Drawing.Size(43, 19);
+            this.prayxy.Size = new System.Drawing.Size(42, 19);
             this.prayxy.TabIndex = 1;
             this.prayxy.TabStop = true;
             this.prayxy.Text = "x,y:";
@@ -8574,7 +8607,7 @@ namespace Flintstones
             this.praytemple.AutoSize = true;
             this.praytemple.Location = new System.Drawing.Point(150, 49);
             this.praytemple.Name = "praytemple";
-            this.praytemple.Size = new System.Drawing.Size(99, 19);
+            this.praytemple.Size = new System.Drawing.Size(100, 19);
             this.praytemple.TabIndex = 1;
             this.praytemple.TabStop = true;
             this.praytemple.Text = "Temple prayer";
@@ -8604,7 +8637,7 @@ namespace Flintstones
             this.groupBox24.Controls.Add(this.laborwhisper);
             this.groupBox24.Controls.Add(this.laborbutton);
             this.groupBox24.Controls.Add(this.laborname);
-            this.groupBox24.Location = new System.Drawing.Point(302, 12);
+            this.groupBox24.Location = new System.Drawing.Point(302, 14);
             this.groupBox24.Name = "groupBox24";
             this.groupBox24.Size = new System.Drawing.Size(314, 151);
             this.groupBox24.TabIndex = 10;
@@ -8726,9 +8759,9 @@ namespace Flintstones
             this.groupBox25.Controls.Add(this.skillassistant);
             this.groupBox25.Controls.Add(this.useskillassistant);
             this.groupBox25.Controls.Add(this.improveskill);
-            this.groupBox25.Location = new System.Drawing.Point(19, 157);
+            this.groupBox25.Location = new System.Drawing.Point(19, 162);
             this.groupBox25.Name = "groupBox25";
-            this.groupBox25.Size = new System.Drawing.Size(277, 201);
+            this.groupBox25.Size = new System.Drawing.Size(277, 196);
             this.groupBox25.TabIndex = 9;
             this.groupBox25.TabStop = false;
             this.groupBox25.Text = "Improve profession";
@@ -8888,7 +8921,7 @@ namespace Flintstones
             this.studycreaturetxt.AutoSize = true;
             this.studycreaturetxt.Location = new System.Drawing.Point(502, 339);
             this.studycreaturetxt.Name = "studycreaturetxt";
-            this.studycreaturetxt.Size = new System.Drawing.Size(115, 19);
+            this.studycreaturetxt.Size = new System.Drawing.Size(114, 19);
             this.studycreaturetxt.TabIndex = 95;
             this.studycreaturetxt.Text = "studycreature.txt";
             this.studycreaturetxt.UseVisualStyleBackColor = true;
@@ -8968,7 +9001,7 @@ namespace Flintstones
             this.monitords.AutoSize = true;
             this.monitords.Location = new System.Drawing.Point(286, 71);
             this.monitords.Name = "monitords";
-            this.monitords.Size = new System.Drawing.Size(149, 19);
+            this.monitords.Size = new System.Drawing.Size(218, 19);
             this.monitords.TabIndex = 87;
             this.monitords.Text = "DS/DS2/Demise/Demon Seal Tracker";
             this.monitords.UseVisualStyleBackColor = true;
@@ -8979,7 +9012,7 @@ namespace Flintstones
             this.tradeincostumes.AutoSize = true;
             this.tradeincostumes.Location = new System.Drawing.Point(286, 296);
             this.tradeincostumes.Name = "tradeincostumes";
-            this.tradeincostumes.Size = new System.Drawing.Size(287, 19);
+            this.tradeincostumes.Size = new System.Drawing.Size(288, 19);
             this.tradeincostumes.TabIndex = 86;
             this.tradeincostumes.Text = "Trade in Event Costumes for War Bags (abel bank)";
             this.tradeincostumes.UseVisualStyleBackColor = true;
@@ -9060,7 +9093,7 @@ namespace Flintstones
             this.dojo.AutoSize = true;
             this.dojo.Location = new System.Drawing.Point(286, 158);
             this.dojo.Name = "dojo";
-            this.dojo.Size = new System.Drawing.Size(144, 19);
+            this.dojo.Size = new System.Drawing.Size(145, 19);
             this.dojo.TabIndex = 68;
             this.dojo.Text = "Re-enter Training Dojo";
             this.dojo.UseVisualStyleBackColor = true;
@@ -9152,7 +9185,7 @@ namespace Flintstones
             this.monitorspells.AutoSize = true;
             this.monitorspells.Location = new System.Drawing.Point(286, 96);
             this.monitorspells.Name = "monitorspells";
-            this.monitorspells.Size = new System.Drawing.Size(109, 19);
+            this.monitorspells.Size = new System.Drawing.Size(110, 19);
             this.monitorspells.TabIndex = 14;
             this.monitorspells.Text = "Aite/Fas Tracker";
             this.monitorspells.UseVisualStyleBackColor = true;
@@ -9163,7 +9196,7 @@ namespace Flintstones
             this.monitorcurses.AutoSize = true;
             this.monitorcurses.Location = new System.Drawing.Point(286, 46);
             this.monitorcurses.Name = "monitorcurses";
-            this.monitorcurses.Size = new System.Drawing.Size(116, 19);
+            this.monitorcurses.Size = new System.Drawing.Size(117, 19);
             this.monitorcurses.TabIndex = 13;
             this.monitorcurses.Text = "ard cradh Tracker";
             this.monitorcurses.UseVisualStyleBackColor = true;
@@ -9174,7 +9207,7 @@ namespace Flintstones
             this.monitordion.AutoSize = true;
             this.monitordion.Location = new System.Drawing.Point(286, 21);
             this.monitordion.Name = "monitordion";
-            this.monitordion.Size = new System.Drawing.Size(84, 19);
+            this.monitordion.Size = new System.Drawing.Size(85, 19);
             this.monitordion.TabIndex = 12;
             this.monitordion.Text = "Dion Timer";
             this.monitordion.UseVisualStyleBackColor = true;
@@ -9241,10 +9274,10 @@ namespace Flintstones
             this.tabPage5.Controls.Add(this.groupBox3);
             this.tabPage5.Controls.Add(this.groupBox5);
             this.tabPage5.Controls.Add(this.groupBox21);
-            this.tabPage5.Location = new System.Drawing.Point(4, 24);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(634, 375);
+            this.tabPage5.Size = new System.Drawing.Size(634, 377);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Settings";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -9267,7 +9300,7 @@ namespace Flintstones
             this.currenttemplateupdated.ForeColor = System.Drawing.SystemColors.Highlight;
             this.currenttemplateupdated.Location = new System.Drawing.Point(78, 102);
             this.currenttemplateupdated.Name = "currenttemplateupdated";
-            this.currenttemplateupdated.Size = new System.Drawing.Size(105, 15);
+            this.currenttemplateupdated.Size = new System.Drawing.Size(106, 15);
             this.currenttemplateupdated.TabIndex = 2;
             this.currenttemplateupdated.Text = "Template updated.";
             this.currenttemplateupdated.Visible = false;
@@ -9326,7 +9359,7 @@ namespace Flintstones
             this.templateupdated2.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.templateupdated2.Location = new System.Drawing.Point(16, 28);
             this.templateupdated2.Name = "templateupdated2";
-            this.templateupdated2.Size = new System.Drawing.Size(105, 15);
+            this.templateupdated2.Size = new System.Drawing.Size(106, 15);
             this.templateupdated2.TabIndex = 5;
             this.templateupdated2.Text = "Template updated.";
             this.templateupdated2.Visible = false;
@@ -9347,7 +9380,7 @@ namespace Flintstones
             this.template_loaded_message.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.template_loaded_message.Location = new System.Drawing.Point(16, 28);
             this.template_loaded_message.Name = "template_loaded_message";
-            this.template_loaded_message.Size = new System.Drawing.Size(97, 15);
+            this.template_loaded_message.Size = new System.Drawing.Size(98, 15);
             this.template_loaded_message.TabIndex = 3;
             this.template_loaded_message.Text = "Template loaded.";
             this.template_loaded_message.Visible = false;
@@ -9407,7 +9440,7 @@ namespace Flintstones
             this.templatesaved.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.templatesaved.Location = new System.Drawing.Point(78, 130);
             this.templatesaved.Name = "templatesaved";
-            this.templatesaved.Size = new System.Drawing.Size(100, 15);
+            this.templatesaved.Size = new System.Drawing.Size(101, 15);
             this.templatesaved.TabIndex = 9;
             this.templatesaved.Text = "Template created.";
             this.templatesaved.Visible = false;
@@ -9438,7 +9471,7 @@ namespace Flintstones
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(29, 42);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(93, 15);
+            this.label22.Size = new System.Drawing.Size(94, 15);
             this.label22.TabIndex = 6;
             this.label22.Text = "Template Name:";
             // 
@@ -9456,9 +9489,9 @@ namespace Flintstones
             // 
             this.tabPage13.Controls.Add(this.groupBox14);
             this.tabPage13.Controls.Add(this.groupBox12);
-            this.tabPage13.Location = new System.Drawing.Point(4, 24);
+            this.tabPage13.Location = new System.Drawing.Point(4, 22);
             this.tabPage13.Name = "tabPage13";
-            this.tabPage13.Size = new System.Drawing.Size(634, 375);
+            this.tabPage13.Size = new System.Drawing.Size(634, 377);
             this.tabPage13.TabIndex = 10;
             this.tabPage13.Text = "Realistic";
             this.tabPage13.UseVisualStyleBackColor = true;
@@ -9497,7 +9530,7 @@ namespace Flintstones
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(14, 19);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(301, 45);
+            this.label9.Size = new System.Drawing.Size(302, 45);
             this.label9.TabIndex = 1;
             this.label9.Text = "all delays are in milliseconds, these delays DO NOT SAVE\r\nlet me know if you have" +
     " a better delay time suggestion\r\nand i\'ll change the default values.";
@@ -9822,10 +9855,10 @@ namespace Flintstones
             this.tabPage14.Controls.Add(this.label6);
             this.tabPage14.Controls.Add(this.testnum);
             this.tabPage14.Controls.Add(this.button1);
-            this.tabPage14.Location = new System.Drawing.Point(4, 24);
+            this.tabPage14.Location = new System.Drawing.Point(4, 22);
             this.tabPage14.Name = "tabPage14";
             this.tabPage14.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage14.Size = new System.Drawing.Size(634, 375);
+            this.tabPage14.Size = new System.Drawing.Size(634, 377);
             this.tabPage14.TabIndex = 11;
             this.tabPage14.Text = "Test";
             this.tabPage14.UseVisualStyleBackColor = true;
@@ -10619,10 +10652,10 @@ namespace Flintstones
             this.tabPage2.Controls.Add(this.checkRecv);
             this.tabPage2.Controls.Add(this.checkSend);
             this.tabPage2.Controls.Add(this.textConsoleOutput);
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(634, 375);
+            this.tabPage2.Size = new System.Drawing.Size(634, 377);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Packets";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -10633,12 +10666,11 @@ namespace Flintstones
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(632, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(632, 31);
             this.toolStrip1.TabIndex = 0;
-            
             // 
             // btnPlay
-            //
+            // 
             this.btnPlay.Image = Image.FromFile("Resources\\btnPlay.png");
             this.btnPlay.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.btnPlay.Name = "btnPlay";
