@@ -7705,8 +7705,9 @@ label_2062:
             if (this.Currentnpctext.StartsWith("Using this item will allow you to sell exp"))
             {
               uint currentnpcpopupId = this.CurrentnpcpopupID;
-              this.PopupNext(new uint?(currentnpcpopupId), (byte) 2);
-              if (!this.Tab.expgemmp.Checked)
+                            this.PopupNext(new uint?(currentnpcpopupId), (byte)2);
+                            this.PopupNext(new uint?(currentnpcpopupId), (byte)2); // It didn't have the 2nd dialogue option.
+                            if (!this.Tab.expgemmp.Checked)
                 this.PopupRespond(new uint?(currentnpcpopupId), (byte) 0, (byte) 0, (byte) 0, (byte) 2, (byte) 1, (byte) 1, (byte) 2);
               else
                 this.PopupRespond(new uint?(currentnpcpopupId), (byte) 0, (byte) 0, (byte) 0, (byte) 2, (byte) 1, (byte) 2, (byte) 2);
