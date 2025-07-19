@@ -8425,9 +8425,55 @@ label_2062:
                 this.UseMedSkill("Pounce");
                 this.strongskilldelay = DateTime.UtcNow;
               }
-            }
-          }
-          if (!this.pause && this.Tab.AscendOptions.vbuystatsbtn)
+                            if (this.CanSkill("Draco Tail Kick"))
+                            {
+                                this.UseSkill("Draco Tail Kick");
+                                this.mediumskilldelay = DateTime.UtcNow;
+                            }
+                            if (this.CanSkill("Whirlwind Attack"))
+                            {
+                                this.UseSkill("Whirlwind Attack");
+                                this.mediumskilldelay = DateTime.UtcNow;
+                            }
+                            if (this.CanSkill("Dune Swipe", true))
+                            {
+                                this.UseMedSkill("Dune Swipe");
+                                this.mediumskilldelay = DateTime.UtcNow;
+                            }
+                        }
+                        if (this.CanSkill("Cyclone Blade"))
+                            this.UseSkill("Cyclone Blade");
+                        if (this.CanSkill("Talon Kick"))
+                            this.UseSkill("Talon Kick");
+                        if (this.CanSkill("Dark's Mega Blade"))
+                            this.UseSkill("Dark's Mega Blade");
+                        if (this.CanSkill("Twist Kick", true))
+                            this.UseMedSkill("Twist Kick");
+                    }
+                    if (this.CanSkill("Assassin Strike"))
+                        this.UseSkill("Assassin Strike");
+                    if (this.CanSkill("Rear Strike", true))
+                    {
+                        this.UseMedSkill("Rear Strike");
+                        this.mediumskilldelay = DateTime.UtcNow;
+                    }
+                    if (this.CanSkill("Shadow Strike", true))
+                    {
+                        this.UseMedSkill("Shadow Strike");
+                        this.ambushdelay = DateTime.UtcNow;
+                    }
+                    if (this.CanSkill("Kidney Shot", true))
+                    {
+                        this.UseMedSkill("Kidney Shot");
+                        this.mediumskilldelay = DateTime.UtcNow;
+                    }
+                    if (this.CanSkill("Venom Attack", true))
+                    {
+                        this.UseMedSkill("Venom Attack");
+                        this.mediumskilldelay = DateTime.UtcNow;
+                    }
+
+                    if (!this.pause && this.Tab.AscendOptions.vbuystatsbtn)
           {
             if (this.HasItem("Warranty Bag"))
             {
