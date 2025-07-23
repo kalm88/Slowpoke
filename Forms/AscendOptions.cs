@@ -982,7 +982,7 @@ namespace Flintstones
             this.instantascend.Text = "Instant Ascend";
             this.instantascend.UseVisualStyleBackColor = true;
 
-            /* suchairascend */ //vikki
+            /* suchairascend */
             this.suchairascend.AutoSize = true;
             this.suchairascend.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.suchairascend.Location = new System.Drawing.Point(6, 50);

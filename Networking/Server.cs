@@ -4920,7 +4920,7 @@ label_268:
       }
       if (client.MapInfo.Number == 511)
         client.RequestGroupList();
-      if (str.Equals("Training Dojo 1") || str.Equals("Training Dojo 2") || str.Equals("Training Dojo 3") || str.Equals("Training Dojo 4") || str.Equals("Training Dojo 5") || str.Equals("Training Dojo 6") || str.Equals("Training Dojo 7") || str.Equals("Training Dojo 8") || str.Equals("Training Dojo 9") && (!str.Equals("Training Dojo 1") && !str.Equals("Training Dojo 2") && !str.Equals("Training Dojo 3") && !str.Equals("Training Dojo 4") && !str.Equals("Training Dojo 5") && !str.Equals("Training Dojo 6") && !str.Equals("Training Dojo 7") && !str.Equals("Training Dojo 8") && !str.Equals("Training Dojo 9") || !client.Tab.dojo.Checked))
+      if (client.Tab.dojo.Checked && !str.Contains("Training Dojo"))
       {
         client.Tab.autowalker_locales.SelectedItem = (object) "Mehadi";
         client.Tab.walklocaleslist.SelectedItem = (object) "Entrance";
