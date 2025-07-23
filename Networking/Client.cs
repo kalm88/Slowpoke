@@ -7345,7 +7345,7 @@ label_2062:
               this.AutoWalkWithinRange(5, 8, 3);
             Npc npcByName1 = this.FindNpcByName<Npc>("Mionope");
             if (npcByName1 != null)
-              this.ClickNpc(npcByName1.ID);
+              this.ClickNpc1(npcByName1.ID);
             if (this.MapInfo.Number == 3634 && (this.Tab.vwalklocaleslist.StartsWith("Chadul's Realm") || this.Tab.vwalklocaleslist.Equals("Chadul Army Invasion")))
             {
               Npc npcByName2 = this.FindNpcByName<Npc>("Fallen Soldier");
@@ -8376,55 +8376,55 @@ label_2062:
             if (characterByName != null && characterByName.IsOnScreen && characterByName.Location.DistanceFrom(this.ServerLocation) == 1 && this.CanSkill("Rescue"))
               this.UseSkill("Rescue", characterByName.ID);
           }
-          //vikki change to use all skills
-          if (!this.pause && this.Tab.vkillascender)
-          {
-            Player characterByName = this.FindCharacterByName<Player>(this.Tab.vkillascendername);
-            if (characterByName != null && characterByName.IsOnScreen && characterByName.Location.DistanceFrom(this.ServerLocation) == 1)
-            {
-              //fuck you
-              if (this.CanSkill("Cyclone Kick"))
-              {
-                this.WFF();
-                this.UseSkill("Cyclone Kick");
-                this.strongskilldelay = DateTime.UtcNow;
-              }
-              else if (this.CanSkill("Wheel Kick", true))
-              {
-                this.WFF();
-                this.UseMedSkill("Wheel Kick");
-                this.strongskilldelay = DateTime.UtcNow;
-              }
-              if (this.CanSkill("Raging Attack"))
-              {
-                this.WFF();
-                this.UseMedSkill("Raging Attack");
-                this.strongskilldelay = DateTime.UtcNow;
-              }
-              else if (this.CanSkill("Furious Bash", true))
-              {
-                this.WFF();
-                this.UseMedSkill("Furious Bash");
-                this.strongskilldelay = DateTime.UtcNow;
-              }
-              else if (this.CanSkill("Mass Strike", true))
-              {
-                this.WFF();
-                this.UseMedSkill("Mass Strike");
-                this.strongskilldelay = DateTime.UtcNow;
-              }
-              else if (this.CanSkill("Double Rake", true))
-              {
-                this.WFF();
-                this.UseMedSkill("Double Rake");
-                this.strongskilldelay = DateTime.UtcNow;
-              }
-              else if (this.CanSkill("Pounce", true))
-              {
-                this.WFF();
-                this.UseMedSkill("Pounce");
-                this.strongskilldelay = DateTime.UtcNow;
-              }
+                    //vikki change to use all skills
+                    if (!this.pause && this.Tab.vkillascender)
+                    {
+                        Player characterByName = this.FindCharacterByName<Player>(this.Tab.vkillascendername);
+                        if (characterByName != null && characterByName.IsOnScreen && characterByName.Location.DistanceFrom(this.ServerLocation) == 1)
+                        {
+                            if (this.CanSkill("Cyclone Kick"))
+                            {
+                                this.WFF();
+                                this.UseSkill("Cyclone Kick");
+                                this.strongskilldelay = DateTime.UtcNow;
+                            }
+                            else if (this.CanSkill("Wheel Kick", true))
+                            {
+                                this.WFF();
+                                this.UseMedSkill("Wheel Kick");
+                                this.strongskilldelay = DateTime.UtcNow;
+                            }
+                            if (this.CanSkill("Raging Attack"))
+                            {
+                                this.WFF();
+                                this.UseMedSkill("Raging Attack");
+                                this.strongskilldelay = DateTime.UtcNow;
+                            }
+                            else if (this.CanSkill("Furious Bash", true))
+                            {
+                                this.WFF();
+                                this.UseMedSkill("Furious Bash");
+                                this.strongskilldelay = DateTime.UtcNow;
+                            }
+                            else if (this.CanSkill("Mass Strike", true))
+                            {
+                                this.WFF();
+                                this.UseMedSkill("Mass Strike");
+                                this.strongskilldelay = DateTime.UtcNow;
+                            }
+                            else if (this.CanSkill("Double Rake", true))
+                            {
+                                this.WFF();
+                                this.UseMedSkill("Double Rake");
+                                this.strongskilldelay = DateTime.UtcNow;
+                            }
+                            else if (this.CanSkill("Pounce", true))
+                            {
+                                this.WFF();
+                                this.UseMedSkill("Pounce");
+                                this.strongskilldelay = DateTime.UtcNow;
+                            }
+
                             if (this.CanSkill("Draco Tail Kick"))
                             {
                                 this.UseSkill("Draco Tail Kick");
@@ -8440,38 +8440,42 @@ label_2062:
                                 this.UseMedSkill("Dune Swipe");
                                 this.mediumskilldelay = DateTime.UtcNow;
                             }
+
+                            //  Why didnt I add this correctly
+                            if (this.CanSkill("Cyclone Blade"))
+                                this.UseSkill("Cyclone Blade");
+                            if (this.CanSkill("Talon Kick"))
+                                this.UseSkill("Talon Kick");
+                            if (this.CanSkill("Dark's Mega Blade"))
+                                this.UseSkill("Dark's Mega Blade");
+                            if (this.CanSkill("Twist Kick", true))
+                                this.UseMedSkill("Twist Kick");
+
+                            if (this.CanSkill("Assassin Strike"))
+                                this.UseSkill("Assassin Strike");
+                            if (this.CanSkill("Rear Strike", true))
+                            {
+                                this.UseMedSkill("Rear Strike");
+                                this.mediumskilldelay = DateTime.UtcNow;
+                            }
+                            if (this.CanSkill("Shadow Strike", true))
+                            {
+                                this.UseMedSkill("Shadow Strike");
+                                this.ambushdelay = DateTime.UtcNow;
+                            }
+                            if (this.CanSkill("Kidney Shot", true))
+                            {
+                                this.UseMedSkill("Kidney Shot");
+                                this.mediumskilldelay = DateTime.UtcNow;
+                            }
+                            if (this.CanSkill("Venom Attack", true))
+                            {
+                                this.UseMedSkill("Venom Attack");
+                                this.mediumskilldelay = DateTime.UtcNow;
+                            }
                         }
-                        if (this.CanSkill("Cyclone Blade"))
-                            this.UseSkill("Cyclone Blade");
-                        if (this.CanSkill("Talon Kick"))
-                            this.UseSkill("Talon Kick");
-                        if (this.CanSkill("Dark's Mega Blade"))
-                            this.UseSkill("Dark's Mega Blade");
-                        if (this.CanSkill("Twist Kick", true))
-                            this.UseMedSkill("Twist Kick");
                     }
-                    if (this.CanSkill("Assassin Strike"))
-                        this.UseSkill("Assassin Strike");
-                    if (this.CanSkill("Rear Strike", true))
-                    {
-                        this.UseMedSkill("Rear Strike");
-                        this.mediumskilldelay = DateTime.UtcNow;
-                    }
-                    if (this.CanSkill("Shadow Strike", true))
-                    {
-                        this.UseMedSkill("Shadow Strike");
-                        this.ambushdelay = DateTime.UtcNow;
-                    }
-                    if (this.CanSkill("Kidney Shot", true))
-                    {
-                        this.UseMedSkill("Kidney Shot");
-                        this.mediumskilldelay = DateTime.UtcNow;
-                    }
-                    if (this.CanSkill("Venom Attack", true))
-                    {
-                        this.UseMedSkill("Venom Attack");
-                        this.mediumskilldelay = DateTime.UtcNow;
-                    }
+
 
                     if (!this.pause && this.Tab.AscendOptions.vbuystatsbtn)
           {
@@ -23054,7 +23058,31 @@ label_860:
       this.Enqueue(msg);
     }
 
-    public void ClickNpc(uint id)
+        public void ClickNpc1(uint id)
+        {
+            do
+            {
+                ClientPacket msg1 = new ClientPacket((byte)67);
+                msg1.WriteByte((byte)3);
+                msg1.WriteUInt32(id);
+                msg1.WriteByte((byte)0);
+                msg1.Write(new byte[7]);
+                this.Enqueue(msg1);
+                ClientPacket msg2 = new ClientPacket((byte)67);
+               msg2.WriteByte((byte)1);
+               msg2.WriteUInt32(id);
+                msg2.WriteByte((byte)0);
+                msg2.Write(new byte[7]);
+               this.Enqueue(msg2);
+                Thread.Sleep(350);
+            }
+            while (this.CurrentnpcpopupID == 0U);
+        }
+
+
+
+
+        public void ClickNpc(uint id)
     {
       do
       {
