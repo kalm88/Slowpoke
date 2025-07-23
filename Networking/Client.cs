@@ -7058,6 +7058,14 @@ label_2062:
               if (this.ImFacingMonster && this.MonsterInFront() != null)
                 this.dojowalk = false;
             }
+            else if (this.MapInfo.Number == 5271)
+            {
+              if (this.Tab.autowalker_button.Text == "Start")
+              {
+                this.Tab.autowalker_button.Text = "Stop";
+                this.autowalkon = true;
+              }
+            }
             else if (this.MapInfo.Number == 3071)
             {
               if (this.Statistics.Gold < 25000U)
@@ -7341,11 +7349,14 @@ label_2062:
               else if (this.Nation < (byte) 7)
                 this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 0, (byte) 0, (byte) 0, (byte) 2, (byte) 1, (byte) 1);
             }
-            if (this.MapInfo.Number == 5271 && this.Tab.dojo.Checked)
+            if (this.Tab.dojo.Checked && this.MapInfo.Number == 5271)
               this.AutoWalkWithinRange(5, 8, 3);
             Npc npcByName1 = this.FindNpcByName<Npc>("Mionope");
-            if (npcByName1 != null)
+            if (npcByName1 != null && npcByName1.IsOnScreen && this.MapInfo.Number == 5271)
+            {
               this.ClickNpc(npcByName1.ID);
+              Thread.Sleep(1000); //why doesnt this seem to work GRRR 
+            }
             if (this.MapInfo.Number == 3634 && (this.Tab.vwalklocaleslist.StartsWith("Chadul's Realm") || this.Tab.vwalklocaleslist.Equals("Chadul Army Invasion")))
             {
               Npc npcByName2 = this.FindNpcByName<Npc>("Fallen Soldier");
@@ -7925,7 +7936,6 @@ label_2062:
             /*Succ hair ascending logic start*/
             if (this.Tab.AscendOptions.vsuchairascend)
             {
-              //vikki
               if (!hairDropped)
               {
                 bool hasWarrantyBag = this.HasItem("Warranty Bag");
@@ -8376,7 +8386,6 @@ label_2062:
             if (characterByName != null && characterByName.IsOnScreen && characterByName.Location.DistanceFrom(this.ServerLocation) == 1 && this.CanSkill("Rescue"))
               this.UseSkill("Rescue", characterByName.ID);
           }
-          //vikki change to use all skills
           if (!this.pause && this.Tab.vkillascender)
           {
             Player characterByName = this.FindCharacterByName<Player>(this.Tab.vkillascendername);
@@ -23010,23 +23019,26 @@ label_860:
 
     public void ClickNpc(uint id)
     {
-      do
+      int originalMap = this.MapInfo.Number;
+      int maxTries = 5;
+
+      while (this.CurrentnpcpopupID == 0U && this.MapInfo.Number == originalMap && maxTries-- > 0)
       {
-        ClientPacket msg1 = new ClientPacket((byte) 67);
-        msg1.WriteByte((byte) 3);
+        ClientPacket msg1 = new ClientPacket((byte)67);
+        msg1.WriteByte((byte)3);
         msg1.WriteUInt32(id);
-        msg1.WriteByte((byte) 0);
+        msg1.WriteByte((byte)0);
         msg1.Write(new byte[7]);
         this.Enqueue(msg1);
-        ClientPacket msg2 = new ClientPacket((byte) 67);
-        msg2.WriteByte((byte) 1);
+
+        ClientPacket msg2 = new ClientPacket((byte)67);
+        msg2.WriteByte((byte)1);
         msg2.WriteUInt32(id);
-        msg2.WriteByte((byte) 0);
+        msg2.WriteByte((byte)0);
         msg2.Write(new byte[7]);
         this.Enqueue(msg2);
         Thread.Sleep(350);
       }
-      while (this.CurrentnpcpopupID == 0U);
     }
 
     public void ForceGroup(string name, byte type)
