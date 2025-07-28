@@ -365,7 +365,7 @@ namespace Flintstones
         this.attack2type.Items.Add((object) "Chadul's Shot");
         ++num;
       }
-            if (this.ClientTab.Client.YourAttacks2.Contains("Hypernova Shot"))
+      if (this.ClientTab.Client.YourAttacks2.Contains("Hypernova Shot"))
       {
         this.attack2type.Items.Add((object) "Hypernova Shot");
         ++num;
