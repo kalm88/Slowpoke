@@ -27,6 +27,7 @@ namespace Flintstones
     public ItemXMLEditor(MainForm main)
     {
       this.Mainy = main;
+      this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
       this.InitializeComponent();
       this.label1timer = new Timer();
       this.label1timer.Interval = 3000;

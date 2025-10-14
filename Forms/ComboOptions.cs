@@ -36,6 +36,7 @@ namespace Flintstones
     {
       this.parent = Program.MainForm;
       this.Client = client;
+      this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
       this.InitializeComponent();
     }
 

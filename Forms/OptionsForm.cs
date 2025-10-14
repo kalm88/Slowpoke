@@ -25,6 +25,7 @@ namespace Flintstones
     {
       this.InitializeComponent();
       this.txtDarkAgesPath.Text = Options.DarkAgesDirectoryName + "\\" + Options.DarkAgesFileName;
+      this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
     }
 
     private void btnBrowse_Click(object sender, EventArgs e)

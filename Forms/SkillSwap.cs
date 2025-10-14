@@ -46,6 +46,7 @@ namespace Flintstones
       this.parent = Program.MainForm;
       this.Client = client;
       this.InitializeComponent();
+      this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
       this.spelltemlist.Items.Add("1", "1", 0);
       this.spelltemlist.Items.Add("2", "2", 0);
       this.spelltemlist.Items.Add("3", "3", 0);

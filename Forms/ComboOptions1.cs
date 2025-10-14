@@ -126,6 +126,7 @@ namespace Flintstones
     {
       this.parent = Program.MainForm;
       this.Client = client;
+      this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
       this.InitializeComponent();
       this.combo1mod.SelectedIndex = 0;
       this.combo2mod.SelectedIndex = 0;

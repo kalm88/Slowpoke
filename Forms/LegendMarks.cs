@@ -525,6 +525,7 @@ namespace Flintstones
       this.Marks.Add("ArenaEx", new Flintstones.Marks("Exiled from the Arena", "Jails"));
       this.Marks.Add("PolN1E", new Flintstones.Marks("Exiled from Mileth by (name)", "Jails"));
       this.Marks.Add("PolN2E", new Flintstones.Marks("Exiled from Rucesion by (name)", "Jails"));
+      this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
       this.InitializeComponent();
     }
 
