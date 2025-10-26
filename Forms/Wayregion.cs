@@ -60,7 +60,8 @@ namespace Flintstones
     public Wayregion(Client client)
     {
       this.Client = client;
-      this.InitializeComponent();
+      this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+      InitializeComponent();
     }
 
     public void StartDrawing()

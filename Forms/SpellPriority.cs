@@ -29,9 +29,10 @@ namespace Flintstones
     {
       this.Client = client;
       this.InitializeComponent();
+      this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
     }
 
-    private void aopuinsin_CheckedChanged(object sender, EventArgs e)
+        private void aopuinsin_CheckedChanged(object sender, EventArgs e)
     {
       if (this.aopuinsein.Checked)
         this.Client.aopuinseinbefore = false;

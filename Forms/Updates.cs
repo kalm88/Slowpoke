@@ -33,6 +33,7 @@ namespace Flintstones
     private void InitializeComponent()
     {
       ComponentResourceManager componentResourceManager = new ComponentResourceManager(typeof (Updates));
+      this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
       this.richTextBox1 = new RichTextBox();
       this.SuspendLayout();
       this.richTextBox1.Location = new System.Drawing.Point(-1, 1);

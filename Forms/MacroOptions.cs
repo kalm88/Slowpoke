@@ -49,9 +49,10 @@ namespace Flintstones
       this.parent = Program.MainForm;
       this.Client = client;
       this.InitializeComponent();
+      this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
     }
 
-    private void MacroOptions_FormClosing(object sender, FormClosingEventArgs e)
+        private void MacroOptions_FormClosing(object sender, FormClosingEventArgs e)
     {
       e.Cancel = true;
       this.Hide();
