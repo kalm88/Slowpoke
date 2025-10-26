@@ -8376,108 +8376,107 @@ label_2062:
             if (characterByName != null && characterByName.IsOnScreen && characterByName.Location.DistanceFrom(this.ServerLocation) == 1 && this.CanSkill("Rescue"))
               this.UseSkill("Rescue", characterByName.ID);
           }
-                    //vikki change to use all skills
-                    if (!this.pause && this.Tab.vkillascender)
-                    {
-                        Player characterByName = this.FindCharacterByName<Player>(this.Tab.vkillascendername);
-                        if (characterByName != null && characterByName.IsOnScreen && characterByName.Location.DistanceFrom(this.ServerLocation) == 1)
-                        {
-                            if (this.CanSkill("Cyclone Kick"))
-                            {
-                                this.WFF();
-                                this.UseSkill("Cyclone Kick");
-                                this.strongskilldelay = DateTime.UtcNow;
-                            }
-                            else if (this.CanSkill("Wheel Kick", true))
-                            {
-                                this.WFF();
-                                this.UseMedSkill("Wheel Kick");
-                                this.strongskilldelay = DateTime.UtcNow;
-                            }
-                            if (this.CanSkill("Raging Attack"))
-                            {
-                                this.WFF();
-                                this.UseMedSkill("Raging Attack");
-                                this.strongskilldelay = DateTime.UtcNow;
-                            }
-                            else if (this.CanSkill("Furious Bash", true))
-                            {
-                                this.WFF();
-                                this.UseMedSkill("Furious Bash");
-                                this.strongskilldelay = DateTime.UtcNow;
-                            }
-                            else if (this.CanSkill("Mass Strike", true))
-                            {
-                                this.WFF();
-                                this.UseMedSkill("Mass Strike");
-                                this.strongskilldelay = DateTime.UtcNow;
-                            }
-                            else if (this.CanSkill("Double Rake", true))
-                            {
-                                this.WFF();
-                                this.UseMedSkill("Double Rake");
-                                this.strongskilldelay = DateTime.UtcNow;
-                            }
-                            else if (this.CanSkill("Pounce", true))
-                            {
-                                this.WFF();
-                                this.UseMedSkill("Pounce");
-                                this.strongskilldelay = DateTime.UtcNow;
-                            }
+          //vikki change to use all skills
+          if (!this.pause && this.Tab.vkillascender)
+          {
+              Player characterByName = this.FindCharacterByName<Player>(this.Tab.vkillascendername);
+              if (characterByName != null && characterByName.IsOnScreen && characterByName.Location.DistanceFrom(this.ServerLocation) == 1)
+              {
+                  if (this.CanSkill("Cyclone Kick"))
+                  {
+                      this.WFF();
+                      this.UseSkill("Cyclone Kick");
+                      this.strongskilldelay = DateTime.UtcNow;
+                  }
+                  else if (this.CanSkill("Wheel Kick", true))
+                  {
+                      this.WFF();
+                      this.UseMedSkill("Wheel Kick");
+                      this.strongskilldelay = DateTime.UtcNow;
+                  }
+                  if (this.CanSkill("Raging Attack"))
+                  {
+                      this.WFF();
+                      this.UseMedSkill("Raging Attack");
+                      this.strongskilldelay = DateTime.UtcNow;
+                  }
+                  else if (this.CanSkill("Furious Bash", true))
+                  {
+                      this.WFF();
+                      this.UseMedSkill("Furious Bash");
+                      this.strongskilldelay = DateTime.UtcNow;
+                  }
+                  else if (this.CanSkill("Mass Strike", true))
+                  {
+                      this.WFF();
+                      this.UseMedSkill("Mass Strike");
+                      this.strongskilldelay = DateTime.UtcNow;
+                  }
+                  else if (this.CanSkill("Double Rake", true))
+                  {
+                      this.WFF();
+                      this.UseMedSkill("Double Rake");
+                      this.strongskilldelay = DateTime.UtcNow;
+                  }
+                  else if (this.CanSkill("Pounce", true))
+                  {
+                      this.WFF();
+                      this.UseMedSkill("Pounce");
+                      this.strongskilldelay = DateTime.UtcNow;
+                  }
 
-                            if (this.CanSkill("Draco Tail Kick"))
-                            {
-                                this.UseSkill("Draco Tail Kick");
-                                this.mediumskilldelay = DateTime.UtcNow;
-                            }
-                            if (this.CanSkill("Whirlwind Attack"))
-                            {
-                                this.UseSkill("Whirlwind Attack");
-                                this.mediumskilldelay = DateTime.UtcNow;
-                            }
-                            if (this.CanSkill("Dune Swipe", true))
-                            {
-                                this.UseMedSkill("Dune Swipe");
-                                this.mediumskilldelay = DateTime.UtcNow;
-                            }
+                  if (this.CanSkill("Draco Tail Kick"))
+                  {
+                      this.UseSkill("Draco Tail Kick");
+                      this.mediumskilldelay = DateTime.UtcNow;
+                  }
+                  if (this.CanSkill("Whirlwind Attack"))
+                  {
+                      this.UseSkill("Whirlwind Attack");
+                      this.mediumskilldelay = DateTime.UtcNow;
+                  }
+                  if (this.CanSkill("Dune Swipe", true))
+                  {
+                      this.UseMedSkill("Dune Swipe");
+                      this.mediumskilldelay = DateTime.UtcNow;
+                  }
 
-                            //  Why didnt I add this correctly
-                            if (this.CanSkill("Cyclone Blade"))
-                                this.UseSkill("Cyclone Blade");
-                            if (this.CanSkill("Talon Kick"))
-                                this.UseSkill("Talon Kick");
-                            if (this.CanSkill("Dark's Mega Blade"))
-                                this.UseSkill("Dark's Mega Blade");
-                            if (this.CanSkill("Twist Kick", true))
-                                this.UseMedSkill("Twist Kick");
+                  //  Why didnt I add this correctly
+                  if (this.CanSkill("Cyclone Blade"))
+                      this.UseSkill("Cyclone Blade");
+                  if (this.CanSkill("Talon Kick"))
+                      this.UseSkill("Talon Kick");
+                  if (this.CanSkill("Dark's Mega Blade"))
+                      this.UseSkill("Dark's Mega Blade");
+                  if (this.CanSkill("Twist Kick", true))
+                      this.UseMedSkill("Twist Kick");
 
-                            if (this.CanSkill("Assassin Strike"))
-                                this.UseSkill("Assassin Strike");
-                            if (this.CanSkill("Rear Strike", true))
-                            {
-                                this.UseMedSkill("Rear Strike");
-                                this.mediumskilldelay = DateTime.UtcNow;
-                            }
-                            if (this.CanSkill("Shadow Strike", true))
-                            {
-                                this.UseMedSkill("Shadow Strike");
-                                this.ambushdelay = DateTime.UtcNow;
-                            }
-                            if (this.CanSkill("Kidney Shot", true))
-                            {
-                                this.UseMedSkill("Kidney Shot");
-                                this.mediumskilldelay = DateTime.UtcNow;
-                            }
-                            if (this.CanSkill("Venom Attack", true))
-                            {
-                                this.UseMedSkill("Venom Attack");
-                                this.mediumskilldelay = DateTime.UtcNow;
-                            }
-                        }
-                    }
+                  if (this.CanSkill("Assassin Strike"))
+                      this.UseSkill("Assassin Strike");
+                  if (this.CanSkill("Rear Strike", true))
+                  {
+                      this.UseMedSkill("Rear Strike");
+                      this.mediumskilldelay = DateTime.UtcNow;
+                  }
+                  if (this.CanSkill("Shadow Strike", true))
+                  {
+                      this.UseMedSkill("Shadow Strike");
+                      this.ambushdelay = DateTime.UtcNow;
+                  }
+                  if (this.CanSkill("Kidney Shot", true))
+                  {
+                      this.UseMedSkill("Kidney Shot");
+                      this.mediumskilldelay = DateTime.UtcNow;
+                  }
+                  if (this.CanSkill("Venom Attack", true))
+                  {
+                      this.UseMedSkill("Venom Attack");
+                      this.mediumskilldelay = DateTime.UtcNow;
+                  }
+              }
+          }
 
-
-                    if (!this.pause && this.Tab.AscendOptions.vbuystatsbtn)
+          if (!this.pause && this.Tab.AscendOptions.vbuystatsbtn)
           {
             if (this.HasItem("Warranty Bag"))
             {
@@ -30149,7 +30148,7 @@ label_11:
                     }
                     foreach (Item obj in this.Inventory)
                     {
-                      if (obj != null && !this.staffnow.Contains("Dragon Emberwood Staff") && !this.staffnow.Contains("Dragon Infused Staff") && !this.staffnow.Contains("Yowien Tree Staff") && !this.staffnow.Contains("Glimmering Wand") && !this.staffnow.Contains("Brute's Quill") && !this.staffnow.Contains("Holy Hy-brasyl Baton") && !this.staffnow.Equals("Empowered Magus Orb") && !this.staffnow.Equals("Enchanted Magus Orb") && !this.staffnow.Contains("Staff of ") && !this.staffnow.Contains("Sphere") && !this.staffnow.Contains("Hwarone Lute") && !this.staffnow.Contains("Harp") && !this.staffnow.Equals("Master Divine Staff") && !this.staffnow.Equals("Master Celestial Staff") && !this.staffnow.Equals("Assassin's Cross") && !this.staffnow.Equals("Holy Diana") && !this.staffnow.Equals("Andor Staff") && !this.staffnow.Equals("Veltain Staff") && !this.staffnow.Equals("Divinities Staff") && !this.staffnow.Equals("Skylight Staff") && !this.staffnow.Equals("Dark Star") && !this.staffnow.Equals("Star Crafted Staff"))
+                      if (obj != null && !this.staffnow.Contains("Ancient Hy-brasyl Gnarl") && !this.staffnow.Contains("Ancient Hy-brasyl Orb") && !this.staffnow.Contains("Dragon Emberwood Staff") && !this.staffnow.Contains("Dragon Infused Staff") && !this.staffnow.Contains("Yowien Tree Staff") && !this.staffnow.Contains("Glimmering Wand") && !this.staffnow.Contains("Brute's Quill") && !this.staffnow.Contains("Holy Hy-brasyl Baton") && !this.staffnow.Equals("Empowered Magus Orb") && !this.staffnow.Equals("Enchanted Magus Orb") && !this.staffnow.Contains("Staff of ") && !this.staffnow.Contains("Sphere") && !this.staffnow.Contains("Hwarone Lute") && !this.staffnow.Contains("Harp") && !this.staffnow.Equals("Master Divine Staff") && !this.staffnow.Equals("Master Celestial Staff") && !this.staffnow.Equals("Assassin's Cross") && !this.staffnow.Equals("Holy Diana") && !this.staffnow.Equals("Andor Staff") && !this.staffnow.Equals("Veltain Staff") && !this.staffnow.Equals("Divinities Staff") && !this.staffnow.Equals("Skylight Staff") && !this.staffnow.Equals("Dark Star") && !this.staffnow.Equals("Star Crafted Staff"))
                       {
                         if (obj.Name == "Dark Star" || obj.Name == "Star Crafted Staff" || obj.Name == "Skylight Staff" || obj.Name == "Divinities Staff" || obj.Name == "Master Divine Staff" || obj.Name == "Assassin's Cross" || obj.Name == "Holy Diana" || obj.Name == "Andor Staff" || obj.Name == "Veltain Staff")
                         {
@@ -30282,7 +30281,7 @@ label_11:
                   {
                     foreach (Item obj in this.Inventory)
                     {
-                      if (obj != null && (obj.Name.Contains("Dragon Emberwood Staff") || obj.Name.Contains("Dragon Infused Staff") || obj.Name.Contains("Yowien Tree Staff") || obj.Name.Contains("Glimmering Wand") || obj.Name.Contains("Brute's Quill") || obj.Name.Contains("Holy Hy-brasyl Baton") || obj.Name == "Master Celestial Staff" || obj.Name.Contains("Staff of ") || obj.Name.Contains("Serpant Sphere") || obj.Name == "Chernol Sphere" || obj.Name == "Maron Sphere" || obj.Name == "Shaine Sphere" || obj.Name == "Sphere" || obj.Name.Contains("Hwarone Lute") || obj.Name == "Goldberry Harp" || obj.Name == "Ironwood Harp" || obj.Name == "Rosewood Harp" || obj.Name == "Wooden Harp" || obj.Name == "Empowered Magus Orb" || obj.Name == "Enchanted Magus Orb"))
+                      if (obj != null && (obj.Name.Contains("Ancient Hy-brasyl Gnarl") || obj.Name.Contains("Ancient Hy-brasyl Orb") || obj.Name.Contains("Dragon Emberwood Staff") || obj.Name.Contains("Dragon Infused Staff") || obj.Name.Contains("Yowien Tree Staff") || obj.Name.Contains("Glimmering Wand") || obj.Name.Contains("Brute's Quill") || obj.Name.Contains("Holy Hy-brasyl Baton") || obj.Name == "Master Celestial Staff" || obj.Name.Contains("Staff of ") || obj.Name.Contains("Serpant Sphere") || obj.Name == "Chernol Sphere" || obj.Name == "Maron Sphere" || obj.Name == "Shaine Sphere" || obj.Name == "Sphere" || obj.Name.Contains("Hwarone Lute") || obj.Name == "Goldberry Harp" || obj.Name == "Ironwood Harp" || obj.Name == "Rosewood Harp" || obj.Name == "Wooden Harp" || obj.Name == "Empowered Magus Orb" || obj.Name == "Enchanted Magus Orb"))
                       {
                         this.StaffSwitchDelay = DateTime.UtcNow;
                         if ((int) this.ClientForm - 16384 > 0 && this.Tab.druidform.Checked && this.druidform != null)
