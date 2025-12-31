@@ -7,7 +7,7 @@
     <ProjectGuid>{852C6750-B3D8-489A-B868-64873AFDE876}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AssemblyName>SlowPoke</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <RootNamespace>slowpoke</RootNamespace>
     <TargetFrameworkProfile />
@@ -275,16 +275,16 @@
     <None Include="Resources\richTextBox1.text" />
   </ItemGroup>
   <ItemGroup>
-  <Content Include="Resources\199.ico">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </Content>
-  <Content Include="Resources\btnPlay.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </Content>
-  <Content Include="Resources\btnStop.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </Content>
-</ItemGroup>
+    <Content Include="Resources\199.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\btnPlay.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\btnStop.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
       <Visible>False</Visible>
