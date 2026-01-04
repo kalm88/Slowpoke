@@ -19,6 +19,8 @@ namespace Flintstones
         public static string DarkAgesDirectoryName { get; set; }
         public static string DarkAgesMapsDirectoryName { get; private set; }
         public static string FullDarkAgesPath => Path.Combine(Options.DarkAgesDirectoryName, Options.DarkAgesFileName);
+        public static bool HasPreloadEnabled { get; set; }
+        public static string PreloadFileName { get; set; }
         public static bool HasForceGroup { get; set; }
         public static string ForceGroupName { get; set; }
         public static bool PreplayEnabled { get; set; }
@@ -44,19 +46,20 @@ namespace Flintstones
             }
             FullSettingsPath = Program.StartupPath + "\\Settings\\settings.xml";
 
-
-            // Determine the correct maps directory, accounting for VirtualStore redirection on Windows
-            string str1 = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\VirtualStore";
-            string str2 = DarkAgesDirectoryName + "\\maps";
-            string path = DarkAgesDirectoryName.Replace("C:\\Program Files", str1 + "\\Program Files") + "\\maps";
-            Options.DarkAgesMapsDirectoryName = Directory.Exists(path) ? path : str2;
-
+            HasPreloadEnabled = false;
+            PreloadFileName = "";
             HasForceGroup = false;
             ForceGroupName = "";
             PreplayEnabled = false;
 
             if (File.Exists(FullSettingsPath))
                 Load();
+
+            // Determine the correct maps directory, accounting for VirtualStore redirection on Windows
+            string str1 = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\VirtualStore";
+            string str2 = DarkAgesDirectoryName + "\\maps";
+            string path = DarkAgesDirectoryName.Replace("C:\\Program Files", str1 + "\\Program Files") + "\\maps";
+            Options.DarkAgesMapsDirectoryName = Directory.Exists(path) ? path : str2;
 
             // If Dark Ages not at expected location, alert user
             if (!File.Exists(FullDarkAgesPath))
@@ -78,6 +81,8 @@ namespace Flintstones
                 new XElement("Settings",
                     new XElement("DarkAgesFileName", DarkAgesFileName),
                     new XElement("DarkAgesDirectory", DarkAgesDirectoryName),
+                    new XElement("HasPreloadEnabled", HasPreloadEnabled),
+                    new XElement("PreloadFileName", PreloadFileName),
                     new XElement("HasForceGroup", HasForceGroup),
                     new XElement("ForceGroupName", ForceGroupName),
                     new XElement("PrePlayEnabled", PreplayEnabled)
@@ -117,6 +122,13 @@ namespace Flintstones
                 el = (string)(xdocument.Root?.Element("DarkAgesDirectory"));
                 if (el != null)
                     DarkAgesDirectoryName = el;
+
+                // Make explicit false when not existing
+                HasPreloadEnabled = (bool?)(xdocument.Root?.Element("HasPreloadEnabled")) ?? false;
+
+                el = (string)(xdocument.Root?.Element("PreloadFileName"));
+                if (el != null)
+                    PreloadFileName = el;
 
                 // Make explicit false when not existing
                 HasForceGroup = (bool?)(xdocument.Root?.Element("HasForceGroup")) ?? false;

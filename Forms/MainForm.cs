@@ -1826,18 +1826,6 @@ namespace Flintstones
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Preload";
             // 
-            // preplay
-            // 
-            this.preplay.AutoSize = true;
-            this.preplay.Location = new System.Drawing.Point(9, 145);
-            this.preplay.Name = "preplay";
-            this.preplay.Size = new System.Drawing.Size(128, 19);
-            this.preplay.TabIndex = 84;
-            this.preplay.Text = "Start in \'Play\' mode";
-            this.preplay.UseVisualStyleBackColor = true;
-            this.preplay.Checked = Options.PreplayEnabled;
-            this.preplay.CheckedChanged += new System.EventHandler(this.preplay_CheckedChanged);
-            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -1846,6 +1834,7 @@ namespace Flintstones
             this.label9.Size = new System.Drawing.Size(122, 15);
             this.label9.TabIndex = 83;
             this.label9.Text = "These trigger at log in";
+            
             // 
             // preload
             // 
@@ -1856,6 +1845,19 @@ namespace Flintstones
             this.preload.TabIndex = 79;
             this.preload.Text = "Load Template";
             this.preload.UseVisualStyleBackColor = true;
+            this.preload.Checked = Options.HasPreloadEnabled;
+            this.preload.CheckedChanged += new System.EventHandler(this.preload_CheckedChanged);
+            
+            // 
+            // preloadtemplate
+            // 
+            this.preloadtemplate.Location = new System.Drawing.Point(120, 65);
+            this.preloadtemplate.Name = "preloadtemplate";
+            this.preloadtemplate.Size = new System.Drawing.Size(105, 23);
+            this.preloadtemplate.TabIndex = 80;
+            this.preloadtemplate.Text = Options.PreloadFileName;
+            this.preloadtemplate.TextChanged += new System.EventHandler(this.preloadtemplate_TextChanged);
+            
             // 
             // pregroup
             // 
@@ -1868,13 +1870,7 @@ namespace Flintstones
             this.pregroup.UseVisualStyleBackColor = true;
             this.pregroup.Checked = Options.HasForceGroup;
             this.pregroup.CheckedChanged += new System.EventHandler(this.pregroup_CheckedChanged);
-            // 
-            // preloadtemplate
-            // 
-            this.preloadtemplate.Location = new System.Drawing.Point(120, 65);
-            this.preloadtemplate.Name = "preloadtemplate";
-            this.preloadtemplate.Size = new System.Drawing.Size(105, 23);
-            this.preloadtemplate.TabIndex = 80;
+
             // 
             // pregroupname
             // 
@@ -1884,6 +1880,20 @@ namespace Flintstones
             this.pregroupname.TabIndex = 81;
             this.pregroupname.Text = Options.ForceGroupName;
             this.pregroupname.TextChanged += new System.EventHandler(this.pregroupname_TextChanged);
+
+            // 
+            // preplay
+            // 
+            this.preplay.AutoSize = true;
+            this.preplay.Location = new System.Drawing.Point(9, 145);
+            this.preplay.Name = "preplay";
+            this.preplay.Size = new System.Drawing.Size(128, 19);
+            this.preplay.TabIndex = 84;
+            this.preplay.Text = "Start in \'Play\' mode";
+            this.preplay.UseVisualStyleBackColor = true;
+            this.preplay.Checked = Options.PreplayEnabled;
+            this.preplay.CheckedChanged += new System.EventHandler(this.preplay_CheckedChanged);
+
             // 
             // addfriend_name
             // 
@@ -3241,6 +3251,34 @@ namespace Flintstones
 
         }
 
+        private void preload_CheckedChanged(object sender, EventArgs e)
+        {
+            if (preload.Checked)
+            {
+                Options.HasPreloadEnabled = true;
+            }
+            else
+            {
+                Options.HasPreloadEnabled = false;
+            }
+
+            Options.Save();
+        }
+
+        private void preloadtemplate_TextChanged(object sender, EventArgs e)
+        {
+            if (preloadtemplate.Text.Length > 0)
+            {
+                Options.PreloadFileName = preloadtemplate.Text;
+            }
+            else
+            {
+                Options.PreloadFileName = "";
+            }
+
+            Options.Save();
+        }
+
         private void pregroup_CheckedChanged(object sender, EventArgs e)
         {
             if (pregroup.Checked)
@@ -3282,5 +3320,7 @@ namespace Flintstones
 
             Options.Save();
         }
+
+
     }
 }

@@ -871,494 +871,432 @@ namespace Flintstones
     {
       this.vautowalker_locales = this.autowalker_locales.SelectedItem.ToString();
       this.walklocaleslist.Items.Clear();
-      if (this.autowalker_locales.SelectedItem.ToString() == "Tavaly Village")
-      {
-        this.walklocaleslist.Items.Add((object) "Entrance");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 1");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 2");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 3");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 4");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 5");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 6");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 7");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 8");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 9");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 10");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 11");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 12");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 13");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 14");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 15");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 16");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 17");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 18");
-        this.walklocaleslist.Items.Add((object) "Sacred Forest 19");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      if (this.autowalker_locales.SelectedItem.ToString() == "Plamit Village")
-      {
-        this.walklocaleslist.Items.Add((object) "Entrance");
-        this.walklocaleslist.Items.Add((object) "Armory");
-        this.walklocaleslist.Items.Add((object) "Bank");
-        this.walklocaleslist.Items.Add((object) "Potion Shop");
-        this.walklocaleslist.Items.Add((object) "Research");
-        this.walklocaleslist.Items.Add((object) "Egg Farming");
-        this.walklocaleslist.Items.Add((object) "Band of Gales Farming");
-        this.walklocaleslist.Items.Add((object) "Band of Storms Farming");
-        this.walklocaleslist.Items.Add((object) "Boss");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Aman Jungle")
-      {
-        this.walklocaleslist.Items.Add((object) "Bank");
-        this.walklocaleslist.Items.Add((object) "Jovino");
-        this.walklocaleslist.Items.Add((object) "Oriana");
-        this.walklocaleslist.Items.Add((object) "Vortigern");
-        this.walklocaleslist.Items.Add((object) "AJ 0 End");
-        this.walklocaleslist.Items.Add((object) "AJ 6");
-        this.walklocaleslist.Items.Add((object) "AJ 7 End (dendrons)");
-        this.walklocaleslist.Items.Add((object) "HG ent");
-        this.walklocaleslist.Items.Add((object) "HG end");
-        this.walklocaleslist.Items.Add((object) "CC ent");
-        this.walklocaleslist.Items.Add((object) "CC 7");
-        this.walklocaleslist.Items.Add((object) "CC end");
-        this.walklocaleslist.Items.Add((object) "YT ent");
-        this.walklocaleslist.Items.Add((object) "YT 3");
-        this.walklocaleslist.Items.Add((object) "YT 4");
-        this.walklocaleslist.Items.Add((object) "YT 5");
-        this.walklocaleslist.Items.Add((object) "YT 6");
-        this.walklocaleslist.Items.Add((object) "YT 11");
-        this.walklocaleslist.Items.Add((object) "YT 12");
-        this.walklocaleslist.Items.Add((object) "Yellow Vines");
-        this.walklocaleslist.Items.Add((object) "YT 15");
-        this.walklocaleslist.Items.Add((object) "YT Boss");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Hwarone")
-      {
-        this.walklocaleslist.Items.Add((object) "Cursed Home");
-        this.walklocaleslist.Items.Add((object) "Entrance");
-        this.walklocaleslist.Items.Add((object) "Fire Spirit Temple");
-        this.walklocaleslist.Items.Add((object) "Inn");
-        this.walklocaleslist.Items.Add((object) "Alsaids Fire Canyon 1");
-        this.walklocaleslist.Items.Add((object) "Alsaids Fire Canyon 2");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Veltain Mines")
-      {
-        this.walklocaleslist.Items.Add((object) "Entrance");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Asilon")
-      {
-        this.walklocaleslist.Items.Add((object) "Bank");
-        this.walklocaleslist.Items.Add((object) "Store");
-        this.walklocaleslist.Items.Add((object) "Weapon Shop");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Noam")
-      {
-        this.walklocaleslist.Items.Add((object) "Bank");
-        this.walklocaleslist.Items.Add((object) "Sacred Grounds");
-        this.walklocaleslist.Items.Add((object) "Noam 17");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Andor")
-      {
-        this.walklocaleslist.Items.Add((object) "Andor Lobby");
-        this.walklocaleslist.Items.Add((object) "Andor 80");
-        this.walklocaleslist.Items.Add((object) "Andor 140");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Desert Dunes")
-      {
-        this.walklocaleslist.Items.Add((object) "DD ent");
-        this.walklocaleslist.Items.Add((object) "Pyramid ent");
-        this.walklocaleslist.Items.Add((object) "Pyramid center");
-        this.walklocaleslist.Items.Add((object) "Oasis");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Chaos")
-      {
-        this.walklocaleslist.Items.Add((object) "Chaos ent");
-        this.walklocaleslist.Items.Add((object) "Chaos 3 exit");
-        this.walklocaleslist.Items.Add((object) "Chaos 12 exit");
-        this.walklocaleslist.Items.Add((object) "Chaos 25 side");
-        this.walklocaleslist.Items.Add((object) "Chaos 34");
-        this.walklocaleslist.Items.Add((object) "Chaos 34 End");
-        this.walklocaleslist.Items.Add((object) "Chadul's Realm 1");
-        this.walklocaleslist.Items.Add((object) "Chadul's Realm 2");
-        this.walklocaleslist.Items.Add((object) "Chadul's Realm 3");
-        this.walklocaleslist.Items.Add((object) "Chadul's Realm 4");
-        this.walklocaleslist.Items.Add((object) "Chadul's Realm 5");
-        this.walklocaleslist.Items.Add((object) "Chadul's Realm 6");
-        this.walklocaleslist.Items.Add((object) "Chadul's Realm 7");
-        this.walklocaleslist.Items.Add((object) "Chadul's Realm 8");
-        this.walklocaleslist.Items.Add((object) "Chadul's Realm 9");
-        this.walklocaleslist.Items.Add((object) "Chadul's Realm 10");
-        this.walklocaleslist.Items.Add((object) "Chadul's Realm 11");
-        this.walklocaleslist.Items.Add((object) "Chadul's Realm 12");
-        this.walklocaleslist.Items.Add((object) "Chadul Army Invasion");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Mehadi")
-      {
-        this.walklocaleslist.Items.Add((object) "Entrance");
-        this.walklocaleslist.Items.Add((object) "Bhrigus");
-        this.walklocaleslist.Items.Add((object) "Chandra");
-        this.walklocaleslist.Items.Add((object) "Flower");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Shinewood")
-      {
-        this.walklocaleslist.Items.Add((object) "Shinewood Entrance");
-        this.walklocaleslist.Items.Add((object) "SW 8 (DSS)");
-        this.walklocaleslist.Items.Add((object) "SW 11 Fae");
-        this.walklocaleslist.Items.Add((object) "SW 12");
-        this.walklocaleslist.Items.Add((object) "SW 17 (hut)");
-        this.walklocaleslist.Items.Add((object) "Giant Ant");
-        this.walklocaleslist.Items.Add((object) "Red Mantis");
-        this.walklocaleslist.Items.Add((object) "SW 22");
-        this.walklocaleslist.Items.Add((object) "SW 30 (hut)");
-        this.walklocaleslist.Items.Add((object) "Phoenix Altar");
-        this.walklocaleslist.Items.Add((object) "SW 36");
-        this.walklocaleslist.Items.Add((object) "SW 37");
-        this.walklocaleslist.Items.Add((object) "SW 38");
-        this.walklocaleslist.Items.Add((object) "SW 39");
-        this.walklocaleslist.Items.Add((object) "SW 40");
-        this.walklocaleslist.Items.Add((object) "SW 41");
-        this.walklocaleslist.Items.Add((object) "SW 42");
-        this.walklocaleslist.Items.Add((object) "SW 43");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Mt Merry")
-      {
-        this.walklocaleslist.Items.Add((object) "Entrance");
-        this.walklocaleslist.Items.Add((object) "Mother Erbie");
-        this.walklocaleslist.Items.Add((object) "Filthy Erbie");
-        this.walklocaleslist.Items.Add((object) "Yeti");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Lynith")
-      {
-        this.walklocaleslist.Items.Add((object) "Giant Pearl");
-        this.walklocaleslist.Items.Add((object) "Paradise");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Nobis")
-      {
-        this.walklocaleslist.Items.Add((object) "Oren Fountain");
-        this.walklocaleslist.Items.Add((object) "Tower Maze");
-        this.walklocaleslist.Items.Add((object) "Oren Island Armor Shoppe");
-        this.walklocaleslist.Items.Add((object) "Oren Island Shop0");
-        this.walklocaleslist.Items.Add((object) "Bank");
-        this.walklocaleslist.Items.Add((object) "Octavio's Armory");
-        this.walklocaleslist.Items.Add((object) "Oren Island Magic Shop1");
-        this.walklocaleslist.Items.Add((object) "Oren Island Jewelry Shop");
-        this.walklocaleslist.Items.Add((object) "Shamensyth ent");
-        this.walklocaleslist.Items.Add((object) "Top Blazing Wand");
-        this.walklocaleslist.Items.Add((object) "Bottom Blazing Wand");
-        this.walklocaleslist.Items.Add((object) "Shamensyth");
-        this.walklocaleslist.Items.Add((object) "Jungle ent");
-        this.walklocaleslist.Items.Add((object) "Nobis ent");
-        this.walklocaleslist.Items.Add((object) "Mob 2-5");
-        this.walklocaleslist.Items.Add((object) "Mob 2-11");
-        this.walklocaleslist.Items.Add((object) "dig bones (east)");
-        this.walklocaleslist.Items.Add((object) "dig bones (north)");
-        this.walklocaleslist.Items.Add((object) "dig bones (middle)");
-        this.walklocaleslist.Items.Add((object) "1st Summon");
-        this.walklocaleslist.Items.Add((object) "2nd Summon");
-        this.walklocaleslist.Items.Add((object) "3rd Summon");
-        this.walklocaleslist.Items.Add((object) "4th Summon");
-        this.walklocaleslist.Items.Add((object) "Medusa");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Mount Giragan")
-      {
-        this.walklocaleslist.Items.Add((object) "Mtg 1");
-        this.walklocaleslist.Items.Add((object) "tauren horn");
-        this.walklocaleslist.Items.Add((object) "tauren nose ring");
-        this.walklocaleslist.Items.Add((object) "Mtg 18 (belt)");
-        this.walklocaleslist.Items.Add((object) "Mtg 25");
-        this.walklocaleslist.Items.Add((object) "Mtg 31");
-        this.walklocaleslist.Items.Add((object) "Mtg 28");
-        this.walklocaleslist.Items.Add((object) "Mtg 10");
-        this.walklocaleslist.Items.Add((object) "Mtg 13");
-        this.walklocaleslist.Items.Add((object) "Tauren");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Cthonic Remains")
-      {
-        this.walklocaleslist.Items.Add((object) "CR 1");
-        this.walklocaleslist.Items.Add((object) "CR 31");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Mileth")
-      {
-        this.walklocaleslist.Items.Add((object) "Entrance");
-        this.walklocaleslist.Items.Add((object) "Glioca Temple");
-        this.walklocaleslist.Items.Add((object) "Contest Hall");
-        this.walklocaleslist.Items.Add((object) "History");
-        this.walklocaleslist.Items.Add((object) "Library");
-        this.walklocaleslist.Items.Add((object) "Literature");
-        this.walklocaleslist.Items.Add((object) "Lore");
-        this.walklocaleslist.Items.Add((object) "Philosophy");
-        this.walklocaleslist.Items.Add((object) "Altar");
-        this.walklocaleslist.Items.Add((object) "Armor Shop");
-        this.walklocaleslist.Items.Add((object) "Bank");
-        this.walklocaleslist.Items.Add((object) "Black Magic Master");
-        this.walklocaleslist.Items.Add((object) "Church");
-        this.walklocaleslist.Items.Add((object) "Combat Skill Master");
-        this.walklocaleslist.Items.Add((object) "Goods Shop");
-        this.walklocaleslist.Items.Add((object) "Inn");
-        this.walklocaleslist.Items.Add((object) "Magic Shop");
-        this.walklocaleslist.Items.Add((object) "Messenger");
-        this.walklocaleslist.Items.Add((object) "Restaurant");
-        this.walklocaleslist.Items.Add((object) "Special Skill Master");
-        this.walklocaleslist.Items.Add((object) "Tailor");
-        this.walklocaleslist.Items.Add((object) "Tavern");
-        this.walklocaleslist.Items.Add((object) "Weapon Shop");
-        this.walklocaleslist.Items.Add((object) "White Magic Master");
-        this.walklocaleslist.Items.Add((object) "Crypt");
-        this.walklocaleslist.Items.Add((object) "Crypt 4");
-        this.walklocaleslist.Items.Add((object) "Crypt 11");
-        this.walklocaleslist.Items.Add((object) "Crypt 27");
-        this.walklocaleslist.Items.Add((object) "Enchanted Garden");
-        this.walklocaleslist.Items.Add((object) "Wasteland");
-        this.walklocaleslist.Items.Add((object) "EW 14 Ent");
-        this.walklocaleslist.Items.Add((object) "EW 15 Glade");
-        this.walklocaleslist.Items.Add((object) "EW 18");
-        this.walklocaleslist.Items.Add((object) "EW 19");
-        this.walklocaleslist.Items.Add((object) "EW 20 Glade");
-        this.walklocaleslist.Items.Add((object) "Temple of Choosing");
-        this.walklocaleslist.Items.Add((object) "ToC Monk");
-        this.walklocaleslist.Items.Add((object) "ToC Priest");
-        this.walklocaleslist.Items.Add((object) "ToC Rogue");
-        this.walklocaleslist.Items.Add((object) "ToC Warrior");
-        this.walklocaleslist.Items.Add((object) "ToC Wizard");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "West Woodland")
-        this.walklocaleslist.Items.Add((object) "8-1 Entrance");
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Kasmanium Mine")
-        this.walklocaleslist.Items.Add((object) "Mine Entrance");
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Grass Field")
-      {
-        this.walklocaleslist.Items.Add((object) "Base Camp");
-        this.walklocaleslist.Items.Add((object) "Grass Battle Field5");
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Abel")
-      {
-        this.walklocaleslist.Items.Add((object) "Entrance");
-        this.walklocaleslist.Items.Add((object) "Fiosachd Temple");
-        this.walklocaleslist.Items.Add((object) "Armor Shop");
-        this.walklocaleslist.Items.Add((object) "Bank");
-        this.walklocaleslist.Items.Add((object) "Combat Skill Master");
-        this.walklocaleslist.Items.Add((object) "Fish Market");
-        this.walklocaleslist.Items.Add((object) "Goods Shop");
-        this.walklocaleslist.Items.Add((object) "Inn");
-        this.walklocaleslist.Items.Add((object) "Restaurant");
-        this.walklocaleslist.Items.Add((object) "Tailor");
-        this.walklocaleslist.Items.Add((object) "Tavern");
-        this.walklocaleslist.Items.Add((object) "Weapon Shop");
-        this.walklocaleslist.Items.Add((object) "Dungeon");
-        this.walklocaleslist.Items.Add((object) "Dungeon 5 Cave");
-        this.walklocaleslist.Items.Add((object) "Dungeon 10 Cave");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Piet")
-      {
-        this.walklocaleslist.Items.Add((object) "Entrance");
-        this.walklocaleslist.Items.Add((object) "Ceannlaidir Temple");
-        this.walklocaleslist.Items.Add((object) "Armor Shop");
-        this.walklocaleslist.Items.Add((object) "Bank");
-        this.walklocaleslist.Items.Add((object) "Inn");
-        this.walklocaleslist.Items.Add((object) "Restaurant");
-        this.walklocaleslist.Items.Add((object) "Tailor");
-        this.walklocaleslist.Items.Add((object) "Tavern");
-        this.walklocaleslist.Items.Add((object) "Weapon Shop");
-        this.walklocaleslist.Items.Add((object) "White Magic Master");
-        this.walklocaleslist.Items.Add((object) "Dungeon");
-        this.walklocaleslist.Items.Add((object) "Dungeon 11");
-        this.walklocaleslist.Items.Add((object) "Dungeon 12");
-        this.walklocaleslist.Items.Add((object) "Dungeon 17");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Arena")
-      {
-        this.walklocaleslist.Items.Add((object) "Coliseum Arena");
-        this.walklocaleslist.Items.Add((object) "Balanced Arena");
-        this.walklocaleslist.Items.Add((object) "Coliseum Gauntlet");
-        this.walklocaleslist.Items.Add((object) "Team Arena Lobby");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Pravat")
-      {
-        this.walklocaleslist.Items.Add((object) "Bank");
-        this.walklocaleslist.Items.Add((object) "West Entrance");
-        this.walklocaleslist.Items.Add((object) "Heart");
-        this.walklocaleslist.Items.Add((object) "Cross");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Blackstar Village")
-      {
-        this.walklocaleslist.Items.Add((object) "Blackstar Village Ent");
-        this.walklocaleslist.Items.Add((object) "Blackstar Village Armory");
-        this.walklocaleslist.Items.Add((object) "Blackstar Village Bank");
-        this.walklocaleslist.Items.Add((object) "Blackstar Village Inn");
-        this.walklocaleslist.Items.Add((object) "Blackstar Church");
-        this.walklocaleslist.Items.Add((object) "Blackstar Village Research");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt Entrance");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 1");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 2");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 3");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 4");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 5");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 6");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 7");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 8");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 9");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 10");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 11");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 12");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 13");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 14");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 15");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 16");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 17");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt 18");
-        this.walklocaleslist.Items.Add((object) "Blackstar Crypt Boss 1");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Loures")
-      {
-        this.walklocaleslist.Items.Add((object) "Gramail Temple");
-        this.walklocaleslist.Items.Add((object) "Soccer Field");
-        this.walklocaleslist.Items.Add((object) "Canal Ent");
-        this.walklocaleslist.Items.Add((object) "Canal Key 1 (skrull)");
-        this.walklocaleslist.Items.Add((object) "Canal Key 2 (blob)");
-        this.walklocaleslist.Items.Add((object) "Library");
-        this.walklocaleslist.Items.Add((object) "Throne Room");
-        this.walklocaleslist.Items.Add((object) "2nd Floor Weapon");
-        this.walklocaleslist.Items.Add((object) "Maze");
-        this.walklocaleslist.Items.Add((object) "1st Floor Weapon");
-        this.walklocaleslist.Items.Add((object) "Dungeon (aite)");
-        this.walklocaleslist.Items.Add((object) "Dark Maze");
-        this.walklocaleslist.Items.Add((object) "Jean");
-        this.walklocaleslist.Items.Add((object) "Recovery Camp");
-        this.walklocaleslist.Items.Add((object) "Frosty (x-mas)");
-        this.walklocaleslist.Items.Add((object) "Francis (summer)");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Rucesion")
-      {
-        this.walklocaleslist.Items.Add((object) "Entrance");
-        this.walklocaleslist.Items.Add((object) "Armor Shop");
-        this.walklocaleslist.Items.Add((object) "Bank");
-        this.walklocaleslist.Items.Add((object) "Black Market");
-        this.walklocaleslist.Items.Add((object) "Church");
-        this.walklocaleslist.Items.Add((object) "Goods Shop");
-        this.walklocaleslist.Items.Add((object) "Inn");
-        this.walklocaleslist.Items.Add((object) "Special Skill Master");
-        this.walklocaleslist.Items.Add((object) "Tailor");
-        this.walklocaleslist.Items.Add((object) "Weapon Shop");
-        this.walklocaleslist.Items.Add((object) "Luathas Temple");
-        this.walklocaleslist.Items.Add((object) "Dubhaim Castle");
-        this.walklocaleslist.Items.Add((object) "Dubhaim Castle North 1-1");
-        this.walklocaleslist.Items.Add((object) "Sgrios Temple");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Tagor")
-      {
-        this.walklocaleslist.Items.Add((object) "Armor Shop");
-        this.walklocaleslist.Items.Add((object) "Bank");
-        this.walklocaleslist.Items.Add((object) "Church");
-        this.walklocaleslist.Items.Add((object) "Empty Building");
-        this.walklocaleslist.Items.Add((object) "Inn");
-        this.walklocaleslist.Items.Add((object) "Lost Path");
-        this.walklocaleslist.Items.Add((object) "Magic Shop");
-        this.walklocaleslist.Items.Add((object) "Messenger");
-        this.walklocaleslist.Items.Add((object) "Pet Store");
-        this.walklocaleslist.Items.Add((object) "Rangers");
-        this.walklocaleslist.Items.Add((object) "Restaurant");
-        this.walklocaleslist.Items.Add((object) "Tavern");
-        this.walklocaleslist.Items.Add((object) "Warrior Blacksmith");
-        this.walklocaleslist.Items.Add((object) "Warrior Trainer");
-        this.walklocaleslist.Items.Add((object) "Warrior Trainer 2");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Undine")
-      {
-        this.walklocaleslist.Items.Add((object) "Cail Temple");
-        this.walklocaleslist.Items.Add((object) "Armor Shop");
-        this.walklocaleslist.Items.Add((object) "Bank");
-        this.walklocaleslist.Items.Add((object) "Black Magic Master");
-        this.walklocaleslist.Items.Add((object) "Goods Shop");
-        this.walklocaleslist.Items.Add((object) "Muisir Entrance");
-        this.walklocaleslist.Items.Add((object) "Restaurant");
-        this.walklocaleslist.Items.Add((object) "Tailor");
-        this.walklocaleslist.Items.Add((object) "Tavern");
-        this.walklocaleslist.Items.Add((object) "Weapon Shop");
-        this.walklocaleslist.Items.Add((object) "Undine Field");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Astrid")
-      {
-        this.walklocaleslist.Items.Add((object) "Octagram");
-        this.walklocaleslist.Items.Add((object) "North-West");
-        this.walklocaleslist.Items.Add((object) "North");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Sapphire Stream")
-      {
-        this.walklocaleslist.Items.Add((object) "Sapphire Stream Pass");
-        this.walklocaleslist.Items.Add((object) "Cedar Grove");
-        this.walklocaleslist.Items.Add((object) "White Grove");
-        this.walklocaleslist.Items.Add((object) "Green Grove");
-        this.walklocaleslist.Items.Add((object) "Blue Grove");
-        this.walklocaleslist.Items.Add((object) "Yellow Grove");
-        this.walklocaleslist.Items.Add((object) "Purple Grove");
-        this.walklocaleslist.Items.Add((object) "Brown Grove");
-        this.walklocaleslist.Items.Add((object) "Red Grove");
-        this.walklocaleslist.Items.Add((object) "Black Grove");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else if (this.autowalker_locales.SelectedItem.ToString() == "Suomi")
-      {
-        this.walklocaleslist.Items.Add((object) "Deoch Temple");
-        this.walklocaleslist.Items.Add((object) "Armor Shop");
-        this.walklocaleslist.Items.Add((object) "Black Magic Master");
-        this.walklocaleslist.Items.Add((object) "Cherry Farmer");
-        this.walklocaleslist.Items.Add((object) "Combat Skill Master");
-        this.walklocaleslist.Items.Add((object) "Garamonde Theatre");
-        this.walklocaleslist.Items.Add((object) "Grape Farmer");
-        this.walklocaleslist.Items.Add((object) "Inn");
-        this.walklocaleslist.Items.Add((object) "Restaurant");
-        this.walklocaleslist.Items.Add((object) "Special Skill Master");
-        this.walklocaleslist.Items.Add((object) "Tailor");
-        this.walklocaleslist.Items.Add((object) "Tavern");
-        this.walklocaleslist.Items.Add((object) "Weapon Shop");
-        this.walklocaleslist.Items.Add((object) "White Magic Master");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-      else
-      {
-        if (!(this.autowalker_locales.SelectedItem.ToString() == "Lost Ruins"))
-          return;
-        this.walklocaleslist.Items.Add((object) "Nairn");
-        this.walklocaleslist.Items.Add((object) "LR2 Rocks");
-        this.walklocaleslist.Items.Add((object) "LR3 Rocks");
-        this.walklocaleslist.Items.Add((object) "Ass Dungeon");
-        this.walklocaleslist.Items.Add((object) "LR4 Rocks");
-        this.walklocaleslist.Items.Add((object) "Marble Vault");
-        this.walklocaleslist.Items.Add((object) "LR5 Altar");
-        this.walklocaleslist.Items.Add((object) "Dung Field");
-        this.walklocaleslist.Items.Add((object) "Law");
-        this.walklocaleslist.SelectedIndex = 0;
-      }
-    }
 
-    private void wayregionson_CheckedChanged(object sender, EventArgs e)
+            switch (this.autowalker_locales.SelectedItem.ToString())
+            {
+                case "Tavaly Village":
+                    walklocaleslist.Items.Add("Entrance");
+                    walklocaleslist.Items.Add("Sacred Forest 1");
+                    walklocaleslist.Items.Add("Sacred Forest 2");
+                    walklocaleslist.Items.Add("Sacred Forest 3");
+                    walklocaleslist.Items.Add("Sacred Forest 4");
+                    walklocaleslist.Items.Add("Sacred Forest 5");
+                    walklocaleslist.Items.Add("Sacred Forest 6");
+                    walklocaleslist.Items.Add("Sacred Forest 7");
+                    walklocaleslist.Items.Add("Sacred Forest 8");
+                    walklocaleslist.Items.Add("Sacred Forest 9");
+                    walklocaleslist.Items.Add("Sacred Forest 10");
+                    walklocaleslist.Items.Add("Sacred Forest 11");
+                    walklocaleslist.Items.Add("Sacred Forest 12");
+                    walklocaleslist.Items.Add("Sacred Forest 13");
+                    walklocaleslist.Items.Add("Sacred Forest 14");
+                    walklocaleslist.Items.Add("Sacred Forest 15");
+                    walklocaleslist.Items.Add("Sacred Forest 16");
+                    walklocaleslist.Items.Add("Sacred Forest 17");
+                    walklocaleslist.Items.Add("Sacred Forest 18");
+                    walklocaleslist.Items.Add("Sacred Forest 19");
+                    break;
+                case "Plamit Village":
+                    walklocaleslist.Items.Add("Entrance");
+                    walklocaleslist.Items.Add("Armory");
+                    walklocaleslist.Items.Add("Bank");
+                    walklocaleslist.Items.Add("Potion Shop");
+                    walklocaleslist.Items.Add("Research");
+                    walklocaleslist.Items.Add("Egg Farming");
+                    walklocaleslist.Items.Add("Band of Gales Farming");
+                    walklocaleslist.Items.Add("Band of Storms Farming");
+                    walklocaleslist.Items.Add("Boss");
+                    break;
+                case "Aman Jungle":
+                    walklocaleslist.Items.Add("Bank");
+                    walklocaleslist.Items.Add("Jovino");
+                    walklocaleslist.Items.Add("Oriana");
+                    walklocaleslist.Items.Add("Vortigern");
+                    walklocaleslist.Items.Add("AJ 0 End");
+                    walklocaleslist.Items.Add("AJ 6");
+                    walklocaleslist.Items.Add("AJ 7 End (dendrons)");
+                    walklocaleslist.Items.Add("HG ent");
+                    walklocaleslist.Items.Add("HG end");
+                    walklocaleslist.Items.Add("CC ent");
+                    walklocaleslist.Items.Add("CC 7");
+                    walklocaleslist.Items.Add("CC end");
+                    walklocaleslist.Items.Add("YT ent");
+                    walklocaleslist.Items.Add("YT 3");
+                    walklocaleslist.Items.Add("YT 4");
+                    walklocaleslist.Items.Add("YT 5");
+                    walklocaleslist.Items.Add("YT 6");
+                    walklocaleslist.Items.Add("YT 11");
+                    walklocaleslist.Items.Add("YT 12");
+                    walklocaleslist.Items.Add("Yellow Vines");
+                    walklocaleslist.Items.Add("YT 15");
+                    walklocaleslist.Items.Add("YT Boss");
+                    break;
+                case "Hwarone":
+                    walklocaleslist.Items.Add("Cursed Home");
+                    walklocaleslist.Items.Add("Entrance");
+                    walklocaleslist.Items.Add("Fire Spirit Temple");
+                    walklocaleslist.Items.Add("Inn");
+                    walklocaleslist.Items.Add("Alsaids Fire Canyon 1");
+                    walklocaleslist.Items.Add("Alsaids Fire Canyon 2");
+                    break;
+                case "Veltain Mines":
+                    walklocaleslist.Items.Add("Entrance");
+                    break;
+                case "Asilon":
+                    walklocaleslist.Items.Add("Bank");
+                    walklocaleslist.Items.Add("Store");
+                    walklocaleslist.Items.Add("Weapon Shop");
+                    break;
+                case "Noam":
+                    walklocaleslist.Items.Add("Bank");
+                    walklocaleslist.Items.Add("Sacred Grounds");
+                    walklocaleslist.Items.Add("Noam 17");
+                    break;
+                case "Andor":
+                    walklocaleslist.Items.Add("Andor Lobby");
+                    walklocaleslist.Items.Add("Andor 80");
+                    walklocaleslist.Items.Add("Andor 140");
+                    break;
+                case "Desert Dunes":
+                    walklocaleslist.Items.Add("DD ent");
+                    walklocaleslist.Items.Add("Pyramid ent");
+                    walklocaleslist.Items.Add("Pyramid center");
+                    walklocaleslist.Items.Add("Oasis");
+                    break; 
+                case "Chaos":
+                    walklocaleslist.Items.Add("Chaos ent");
+                    walklocaleslist.Items.Add("Chaos 3 exit");
+                    walklocaleslist.Items.Add("Chaos 12 exit");
+                    walklocaleslist.Items.Add("Chaos 25 side");
+                    walklocaleslist.Items.Add("Chaos 34");
+                    walklocaleslist.Items.Add("Chaos 34 End");
+                    walklocaleslist.Items.Add("Chadul's Realm 1");
+                    walklocaleslist.Items.Add("Chadul's Realm 2");
+                    walklocaleslist.Items.Add("Chadul's Realm 3");
+                    walklocaleslist.Items.Add("Chadul's Realm 4");
+                    walklocaleslist.Items.Add("Chadul's Realm 5");
+                    walklocaleslist.Items.Add("Chadul's Realm 6");
+                    walklocaleslist.Items.Add("Chadul's Realm 7");
+                    walklocaleslist.Items.Add("Chadul's Realm 8");
+                    walklocaleslist.Items.Add("Chadul's Realm 9");
+                    walklocaleslist.Items.Add("Chadul's Realm 10");
+                    walklocaleslist.Items.Add("Chadul's Realm 11");
+                    walklocaleslist.Items.Add("Chadul's Realm 12");
+                    walklocaleslist.Items.Add("Chadul Army Invasion");
+                    break;
+                case "Mehadi":
+                    walklocaleslist.Items.Add("Entrance");
+                    walklocaleslist.Items.Add("Bhrigus");
+                    walklocaleslist.Items.Add("Chandra");
+                    walklocaleslist.Items.Add("Flower");
+                    break;
+                case "Shinewood":
+                    walklocaleslist.Items.Add("Shinewood Entrance");
+                    walklocaleslist.Items.Add("SW 8 (DSS)");
+                    walklocaleslist.Items.Add("SW 11 Fae");
+                    walklocaleslist.Items.Add("SW 12");
+                    walklocaleslist.Items.Add("SW 17 (hut)");
+                    walklocaleslist.Items.Add("Giant Ant");
+                    walklocaleslist.Items.Add("Red Mantis");
+                    walklocaleslist.Items.Add("SW 22");
+                    walklocaleslist.Items.Add("SW 30 (hut)");
+                    walklocaleslist.Items.Add("Phoenix Altar");
+                    walklocaleslist.Items.Add("SW 36");
+                    walklocaleslist.Items.Add("SW 37");
+                    walklocaleslist.Items.Add("SW 38");
+                    walklocaleslist.Items.Add("SW 39");
+                    walklocaleslist.Items.Add("SW 40");
+                    walklocaleslist.Items.Add("SW 41");
+                    walklocaleslist.Items.Add("SW 42");
+                    walklocaleslist.Items.Add("SW 43");
+                    break;
+                case "Mt Merry":
+                    walklocaleslist.Items.Add("Entrance");
+                    walklocaleslist.Items.Add("Mother Erbie");
+                    walklocaleslist.Items.Add("Filthy Erbie");
+                    walklocaleslist.Items.Add("Yeti");
+                    break;
+                case "Lynith":
+                    walklocaleslist.Items.Add("Giant Pearl");
+                    walklocaleslist.Items.Add("Paradise");
+                    break;
+                case "Nobis":
+                    walklocaleslist.Items.Add("Oren Fountain");
+                    walklocaleslist.Items.Add("Tower Maze");
+                    walklocaleslist.Items.Add("Oren Island Armor Shoppe");
+                    walklocaleslist.Items.Add("Oren Island Shop0");
+                    walklocaleslist.Items.Add("Bank");
+                    walklocaleslist.Items.Add("Octavio's Armory");
+                    walklocaleslist.Items.Add("Oren Island Magic Shop1");
+                    walklocaleslist.Items.Add("Oren Island Jewelry Shop");
+                    walklocaleslist.Items.Add("Shamensyth ent");
+                    walklocaleslist.Items.Add("Top Blazing Wand");
+                    walklocaleslist.Items.Add("Bottom Blazing Wand");
+                    walklocaleslist.Items.Add("Shamensyth");
+                    walklocaleslist.Items.Add("Jungle ent");
+                    walklocaleslist.Items.Add("Nobis ent");
+                    walklocaleslist.Items.Add("Mob 2-5");
+                    walklocaleslist.Items.Add("Mob 2-11");
+                    walklocaleslist.Items.Add("dig bones (east)");
+                    walklocaleslist.Items.Add("dig bones (north)");
+                    walklocaleslist.Items.Add("dig bones (middle)");
+                    walklocaleslist.Items.Add("1st Summon");
+                    walklocaleslist.Items.Add("2nd Summon");
+                    walklocaleslist.Items.Add("3rd Summon");
+                    walklocaleslist.Items.Add("4th Summon");
+                    walklocaleslist.Items.Add("Medusa");
+                    break;
+                case "Mount Giragan":
+                    walklocaleslist.Items.Add("Mtg 1");
+                    walklocaleslist.Items.Add("tauren horn");
+                    walklocaleslist.Items.Add("tauren nose ring");
+                    walklocaleslist.Items.Add("Mtg 18 (belt)");
+                    walklocaleslist.Items.Add("Mtg 25");
+                    walklocaleslist.Items.Add("Mtg 31");
+                    walklocaleslist.Items.Add("Mtg 28");
+                    walklocaleslist.Items.Add("Mtg 10");
+                    walklocaleslist.Items.Add("Mtg 13");
+                    walklocaleslist.Items.Add("Tauren");
+                    break;
+                case "Cthonic Remains":
+                    walklocaleslist.Items.Add("CR 1");
+                    walklocaleslist.Items.Add("CR 31");
+                    break;
+                case "Mileth":
+                    walklocaleslist.Items.Add("Entrance");
+                    walklocaleslist.Items.Add("Glioca Temple");
+                    walklocaleslist.Items.Add("Contest Hall");
+                    walklocaleslist.Items.Add("History");
+                    walklocaleslist.Items.Add("Library");
+                    walklocaleslist.Items.Add("Literature");
+                    walklocaleslist.Items.Add("Lore");
+                    walklocaleslist.Items.Add("Philosophy");
+                    walklocaleslist.Items.Add("Altar");
+                    walklocaleslist.Items.Add("Armor Shop");
+                    walklocaleslist.Items.Add("Bank");
+                    walklocaleslist.Items.Add("Black Magic Master");
+                    walklocaleslist.Items.Add("Church");
+                    walklocaleslist.Items.Add("Combat Skill Master");
+                    walklocaleslist.Items.Add("Goods Shop");
+                    walklocaleslist.Items.Add("Inn");
+                    walklocaleslist.Items.Add("Magic Shop");
+                    walklocaleslist.Items.Add("Messenger");
+                    walklocaleslist.Items.Add("Restaurant");
+                    walklocaleslist.Items.Add("Special Skill Master");
+                    walklocaleslist.Items.Add("Tailor");
+                    walklocaleslist.Items.Add("Tavern");
+                    walklocaleslist.Items.Add("Weapon Shop");
+                    walklocaleslist.Items.Add("White Magic Master");
+                    walklocaleslist.Items.Add("Crypt");
+                    walklocaleslist.Items.Add("Crypt 4");
+                    walklocaleslist.Items.Add("Crypt 11");
+                    walklocaleslist.Items.Add("Crypt 27");
+                    walklocaleslist.Items.Add("Enchanted Garden");
+                    walklocaleslist.Items.Add("Wasteland");
+                    walklocaleslist.Items.Add("EW 14 Ent");
+                    walklocaleslist.Items.Add("EW 15 Glade");
+                    walklocaleslist.Items.Add("EW 18");
+                    walklocaleslist.Items.Add("EW 19");
+                    walklocaleslist.Items.Add("EW 20 Glade");
+                    walklocaleslist.Items.Add("Temple of Choosing");
+                    walklocaleslist.Items.Add("ToC Monk");
+                    walklocaleslist.Items.Add("ToC Priest");
+                    walklocaleslist.Items.Add("ToC Rogue");
+                    walklocaleslist.Items.Add("ToC Warrior");
+                    walklocaleslist.Items.Add("ToC Wizard");
+                    break;
+                case "West Woodland":
+                    walklocaleslist.Items.Add("8-1 Entrance");
+                    break;
+                case "Kasmanium Mine":
+                    walklocaleslist.Items.Add("Mine Entrance");
+                    break;
+                case "Grass Field":
+                    walklocaleslist.Items.Add("Base Camp");
+                    walklocaleslist.Items.Add("Grass Battle Field5");
+                    break;
+                case "Abel":
+                    walklocaleslist.Items.Add("Entrance");
+                    walklocaleslist.Items.Add("Fiosachd Temple");
+                    walklocaleslist.Items.Add("Armor Shop");
+                    walklocaleslist.Items.Add("Bank");
+                    walklocaleslist.Items.Add("Combat Skill Master");
+                    walklocaleslist.Items.Add("Fish Market");
+                    walklocaleslist.Items.Add("Goods Shop");
+                    walklocaleslist.Items.Add("Inn");
+                    walklocaleslist.Items.Add("Restaurant");
+                    walklocaleslist.Items.Add("Tailor");
+                    walklocaleslist.Items.Add("Tavern");
+                    walklocaleslist.Items.Add("Weapon Shop");
+                    walklocaleslist.Items.Add("Dungeon");
+                    walklocaleslist.Items.Add("Dungeon 5 Cave");
+                    walklocaleslist.Items.Add("Dungeon 10 Cave");
+                    break;
+                case "Piet":
+                    walklocaleslist.Items.Add("Entrance");
+                    walklocaleslist.Items.Add("Ceannlaidir Temple");
+                    walklocaleslist.Items.Add("Armor Shop");
+                    walklocaleslist.Items.Add("Bank");
+                    walklocaleslist.Items.Add("Inn");
+                    walklocaleslist.Items.Add("Restaurant");
+                    walklocaleslist.Items.Add("Tailor");
+                    walklocaleslist.Items.Add("Tavern");
+                    walklocaleslist.Items.Add("Weapon Shop");
+                    walklocaleslist.Items.Add("White Magic Master");
+                    walklocaleslist.Items.Add("Dungeon");
+                    walklocaleslist.Items.Add("Dungeon 11");
+                    walklocaleslist.Items.Add("Dungeon 12");
+                    walklocaleslist.Items.Add("Dungeon 17");
+                    break;
+                case "Arena":
+                    walklocaleslist.Items.Add("Coliseum Arena");
+                    walklocaleslist.Items.Add("Balanced Arena");
+                    walklocaleslist.Items.Add("Coliseum Gauntlet");
+                    walklocaleslist.Items.Add("Team Arena Lobby");
+                    break;
+                case "Pravat":
+                    walklocaleslist.Items.Add("Bank");
+                    walklocaleslist.Items.Add("West Entrance");
+                    walklocaleslist.Items.Add("Heart");
+                    walklocaleslist.Items.Add("Cross");
+                    break;
+
+                case "Blackstar Village":
+                    walklocaleslist.Items.Add("Blackstar Village Ent");
+                    walklocaleslist.Items.Add("Blackstar Village Armory");
+                    walklocaleslist.Items.Add("Blackstar Village Bank");
+                    walklocaleslist.Items.Add("Blackstar Village Inn");
+                    walklocaleslist.Items.Add("Blackstar Church");
+                    walklocaleslist.Items.Add("Blackstar Village Research");
+                    walklocaleslist.Items.Add("Blackstar Crypt Entrance");
+                    for (int i = 1; i <= 18; i++)
+                        walklocaleslist.Items.Add($"Blackstar Crypt {i}");
+                    walklocaleslist.Items.Add("Blackstar Crypt Boss 1");
+                    break;
+
+                case "Loures":
+                    walklocaleslist.Items.Add("Gramail Temple");
+                    walklocaleslist.Items.Add("Soccer Field");
+                    walklocaleslist.Items.Add("Canal Ent");
+                    walklocaleslist.Items.Add("Canal Key 1 (skrull)");
+                    walklocaleslist.Items.Add("Canal Key 2 (blob)");
+                    walklocaleslist.Items.Add("Library");
+                    walklocaleslist.Items.Add("Throne Room");
+                    walklocaleslist.Items.Add("2nd Floor Weapon");
+                    walklocaleslist.Items.Add("Maze");
+                    walklocaleslist.Items.Add("1st Floor Weapon");
+                    walklocaleslist.Items.Add("Dungeon (aite)");
+                    walklocaleslist.Items.Add("Dark Maze");
+                    walklocaleslist.Items.Add("Jean");
+                    walklocaleslist.Items.Add("Recovery Camp");
+                    walklocaleslist.Items.Add("Frosty (x-mas)");
+                    walklocaleslist.Items.Add("Francis (summer)");
+                    break;
+
+                case "Rucesion":
+                    walklocaleslist.Items.Add("Entrance");
+                    walklocaleslist.Items.Add("Armor Shop");
+                    walklocaleslist.Items.Add("Bank");
+                    walklocaleslist.Items.Add("Black Market");
+                    walklocaleslist.Items.Add("Church");
+                    walklocaleslist.Items.Add("Goods Shop");
+                    walklocaleslist.Items.Add("Inn");
+                    walklocaleslist.Items.Add("Special Skill Master");
+                    walklocaleslist.Items.Add("Tailor");
+                    walklocaleslist.Items.Add("Weapon Shop");
+                    walklocaleslist.Items.Add("Luathas Temple");
+                    walklocaleslist.Items.Add("Dubhaim Castle");
+                    walklocaleslist.Items.Add("Dubhaim Castle North 1-1");
+                    walklocaleslist.Items.Add("Sgrios Temple");
+                    break;
+
+                case "Tagor":
+                    walklocaleslist.Items.Add("Armor Shop");
+                    walklocaleslist.Items.Add("Bank");
+                    walklocaleslist.Items.Add("Church");
+                    walklocaleslist.Items.Add("Empty Building");
+                    walklocaleslist.Items.Add("Inn");
+                    walklocaleslist.Items.Add("Lost Path");
+                    walklocaleslist.Items.Add("Magic Shop");
+                    walklocaleslist.Items.Add("Messenger");
+                    walklocaleslist.Items.Add("Pet Store");
+                    walklocaleslist.Items.Add("Rangers");
+                    walklocaleslist.Items.Add("Restaurant");
+                    walklocaleslist.Items.Add("Tavern");
+                    walklocaleslist.Items.Add("Warrior Blacksmith");
+                    walklocaleslist.Items.Add("Warrior Trainer");
+                    walklocaleslist.Items.Add("Warrior Trainer 2");
+                    break;
+
+                case "Undine":
+                    walklocaleslist.Items.Add("Cail Temple");
+                    walklocaleslist.Items.Add("Armor Shop");
+                    walklocaleslist.Items.Add("Bank");
+                    walklocaleslist.Items.Add("Black Magic Master");
+                    walklocaleslist.Items.Add("Goods Shop");
+                    walklocaleslist.Items.Add("Muisir Entrance");
+                    walklocaleslist.Items.Add("Restaurant");
+                    walklocaleslist.Items.Add("Tailor");
+                    walklocaleslist.Items.Add("Tavern");
+                    walklocaleslist.Items.Add("Weapon Shop");
+                    walklocaleslist.Items.Add("Undine Field");
+                    break;
+
+                case "Astrid":
+                    walklocaleslist.Items.Add("Octagram");
+                    walklocaleslist.Items.Add("North-West");
+                    walklocaleslist.Items.Add("North");
+                    break;
+
+                case "Sapphire Stream":
+                    walklocaleslist.Items.Add("Sapphire Stream pass.");
+                    walklocaleslist.Items.Add("Sapphire Stream Cedar Grove");
+                    walklocaleslist.Items.Add("Sapphire Stream White Grove");
+                    walklocaleslist.Items.Add("Sapphire Stream Green Grove");
+                    walklocaleslist.Items.Add("Sapphire Stream Blue Grove");
+                    walklocaleslist.Items.Add("Sapphire Stream Yellow Grove");
+                    walklocaleslist.Items.Add("Sapphire Stream Purple Grove");
+                    walklocaleslist.Items.Add("Sapphire Stream Brown Grove");
+                    walklocaleslist.Items.Add("Sapphire Stream Red Grove");
+                    walklocaleslist.Items.Add("Sapphire Stream Black Grove");
+                    break;
+
+                case "Suomi":
+                    walklocaleslist.Items.Add("Deoch Temple");
+                    walklocaleslist.Items.Add("Armor Shop");
+                    walklocaleslist.Items.Add("Black Magic Master");
+                    walklocaleslist.Items.Add("Cherry Farmer");
+                    walklocaleslist.Items.Add("Combat Skill Master");
+                    walklocaleslist.Items.Add("Garamonde Theatre");
+                    walklocaleslist.Items.Add("Grape Farmer");
+                    walklocaleslist.Items.Add("Inn");
+                    walklocaleslist.Items.Add("Restaurant");
+                    walklocaleslist.Items.Add("Special Skill Master");
+                    walklocaleslist.Items.Add("Tailor");
+                    walklocaleslist.Items.Add("Tavern");
+                    walklocaleslist.Items.Add("Weapon Shop");
+                    walklocaleslist.Items.Add("White Magic Master");
+                    break;
+
+                case "Lost Ruins":
+                    walklocaleslist.Items.Add("Nairn");
+                    walklocaleslist.Items.Add("LR2 Rocks");
+                    walklocaleslist.Items.Add("LR3 Rocks");
+                    walklocaleslist.Items.Add("Ass Dungeon");
+                    walklocaleslist.Items.Add("LR4 Rocks");
+                    walklocaleslist.Items.Add("Marble Vault");
+                    walklocaleslist.Items.Add("LR5 Altar");
+                    walklocaleslist.Items.Add("Dung Field");
+                    walklocaleslist.Items.Add("Law");
+                    break;
+            }
+
+            if (walklocaleslist.Items.Count > 0)
+                walklocaleslist.SelectedIndex = 0;
+
+        }
+
+        private void wayregionson_CheckedChanged(object sender, EventArgs e)
     {
       if (this.Client.lastaction != DateTime.MinValue)
         this.Client.lastaction = DateTime.UtcNow;
