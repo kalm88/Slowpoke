@@ -2135,7 +2135,7 @@ namespace Flintstones
     public void SaveTemplate(string toSave = "", bool OnDC = false)
     {
       XDocument doc = new XDocument();
-      doc.Add((object) new XElement((XName) "Settings"));
+      doc.Add(new XElement((XName)"Settings"));
       if (OnDC)
       {
         doc.Element((XName) "Settings").Add((object) new XElement((XName) "attirebool", (object) this.Client.claimbeachattire));
@@ -2151,6 +2151,28 @@ namespace Flintstones
           ++num;
         }
       }
+
+            doc.Root.Add(new XElement("Tasks",
+                new XElement("AutomaticAssist", this.assistonthischar.Checked),
+                new XElement("AscensionRescueEnabled", this.vrescueascender),
+                new XElement("AscensionRescueName", this.vrescueascendername),
+                new XElement("Profession", this.improveskill.SelectedItem),
+                new XElement("SkillAssistantEnabled", this.useskillassistant.Checked),
+                new XElement("SkillAssistantName", this.skillassistant.Text),
+                new XElement("ProfessionRestartEnabled", this.impskillinresponse.Checked),
+                new XElement("ProfessionRestartCommand", this.impskillinresponsetext.Text),
+                new XElement("RequestLaborEnabled", this.requestlabor.Checked),
+                new XElement("RequestLaborFrom", this.requestlabornametext.Text),
+                new XElement("RequestLaborCommand", this.requestlabormessagetext.Text),
+                new XElement("LaborFor", this.laborname.Text),
+                new XElement("LaborDays", this.labordays.Value),
+                new XElement("LaborResponseEnabled", this.laborinresponse.Checked),
+                new XElement("LaborResponseCommand", this.laborinresponsetext.Text),
+                new XElement("LaborWhisperDoneEnabled", this.laborwhisper.Checked),
+                new XElement("LaborWhisperDoneCommand", this.laborwhispertext.Text),
+                new XElement("LaborLogOff", this.laborlogoff.Checked)
+            ));
+
       doc.Element((XName) "Settings").Add((object) new XElement((XName) "mediumwalk", (object) this.mediumwalk.Checked));
       doc.Element((XName) "Settings").Add((object) new XElement((XName) "fastwalk", (object) this.fastwalk.Checked));
       doc.Element((XName) "Settings").Add((object) new XElement((XName) "WalkSpeed", (object) this.walksettings.Value));
@@ -2825,6 +2847,34 @@ namespace Flintstones
           this.newalts.Enabled = true;
           this.newallgrouped.Enabled = true;
           this.newallmonsters.Enabled = true;
+
+                    // Load settings for the tasks-tab
+                    XElement tasks = xdocument.Root?.Element("Tasks");
+                    if (tasks != null)
+                    {
+                        // Read values safely
+                        this.assistonthischar.Checked = bool.TryParse(tasks.Element("AutomaticAssist")?.Value, out var a1) ? a1 : false;
+                        this.vrescueascender = bool.TryParse(tasks.Element("AscensionRescueEnabled")?.Value, out var a2) ? a2 : false;
+                        this.vrescueascendername = tasks.Element("AscensionRescueName")?.Value ?? "";
+                        this.improveskill.SelectedItem = tasks.Element("Profession")?.Value ?? "";
+                        this.useskillassistant.Checked = bool.TryParse(tasks.Element("SkillAssistantEnabled")?.Value, out var a3) ? a3 : false;
+                        this.skillassistant.Text = tasks.Element("SkillAssistantName")?.Value ?? "";
+                        this.impskillinresponse.Checked = bool.TryParse(tasks.Element("ProfessionRestartEnabled")?.Value, out var a4) ? a4 : false;
+                        this.impskillinresponsetext.Text = tasks.Element("ProfessionRestartCommand")?.Value ?? "";
+                        this.requestlabor.Checked = bool.TryParse(tasks.Element("RequestLaborEnabled")?.Value, out var a5) ? a5 : false;
+                        this.requestlabornametext.Text = tasks.Element("RequestLaborFrom")?.Value ?? "";
+                        this.requestlabormessagetext.Text = tasks.Element("RequestLaborCommand")?.Value ?? "";
+                        this.laborname.Text = tasks.Element("LaborFor")?.Value ?? "";
+                        this.labordays.Value = int.TryParse(tasks.Element("LaborDays")?.Value, out var i1) ? i1 : 0;
+                        this.laborinresponse.Checked = bool.TryParse(tasks.Element("LaborResponseEnabled")?.Value, out var a6) ? a6 : false;
+                        this.laborinresponsetext.Text = tasks.Element("LaborResponseCommand")?.Value ?? "";
+                        this.laborwhisper.Checked = bool.TryParse(tasks.Element("LaborWhisperDoneEnabled")?.Value, out var a7) ? a7 : false;
+                        this.laborwhispertext.Text = tasks.Element("LaborWhisperDoneCommand")?.Value ?? "";
+                        this.laborlogoff.Checked = bool.TryParse(tasks.Element("LaborLogOff")?.Value, out var a8) ? a8 : false;
+                    }
+
+
+
           if (xdocument.Element((XName) "Settings").Element((XName) "Follow") != null)
             this.followplayer.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "Follow").Value);
           if (xdocument.Element((XName) "Settings").Element((XName) "Follow_target") != null)
