@@ -2728,6 +2728,7 @@ namespace Flintstones
           {
             this.Client.SendMessage("The template name you input was invalid.", "red");
           }
+          LoadTemplates();
         }
       }
       catch (IOException ex) 
