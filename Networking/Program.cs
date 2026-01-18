@@ -27,7 +27,10 @@ namespace Flintstones
       using (Mutex mutex = new Mutex(false, "Global\\" + Program.appGuid))
       {
         if (!mutex.WaitOne(0, false))
+        {
+          MessageBox.Show("Another instance of Slowpoke is already running.", "Instance already running", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
           return;
+        }
         Program.StartupPath = Application.StartupPath;
         Options.Load();
         Options.Save();

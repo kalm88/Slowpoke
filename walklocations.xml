@@ -1,0 +1,2364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Locations>
+  <Location speech="mileth">
+    <Area>Mileth</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="meaveen">
+    <Area>Mileth</Area>
+    <Spot>Glioca Temple</Spot>
+  </Location>
+  <Location speech="glioca">
+    <Area>Mileth</Area>
+    <Spot>Glioca Temple</Spot>
+  </Location>
+  <Location speech="glioca temple">
+    <Area>Mileth</Area>
+    <Spot>Glioca Temple</Spot>
+  </Location>
+  <Location speech="uistean">
+    <Area>Mileth</Area>
+    <Spot>Library</Spot>
+  </Location>
+  <Location speech="mileth library">
+    <Area>Mileth</Area>
+    <Spot>Library</Spot>
+  </Location>
+  <Location speech="steafan">
+    <Area>Mileth</Area>
+    <Spot>Literature</Spot>
+  </Location>
+  <Location speech="literature">
+    <Area>Mileth</Area>
+    <Spot>Literature</Spot>
+  </Location>
+  <Location speech="mileth literature">
+    <Area>Mileth</Area>
+    <Spot>Literature</Spot>
+  </Location>
+  <Location speech="rory">
+    <Area>Mileth</Area>
+    <Spot>History</Spot>
+  </Location>
+  <Location speech="history">
+    <Area>Mileth</Area>
+    <Spot>History</Spot>
+  </Location>
+  <Location speech="mileth history">
+    <Area>Mileth</Area>
+    <Spot>History</Spot>
+  </Location>
+  <Location speech="parthalan">
+    <Area>Mileth</Area>
+    <Spot>Lore</Spot>
+  </Location>
+  <Location speech="lore">
+    <Area>Mileth</Area>
+    <Spot>Lore</Spot>
+  </Location>
+  <Location speech="mileth lore">
+    <Area>Mileth</Area>
+    <Spot>Lore</Spot>
+  </Location>
+  <Location speech="conn">
+    <Area>Mileth</Area>
+    <Spot>Philosophy</Spot>
+  </Location>
+  <Location speech="philosophy">
+    <Area>Mileth</Area>
+    <Spot>Philosophy</Spot>
+  </Location>
+  <Location speech="mileth philosophy">
+    <Area>Mileth</Area>
+    <Spot>Philosophy</Spot>
+  </Location>
+  <Location speech="contest">
+    <Area>Mileth</Area>
+    <Spot>Contest Hall</Spot>
+  </Location>
+  <Location speech="mileth contest">
+    <Area>Mileth</Area>
+    <Spot>Contest Hall</Spot>
+  </Location>
+  <Location speech="mileth church">
+    <Area>Mileth</Area>
+    <Spot>Church</Spot>
+  </Location>
+  <Location speech="toc">
+    <Area>Mileth</Area>
+    <Spot>Temple of Choosing</Spot>
+  </Location>
+  <Location speech="mileth bank">
+    <Area>Mileth</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="mileth inn">
+    <Area>Mileth</Area>
+    <Spot>Inn</Spot>
+  </Location>
+  <Location speech="mileth rest">
+    <Area>Mileth</Area>
+    <Spot>Restaurant</Spot>
+  </Location>
+  <Location speech="mileth restaurant">
+    <Area>Mileth</Area>
+    <Spot>Restaurant</Spot>
+  </Location>
+  <Location speech="mileth tav">
+    <Area>Mileth</Area>
+    <Spot>Tavern</Spot>
+  </Location>
+  <Location speech="mileth tavern">
+    <Area>Mileth</Area>
+    <Spot>Tavern</Spot>
+  </Location>
+  <Location speech="altar">
+    <Area>Mileth</Area>
+    <Spot>Altar</Spot>
+  </Location>
+  <Location speech="mcrypt">
+    <Area>Mileth</Area>
+    <Spot>Crypt</Spot>
+  </Location>
+  <Location speech="mcrypt4">
+    <Area>Mileth</Area>
+    <Spot>Crypt 4</Spot>
+  </Location>
+  <Location speech="mcrypt 4">
+    <Area>Mileth</Area>
+    <Spot>Crypt 4</Spot>
+  </Location>
+  <Location speech="bat">
+    <Area>Mileth</Area>
+    <Spot>Crypt 4</Spot>
+  </Location>
+  <Location speech="mcrypt11">
+    <Area>Mileth</Area>
+    <Spot>Crypt 11</Spot>
+  </Location>  
+  <Location speech="mcrypt 11">
+    <Area>Mileth</Area>
+    <Spot>Crypt 11</Spot>
+  </Location>  
+  <Location speech="chest">
+    <Area>Mileth</Area>
+    <Spot>Crypt 11</Spot>
+  </Location>
+  <Location speech="mcrypt27">
+    <Area>Mileth</Area>
+    <Spot>Crypt 11</Spot>
+  </Location>
+  <Location speech="mcrypt 27">
+    <Area>Mileth</Area>
+    <Spot>Crypt 11</Spot>
+  </Location>
+  <Location speech="suc">
+    <Area>Mileth</Area>
+    <Spot>Crypt 11</Spot>
+  </Location>   
+  <Location speech="succubus">
+    <Area>Mileth</Area>
+    <Spot>Crypt 11</Spot>
+  </Location>
+  <Location speech="brody">
+    <Area>Mileth</Area>
+    <Spot>Tailor</Spot>
+  </Location>
+  <Location speech="mileth tailor">
+    <Area>Mileth</Area>
+    <Spot>Tailor</Spot>
+  </Location>
+  <Location speech="mileth goods">
+    <Area>Mileth</Area>
+    <Spot>Goods Shop</Spot>
+  </Location>
+  <Location speech="devlin">
+    <Area>Mileth</Area>
+    <Spot>White Magic Master</Spot>
+  </Location>
+  <Location speech="mileth priest">
+    <Area>Mileth</Area>
+    <Spot>White Magic Master</Spot>
+  </Location>
+  <Location speech="keallach">
+    <Area>Mileth</Area>
+    <Spot>Combat Skill Master</Spot>
+  </Location>
+  <Location speech="mileth fighter">
+    <Area>Mileth</Area>
+    <Spot>Combat Skill Master</Spot>
+  </Location>
+  <Location speech="torrance">
+    <Area>Mileth</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="mileth arm">
+    <Area>Mileth</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="mileth armor">
+    <Area>Mileth</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="callough">
+    <Area>Mileth</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="mileth weap">
+    <Area>Mileth</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="mileth weapon">
+    <Area>Mileth</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="colm">
+    <Area>Mileth</Area>
+    <Spot>Messenger</Spot>
+  </Location>
+  <Location speech="mileth mess">
+    <Area>Mileth</Area>
+    <Spot>Messenger</Spot>
+  </Location>
+  <Location speech="mileth messenger">
+    <Area>Mileth</Area>
+    <Spot>Messenger</Spot>
+  </Location>
+  <Location speech="daithi">
+    <Area>Mileth</Area>
+    <Spot>Special Skill Master</Spot>
+  </Location>
+  <Location speech="mileth rog">
+    <Area>Mileth</Area>
+    <Spot>Special Skill Master</Spot>
+  </Location>
+  <Location speech="mileth rogue">
+    <Area>Mileth</Area>
+    <Spot>Special Skill Master</Spot>
+  </Location>
+  <Location speech="dar">
+    <Area>Mileth</Area>
+    <Spot>Black Magic Master</Spot>
+  </Location>
+  <Location speech="mileth wiz">
+    <Area>Mileth</Area>
+    <Spot>Black Magic Master</Spot>
+  </Location>
+  <Location speech="mileth wizard">
+    <Area>Mileth</Area>
+    <Spot>Black Magic Master</Spot>
+  </Location>
+  <Location speech="cian">
+    <Area>Mileth</Area>  
+    <Spot>Magic Shop</Spot>
+  </Location>
+  <Location speech="mileth magic">
+    <Area>Mileth</Area>
+    <Spot>Magic Shop</Spot>
+  </Location>
+  <Location speech="waste">
+    <Area>Mileth</Area>
+    <Spot>Wasteland</Spot>
+  </Location>
+  <Location speech="ew">
+    <Area>Mileth</Area>
+    <Spot>EW 14 Ent</Spot>
+  </Location>
+  <Location speech="ew14">
+    <Area>Mileth</Area>
+    <Spot>EW 14 Ent</Spot>
+  </Location>
+  <Location speech="ew 14">
+    <Area>Mileth</Area>
+    <Spot>EW 14 Ent</Spot>
+  </Location>
+  <Location speech="ew15">
+    <Area>Mileth</Area>
+    <Spot>EW 15 Glade</Spot>
+  </Location>
+  <Location speech="ew 15">
+    <Area>Mileth</Area>
+    <Spot>EW 15 Glade</Spot>
+  </Location>
+  <Location speech="ew18">
+    <Area>Mileth</Area>
+    <Spot>EW 18</Spot>
+  </Location>
+  <Location speech="ew 18">
+    <Area>Mileth</Area>
+    <Spot>EW 18</Spot>
+  </Location>
+  <Location speech="shrieker">
+    <Area>Mileth</Area>
+    <Spot>EW 18</Spot>
+  </Location>
+  <Location speech="ew19">
+    <Area>Mileth</Area>
+    <Spot>EW 19</Spot>
+  </Location>
+  <Location speech="ew 19">
+    <Area>Mileth</Area>
+    <Spot>EW 19</Spot>
+  </Location>
+  <Location speech="fae">
+    <Area>Mileth</Area>
+    <Spot>EW 19</Spot>
+  </Location>
+  <Location speech="ew20">
+    <Area>Mileth</Area>
+    <Spot>EW 20 Glade</Spot>
+  </Location>
+  <Location speech="ew 20">
+    <Area>Mileth</Area>
+    <Spot>EW 20 Glade</Spot>
+  </Location>
+  <Location speech="ww">
+    <Area>West Woodland</Area>
+    <Spot>8-1 Entrance</Spot>
+  </Location>
+  <Location speech="ew20">
+    <Area>Mileth</Area>
+    <Spot>EW 20 Glade</Spot>
+  </Location>
+  <Location speech="kas">
+    <Area>Kasmanium Mine</Area>
+    <Spot>Mine Entrance</Spot>
+  </Location>
+  <Location speech="kasmine">
+    <Area>Kasmanium Mine</Area>
+    <Spot>Mine Entrance</Spot>
+  </Location>
+  <Location speech="kas mine">
+    <Area>Kasmanium Mine</Area>
+    <Spot>Mine Entrance</Spot>
+  </Location>
+  <Location speech="grassfield">
+    <Area>Grass Field</Area>
+    <Spot>Base Camp</Spot>
+  </Location>
+  <Location speech="grass field">
+    <Area>Grass Field</Area>
+    <Spot>Base Camp</Spot>
+  </Location>
+  <Location speech="base camp">
+    <Area>Grass Field</Area>
+    <Spot>Base Camp</Spot>
+  </Location>
+  <Location speech="bc">
+    <Area>Grass Field</Area>
+    <Spot>Base Camp</Spot>
+  </Location>
+  <Location speech="battlefield">
+    <Area>Grass Field</Area>
+    <Spot>Grass Battle Field5</Spot>
+  </Location>
+  <Location speech="battle field">
+    <Area>Grass Field</Area>
+    <Spot>Grass Battle Field5</Spot>
+  </Location>
+  <Location speech="law">
+    <Area>Grass Field</Area>
+    <Spot>Grass Battle Field5</Spot>
+  </Location>
+  <Location speech="bf">
+    <Area>Grass Field</Area>
+    <Spot>Grass Battle Field5</Spot>
+  </Location>
+  <Location speech="abel">
+    <Area>Abel</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="audny">
+    <Area>Abel</Area>
+    <Spot>Fiosachd Temple</Spot>
+  </Location>
+  <Location speech="fiosachd">
+    <Area>Abel</Area>
+    <Spot>Fiosachd Temple</Spot>
+  </Location>
+  <Location speech="fiosachd temple">
+    <Area>Abel</Area>
+    <Spot>Fiosachd Temple</Spot>
+  </Location>
+  <Location speech="abel tav">
+    <Area>Abel</Area>
+    <Spot>Tavern</Spot>
+  </Location>
+  <Location speech="abel tavern">
+    <Area>Abel</Area>
+    <Spot>Tavern</Spot>
+  </Location>
+    <Location speech="abel tav">
+    <Area>Abel</Area>
+    <Spot>Tavern</Spot>
+  </Location>
+  <Location speech="abel bank">
+    <Area>Abel</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="acrypt">
+    <Area>Abel</Area>
+    <Spot>Dungeon</Spot>
+  </Location>
+  <Location speech="abel dun">
+    <Area>Abel</Area>
+    <Spot>Dungeon</Spot>
+  </Location>
+  <Location speech="abel dungeon">
+    <Area>Abel</Area>
+    <Spot>Dungeon</Spot>
+  </Location>
+  <Location speech="leech">
+    <Area>Abel</Area>
+    <Spot>Dungeon</Spot>
+  </Location>
+  <Location speech="acrypt5">
+    <Area>Abel</Area>
+    <Spot>Dungeon 5 Cave</Spot>
+  </Location>
+  <Location speech="acrypt 5">
+    <Area>Abel</Area>
+    <Spot>Dungeon 5 Cave</Spot>
+  </Location>
+  <Location speech="acrypt10">
+    <Area>Abel</Area>
+    <Spot>Dungeon 10 Cave</Spot>
+  </Location>
+  <Location speech="acrypt 10">
+    <Area>Abel</Area>
+    <Spot>Dungeon 10 Cave</Spot>
+  </Location>
+  <Location speech="abel inn">
+    <Area>Abel</Area>
+    <Spot>Inn</Spot>
+  </Location>
+  <Location speech="abel fish">
+    <Area>Abel</Area>
+    <Spot>Fish Market</Spot>
+  </Location>
+  <Location speech="abel rest">
+    <Area>Abel</Area>
+    <Spot>Restaurant</Spot>
+  </Location>
+  <Location speech="abel restaurant">
+    <Area>Abel</Area>
+    <Spot>Restaurant</Spot>
+  </Location>
+  <Location speech="arnljot">
+    <Area>Abel</Area>
+    <Spot>Tailor</Spot>
+  </Location>
+  <Location speech="abel tai">
+    <Area>Abel</Area>
+    <Spot>Tailor</Spot>
+  </Location>
+  <Location speech="abel tailor">
+    <Area>Abel</Area>
+    <Spot>Tailor</Spot>
+  </Location>
+  <Location speech="abel goods">
+    <Area>Abel</Area>
+    <Spot>Goods Shop</Spot>
+  </Location>
+  <Location speech="steinar">
+    <Area>Abel</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="abel arm">
+    <Area>Abel</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="abel armor">
+    <Area>Abel</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="vidar">
+    <Area>Abel</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="abel weap">
+    <Area>Abel</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="abel weapon">
+    <Area>Abel</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="bodil">
+    <Area>Abel</Area>
+    <Spot>Combat Skill Master</Spot>
+  </Location>
+  <Location speech="abel fig">
+    <Area>Abel</Area>
+    <Spot>Combat Skill Master</Spot>
+  </Location>
+  <Location speech="abel fighter">
+    <Area>Abel</Area>
+    <Spot>Combat Skill Master</Spot>
+  </Location>
+  <Location speech="piet">
+    <Area>Piet</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="erika">
+    <Area>Piet</Area>
+    <Spot>Ceannlaidir Temple</Spot>
+  </Location>
+  <Location speech="ceannlaidir">
+    <Area>Piet</Area>
+    <Spot>Ceannlaidir Temple</Spot>
+  </Location>
+  <Location speech="ceannlaidir temple">
+    <Area>Piet</Area>
+    <Spot>Ceannlaidir Temple</Spot>
+  </Location>
+  <Location speech="piet bank">
+    <Area>Piet</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="jilt">
+    <Area>Piet</Area>
+    <Spot>Tailor</Spot>
+  </Location>
+  <Location speech="piet tai">
+    <Area>Piet</Area>
+    <Spot>Tailor</Spot>
+  </Location>
+  <Location speech="piet tailor">
+    <Area>Piet</Area>
+    <Spot>Tailor</Spot>
+  </Location>
+  <Location speech="pcrypt">
+    <Area>Piet</Area>
+    <Spot>Dungeon</Spot>
+  </Location>
+  <Location speech="piet dun">
+    <Area>Piet</Area>
+    <Spot>Dungeon</Spot>
+  </Location>
+  <Location speech="piet dungeon">
+    <Area>Piet</Area>
+    <Spot>Dungeon</Spot>
+  </Location>
+  <Location speech="crab">
+    <Area>Piet</Area>
+    <Spot>Dungeon</Spot>
+  </Location>
+  <Location speech="pcrypt11">
+    <Area>Piet</Area>
+    <Spot>Dungeon 11</Spot>
+  </Location>
+  <Location speech="pcrypt 11">
+    <Area>Piet</Area>
+    <Spot>Dungeon 11</Spot>
+  </Location>
+  <Location speech="gfly">
+    <Area>Piet</Area>
+    <Spot>Dungeon 11</Spot>
+  </Location>
+  <Location speech="pcrypt12">
+    <Area>Piet</Area>
+    <Spot>Dungeon 12</Spot>
+  </Location>
+  <Location speech="pcrypt 12">
+    <Area>Piet</Area>
+    <Spot>Dungeon 12</Spot>
+  </Location>
+  <Location speech="rock">
+    <Area>Piet</Area>
+    <Spot>Dungeon 12</Spot>
+  </Location>
+  <Location speech="pcrypt17">
+    <Area>Piet</Area>
+    <Spot>Dungeon 17</Spot>
+  </Location>
+  <Location speech="pcrypt 17">
+    <Area>Piet</Area>
+    <Spot>Dungeon 17</Spot>
+  </Location>
+  <Location speech="gremlin">
+    <Area>Piet</Area>
+    <Spot>Dungeon 17</Spot>
+  </Location>
+  <Location speech="piet inn">
+    <Area>Piet</Area>
+    <Spot>Inn</Spot>
+  </Location>
+  <Location speech="piet rest">
+    <Area>Piet</Area>
+    <Spot>Restaurant</Spot>
+  </Location>
+  <Location speech="piet restaurant">
+    <Area>Piet</Area>
+    <Spot>Restaurant</Spot>
+  </Location>
+  <Location speech="piet tav">
+    <Area>Piet</Area>
+    <Spot>Tavern</Spot>
+  </Location>
+  <Location speech="piet tavern">
+    <Area>Piet</Area>
+    <Spot>Tavern</Spot>
+  </Location>
+  <Location speech="leo">
+    <Area>Piet</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="piet arm">
+    <Area>Piet</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="piet armor">
+    <Area>Piet</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="gunnar">
+    <Area>Piet</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="piet weap">
+    <Area>Piet</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="piet weapon">
+    <Area>Piet</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="narve">
+    <Area>Piet</Area>
+    <Spot>White Magic Master</Spot>
+  </Location>
+  <Location speech="piet pri">
+    <Area>Piet</Area>
+    <Spot>White Magic Master</Spot>
+  </Location>
+  <Location speech="piet priest">
+    <Area>Piet</Area>
+    <Spot>White Magic Master</Spot>
+  </Location>
+  <Location speech="evania">
+    <Area>Undine</Area>
+    <Spot>Cail Temple</Spot>
+  </Location>
+  <Location speech="cail">
+    <Area>Undine</Area>
+    <Spot>Cail Temple</Spot>
+  </Location>
+  <Location speech="cail temple">
+    <Area>Undine</Area>
+    <Spot>Cail Temple</Spot>
+  </Location>
+  <Location speech="undine bank">
+    <Area>Undine</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="kiril">
+    <Area>Undine</Area>
+    <Spot>Black Magic Master</Spot>
+  </Location>
+  <Location speech="undine wiz">
+    <Area>Undine</Area>
+    <Spot>Black Magic Master</Spot>
+  </Location>
+  <Location speech="undine wizard">
+    <Area>Undine</Area>
+    <Spot>Black Magic Master</Spot>
+  </Location>
+  <Location speech="undine goods">
+    <Area>Undine</Area>
+    <Spot>Goods Shop</Spot>
+  </Location>
+  <Location speech="hali">
+    <Area>Undine</Area>
+    <Spot>Tailor</Spot>
+  </Location>
+  <Location speech="undine tai">
+    <Area>Undine</Area>
+    <Spot>Tailor</Spot>
+  </Location>
+  <Location speech="undine tailor">
+    <Area>Undine</Area>
+    <Spot>Tailor</Spot>
+  </Location>
+  <Location speech="alexios">
+    <Area>Undine</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="undine arm">
+    <Area>Undine</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="undine armor">
+    <Area>Undine</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="undine weap">
+    <Area>Undine</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="undine weapon">
+    <Area>Undine</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="ghloe">
+    <Area>Undine</Area>
+    <Spot>Tavern</Spot>
+  </Location>
+  <Location speech="undine tav">
+    <Area>Undine</Area>
+    <Spot>Tavern</Spot>
+  </Location>
+  <Location speech="undine tavern">
+    <Area>Undine</Area>
+    <Spot>Tavern</Spot>
+  </Location>
+  <Location speech="damara">
+    <Area>Undine</Area>
+    <Spot>Restaurant</Spot>
+  </Location>
+  <Location speech="undine res">
+    <Area>Undine</Area>
+    <Spot>Restaurant</Spot>
+  </Location>
+  <Location speech="undine restaurant">
+    <Area>Undine</Area>
+    <Spot>Restaurant</Spot>
+  </Location>
+    <Location speech="muisir">
+    <Area>Undine</Area>
+    <Spot>Muisir Entrance</Spot>
+  </Location>
+  <Location speech="ud field">
+    <Area>Undine</Area>
+    <Spot>Undine Field</Spot>
+  </Location>
+  <Location speech="undine field">
+    <Area>Undine</Area>
+    <Spot>Undine Field</Spot>
+  </Location>
+  <Location speech="ruc">
+    <Area>Rucesion</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="rucesion">
+    <Area>Rucesion</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="ruc bank">
+    <Area>Rucesion</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="bm">
+    <Area>Rucesion</Area>
+    <Spot>Black Market</Spot>
+  </Location>
+  <Location speech="ruc inn">
+    <Area>Rucesion</Area>
+    <Spot>Inn</Spot>
+  </Location>
+  <Location speech="ruc church">
+    <Area>Rucesion</Area>
+    <Spot>Church</Spot>
+  </Location>
+  <Location speech="baltasar">
+    <Area>Rucesion</Area>
+    <Spot>Special Skill Master</Spot>
+  </Location>
+  <Location speech="ruc rog">
+    <Area>Rucesion</Area>
+    <Spot>Special Skill Master</Spot>
+  </Location>
+  <Location speech="ruc rogue">
+    <Area>Rucesion</Area>
+    <Spot>Special Skill Master</Spot>
+  </Location>
+  <Location speech="huberto">
+    <Area>Rucesion</Area>
+    <Spot>Tailor</Spot>
+  </Location>
+  <Location speech="ruc tai">
+    <Area>Rucesion</Area>
+    <Spot>Tailor</Spot>
+  </Location>
+  <Location speech="ruc tailor">
+    <Area>Rucesion</Area>
+    <Spot>Tailor</Spot>
+  </Location>
+  <Location speech="ruc goods">
+    <Area>Rucesion</Area>
+    <Spot>Goods Shop</Spot>
+  </Location>
+  <Location speech="marcelo">
+    <Area>Rucesion</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="ruc weap">
+    <Area>Rucesion</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="ruc weapon">
+    <Area>Rucesion</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="carlos">
+    <Area>Rucesion</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="ruc arm">
+    <Area>Rucesion</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="ruc armor">
+    <Area>Rucesion</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="ereno">
+    <Area>Rucesion</Area>
+    <Spot>Churc</Spot>
+  </Location>
+  <Location speech="ruc church">
+    <Area>Rucesion</Area>
+    <Spot>Churc</Spot>
+  </Location>
+  <Location speech="gabriela">
+    <Area>Rucesion</Area>
+    <Spot>Luathas Temple</Spot>
+  </Location>
+  <Location speech="luathas">
+    <Area>Rucesion</Area>
+    <Spot>Luathas Temple</Spot>
+  </Location>
+  <Location speech="luathas temple">
+    <Area>Rucesion</Area>
+    <Spot>Luathas Temple</Spot>
+  </Location>
+  <Location speech="dub castle">
+    <Area>Rucesion</Area>
+    <Spot>Dubhaim Castle</Spot>
+  </Location>
+  <Location speech="dub castle north">
+    <Area>Rucesion</Area>
+    <Spot>Dubhaim Castle North 1-1</Spot>
+  </Location>
+  <Location speech="dub north">
+    <Area>Rucesion</Area>
+    <Spot>Dubhaim Castle North 1-1</Spot>
+  </Location>
+  <Location speech="sgrios">
+    <Area>Rucesion</Area>
+    <Spot>Sgrios Temple</Spot>
+  </Location>
+  <Location speech="greim">
+    <Area>Rucesion</Area>
+    <Spot>Sgrios Temple</Spot>
+  </Location>
+  <Location speech="tagor bank">
+    <Area>Tagor</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="tagor inn">
+    <Area>Tagor</Area>
+    <Spot>Inn</Spot>
+  </Location>
+  <Location speech="lost path">
+    <Area>Tagor</Area>
+    <Spot>Lost Path</Spot>
+  </Location>
+  <Location speech="shay">
+    <Area>Tagor</Area>
+    <Spot>Warrior Blacksmith</Spot>
+  </Location>
+  <Location speech="tagor black">
+    <Area>Tagor</Area>
+    <Spot>Warrior Blacksmith</Spot>
+  </Location>
+  <Location speech="colan">
+    <Area>Tagor</Area>
+    <Spot>Warrior Trainer</Spot>
+  </Location>
+  <Location speech="war trainer1">
+    <Area>Tagor</Area>
+    <Spot>Warrior Trainer</Spot>
+  </Location>
+  <Location speech="grouw">
+    <Area>Tagor</Area>
+    <Spot>Warrior Trainer 2</Spot>
+  </Location>
+  <Location speech="war trainer2">
+    <Area>Tagor</Area>
+    <Spot>Warrior Trainer 2</Spot>
+  </Location>
+  <Location speech="aurel">
+    <Area>Tagor</Area>
+    <Spot>Church</Spot>
+  </Location>
+  <Location speech="tagor church">
+    <Area>Tagor</Area>
+    <Spot>Church</Spot>
+  </Location>
+  <Location speech="cosmin">
+    <Area>Tagor</Area>
+    <Spot>Messenger</Spot>
+  </Location>
+  <Location speech="targor mess">
+    <Area>Tagor</Area>
+    <Spot>Messenger</Spot>
+  </Location>
+  <Location speech="tagor messenger">
+    <Area>Tagor</Area>
+    <Spot>Messenger</Spot>
+  </Location>
+  <Location speech="matei">
+    <Area>Tagor</Area>
+    <Spot>Magic Shop</Spot>
+  </Location>
+  <Location speech="tagor magic">
+    <Area>Tagor</Area>
+    <Spot>Magic Shop</Spot>
+  </Location>
+  <Location speech="petru">
+    <Area>Tagor</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="targor arm">
+    <Area>Tagor</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="tagor armor">
+    <Area>Tagor</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="stefan">
+    <Area>Tagor</Area>
+    <Spot>Rangers</Spot>
+  </Location>
+  <Location speech="rangers">
+    <Area>Tagor</Area>
+    <Spot>Rangers</Spot>
+  </Location>
+  <Location speech="nigel">
+    <Area>Tagor</Area>
+    <Spot>Empty Building</Spot>
+  </Location>
+  <Location speech="tagor empty">
+    <Area>Tagor</Area>
+    <Spot>Empty Building</Spot>
+  </Location>
+  <Location speech="ciad">
+    <Area>Tagor</Area>
+    <Spot>Empty Building</Spot>
+  </Location>
+  <Location speech="tiota">
+    <Area>Tagor</Area>
+    <Spot>Empty Building</Spot>
+  </Location>
+  <Location speech="treas">
+    <Area>Tagor</Area>
+    <Spot>Empty Building</Spot>
+  </Location>
+  <Location speech="areini">
+    <Area>Tagor</Area>
+    <Spot>Pet Store</Spot>
+  </Location>
+  <Location speech="tagor pet">
+    <Area>Tagor</Area>
+    <Spot>Pet Store</Spot>
+  </Location>
+  <Location speech="tereza">
+    <Area>Tagor</Area>
+    <Spot>Restaurant</Spot>
+  </Location>
+  <Location speech="tagor res">
+    <Area>Tagor</Area>
+    <Spot>Restaurant</Spot>
+  </Location>
+  <Location speech="tagor restaurant">
+    <Area>Tagor</Area>
+    <Spot>Restaurant</Spot>
+  </Location>
+  <Location speech="elena">
+    <Area>Tagor</Area>
+    <Spot>Tavern</Spot>
+  </Location>
+  <Location speech="tagor tav">
+    <Area>Tagor</Area>
+    <Spot>Tavern</Spot>
+  </Location>
+  <Location speech="tagor tavern">
+    <Area>Eingren Manor</Area>
+    <Spot></Spot>
+  </Location>
+  <Location speech="ein">
+    <Area>Eingren Manor</Area>
+    <Spot></Spot>
+  </Location>
+  <Location speech="eingren">
+    <Area>Eingren Manor</Area>
+    <Spot></Spot>
+  </Location>
+  <Location speech="manor">
+    <Area>Eingren Manor</Area>
+    <Spot></Spot>
+  </Location>
+  <Location speech="arena">
+    <Area>Arena</Area>
+    <Spot>Coliseam Arena</Spot>
+  </Location>
+  <Location speech="arena ent">
+    <Area>Arena</Area>
+    <Spot>Coliseam Arena</Spot>
+  </Location>
+  <Location speech="arena entrance">
+    <Area>Arena</Area>
+    <Spot>Coliseam Arena</Spot>
+  </Location>
+  <Location speech="hosted">
+    <Area>Arena</Area>
+    <Spot>Coliseam Gauntlet</Spot>
+  </Location>
+  <Location speech="team arena">
+    <Area>Arena</Area>
+    <Spot>Team Arena Lobby</Spot>
+  </Location>
+  <Location speech="ba">
+    <Area>Arena</Area>
+    <Spot>Balanced Arena</Spot>
+  </Location>
+  <Location speech="balanced">
+    <Area>Arena</Area>
+    <Spot>Balanced Arena</Spot>
+  </Location>
+  <Location speech="balanced arena">
+    <Area>Arena</Area>
+    <Spot>Balanced Arena</Spot>
+  </Location>
+  <Location speech="pravat">
+    <Area>Pravat</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="pc">
+    <Area>Pravat</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="pc west">
+    <Area>Pravat</Area>
+    <Spot>West Entrance</Spot>
+  </Location>
+  <Location speech="bahadir">
+    <Area>Pravat</Area>
+    <Spot>West Entrance</Spot>
+  </Location>
+  <Location speech="ozkan">
+    <Area>Pravat</Area>
+    <Spot>West Entrance</Spot>
+  </Location>
+  <Location speech="pc gob">
+    <Area>Pravat</Area>
+    <Spot>West Entrance</Spot>
+  </Location>
+  <Location speech="pc heart">
+    <Area>Pravat</Area>
+    <Spot>Heart</Spot>
+  </Location>
+  <Location speech="pricha">
+    <Area>Pravat</Area>
+    <Spot>Heart</Spot>
+  </Location>
+  <Location speech="phailin">
+    <Area>Pravat</Area>
+    <Spot>Heart</Spot>
+  </Location>
+  <Location speech="pc grim">
+    <Area>Pravat</Area>
+    <Spot>Heart</Spot>
+  </Location>
+  <Location speech="cross">
+    <Area>Pravat</Area>
+    <Spot>Cross</Spot>
+  </Location>
+  <Location speech="blackstar ent">
+    <Area>Blackstar Village</Area>
+    <Spot>Blackstar Village Ent</Spot>
+  </Location>
+  <Location speech="blackstar">
+    <Area>Blackstar Village</Area>
+    <Spot>Blackstar Crypt Entrance</Spot>
+  </Location>
+  <Location speech="blackstar arm">
+    <Area>Blackstar Village</Area>
+    <Spot>Blackstar Village Armory</Spot>
+  </Location>
+  <Location speech="blackstar armor">
+    <Area>Blackstar Village</Area>
+    <Spot>Blackstar Village Armory</Spot>
+  </Location>
+  <Location speech="blackstar bank">
+    <Area>Blackstar Village</Area>
+    <Spot>Blackstar Village Bank</Spot>
+  </Location>
+  <Location speech="blackstar inn">
+    <Area>Blackstar Village</Area>
+    <Spot>Blackstar Village Inn</Spot>
+  </Location>
+  <Location speech="blackstar church">
+    <Area>Blackstar Village</Area>
+    <Spot>Blackstar Church</Spot>
+  </Location>
+  <Location speech="blackstar research">
+    <Area>Blackstar Village</Area>
+    <Spot>Blackstar Village Research</Spot>
+  </Location>
+  <Location speech="blackstar 5">
+    <Area>Blackstar Village</Area>
+    <Spot>Blackstar Crypt 5</Spot>
+  </Location>
+  <Location speech="blackstar 11">
+    <Area>Blackstar Village</Area>
+    <Spot>Blackstar Crypt 11</Spot>
+  </Location>
+  <Location speech="blackstar 18">
+    <Area>Blackstar Village</Area>
+    <Spot>Blackstar Crypt 18</Spot>
+  </Location>
+  <Location speech="oct">
+    <Area>Astrid</Area>
+    <Spot>Octagram</Spot>
+  </Location>
+  <Location speech="shant">
+    <Area>Astrid</Area>
+    <Spot>North-West</Spot>
+  </Location>
+  <Location speech="astrid nw">
+    <Area>Astrid</Area>
+    <Spot>North-West</Spot>
+  </Location>
+  <Location speech="zeroun">
+    <Area>Astrid</Area>
+    <Spot>North</Spot>
+  </Location>
+  <Location speech="astrid n">
+    <Area>Astrid</Area>
+    <Spot>North</Spot>
+  </Location>
+  <Location speech="ss">
+    <Area>Sapphire Stream</Area>
+    <Spot>Cedar Grove</Spot>
+  </Location>
+  <Location speech="green">
+    <Area>Sapphire Stream</Area>
+    <Spot>Green Grove</Spot>
+  </Location>
+  <Location speech="blue">
+    <Area>Sapphire Stream</Area>
+    <Spot>Blue Grove</Spot>
+  </Location>
+  <Location speech="yellow">
+    <Area>Sapphire Stream</Area>
+    <Spot>Yellow Grove</Spot>
+  </Location>
+  <Location speech="purple">
+    <Area>Sapphire Stream</Area>
+    <Spot>Purple Grove</Spot>
+  </Location>
+  <Location speech="brown">
+    <Area>Sapphire Stream</Area>
+    <Spot>Brown Grove</Spot>
+  </Location>
+  <Location speech="red">
+    <Area>Sapphire Stream</Area>
+    <Spot>Red Grove</Spot>
+  </Location>
+  <Location speech="black">
+    <Area>Sapphire Stream</Area>
+    <Spot>Black Grove</Spot>
+  </Location>
+  <Location speech="vivianne">
+    <Area>Suomi</Area>
+    <Spot>Deoch Temple</Spot>
+  </Location>
+  <Location speech="deoch">
+    <Area>Suomi</Area>
+    <Spot>Deoch Temple</Spot>
+  </Location>
+  <Location speech="deoch temple">
+    <Area>Suomi</Area>
+    <Spot>Deoch Temple</Spot>
+  </Location>
+  <Location speech="suomi inn">
+    <Area>Suomi</Area>
+    <Spot>Inn</Spot>
+  </Location>
+  <Location speech="torb">
+    <Area>Suomi</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="suomi weap">
+    <Area>Suomi</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="suomi weapon">
+    <Area>Suomi</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="fisk">
+    <Area>Suomi</Area>
+    <Spot>Special Skill Master</Spot>
+  </Location>
+  <Location speech="suomi rog">
+    <Area>Suomi</Area>
+    <Spot>Special Skill Master</Spot>
+  </Location>
+  <Location speech="suomi rogue">
+    <Area>Suomi</Area>
+    <Spot>Special Skill Master</Spot>
+  </Location>
+  <Location speech="valdemar">
+    <Area>Suomi</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="suomi arm">
+    <Area>Suomi</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="suomi armor">
+    <Area>Suomi</Area>
+    <Spot>Armor Shop</Spot>
+  </Location>
+  <Location speech="bertil">
+    <Area>Suomi</Area>
+    <Spot>White Magic Master</Spot>
+  </Location>
+  <Location speech="suomi pri">
+    <Area>Suomi</Area>
+    <Spot>White Magic Master</Spot>
+  </Location>
+  <Location speech="suomi priest">
+    <Area>Suomi</Area>
+    <Spot>White Magic Master</Spot>
+  </Location>
+  <Location speech="hadrian">
+    <Area>Suomi</Area>
+    <Spot>Black Magic Master</Spot>
+  </Location>
+  <Location speech="suomi wiz">
+    <Area>Suomi</Area>
+    <Spot>Black Magic Master</Spot>
+  </Location>
+  <Location speech="suomi wizard">
+    <Area>Suomi</Area>
+    <Spot>Black Magic Master</Spot>
+  </Location>
+  <Location speech="berg">
+    <Area>Suomi</Area>
+    <Spot>Combat Skill Master</Spot>
+  </Location>
+  <Location speech="suomi fig">
+    <Area>Suomi</Area>
+    <Spot>Combat Skill Master</Spot>
+  </Location>
+  <Location speech="suomi fighter">
+    <Area>Suomi</Area>
+    <Spot>Combat Skill Master</Spot>
+  </Location>
+  <Location speech="goran">
+    <Area>Suomi</Area>
+    <Spot>Cherry Farmer</Spot>
+  </Location>
+  <Location speech="cherry">
+    <Area>Suomi</Area>
+    <Spot>Cherry Farmer</Spot>
+  </Location>
+  <Location speech="alvar">
+    <Area>Suomi</Area>
+    <Spot>Grape Farmer</Spot>
+  </Location>
+  <Location speech="grape">
+    <Area>Suomi</Area>
+    <Spot>Grape Farmer</Spot>
+  </Location>
+  <Location speech="gudny">
+    <Area>Suomi</Area>
+    <Spot>Restaurant</Spot>
+  </Location>
+  <Location speech="suomi res">
+    <Area>Suomi</Area>
+    <Spot>Restaurant</Spot>
+  </Location>
+  <Location speech="suomi restaurant">
+    <Area>Suomi</Area>
+    <Spot>Restaurant</Spot>
+  </Location>
+  <Location speech="viveka">
+    <Area>Suomi</Area>
+    <Spot>Tavern</Spot>
+  </Location>
+  <Location speech="suomi tav">
+    <Area>Suomi</Area>
+    <Spot>Tavern</Spot>
+  </Location>
+  <Location speech="suomi tavern">
+    <Area>Suomi</Area>
+    <Spot>Tavern</Spot>
+  </Location>
+  <Location speech="suomi the">
+    <Area>Suomi</Area>
+    <Spot>Garmonde Theatre</Spot>
+  </Location>
+  <Location speech="suomi theatre">
+    <Area>Suomi</Area>
+    <Spot>Garmonde Theatre</Spot>
+  </Location>
+  <Location speech="camille">
+    <Area>Suomi</Area>
+    <Spot>Gramail Temple</Spot>
+  </Location>
+  <Location speech="gramail">
+    <Area>Loures</Area>
+    <Spot>Gramail Temple</Spot>
+  </Location>
+  <Location speech="gramail temple">
+    <Area>Loures</Area>
+    <Spot>Gramail Temple</Spot>
+  </Location>
+  <Location speech="soccer">
+    <Area>Loures</Area>
+    <Spot>Soccer Field</Spot>
+  </Location>
+  <Location speech="ronaldinho">
+    <Area>Loures</Area>
+    <Spot>Soccer Field</Spot>
+  </Location>
+  <Location speech="aite">
+    <Area>Loures</Area>
+    <Spot>Dungeon (aite)</Spot>
+  </Location>
+  <Location speech="darkmaze">
+    <Area>Loures</Area>
+    <Spot>Dark Maze</Spot>
+  </Location>
+  <Location speech="dark maze">
+    <Area>Loures</Area>
+    <Spot>Dark Maze</Spot>
+  </Location>
+  <Location speech="maze">
+    <Area>Loures</Area>
+    <Spot>Maze</Spot>
+  </Location>
+  <Location speech="throne">
+    <Area>Loures</Area>
+    <Spot>Throne Room</Spot>
+  </Location>
+  <Location speech="library">
+    <Area>Loures</Area>
+    <Spot>Library</Spot>
+  </Location>
+  <Location speech="loures lib">
+    <Area>Loures</Area>
+    <Spot>Library</Spot>
+  </Location>
+  <Location speech="loures library">
+    <Area>Loures</Area>
+    <Spot>Library</Spot>
+  </Location>
+  <Location speech="jean">
+    <Area>Loures</Area>
+    <Spot>Jean</Spot>
+  </Location>
+  <Location speech="castle">
+    <Area>Loures</Area>
+    <Spot>Recovery Camp</Spot>
+  </Location>
+  <Location speech="recovery">
+    <Area>Loures</Area>
+    <Spot>Recovery Camp</Spot>
+  </Location>
+  <Location speech="blob">
+    <Area>Loures</Area>
+    <Spot>Canal Key 2 (blob)</Spot>
+  </Location>
+  <Location speech="skrull">
+    <Area>Loures</Area>
+    <Spot>Canal Key 1 (skrull)</Spot>
+  </Location>
+  <Location speech="karl">
+    <Area>Karlopos</Area>
+    <Spot></Spot>
+  </Location>
+  <Location speech="karlopos">
+    <Area>Karlopos</Area>
+    <Spot></Spot>
+  </Location>
+  <Location speech="para">
+    <Area>Lynith</Area>
+    <Spot>Paradise</Spot>
+  </Location>
+  <Location speech="paradise">
+    <Area>Lynith</Area>
+    <Spot>Paradise</Spot>
+  </Location>
+  <Location speech="hg">
+    <Area>Aman Jungle</Area>
+    <Spot>HG ent</Spot>
+  </Location>
+  <Location speech="vort">
+    <Area>Aman Jungle</Area>
+    <Spot>Vortigern</Spot>
+  </Location>
+  <Location speech="vortigern">
+    <Area>Aman Jungle</Area>
+    <Spot>Vortigern</Spot>
+  </Location>
+  <Location speech="ori">
+    <Area>Aman Jungle</Area>
+    <Spot>Oriana</Spot>
+  </Location>
+  <Location speech="oriana">
+    <Area>Aman Jungle</Area>
+    <Spot>Oriana</Spot>
+  </Location>
+  <Location speech="jov">
+    <Area>Aman Jungle</Area>
+    <Spot>Jovino</Spot>
+  </Location>
+  <Location speech="jovino">
+    <Area>Aman Jungle</Area>
+    <Spot>Jovino</Spot>
+  </Location>
+  <Location speech="glen">
+    <Area>Aman Jungle</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="hg bank">
+    <Area>Aman Jungle</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="hgbank">
+    <Area>Aman Jungle</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="hg end">
+    <Area>Aman Jungle</Area>
+    <Spot>HG end</Spot>
+  </Location>
+  <Location speech="aj6">
+    <Area>Aman Jungle</Area>
+    <Spot>AJ 6</Spot>
+  </Location>
+  <Location speech="aj 6">
+    <Area>Aman Jungle</Area>
+    <Spot>AJ 6</Spot>
+  </Location>
+  <Location speech="den">
+    <Area>Aman Jungle</Area>
+    <Spot>AJ 7 End (dendrons)</Spot>
+  </Location>
+  <Location speech="aj7">
+    <Area>Aman Jungle</Area>
+    <Spot>AJ 7 End (dendrons)</Spot>
+  </Location>
+  <Location speech="aj 7">
+    <Area>Aman Jungle</Area>
+    <Spot>AJ 7 End (dendrons)</Spot>
+  </Location>
+  <Location speech="aj8">
+    <Area>Aman Jungle</Area>
+    <Spot>AJ 7 End (dendrons)</Spot>
+  </Location>
+  <Location speech="aj 8">
+    <Area>Aman Jungle</Area>
+    <Spot>AJ 7 End (dendrons)</Spot>
+  </Location>
+  <Location speech="cc">
+    <Area>Aman Jungle</Area>
+    <Spot>CC ent</Spot>
+  </Location>
+  <Location speech="cc7">
+    <Area>Aman Jungle</Area>
+    <Spot>CC7</Spot>
+  </Location>
+  <Location speech="cc 7">
+    <Area>Aman Jungle</Area>
+    <Spot>CC7</Spot>
+  </Location>
+  <Location speech="ccend">
+    <Area>Aman Jungle</Area>
+    <Spot>CC end</Spot>
+  </Location>
+  <Location speech="cc end">
+    <Area>Aman Jungle</Area>
+    <Spot>CC end</Spot>
+  </Location>
+  <Location speech="yt">
+    <Area>Aman Jungle</Area>
+    <Spot>YT ent</Spot>
+  </Location>
+  <Location speech="yt3">
+    <Area>Aman Jungle</Area>
+    <Spot>YT 3</Spot>
+  </Location>
+  <Location speech="yt 3">
+    <Area>Aman Jungle</Area>
+    <Spot>YT 3</Spot>
+  </Location>
+  <Location speech="yt5">
+    <Area>Aman Jungle</Area>
+    <Spot>YT 5</Spot>
+  </Location>
+  <Location speech="yt 5">
+    <Area>Aman Jungle</Area>
+    <Spot>YT 5</Spot>
+  </Location>
+  <Location speech="yt6">
+    <Area>Aman Jungle</Area>
+    <Spot>YT 6</Spot>
+  </Location>
+  <Location speech="yt 6">
+    <Area>Aman Jungle</Area>
+    <Spot>YT 6</Spot>
+  </Location>
+  <Location speech="yt11">
+    <Area>Aman Jungle</Area>
+    <Spot>YT 11</Spot>
+  </Location>
+  <Location speech="yt 11">
+    <Area>Aman Jungle</Area>
+    <Spot>YT 11</Spot>
+  </Location>
+  <Location speech="yt12">
+    <Area>Aman Jungle</Area>
+    <Spot>YT 12</Spot>
+  </Location>
+  <Location speech="yt 12">
+    <Area>Aman Jungle</Area>
+    <Spot>YT 12</Spot>
+  </Location>
+  <Location speech="yt15">
+    <Area>Aman Jungle</Area>
+    <Spot>YT 15</Spot>
+  </Location>
+  <Location speech="yt 15">
+    <Area>Aman Jungle</Area>
+    <Spot>YT 15</Spot>
+  </Location>
+  <Location speech="vines">
+    <Area>Aman Jungle</Area>
+    <Spot>Yellow Vines</Spot>
+  </Location>
+  <Location speech="ytboss">
+    <Area>Aman Jungle</Area>
+    <Spot>YT Boss</Spot>
+  </Location>
+  <Location speech="yt boss">
+    <Area>Aman Jungle</Area>
+    <Spot>YT Boss</Spot>
+  </Location>
+  <Location speech="ajent">
+    <Area>Aman Jungle</Area>
+    <Spot>AJ 0 End</Spot>
+  </Location>
+  <Location speech="aj ent">
+    <Area>Aman Jungle</Area>
+    <Spot>AJ 0 End</Spot>
+  </Location>
+  <Location speech="aj0">
+    <Area>Aman Jungle</Area>
+    <Spot>AJ 0 End</Spot>
+  </Location>
+  <Location speech="aj 0">
+    <Area>Aman Jungle</Area>
+    <Spot>AJ 0 End</Spot>
+  </Location>
+  <Location speech="andor">
+    <Area>Andor</Area>
+    <Spot>Andor Lobby</Spot>
+  </Location>
+  <Location speech="andor lobby">
+    <Area>Andor</Area>
+    <Spot>Andor Lobby</Spot>
+  </Location>
+  <Location speech="andor ent">
+    <Area>Andor</Area>
+    <Spot>Andor Lobby</Spot>
+  </Location>
+  <Location speech="andor entrance">
+    <Area>Andor</Area>
+    <Spot>Andor Lobby</Spot>
+  </Location>
+  <Location speech="andor1">
+    <Area>Andor</Area>
+    <Spot>Andor Lobby</Spot>
+  </Location>
+  <Location speech="andor 1">
+    <Area>Andor</Area>
+    <Spot>Andor Lobby</Spot>
+  </Location>
+  <Location speech="andor80">
+    <Area>Andor</Area>
+    <Spot>Andor 80</Spot>
+  </Location>
+  <Location speech="andor 80">
+    <Area>Andor</Area>
+    <Spot>Andor 80</Spot>
+  </Location>
+  <Location speech="andor140">
+    <Area>Andor</Area>
+    <Spot>Andor 140</Spot>
+  </Location>
+  <Location speech="andor 140">
+    <Area>Andor</Area>
+    <Spot>Andor 140</Spot>
+  </Location>
+  <Location speech="chaos">
+    <Area>Chaos</Area>
+    <Spot>Chaos ent</Spot>
+  </Location>
+  <Location speech="chaos ent">
+    <Area>Chaos</Area>
+    <Spot>Chaos ent</Spot>
+  </Location>
+  <Location speech="chaos entrance">
+    <Area>Chaos</Area>
+    <Spot>Chaos ent</Spot>
+  </Location>
+  <Location speech="chaos1">
+    <Area>Chaos</Area>
+    <Spot>Chaos ent</Spot>
+  </Location>
+  <Location speech="chaos 1">
+    <Area>Chaos</Area>
+    <Spot>Chaos ent</Spot>
+  </Location>
+  <Location speech="chaos3">
+    <Area>Chaos</Area>
+    <Spot>Chaos 3 exit</Spot>
+  </Location>
+  <Location speech="chaos 3">
+    <Area>Chaos</Area>
+    <Spot>Chaos 3 exit</Spot>
+  </Location>
+  <Location speech="chaos12">
+    <Area>Chaos</Area>
+    <Spot>Chaos 12 exit</Spot>
+  </Location>
+  <Location speech="chaos 12">
+    <Area>Chaos</Area>
+    <Spot>Chaos 12 exit</Spot>
+  </Location>
+  <Location speech="chaos25">
+    <Area>Chaos</Area>
+    <Spot>Chaos 25 side</Spot>
+  </Location>
+  <Location speech="chaos 25">
+    <Area>Chaos</Area>
+    <Spot>Chaos 25 side</Spot>
+  </Location>
+  <Location speech="chaos27">
+    <Area>Chaos</Area>
+    <Spot>Chaos 25 side</Spot>
+  </Location>
+  <Location speech="chaos 27">
+    <Area>Chaos</Area>
+    <Spot>Chaos 25 side</Spot>
+  </Location>
+  <Location speech="chaos34">
+    <Area>Chaos</Area>
+    <Spot>Chaos 34</Spot>
+  </Location>
+  <Location speech="chaos 34">
+    <Area>Chaos</Area>
+    <Spot>Chaos 34</Spot>
+  </Location>
+  <Location speech="chaos34end">
+    <Area>Chaos</Area>
+    <Spot>Chaos 34 End</Spot>
+  </Location>
+  <Location speech="chaos 34 end">
+    <Area>Chaos</Area>
+    <Spot>Chaos 34 End</Spot>
+  </Location>
+  <Location speech="chads">
+    <Area>Chaos</Area>
+    <Spot>Chadul's Realm 1</Spot>
+  </Location>
+  <Location speech="chads1">
+    <Area>Chaos</Area>
+    <Spot>Chadul's Realm 1</Spot>
+  </Location>
+  <Location speech="chads 1">
+    <Area>Chaos</Area>
+    <Spot>Chadul's Realm 1</Spot>
+  </Location>
+  <Location speech="chads12">
+    <Area>Chaos</Area>
+    <Spot>Chadul's Realm 12</Spot>
+  </Location>
+  <Location speech="chads 12">
+    <Area>Chaos</Area>
+    <Spot>Chadul's Realm 12</Spot>
+  </Location>
+  <Location speech="invasion">
+    <Area>Chaos</Area>
+    <Spot>Chadul Army Invasion</Spot>
+  </Location>
+  <Location speech="meh">
+    <Area>Mehadi</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="bhrigus">
+    <Area>Mehadi</Area>
+    <Spot>Bhrigus</Spot>
+  </Location>
+  <Location speech="chandra">
+    <Area>Mehadi</Area>
+    <Spot>Chandra</Spot>
+  </Location>
+  <Location speech="flower">
+    <Area>Mehadi</Area>
+    <Spot>Flower</Spot>
+  </Location>
+  <Location speech="count">
+    <Area>Count</Area>
+    <Spot></Spot>
+  </Location>
+  <Location speech="cr">
+    <Area>Cthonic Remains</Area>
+    <Spot>CR 1</Spot>
+  </Location>
+  <Location speech="cr1">
+    <Area>Cthonic Remains</Area>
+    <Spot>CR 1</Spot>
+  </Location>
+  <Location speech="cr 1">
+    <Area>Cthonic Remains</Area>
+    <Spot>CR 1</Spot>
+  </Location>
+  <Location speech="cr31">
+    <Area>Cthonic Remains</Area>
+    <Spot>CR 31</Spot>
+  </Location>
+  <Location speech="cr 31">
+    <Area>Cthonic Remains</Area>
+    <Spot>CR 31</Spot>
+  </Location>
+  <Location speech="mtg">
+    <Area>Mount Gigaran</Area>
+    <Spot>Mtg 1</Spot>
+  </Location>
+  <Location speech="tauren">
+    <Area>Mount Gigaran</Area>
+    <Spot>Tauren</Spot>
+  </Location>
+  <Location speech="mtg10">
+    <Area>Mount Gigaran</Area>
+    <Spot>Mtg 10</Spot>
+  </Location>
+  <Location speech="mtg 10">
+    <Area>Mount Gigaran</Area>
+    <Spot>Mtg 10</Spot>
+  </Location>
+  <Location speech="mtg13">
+    <Area>Mount Gigaran</Area>
+    <Spot>Mtg 13</Spot>
+  </Location>
+  <Location speech="mtg 13">
+    <Area>Mount Gigaran</Area>
+    <Spot>Mtg 13</Spot>
+  </Location>
+  <Location speech="mtg18">
+    <Area>Mount Gigaran</Area>
+    <Spot>Mtg 18 (belt)</Spot>
+  </Location>
+  <Location speech="mtg 18">
+    <Area>Mount Gigaran</Area>
+    <Spot>Mtg 18 (belt)</Spot>
+  </Location>
+  <Location speech="mtg25">
+    <Area>Mount Gigaran</Area>
+    <Spot>Mtg 25</Spot>
+  </Location>
+  <Location speech="mtg 25">
+    <Area>Mount Gigaran</Area>
+    <Spot>Mtg 25</Spot>
+  </Location>
+  <Location speech="mtg28">
+    <Area>Mount Gigaran</Area>
+    <Spot>Mtg 28</Spot>
+  </Location>
+  <Location speech="mtg 28">
+    <Area>Mount Gigaran</Area>
+    <Spot>Mtg 28</Spot>
+  </Location>
+  <Location speech="mtg31">
+    <Area>Mount Gigaran</Area>
+    <Spot>Mtg 31</Spot>
+  </Location>
+  <Location speech="mtg 31">
+    <Area>Mount Gigaran</Area>
+    <Spot>Mtg 31</Spot>
+  </Location>
+  <Location speech="horn">
+    <Area>Mount Gigaran</Area>
+    <Spot>tauren horn</Spot>
+  </Location>
+  <Location speech="nose">
+    <Area>Mount Gigaran</Area>
+    <Spot>tauren nose ring</Spot>
+  </Location>
+  <Location speech="sw">
+    <Area>Shinewood</Area>
+    <Spot>Shinewood Entrance</Spot>
+  </Location>
+  <Location speech="sw ent">
+    <Area>Shinewood</Area>
+    <Spot>Shinewood Entrance</Spot>
+  </Location>
+  <Location speech="sw entrance">
+    <Area>Shinewood</Area>
+    <Spot>Shinewood Entrance</Spot>
+  </Location>
+  <Location speech="sw8">
+    <Area>Shinewood</Area>
+    <Spot>SW 8 (DSS)</Spot>
+  </Location>
+  <Location speech="sw 8">
+    <Area>Shinewood</Area>
+    <Spot>SW 8 (DSS)</Spot>
+  </Location>
+  <Location speech="sw11">
+    <Area>Shinewood</Area>
+    <Spot>SW 11 Fae</Spot>
+  </Location>
+  <Location speech="sw 11">
+    <Area>Shinewood</Area>
+    <Spot>SW 11 Fae</Spot>
+  </Location>
+  <Location speech="sw12">
+    <Area>Shinewood</Area>
+    <Spot>SW 12</Spot>
+  </Location>
+  <Location speech="sw 12">
+    <Area>Shinewood</Area>
+    <Spot>SW 12</Spot>
+  </Location>
+  <Location speech="sw17">
+    <Area>Shinewood</Area>
+    <Spot>SW 17 (hut)</Spot>
+  </Location>
+  <Location speech="sw 17">
+    <Area>Shinewood</Area>
+    <Spot>SW 17 (hut)</Spot>
+  </Location>
+  <Location speech="sw22">
+    <Area>Shinewood</Area>
+    <Spot>SW 22</Spot>
+  </Location>
+  <Location speech="sw 22">
+    <Area>Shinewood</Area>
+    <Spot>SW 22</Spot>
+  </Location>
+  <Location speech="sw30">
+    <Area>Shinewood</Area>
+    <Spot>SW 30 (hut)</Spot>
+  </Location>
+  <Location speech="sw 30">
+    <Area>Shinewood</Area>
+    <Spot>SW 30 (hut)</Spot>
+  </Location>
+  <Location speech="sw36">
+    <Area>Shinewood</Area>
+    <Spot>SW 36</Spot>
+  </Location>
+  <Location speech="sw 36">
+    <Area>Shinewood</Area>
+    <Spot>SW 36</Spot>
+  </Location>
+  <Location speech="sw37">
+    <Area>Shinewood</Area>
+    <Spot>SW 37</Spot>
+  </Location>
+  <Location speech="sw 37">
+    <Area>Shinewood</Area>
+    <Spot>SW 37</Spot>
+  </Location>
+  <Location speech="sw38">
+    <Area>Shinewood</Area>
+    <Spot>SW 38</Spot>
+  </Location>
+  <Location speech="sw 38">
+    <Area>Shinewood</Area>
+    <Spot>SW 38</Spot>
+  </Location>
+  <Location speech="sw40">
+    <Area>Shinewood</Area>
+    <Spot>SW 40</Spot>
+  </Location>
+  <Location speech="sw 40">
+    <Area>Shinewood</Area>
+    <Spot>SW 40</Spot>
+  </Location>
+  <Location speech="sw41">
+    <Area>Shinewood</Area>
+    <Spot>SW 41</Spot>
+  </Location>
+  <Location speech="sw 41">
+    <Area>Shinewood</Area>
+    <Spot>SW 41</Spot>
+  </Location>
+  <Location speech="sw42">
+    <Area>Shinewood</Area>
+    <Spot>SW 42</Spot>
+  </Location>
+  <Location speech="sw 42">
+    <Area>Shinewood</Area>
+    <Spot>SW 42</Spot>
+  </Location>
+  <Location speech="sw43">
+    <Area>Shinewood</Area>
+    <Spot>SW 43</Spot>
+  </Location>
+  <Location speech="sw 43">
+    <Area>Shinewood</Area>
+    <Spot>SW 43</Spot>
+  </Location>
+  <Location speech="fount">
+    <Area>Nobis</Area>
+    <Spot>Oren Fountain</Spot>
+  </Location>
+  <Location speech="oren fount">
+    <Area>Nobis</Area>
+    <Spot>Oren Fountain</Spot>
+  </Location>
+  <Location speech="oren fountain">
+    <Area>Nobis</Area>
+    <Spot>Oren Fountain</Spot>
+  </Location>
+  <Location speech="wailen">
+    <Area>Nobis</Area>
+    <Spot>Oren Island Shop0</Spot>
+  </Location>
+  <Location speech="oren shop">
+    <Area>Nobis</Area>
+    <Spot>Oren Island Shop0</Spot>
+  </Location>
+  <Location speech="balsama">
+    <Area>Nobis</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="ceres">
+    <Area>Nobis</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="oren bank">
+    <Area>Nobis</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="narducio">
+    <Area>Nobis</Area>
+    <Spot>Oren Island Armor Shoppe</Spot>
+  </Location>
+  <Location speech="ticio">
+    <Area>Nobis</Area>
+    <Spot>Oren Island Armor Shoppe</Spot>
+  </Location>
+  <Location speech="oren arm">
+    <Area>Nobis</Area>
+    <Spot>Oren Island Armor Shoppe</Spot>
+  </Location>
+  <Location speech="oren armor">
+    <Area>Nobis</Area>
+    <Spot>Oren Island Armor Shoppe</Spot>
+  </Location>
+  <Location speech="octavio">
+    <Area>Nobis</Area>
+    <Spot>Octavio's Armory</Spot>
+  </Location>
+  <Location speech="giotto">
+    <Area>Nobis</Area>
+    <Spot>Octavio's Armory</Spot>
+  </Location>
+  <Location speech="oct arm">
+    <Area>Nobis</Area>
+    <Spot>Octavio's Armory</Spot>
+  </Location>
+  <Location speech="reto">
+    <Area>Nobis</Area>
+    <Spot>Oren Island Magic Shop1</Spot>
+  </Location>
+  <Location speech="oren magic">
+    <Area>Nobis</Area>
+    <Spot>Oren Island Magic Shop1</Spot>
+  </Location>
+  <Location speech="alane">
+    <Area>Nobis</Area>
+    <Spot>Oren Island Jewelry Shop</Spot>
+  </Location>
+  <Location speech="oren jew">
+    <Area>Nobis</Area>
+    <Spot>Oren Island Jewelry Shop</Spot>
+  </Location>
+  <Location speech="oren jewelry">
+    <Area>Nobis</Area>
+    <Spot>Oren Island Jewelry Shop</Spot>
+  </Location>
+  <Location speech="jung">
+    <Area>Nobis</Area>
+    <Spot>Jungle ent</Spot>
+  </Location>
+  <Location speech="orenjun">
+    <Area>Nobis</Area>
+    <Spot>Jungle ent</Spot>
+  </Location>
+  <Location speech="orenjungle">
+    <Area>Nobis</Area>
+    <Spot>Jungle ent</Spot>
+  </Location>
+  <Location speech="oren jun">
+    <Area>Nobis</Area>
+    <Spot>Jungle ent</Spot>
+  </Location>
+  <Location speech="oren jungle">
+    <Area>Nobis</Area>
+    <Spot>Jungle ent</Spot>
+  </Location>
+  <Location speech="tower">
+    <Area>Nobis</Area>
+    <Spot>Tower Maze</Spot>
+  </Location>
+  <Location speech="sham ent">
+    <Area>Nobis</Area>
+    <Spot>Shamensyth ent</Spot>
+  </Location>
+  <Location speech="shamen">
+    <Area>Nobis</Area>
+    <Spot>Shamensyth</Spot>
+  </Location>
+  <Location speech="top b">
+    <Area>Nobis</Area>
+    <Spot>Top Blazing Wand</Spot>
+  </Location>
+  <Location speech="top blazing">
+    <Area>Nobis</Area>
+    <Spot>Top Blazing Wand</Spot>
+  </Location>
+  <Location speech="bottom b">
+    <Area>Nobis</Area>
+    <Spot>Bottom Blazing Wand</Spot>
+  </Location>
+  <Location speech="bottom blazing">
+    <Area>Nobis</Area>
+    <Spot>Bottom Blazing Wand</Spot>
+  </Location>
+  <Location speech="nob">
+    <Area>Nobis</Area>
+    <Spot>Nobis ent</Spot>
+  </Location>
+  <Location speech="nobis">
+    <Area>Nobis</Area>
+    <Spot>Nobis ent</Spot>
+  </Location>
+  <Location speech="medu">
+    <Area>Nobis</Area>
+    <Spot>Medusa</Spot>
+  </Location>
+  <Location speech="medusa">
+    <Area>Nobis</Area>
+    <Spot>Medusa</Spot>
+  </Location>
+  <Location speech="nulonna">
+    <Area>Asilon</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="asilon bank">
+    <Area>Asilon</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="braishi">
+    <Area>Asilon</Area>
+    <Spot>Store</Spot>
+  </Location>
+  <Location speech="asilon pot">
+    <Area>Asilon</Area>
+    <Spot>Store</Spot>
+  </Location>
+  <Location speech="asilon potions">
+    <Area>Asilon</Area>
+    <Spot>Store</Spot>
+  </Location>
+  <Location speech="asilon sto">
+    <Area>Asilon</Area>
+    <Spot>Store</Spot>
+  </Location>
+  <Location speech="asilon store">
+    <Area>Asilon</Area>
+    <Spot>Store</Spot>
+  </Location>
+  <Location speech="akum">
+    <Area>Asilon</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="asilon weap">
+    <Area>Asilon</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="asilon weapon">
+    <Area>Asilon</Area>
+    <Spot>Weapon Shop</Spot>
+  </Location>
+  <Location speech="plam">
+    <Area>Plamit Village</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="plamit">
+    <Area>Plamit Village</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="plam ent">
+    <Area>Plamit Village</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="suton">
+    <Area>Plamit Village</Area>
+    <Spot>Potion Shop</Spot>
+  </Location>
+  <Location speech="plam pot">
+    <Area>Plamit Village</Area>
+    <Spot>Potion Shop</Spot>
+  </Location>
+  <Location speech="plamit pot">
+    <Area>Plamit Village</Area>
+    <Spot>Potion Shop</Spot>
+  </Location>
+  <Location speech="gisaem">
+    <Area>Plamit Village</Area>
+    <Spot>Research</Spot>
+  </Location>
+  <Location speech="plam research">
+    <Area>Plamit Village</Area>
+    <Spot>Research</Spot>
+  </Location>
+  <Location speech="plamit research">
+    <Area>Plamit Village</Area>
+    <Spot>Research</Spot>
+  </Location>
+  <Location speech="zowell">
+    <Area>Plamit Village</Area>
+    <Spot>Armory</Spot>
+  </Location>
+  <Location speech="plam arm">
+    <Area>Plamit Village</Area>
+    <Spot>Armory</Spot>
+  </Location>
+  <Location speech="plam armory">
+    <Area>Plamit Village</Area>
+    <Spot>Armory</Spot>
+  </Location>
+  <Location speech="plamit arm">
+    <Area>Plamit Village</Area>
+    <Spot>Armory</Spot>
+  </Location>
+  <Location speech="plamit armory">
+    <Area>Plamit Village</Area>
+    <Spot>Armory</Spot>
+  </Location>
+  <Location speech="thorwil">
+    <Area>Plamit Village</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="plam bank">
+    <Area>Plamit Village</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="plamit bank">
+    <Area>Plamit Village</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="egg farm">
+    <Area>Plamit Village</Area>
+    <Spot>Egg Farming</Spot>
+  </Location>
+  <Location speech="bog">
+    <Area>Plamit Village</Area>
+    <Spot>Band of Gales Farming</Spot>
+  </Location>
+  <Location speech="bos">
+    <Area>Plamit Village</Area>
+    <Spot>Band of Storms Farming</Spot>
+  </Location>
+  <Location speech="drakari">
+    <Area>Plamit Village</Area>
+    <Spot>Boss</Spot>
+  </Location>
+  <Location speech="plam boss">
+    <Area>Plamit Village</Area>
+    <Spot>Boss</Spot>
+  </Location>
+  <Location speech="plamit boss">
+    <Area>Plamit Village</Area>
+    <Spot>Boss</Spot>
+  </Location>
+  <Location speech="tav">
+    <Area>Tavaly Village</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="tavaly">
+    <Area>Tavaly Village</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="tavaly village">
+    <Area>Tavaly Village</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="sacred forest 19">
+    <Area>Tavaly Village</Area>
+    <Spot>Sacred Forest 19</Spot>
+  </Location>
+  <Location speech="np17">
+    <Area>Noam</Area>
+    <Spot>Noam 17</Spot>
+  </Location>
+  <Location speech="earth">
+    <Area>Noam</Area>
+    <Spot>Sacred Grounds</Spot>
+  </Location>
+  <Location speech="med citizen">
+    <Area>Noam</Area>
+    <Spot>Sacred Grounds</Spot>
+  </Location>
+  <Location speech="sacred">
+    <Area>Noam</Area>
+    <Spot>Sacred Grounds</Spot>
+  </Location>
+  <Location speech="kelan">
+    <Area>Noam</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="noam bank">
+    <Area>Noam</Area>
+    <Spot>Bank</Spot>
+  </Location>
+  <Location speech="hwarone">
+    <Area>Hwarone</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="hwarone ent">
+    <Area>Hwarone</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="hwarone entrance">
+    <Area>Hwarone</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="mank">
+    <Area>Hwarone</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="ch">
+    <Area>Hwarone</Area>
+    <Spot>Cursed Home</Spot>
+  </Location>
+  <Location speech="ch ent">
+    <Area>Hwarone</Area>
+    <Spot>Cursed Home</Spot>
+  </Location>
+  <Location speech="cursed home">
+    <Area>Hwarone</Area>
+    <Spot>Cursed Home</Spot>
+  </Location>
+  <Location speech="hwarone inn">
+    <Area>Hwarone</Area>
+    <Spot>Inn</Spot>
+  </Location>
+  <Location speech="fire">
+    <Area>Hwarone</Area>
+    <Spot>Fire Spirit Temple</Spot>
+  </Location>
+  <Location speech="fc1">
+    <Area>Hwarone</Area>
+    <Spot>Alsaids Fire Canyon 1</Spot>
+  </Location>
+  <Location speech="fc2">
+    <Area>Hwarone</Area>
+    <Spot>Alsaids Fire Canyon 2</Spot>
+  </Location>
+  <Location speech="lr">
+    <Area>Lost Ruins</Area>
+    <Spot>Nairn</Spot>
+  </Location>
+  <Location speech="lr ent">
+    <Area>Lost Ruins</Area>
+    <Spot>Nairn</Spot>
+  </Location>
+  <Location speech="lost ruins">
+    <Area>Lost Ruins</Area>
+    <Spot>Nairn</Spot>
+  </Location>
+  <Location speech="slab">
+    <Area>Lost Ruins</Area>
+    <Spot>Marble Vault</Spot>
+  </Location>
+  <Location speech="yen">
+    <Area>Gladiator Arena</Area>
+    <Spot></Spot>
+  </Location>
+  <Location speech="glad arena">
+    <Area>Gladiator Arena</Area>
+    <Spot></Spot>
+  </Location>
+  <Location speech="gladiator">
+    <Area>Gladiator Arena</Area>
+    <Spot></Spot>
+  </Location>
+  <Location speech="gladiator arena">
+    <Area>Gladiator Arena</Area>
+    <Spot></Spot>
+  </Location>
+  <Location speech="vm">
+    <Area>Vertain Mines</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="veltain">
+    <Area>Vertain Mines</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="mines">
+    <Area>Vertain Mines</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="erbie">
+    <Area>Mt Merry</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="mtmerry">
+    <Area>Mt Merry</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="mt merry">
+    <Area>Mt Merry</Area>
+    <Spot>Entrance</Spot>
+  </Location>
+  <Location speech="mothererbie">
+    <Area>Mt Merry</Area>
+    <Spot>Mother Erbie</Spot>
+  </Location>
+  <Location speech="mother erbie">
+    <Area>Mt Merry</Area>
+    <Spot>Mother Erbie</Spot>
+  </Location>
+  <Location speech="filthyerbie">
+    <Area>Mt Merry</Area>
+    <Spot>Filthy Erbie</Spot>
+  </Location>
+  <Location speech="filthy erbie">
+    <Area>Mt Merry</Area>
+    <Spot>Filthy Erbie</Spot>
+  </Location>
+  <Location speech="yeti">
+    <Area>Mt Merry</Area>
+    <Spot>Yeti</Spot>
+  </Location>
+  <Location speech="bank">
+    <Area>Nearest Bank</Area>
+    <Spot></Spot>
+  </Location>
+
+</Locations>

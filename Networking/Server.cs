@@ -106,6 +106,8 @@ namespace Flintstones
 
     public static Dictionary<int, RootObject> gamemaps { get; set; }
 
+    public static Dictionary<string, WalkLocation> WalkLocations { get; set; }
+
     public static Thread TimedEvents { get; set; }
 
     public Server()
@@ -115,6 +117,7 @@ namespace Flintstones
       Server.Clients = new List<Client>();
       Server.gamemaps = new Dictionary<int, RootObject>();
       this.Loadgamemaps();
+      WalkLocations = LoadWalkLocations();
       Server.gamenpcs = new Dictionary<string, RootNpc>();
       this.Loadgamenpcs();
       Server.ParcelList = new Dictionary<string, Parcel>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
@@ -697,6 +700,38 @@ namespace Flintstones
     }
 
     public void Loadgamemaps() => System.IO.File.Exists("C:\\Users\\Russ\\Desktop\\maps.json");
+
+    public static Dictionary<string, WalkLocation> LoadWalkLocations()
+    {
+      string filePath = Program.StartupPath + "\\Settings\\walklocations.xml";
+      var document = XDocument.Load(filePath);
+      var locations = new Dictionary<string, WalkLocation>();
+
+      foreach (var location in document.Root.Elements("Location"))
+      {
+        string name = location.Attribute("speech")?.Value;
+
+        // Skip if name is null or whitespace
+        if (string.IsNullOrWhiteSpace(name))
+          continue;
+
+        string areaElement = (string)location.Element("Area");
+        string spotElement = (string)location.Element("Spot");
+
+        // Skip if either areaElement or spotElement is null
+        if (areaElement == null || spotElement == null)
+          continue;
+
+        locations[name] = new WalkLocation
+        {
+          Area = areaElement,
+          Location = spotElement
+        };
+
+      }
+
+      return locations;
+    }
 
     public void PopulateSenseMonsters()
     {
