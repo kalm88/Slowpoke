@@ -234,36 +234,6 @@ namespace Flintstones
     public uint pathwis;
     public uint pathcon;
     public uint pathdex;
-    public uint priestmax = 3500;
-    public uint prieststr = 100;
-    public uint priestint = 180;
-    public uint priestwis = 215;
-    public uint priestcon = 150;
-    public uint priestdex = 100;
-    public uint wizmax = 3750;
-    public uint wizstr = 100;
-    public uint wizint = 215;
-    public uint wizwis = 180;
-    public uint wizcon = 150;
-    public uint wizdex = 100;
-    public uint roguemax = 4250;
-    public uint roguestr = 180;
-    public uint rogueint = 100;
-    public uint roguewis = 100;
-    public uint roguecon = 150;
-    public uint roguedex = 215;
-    public uint monkmax = 6850;
-    public uint monkstr = 180;
-    public uint monkint = 150;
-    public uint monkwis = 100;
-    public uint monkcon = 215;
-    public uint monkdex = 100;
-    public uint warmax = 4000;
-    public uint warstr = 215;
-    public uint warint = 100;
-    public uint warwis = 100;
-    public uint warcon = 180;
-    public uint wardex = 150;
     public bool HasAWPath;
     public Location CurAWDest;
     public string Currentnpcname = string.Empty;
@@ -481,9 +451,23 @@ namespace Flintstones
     private System.Collections.Generic.Queue<ClientPacket> serverSendQueue = new System.Collections.Generic.Queue<ClientPacket>();
     private System.Collections.Generic.Queue<ClientPacket> clientProcessQueue = new System.Collections.Generic.Queue<ClientPacket>();
     private System.Collections.Generic.Queue<ServerPacket> serverProcessQueue = new System.Collections.Generic.Queue<ServerPacket>();
-        
+    
+        /// <summary>
+        /// Provides the max statistics for each character class.
+        /// </summary>
+        /// <remarks>The dictionary maps each value of the CharacterClass enumeration to its corresponding
+        /// CharacterStats object, which defines the default maximum health and primary attributes for that class. The
+        /// values can be used to initialize or reference class-specific stats throughout the application.</remarks>
+        public Dictionary<CharacterClass, CharacterStats> characterStats = new Dictionary<CharacterClass, CharacterStats>
+        {
+            [CharacterClass.warrior] = new CharacterStats { MaxHP = 4000, Str = 215, Int = 100, Wis = 100, Con = 180, Dex = 150 },
+            [CharacterClass.rogue]   = new CharacterStats { MaxHP = 4250, Str = 180, Int = 100, Wis = 100, Con = 150, Dex = 215 },
+            [CharacterClass.wizard]  = new CharacterStats { MaxHP = 3750, Str = 100, Int = 215, Wis = 180, Con = 150, Dex = 100 },
+            [CharacterClass.priest]  = new CharacterStats { MaxHP = 3500, Str = 100, Int = 180, Wis = 215, Con = 150, Dex = 100 },
+            [CharacterClass.monk]    = new CharacterStats { MaxHP = 6850, Str = 180, Int = 150, Wis = 100, Con = 215, Dex = 100 },
+        };
 
-    public Dictionary<string, DateTime> PreventSpam { get; set; }
+        public Dictionary<string, DateTime> PreventSpam { get; set; }
 
     public Thread GetMailThread { get; set; }
 

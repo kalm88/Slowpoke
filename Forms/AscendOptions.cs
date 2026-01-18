@@ -840,7 +840,7 @@ namespace Flintstones
       this.label3.Name = "label3";
       this.label3.Size = new Size(49, 13);
       this.label3.TabIndex = 14;
-      this.label3.Text = "Max MP:";
+      this.label3.Text = "MaxHP MP:";
       this.label5.AutoSize = true;
       this.label5.Location = new System.Drawing.Point(8, 164);
       this.label5.Name = "label5";
@@ -852,7 +852,7 @@ namespace Flintstones
       this.label2.Name = "label2";
       this.label2.Size = new Size(48, 13);
       this.label2.TabIndex = 13;
-      this.label2.Text = "Max HP:";
+      this.label2.Text = "MaxHP HP:";
       this.label4.AutoSize = true;
       this.label4.Location = new System.Drawing.Point(73, 144);
       this.label4.Name = "label4";

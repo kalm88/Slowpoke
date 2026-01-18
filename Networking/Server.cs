@@ -118,17 +118,19 @@ namespace Flintstones
       Server.gamenpcs = new Dictionary<string, RootNpc>();
       this.Loadgamenpcs();
       Server.ParcelList = new Dictionary<string, Parcel>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
-      Server.ChestDatabase = new Dictionary<string, ChestItemXML>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
-      Server.ChestDatabase.Add("Arcella's Gift1", new ChestItemXML("Arcella's Gift1", 0U));
-      Server.ChestDatabase.Add("Water Dungeon Chest", new ChestItemXML("Water Dungeon Chest", 0U));
-      Server.ChestDatabase.Add("Water Dungeon Chest Gold", new ChestItemXML("Water Dungeon Chest Gold", 0U));
-      Server.ChestDatabase.Add("Andor Chest", new ChestItemXML("Andor Chest", 0U));
-      Server.ChestDatabase.Add("Andor Chest Gold", new ChestItemXML("Andor Chest Gold", 0U));
-      Server.ChestDatabase.Add("Queen's Chest", new ChestItemXML("Queen's Chest", 0U));
-      Server.ChestDatabase.Add("Queen's Chest Gold", new ChestItemXML("Queen's Chest Gold", 0U));
-      Server.ChestDatabase.Add("Canal Bag", new ChestItemXML("Canal Bag", 0U));
-      Server.ChestDatabase.Add("Big Canal Bag", new ChestItemXML("Big Canal Bag", 0U));
-      Server.ChestDatabase.Add("Heavy Canal Bag", new ChestItemXML("Heavy Canal Bag", 0U));
+      ChestDatabase = new Dictionary<string, ChestItemXML>(StringComparer.CurrentCultureIgnoreCase)
+      {
+          { "Arcella's Gift1", new ChestItemXML("Arcella's Gift1", 0U) },
+          { "Water Dungeon Chest", new ChestItemXML("Water Dungeon Chest", 0U) },
+          { "Water Dungeon Chest Gold", new ChestItemXML("Water Dungeon Chest Gold", 0U) },
+          { "Andor Chest", new ChestItemXML("Andor Chest", 0U) },
+          { "Andor Chest Gold", new ChestItemXML("Andor Chest Gold", 0U) },
+          { "Queen's Chest", new ChestItemXML("Queen's Chest", 0U) },
+          { "Queen's Chest Gold", new ChestItemXML("Queen's Chest Gold", 0U) },
+          { "Canal Bag", new ChestItemXML("Canal Bag", 0U) },
+          { "Big Canal Bag", new ChestItemXML("Big Canal Bag", 0U) },
+          { "Heavy Canal Bag", new ChestItemXML("Heavy Canal Bag", 0U) }
+      };
       this.PopulateChestDatabase();
       Server.ItemMapDatabase = new Dictionary<string, ItemMapXML>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
       Server.ItemDatabase = new Dictionary<string, ItemXML>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
@@ -1839,51 +1841,17 @@ namespace Flintstones
       msg.Read(1);
       client.Gender = msg.ReadByte();
       msg.BodyData[6] = (byte) 2;
-      if (client.Path == (byte) 1)
-      {
-        client.pathmaxhp = client.warmax;
-        client.pathstr = client.warstr;
-        client.pathint = client.warint;
-        client.pathwis = client.warwis;
-        client.pathcon = client.warcon;
-        client.pathdex = client.wardex;
-      }
-      else if (client.Path == (byte) 2)
-      {
-        client.pathmaxhp = client.roguemax;
-        client.pathstr = client.roguestr;
-        client.pathint = client.rogueint;
-        client.pathwis = client.roguewis;
-        client.pathcon = client.roguecon;
-        client.pathdex = client.roguedex;
-      }
-      else if (client.Path == (byte) 3)
-      {
-        client.pathmaxhp = client.wizmax;
-        client.pathstr = client.wizstr;
-        client.pathint = client.wizint;
-        client.pathwis = client.wizwis;
-        client.pathcon = client.wizcon;
-        client.pathdex = client.wizdex;
-      }
-      else if (client.Path == (byte) 4)
-      {
-        client.pathmaxhp = client.priestmax;
-        client.pathstr = client.prieststr;
-        client.pathint = client.priestint;
-        client.pathwis = client.priestwis;
-        client.pathcon = client.priestcon;
-        client.pathdex = client.priestdex;
-      }
-      else if (client.Path == (byte) 5)
-      {
-        client.pathmaxhp = client.monkmax;
-        client.pathstr = client.monkstr;
-        client.pathint = client.monkint;
-        client.pathwis = client.monkwis;
-        client.pathcon = client.monkcon;
-        client.pathdex = client.monkdex;
-      }
+
+            // Set path max stats with the byte values received from the DA server
+            // Bytes values are according enumeration CharacterClass
+            // 1 = Warrior, 2 = Rogue, 3 = Wizard, 4 = Priest, 5 = Monk
+            client.pathmaxhp = client.characterStats[(CharacterClass)client.Path].MaxHP;
+            client.pathstr   = client.characterStats[(CharacterClass)client.Path].Str;
+            client.pathint   = client.characterStats[(CharacterClass)client.Path].Int;
+            client.pathwis   = client.characterStats[(CharacterClass)client.Path].Wis;
+            client.pathcon   = client.characterStats[(CharacterClass)client.Path].Con;
+            client.pathdex   = client.characterStats[(CharacterClass)client.Path].Dex;
+
       client.GetHandle();
       client.BestAites();
       client.BestFases();
