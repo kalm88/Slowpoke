@@ -4,7 +4,6 @@
 //SlowPoke
 //SlowPoke
 
-using slowpoke.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -235,36 +234,6 @@ namespace Flintstones
     public uint pathwis;
     public uint pathcon;
     public uint pathdex;
-    public uint priestmax = 3500;
-    public uint prieststr = 100;
-    public uint priestint = 180;
-    public uint priestwis = 215;
-    public uint priestcon = 150;
-    public uint priestdex = 100;
-    public uint wizmax = 3750;
-    public uint wizstr = 100;
-    public uint wizint = 215;
-    public uint wizwis = 180;
-    public uint wizcon = 150;
-    public uint wizdex = 100;
-    public uint roguemax = 4250;
-    public uint roguestr = 180;
-    public uint rogueint = 100;
-    public uint roguewis = 100;
-    public uint roguecon = 150;
-    public uint roguedex = 215;
-    public uint monkmax = 6850;
-    public uint monkstr = 180;
-    public uint monkint = 150;
-    public uint monkwis = 100;
-    public uint monkcon = 215;
-    public uint monkdex = 100;
-    public uint warmax = 4000;
-    public uint warstr = 215;
-    public uint warint = 100;
-    public uint warwis = 100;
-    public uint warcon = 180;
-    public uint wardex = 150;
     public bool HasAWPath;
     public Location CurAWDest;
     public string Currentnpcname = string.Empty;
