@@ -4,6 +4,7 @@
 //SlowPoke
 //SlowPoke
 
+using slowpoke.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -482,6 +483,14 @@ namespace Flintstones
     private System.Collections.Generic.Queue<ClientPacket> clientProcessQueue = new System.Collections.Generic.Queue<ClientPacket>();
     private System.Collections.Generic.Queue<ServerPacket> serverProcessQueue = new System.Collections.Generic.Queue<ServerPacket>();
         
+    public Dictionary<CharacterClass, CharacterStats> classStats = new Dictionary<CharacterClass, CharacterStats>
+    {
+      [CharacterClass.Warrior] = new CharacterStats() { Maxhp = 4000, Str = 215, Int = 100, Wis = 100, Con = 180, Dex = 150 },
+      [CharacterClass.Rogue] = new CharacterStats() { Maxhp = 4250, Str = 180, Int = 100, Wis = 100, Con = 150, Dex = 215 },
+      [CharacterClass.Wizard] = new CharacterStats() { Maxhp = 3750, Str = 100, Int = 215, Wis = 180, Con = 150, Dex = 100 },
+      [CharacterClass.Priest] = new CharacterStats() { Maxhp = 3500, Str = 100, Int = 180, Wis = 215, Con = 150, Dex = 100 },
+      [CharacterClass.Monk] = new CharacterStats() { Maxhp = 6850, Str = 180, Int = 150, Wis = 100, Con = 215, Dex = 100 },
+    };
 
     public Dictionary<string, DateTime> PreventSpam { get; set; }
 

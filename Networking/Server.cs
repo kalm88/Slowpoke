@@ -1839,51 +1839,16 @@ namespace Flintstones
       msg.Read(1);
       client.Gender = msg.ReadByte();
       msg.BodyData[6] = (byte) 2;
-      if (client.Path == (byte) 1)
-      {
-        client.pathmaxhp = client.warmax;
-        client.pathstr = client.warstr;
-        client.pathint = client.warint;
-        client.pathwis = client.warwis;
-        client.pathcon = client.warcon;
-        client.pathdex = client.wardex;
-      }
-      else if (client.Path == (byte) 2)
-      {
-        client.pathmaxhp = client.roguemax;
-        client.pathstr = client.roguestr;
-        client.pathint = client.rogueint;
-        client.pathwis = client.roguewis;
-        client.pathcon = client.roguecon;
-        client.pathdex = client.roguedex;
-      }
-      else if (client.Path == (byte) 3)
-      {
-        client.pathmaxhp = client.wizmax;
-        client.pathstr = client.wizstr;
-        client.pathint = client.wizint;
-        client.pathwis = client.wizwis;
-        client.pathcon = client.wizcon;
-        client.pathdex = client.wizdex;
-      }
-      else if (client.Path == (byte) 4)
-      {
-        client.pathmaxhp = client.priestmax;
-        client.pathstr = client.prieststr;
-        client.pathint = client.priestint;
-        client.pathwis = client.priestwis;
-        client.pathcon = client.priestcon;
-        client.pathdex = client.priestdex;
-      }
-      else if (client.Path == (byte) 5)
-      {
-        client.pathmaxhp = client.monkmax;
-        client.pathstr = client.monkstr;
-        client.pathint = client.monkint;
-        client.pathwis = client.monkwis;
-        client.pathcon = client.monkcon;
-        client.pathdex = client.monkdex;
-      }
+
+      // Set path stats using CharacterClass enum to identify class in classStats dictionary
+      CharacterClass activeClass = (CharacterClass)client.Path;
+      client.pathmaxhp = client.classStats[activeClass].Maxhp;
+      client.pathstr = client.classStats[activeClass].Str;
+      client.pathint = client.classStats[activeClass].Int;
+      client.pathwis = client.classStats[activeClass].Wis;
+      client.pathcon = client.classStats[activeClass].Con;
+      client.pathdex = client.classStats[activeClass].Dex;
+
       client.GetHandle();
       client.BestAites();
       client.BestFases();
