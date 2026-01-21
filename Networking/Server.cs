@@ -1875,14 +1875,14 @@ namespace Flintstones
       client.Gender = msg.ReadByte();
       msg.BodyData[6] = (byte) 2;
 
-      // Set path stats using CharacterClass enum to identify class in classStats dictionary
+      // Set path stats using CharacterClass enum to identify class in maxClassStats dictionary
       CharacterClass activeClass = (CharacterClass)client.Path;
-      client.pathmaxhp = client.classStats[activeClass].Maxhp;
-      client.pathstr = client.classStats[activeClass].Str;
-      client.pathint = client.classStats[activeClass].Int;
-      client.pathwis = client.classStats[activeClass].Wis;
-      client.pathcon = client.classStats[activeClass].Con;
-      client.pathdex = client.classStats[activeClass].Dex;
+      client.pathmaxhp = client.maxClassStats[activeClass].Maxhp;
+      client.pathstr = client.maxClassStats[activeClass].Str;
+      client.pathint = client.maxClassStats[activeClass].Int;
+      client.pathwis = client.maxClassStats[activeClass].Wis;
+      client.pathcon = client.maxClassStats[activeClass].Con;
+      client.pathdex = client.maxClassStats[activeClass].Dex;
 
       client.GetHandle();
       client.BestAites();
@@ -3107,6 +3107,8 @@ label_53:
             Program.MainForm.BeginInvoke((Action) (() => Program.MainForm.ItemXMLEditor.UpdateChestsForm()));
           }
         }
+
+        // monster kill counting for daily quests
         if ((str1.Contains(" experience!") || str1.StartsWith("No more experience") || str1.StartsWith("You have reached level 99,")) && client.LastDeadMonster != 0U)
         {
           timeSpan = DateTime.UtcNow.Subtract(client.Characters[client.LastDeadMonster].DeathTime);
