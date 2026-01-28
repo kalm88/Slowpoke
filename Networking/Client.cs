@@ -590,6 +590,8 @@ namespace Flintstones
 
     public Dictionary<uint, Character> Characters { get; set; }
 
+    public MonsterKills monsterKills = new MonsterKills();
+
     public Location ServerLocation { get; set; }
 
     public Location ClientLocation { get; set; }
@@ -738,61 +740,12 @@ namespace Flintstones
       this.CantSkillMaps.Add(10265);
       this.CantSkillMaps.Add(7900);
       this.CountedMonsters = new Dictionary<int, int>();
-      this.CountedMonsters.Add(529, 0);
-      this.CountedMonsters.Add(892, 0);
-      this.CountedMonsters.Add(856, 0);
-      this.CountedMonsters.Add(661, 0);
-      this.CountedMonsters.Add(697, 0);
-      this.CountedMonsters.Add(696, 0);
-      this.CountedMonsters.Add(698, 0);
-      this.CountedMonsters.Add(695, 0);
-      this.CountedMonsters.Add(422, 0);
-      this.CountedMonsters.Add(547, 0);
-      this.CountedMonsters.Add(779, 0);
-      this.CountedMonsters.Add(782, 0);
-      this.CountedMonsters.Add(788, 0);
-      this.CountedMonsters.Add(270, 0);
-      this.CountedMonsters.Add(760, 0);
-      this.CountedMonsters.Add(784, 0);
-      this.CountedMonsters.Add(785, 0);
-      this.CountedMonsters.Add(580, 0);
-      this.CountedMonsters.Add(926, 0);
-      this.CountedMonsters.Add(940, 0);
-      this.CountedMonsters.Add(953, 0);
-      this.CountedMonsters.Add(954, 0);
-      this.CountedMonsters.Add(955, 0);
-      this.CountedMonsters.Add(956, 0);
-      this.CountedMonsters.Add(957, 0);
-      this.CountedMonsters.Add(960, 0);
-      this.CountedMonsters.Add(759, 0);
-      this.CountedMonsters.Add(767, 0);
-      this.CountedMonsters.Add(769, 0);
       this.CountedMonsters.Add(703, 0);
       this.CountedMonsters.Add(704, 0);
       this.CountedMonsters.Add(705, 0);
       this.CountedMonsters.Add(706, 0);
       this.CountedMonsters.Add(715, 0);
       this.CountedMonsters.Add(716, 0);
-      this.CountedMonsters.Add(8, 0);
-      this.CountedMonsters.Add(9, 0);
-      this.CountedMonsters.Add(10, 0);
-      this.CountedMonsters.Add(680, 0);
-      this.CountedMonsters.Add(681, 0);
-      this.CountedMonsters.Add(682, 0);
-      this.CountedMonsters.Add(683, 0);
-      this.CountedMonsters.Add(684, 0);
-      this.CountedMonsters.Add(685, 0);
-      this.CountedMonsters.Add(334, 0);
-      this.CountedMonsters.Add(335, 0);
-      this.CountedMonsters.Add(490, 0);
-      this.CountedMonsters.Add(86, 0);
-      this.CountedMonsters.Add(410, 0);
-      this.CountedMonsters.Add(625, 0);
-      this.CountedMonsters.Add(512, 0);
-      this.CountedMonsters.Add(395, 0);
-      this.CountedMonsters.Add(396, 0);
-      this.CountedMonsters.Add(549, 0);
-      this.CountedMonsters.Add(160, 0);
       this.GroupCounter = new Dictionary<string, GroupCounts>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
       this.WayRegions = new Dictionary<Location, string>();
       this.TempRegions = new Dictionary<int, MapNum>();
@@ -27398,7 +27351,7 @@ label_232:
     public string BestWeapon()
     {
       string str = string.Empty;
-      if (this.Path == (byte) 1)
+      if (this.Path == (byte)CharacterClass.Warrior)
       {
         if (this.staffnow != "Eclipse" && this.staffnow != "Hwarone Guandao" && this.staffnow != "Empowered Hwarone Guandao" && !this.staffnow.Contains("Crystal Blade") && !this.staffnow.Contains("Yowien Hatchet") && !this.staffnow.Contains("Defiled Ruby Saber") && !this.staffnow.Contains("Hellreavers Blade"))
         {
@@ -27422,7 +27375,7 @@ label_232:
             str = "Eclipse";
         }
       }
-      else if (this.Path == (byte) 2)
+      else if (this.Path == (byte)CharacterClass.Rogue)
       {
         if (this.staffnow != "Andor Bow" && this.staffnow != "Yumi Bow" && this.staffnow != "Empowered Yumi Bow" && this.staffnow != "Thunderfury")
         {
@@ -27444,7 +27397,7 @@ label_232:
             str = "Wooden Bow";
         }
       }
-      else if (this.Path == (byte) 5 && this.staffnow != "Wolf Claw" && this.staffnow != "Tilian Claw" && this.staffnow != "Nunchaku" && this.staffnow != "Obsidian" && !this.staffnow.Contains("Yowien's Claw") && !this.staffnow.Contains("Yowien's Fist") && !this.staffnow.Contains("Eagles Grasp") && !this.staffnow.Contains("Blackstar Night Claw"))
+      else if (this.Path == (byte)CharacterClass.Monk && this.staffnow != "Wolf Claw" && this.staffnow != "Tilian Claw" && this.staffnow != "Nunchaku" && this.staffnow != "Obsidian" && !this.staffnow.Contains("Yowien's Claw") && !this.staffnow.Contains("Yowien's Fist") && !this.staffnow.Contains("Eagles Grasp") && !this.staffnow.Contains("Blackstar Night Claw"))
       {
         if (this.HasItem("Blackstar Night Claw"))
           str = "Blackstar Night Claw";
@@ -27768,13 +27721,29 @@ label_232:
 
     public bool IsGem(string itemName) => itemName == "Raw Beryl" || itemName == "Raw Coral" || itemName == "Raw Ruby" || itemName == "Raw Talgonite" || itemName == "Raw Hy-brasyl";
 
-    public bool IsArmor(string itemName) => itemName == "Gardcorp" || itemName == "Journeyman" || itemName == "Lorum" || itemName == "Mane" || itemName == "Duin-uasal" || itemName == "Leather Tunic" || itemName == "Jupe" || itemName == "Lorica" || itemName == "Kasmanium Armor" || itemName == "Chainmail" || itemName == "Iplet Mail" || itemName == "Platemail" || itemName == "Hy-brasyl Plate" || itemName == "Dobok" || itemName == "Culotte" || itemName == "Earth Garb" || itemName == "Wind Garb" || itemName == "Mountain Garb" || itemName == "Cowl" || itemName == "Galuchat Coat" || itemName == "Mantle" || itemName == "Hierophant" || itemName == "Dalmatica" || itemName == "Scout Leather" || itemName == "Dwarvish Leather" || itemName == "Paluten" || itemName == "Keaton" || itemName == "Bardocle" || itemName == "Magi Skirt" || itemName == "Benusta" || itemName == "Stoller" || itemName == "Clymouth" || itemName == "Clamyth" || itemName == "Leather Bliaut" || itemName == "Cuirass" || itemName == "Cotehardie" || itemName == "Kasmanium Hauberk" || itemName == "Surplice Blouse" || itemName == "Labyrinth Mail" || itemName == "Phoenix Mail" || itemName == "Hy-brasyl Plate" || itemName == "Earth Bodice" || itemName == "Lotus Bodice" || itemName == "Moon Bodice" || itemName == "Lightning Garb" || itemName == "Sea Garb" || itemName == "Gorget Gown" || itemName == "Mystic Gown" || itemName == "Elle" || itemName == "Dolman" || itemName == "Bansagart" || itemName == "Cotte" || itemName == "Brigandine" || itemName == "Corsette" || itemName == "Pebble Rose" || itemName == "Kagum";
+    public bool IsArmor(string itemName) => itemName == "Gardcorp" || itemName == "Journeyman" || itemName == "Lorum" || itemName == "Mane" || itemName == "Duin-uasal" || itemName == "Leather Tunic" 
+      || itemName == "Jupe" || itemName == "Lorica" || itemName == "Kasmanium Armor" || itemName == "Chainmail" || itemName == "Iplet Mail" || itemName == "Platemail" || itemName == "Hy-brasyl Plate" 
+      || itemName == "Dobok" || itemName == "Culotte" || itemName == "Earth Garb" || itemName == "Wind Garb" || itemName == "Mountain Garb" || itemName == "Cowl" || itemName == "Galuchat Coat" 
+      || itemName == "Mantle" || itemName == "Hierophant" || itemName == "Dalmatica" || itemName == "Scout Leather" || itemName == "Dwarvish Leather" || itemName == "Paluten" || itemName == "Keaton" 
+      || itemName == "Bardocle" || itemName == "Magi Skirt" || itemName == "Benusta" || itemName == "Stoller" || itemName == "Clymouth" || itemName == "Clamyth" || itemName == "Leather Bliaut" 
+      || itemName == "Cuirass" || itemName == "Cotehardie" || itemName == "Kasmanium Hauberk" || itemName == "Surplice Blouse" || itemName == "Labyrinth Mail" || itemName == "Phoenix Mail" 
+      || itemName == "Hy-brasyl Plate" || itemName == "Earth Bodice" || itemName == "Lotus Bodice" || itemName == "Moon Bodice" || itemName == "Lightning Garb" || itemName == "Sea Garb" 
+      || itemName == "Gorget Gown" || itemName == "Mystic Gown" || itemName == "Elle" || itemName == "Dolman" || itemName == "Bansagart" || itemName == "Cotte" || itemName == "Brigandine" 
+      || itemName == "Corsette" || itemName == "Pebble Rose" || itemName == "Kagum";
 
     public bool HasArmors() => this.HasMArmors() || this.HasFArmors();
 
-    public bool HasMArmors() => this.HasItem("Gardcorp") || this.HasItem("Journeyman") || this.HasItem("Lorum") || this.HasItem("Mane") || this.HasItem("Duin-uasal") || this.HasItem("Leather Tunic") || this.HasItem("Jupe") || this.HasItem("Lorica") || this.HasItem("Kasmanium Armor") || this.HasItem("Chainmail") || this.HasItem("Iplet Mail") || this.HasItem("Platemail") || this.HasItem("Hy-brasyl Plate") || this.HasItem("Dobok") || this.HasItem("Culotte") || this.HasItem("Earth Garb") || this.HasItem("Wind Garb") || this.HasItem("Mountain Garb") || this.HasItem("Cowl") || this.HasItem("Galuchat Coat") || this.HasItem("Mantle") || this.HasItem("Hierophant") || this.HasItem("Dalmatica") || this.HasItem("Scout Leather") || this.HasItem("Dwarvish Leather") || this.HasItem("Paluten") || this.HasItem("Keaton") || this.HasItem("Bardocle");
+    public bool HasMArmors() => this.HasItem("Gardcorp") || this.HasItem("Journeyman") || this.HasItem("Lorum") || this.HasItem("Mane") || this.HasItem("Duin-uasal") || this.HasItem("Leather Tunic") 
+      || this.HasItem("Jupe") || this.HasItem("Lorica") || this.HasItem("Kasmanium Armor") || this.HasItem("Chainmail") || this.HasItem("Iplet Mail") || this.HasItem("Platemail") 
+      || this.HasItem("Hy-brasyl Plate") || this.HasItem("Dobok") || this.HasItem("Culotte") || this.HasItem("Earth Garb") || this.HasItem("Wind Garb") || this.HasItem("Mountain Garb") 
+      || this.HasItem("Cowl") || this.HasItem("Galuchat Coat") || this.HasItem("Mantle") || this.HasItem("Hierophant") || this.HasItem("Dalmatica") || this.HasItem("Scout Leather") 
+      || this.HasItem("Dwarvish Leather") || this.HasItem("Paluten") || this.HasItem("Keaton") || this.HasItem("Bardocle");
 
-    public bool HasFArmors() => this.HasItem("Magi Skirt") || this.HasItem("Benusta") || this.HasItem("Stoller") || this.HasItem("Clymouth") || this.HasItem("Clamyth") || this.HasItem("Leather Bliaut") || this.HasItem("Cuirass") || this.HasItem("Cotehardie") || this.HasItem("Kasmanium Hauberk") || this.HasItem("Surplice Blouse") || this.HasItem("Labyrinth Mail") || this.HasItem("Phoenix Mail") || this.HasItem("Hy-brasyl Armor") || this.HasItem("Earth Bodice") || this.HasItem("Lotus Bodice") || this.HasItem("Moon Bodice") || this.HasItem("Lightning Garb") || this.HasItem("Sea Garb") || this.HasItem("Gorget Gown") || this.HasItem("Mystic Gown") || this.HasItem("Elle") || this.HasItem("Dolman") || this.HasItem("Bansagart") || this.HasItem("Cotte") || this.HasItem("Brigandine") || this.HasItem("Corsette") || this.HasItem("Pebble Rose") || this.HasItem("Kagum");
+    public bool HasFArmors() => this.HasItem("Magi Skirt") || this.HasItem("Benusta") || this.HasItem("Stoller") || this.HasItem("Clymouth") || this.HasItem("Clamyth") || this.HasItem("Leather Bliaut") 
+      || this.HasItem("Cuirass") || this.HasItem("Cotehardie") || this.HasItem("Kasmanium Hauberk") || this.HasItem("Surplice Blouse") || this.HasItem("Labyrinth Mail") || this.HasItem("Phoenix Mail")
+      || this.HasItem("Hy-brasyl Armor") || this.HasItem("Earth Bodice") || this.HasItem("Lotus Bodice") || this.HasItem("Moon Bodice") || this.HasItem("Lightning Garb") || this.HasItem("Sea Garb") 
+      || this.HasItem("Gorget Gown") || this.HasItem("Mystic Gown") || this.HasItem("Elle") || this.HasItem("Dolman") || this.HasItem("Bansagart") || this.HasItem("Cotte") || this.HasItem("Brigandine") 
+      || this.HasItem("Corsette") || this.HasItem("Pebble Rose") || this.HasItem("Kagum");
 
     public void DropArmors()
     {
@@ -29864,14 +29833,12 @@ label_31:
 
     public bool HasInfiniteMR(int image)
     {
-      if (image <= 859)
-      {
-        if (image == 12 || image == 666 || image == 859)
-          return true;
-      }
-      else if (image == 860 || image == 896 || image == 897)
-        return true;
-      return false;
+      return image == 12
+          || image == 666
+          || image == 859
+          || image == 860
+          || image == 896
+          || image == 897;
     }
 
     public bool IgnoreCurse(int image) => image == 635 || image == 411;

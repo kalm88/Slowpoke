@@ -701,6 +701,13 @@ namespace Flintstones
 
     public void Loadgamemaps() => System.IO.File.Exists("C:\\Users\\Russ\\Desktop\\maps.json");
 
+    /// <summary>
+    /// Loads walk location definitions from the application's walklocations.xml file.
+    /// </summary>
+    /// <remarks>The walklocations.xml file must exist in the application's Settings directory. Each location
+    /// entry consists of a 'speech' attribute that can be used with the /walk or /walk all command, as well as 
+    /// 'Area' (e.g. Mileth) and 'Spot' (e.g. Altar) </remarks>
+    /// <returns>A dictionary mapping speech to their corresponding walk locations.</returns>
     public static Dictionary<string, WalkLocation> LoadWalkLocations()
     {
       string filePath = Program.StartupPath + "\\Settings\\walklocations.xml";
@@ -732,6 +739,7 @@ namespace Flintstones
 
       return locations;
     }
+
 
     public void PopulateSenseMonsters()
     {
@@ -2933,6 +2941,7 @@ label_53:
         {
         }
       }
+
       if (num1 == (byte) 3)
       {
         if (str1.Length >= 128)
@@ -3116,369 +3125,19 @@ label_53:
           {
             uint lastDeadMonster = client.LastDeadMonster;
             int image = (client.Characters[lastDeadMonster] as Npc).Image;
-            if (client.CountedMonsters.ContainsKey(image))
+
+
+            // Code by Avi
+            // TODO: Find mapIDs for Yowien Baboon reset.
+            // TODO: Find mapIDs for Baby Brute reset.
+            // TODO: Find mapIDs for Yowien Dendron reset.
+            // TODO: Find mapIDs for Water Dungeon resets.
+            if (client.monsterKills.Count(image))
             {
-              if (image == 8 || image == 680 || image == 683)
-              {
-                if (client.CountedMonsters[image] < 15)
-                  client.CountedMonsters[image]++;
-              }
-              else if (image == 10 || image == 682 || image == 685 || image == 625 || image == 892)
-              {
-                if (client.CountedMonsters[image] < 10)
-                  num5 = client.CountedMonsters[image]++;
-              }
-              else if (image == 549 || image == 160)
-              {
-                if (client.CountedMonsters[549] + client.CountedMonsters[160] < 100)
-                  client.CountedMonsters[image]++;
-              }
-              else
-              {
-                if (image <= 698)
-                {
-                  if (image <= 529)
-                  {
-                    if (image != 270)
-                    {
-                      if (image != 422)
-                      {
-                        if (image == 529)
-                        {
-                          if (client.CountedMonsters[image] < 21)
-                          {
-                            num5 = client.CountedMonsters[image]++;
-                            goto label_268;
-                          }
-                          else
-                            goto label_268;
-                        }
-                        else
-                          goto label_233;
-                      }
-                      else if (client.CountedMonsters[image] < 40)
-                      {
-                        client.CountedMonsters[image]++;
-                        goto label_268;
-                      }
-                      else
-                        goto label_268;
-                    }
-                  }
-                  else if (image != 547)
-                  {
-                    if (image != 661)
-                    {
-                      switch (image - 695)
-                      {
-                        case 0:
-                          if (client.CountedMonsters[image] < 10)
-                          {
-                            num5 = client.CountedMonsters[image]++;
-                            goto label_268;
-                          }
-                          else
-                            goto label_268;
-                        case 1:
-                          if (client.CountedMonsters[image] < 30)
-                          {
-                            num5 = client.CountedMonsters[image]++;
-                            goto label_268;
-                          }
-                          else
-                            goto label_268;
-                        case 2:
-                          if (client.CountedMonsters[image] < 30)
-                          {
-                            client.CountedMonsters[image]++;
-                            goto label_268;
-                          }
-                          else
-                            goto label_268;
-                        case 3:
-                          if (client.CountedMonsters[image] < 20)
-                          {
-                            client.CountedMonsters[image]++;
-                            goto label_268;
-                          }
-                          else
-                            goto label_268;
-                        default:
-                          goto label_233;
-                      }
-                    }
-                    else if (client.CountedMonsters[image] < 40)
-                    {
-                      num5 = client.CountedMonsters[image]++;
-                      goto label_268;
-                    }
-                    else
-                      goto label_268;
-                  }
-                }
-                else if (image <= 782)
-                {
-                  if (image != 760 && image != 779 && image != 782)
-                    goto label_233;
-                }
-                else if (image != 784 && image != 788)
-                {
-                  if (image == 856)
-                  {
-                    if (client.CountedMonsters[image] < 20)
-                    {
-                      client.CountedMonsters[image]++;
-                      goto label_268;
-                    }
-                    else
-                      goto label_268;
-                  }
-                  else
-                    goto label_233;
-                }
-                int num6 = 1;
-                goto label_234;
-label_233:
-                num6 = image == 785 ? 1 : 0;
-label_234:
-                if (num6 != 0)
-                {
-                  if (client.CountedMonsters[image] < 20)
-                    num5 = client.CountedMonsters[image]++;
-                }
-                else
-                {
-                  int num7;
-                  switch (image)
-                  {
-                    case 395:
-                      num7 = 1;
-                      break;
-                    case 580:
-                      if (client.CountedMonsters[image] < 15)
-                      {
-                        num5 = client.CountedMonsters[image]++;
-                        goto label_268;
-                      }
-                      else
-                        goto label_268;
-                    case 759:
-                    case 767:
-                    case 769:
-                      if (client.CountedMonsters[image] < 10)
-                      {
-                        client.CountedMonsters[image]++;
-                        goto label_268;
-                      }
-                      else
-                        goto label_268;
-                    case 926:
-                      if (client.CountedMonsters[image] < 4)
-                      {
-                        client.CountedMonsters[image]++;
-                        goto label_268;
-                      }
-                      else
-                        goto label_268;
-                    case 940:
-                      if (client.CountedMonsters[image] < 4)
-                      {
-                        num5 = client.CountedMonsters[image]++;
-                        goto label_268;
-                      }
-                      else
-                        goto label_268;
-                    case 953:
-                      if (client.CountedMonsters[image] < 15)
-                      {
-                        client.CountedMonsters[image]++;
-                        goto label_268;
-                      }
-                      else
-                        goto label_268;
-                    case 954:
-                      if (client.CountedMonsters[image] < 10)
-                      {
-                        num5 = client.CountedMonsters[image]++;
-                        goto label_268;
-                      }
-                      else
-                        goto label_268;
-                    case 955:
-                      if (client.CountedMonsters[image] < 8)
-                      {
-                        client.CountedMonsters[image]++;
-                        goto label_268;
-                      }
-                      else
-                        goto label_268;
-                    case 956:
-                      if (client.CountedMonsters[image] < 8)
-                      {
-                        num5 = client.CountedMonsters[image]++;
-                        goto label_268;
-                      }
-                      else
-                        goto label_268;
-                    case 957:
-                      if (client.CountedMonsters[image] < 5)
-                      {
-                        client.CountedMonsters[image]++;
-                        goto label_268;
-                      }
-                      else
-                        goto label_268;
-                    case 960:
-                      if (client.CountedMonsters[image] < 8)
-                      {
-                        num5 = client.CountedMonsters[image]++;
-                        goto label_268;
-                      }
-                      else
-                        goto label_268;
-                    default:
-                      num7 = image == 396 ? 1 : 0;
-                      break;
-                  }
-                  if (num7 != 0)
-                  {
-                    if (client.CountedMonsters[395] + client.CountedMonsters[396] < 5)
-                      client.CountedMonsters[image]++;
-                  }
-                  else if (image == 334 || image == 335)
-                  {
-                    if (client.CountedMonsters[334] + client.CountedMonsters[335] < 5)
-                      num5 = client.CountedMonsters[image]++;
-                  }
-                  else if (client.CountedMonsters[image] < 5)
-                    client.CountedMonsters[image]++;
-                }
-              }
+              client.SendMessage(client.monsterKills.Display(client.MapInfo.Name), 18);
             }
-label_268:
-            client.Characters[lastDeadMonster].Counted = true;
-            if (client.MapInfo.Name.Equals("Balanced Arena"))
-              client.SendMessage("{=bFowls " + client.CountedMonsters[529].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Contains("Mount Merry 4"))
-              client.SendMessage("{=bPenguins " + (client.CountedMonsters[549] + client.CountedMonsters[160]).ToString(), (byte) 18);
-            if (client.MapInfo.Number == 8308)
-              client.SendMessage("{=bDendrons " + client.CountedMonsters[856].ToString(), (byte) 18);
-            if (client.MapInfo.Number == 9350 || client.MapInfo.Number == 9351 || client.MapInfo.Number == 9352 || client.MapInfo.Number == 9353 || client.MapInfo.Number == 9354 || client.MapInfo.Number == 9355 || client.MapInfo.Number == 9356 || client.MapInfo.Number == 9357 || client.MapInfo.Number == 9358 || client.MapInfo.Number == 9359 || client.MapInfo.Number == 9360 || client.MapInfo.Number == 9361 || client.MapInfo.Number == 9362 || client.MapInfo.Number == 9363 || client.MapInfo.Number == 9364 || client.MapInfo.Number == 9365 || client.MapInfo.Number == 9366 || client.MapInfo.Number == 9367 || client.MapInfo.Number == 9368 || client.MapInfo.Number == 9369 || client.MapInfo.Number == 9370 || client.MapInfo.Number == 9371 || client.MapInfo.Number == 9372 || client.MapInfo.Number == 9373 || client.MapInfo.Number == 9374 || client.MapInfo.Number == 9375 || client.MapInfo.Number == 9376)
-              client.SendMessage("{=bG " + client.CountedMonsters[697].ToString() + ", So " + client.CountedMonsters[696].ToString() + ", Si " + client.CountedMonsters[698].ToString() + ", W " + client.CountedMonsters[695].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Lost Ruins 2"))
-              client.SendMessage("{=bGrime " + client.CountedMonsters[422].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Lost Ruins 3"))
-              client.SendMessage("{=bWolf " + client.CountedMonsters[547].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Lost Ruins 4"))
-              client.SendMessage("{=bBeet " + client.CountedMonsters[788].ToString() + ", Golem " + client.CountedMonsters[782].ToString() + ", Skele " + client.CountedMonsters[779].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Lost Ruins 5"))
-              client.SendMessage("{=bFire Worm " + client.CountedMonsters[270].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Lost Ruins 6"))
-              client.SendMessage("{=bKab " + client.CountedMonsters[760].ToString() + ", Los " + client.CountedMonsters[785].ToString() + ", Por " + client.CountedMonsters[784].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Muisir Hunting Ground 2") || client.MapInfo.Name.Equals("Muisir Hunting Ground 3") || client.MapInfo.Name.Equals("Muisir Hunting Ground 4") || client.MapInfo.Name.Equals("Muisir Hunting Ground 5"))
-              client.SendMessage("{=bR1 " + client.CountedMonsters[580].ToString() + ", R2 " + client.CountedMonsters[953].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Muisir Hunting Ground 6") || client.MapInfo.Name.Equals("Muisir Hunting Ground 7") || client.MapInfo.Name.Equals("Muisir Hunting Ground 8") || client.MapInfo.Name.Equals("Muisir Hunting Ground 9") || client.MapInfo.Name.Equals("Muisir Hunting Ground 10"))
-              client.SendMessage("{=bR1 " + client.CountedMonsters[580].ToString() + ", R2 " + client.CountedMonsters[953].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Muisir Hunting Ground 11") || client.MapInfo.Name.Equals("Muisir Hunting Ground 12") || client.MapInfo.Name.Equals("Muisir Hunting Ground 13") || client.MapInfo.Name.Equals("Muisir Hunting Ground 14") || client.MapInfo.Name.Equals("Muisir Hunting Ground 15"))
-              client.SendMessage("{=bR1 " + client.CountedMonsters[580].ToString() + ", R2 " + client.CountedMonsters[953].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Muisir Hunting Ground 16") || client.MapInfo.Name.Equals("Muisir Hunting Ground 17") || client.MapInfo.Name.Equals("Muisir Hunting Ground 18") || client.MapInfo.Name.Equals("Muisir Hunting Ground 19") || client.MapInfo.Name.Equals("Muisir Hunting Ground 20"))
-              client.SendMessage("{=bR1 " + client.CountedMonsters[580].ToString() + ", R2 " + client.CountedMonsters[953].ToString() + ", R3 " + client.CountedMonsters[954].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Muisir Path 1") || client.MapInfo.Name.Equals("Muisir Path 2") || client.MapInfo.Name.Equals("Muisir Path 3") || client.MapInfo.Name.Equals("Muisir Path 4") || client.MapInfo.Name.Equals("Muisir Path 5") || client.MapInfo.Name.Equals("Muisir Path 6") || client.MapInfo.Name.Equals("Muisir Path 7") || client.MapInfo.Name.Equals("Muisir Path 8") || client.MapInfo.Name.Equals("Muisir Path 9"))
-              client.SendMessage("{=bR " + client.CountedMonsters[580].ToString() + ", M " + client.CountedMonsters[953].ToString() + ", C " + client.CountedMonsters[955].ToString() + ", T " + client.CountedMonsters[960].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Muisir Path 10") || client.MapInfo.Name.Equals("Muisir Path 11") || client.MapInfo.Name.Equals("Muisir Path 12") || client.MapInfo.Name.Equals("Muisir Path 13") || client.MapInfo.Name.Equals("Muisir Path 14") || client.MapInfo.Name.Equals("Muisir Path 15") || client.MapInfo.Name.Equals("Muisir Path 16") || client.MapInfo.Name.Equals("Muisir Path 17") || client.MapInfo.Name.Equals("Muisir Path 18") || client.MapInfo.Name.Equals("Muisir Path 19") || client.MapInfo.Name.Equals("Muisir Path 20"))
-              client.SendMessage("{=bM " + client.CountedMonsters[953].ToString() + ", A " + client.CountedMonsters[954].ToString() + ", C " + client.CountedMonsters[955].ToString() + ", D " + client.CountedMonsters[956].ToString() + ", T " + client.CountedMonsters[960].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Muisir Path 21") || client.MapInfo.Name.Equals("Muisir Path 22") || client.MapInfo.Name.Equals("Muisir Path 23") || client.MapInfo.Name.Equals("Muisir Path 24") || client.MapInfo.Name.Equals("Muisir Path 25") || client.MapInfo.Name.Equals("Muisir Path 26") || client.MapInfo.Name.Equals("Muisir Path 27") || client.MapInfo.Name.Equals("Muisir Path 28") || client.MapInfo.Name.Equals("Muisir Path 29") || client.MapInfo.Name.Equals("Muisir Path 30"))
-              client.SendMessage("{=bR " + client.CountedMonsters[580].ToString() + " M " + client.CountedMonsters[953].ToString() + " A " + client.CountedMonsters[954].ToString() + " C " + client.CountedMonsters[955].ToString() + " D " + client.CountedMonsters[956].ToString() + " V " + client.CountedMonsters[957].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Muisir Path 31") || client.MapInfo.Name.Equals("Muisir Path 32") || client.MapInfo.Name.Equals("Muisir Path 33") || client.MapInfo.Name.Equals("Muisir Path 34") || client.MapInfo.Name.Equals("Muisir Path 35") || client.MapInfo.Name.Equals("Muisir Path 36") || client.MapInfo.Name.Equals("Muisir Path 37") || client.MapInfo.Name.Equals("Muisir Path 38") || client.MapInfo.Name.Equals("Muisir Path 39") || client.MapInfo.Name.Equals("Muisir Path 40") || client.MapInfo.Name.Equals("Muisir Path 41"))
-              client.SendMessage("{=bS " + client.CountedMonsters[926].ToString() + " D " + client.CountedMonsters[940].ToString() + " M " + client.CountedMonsters[953].ToString() + " A " + client.CountedMonsters[954].ToString() + " V " + client.CountedMonsters[957].ToString() + " T " + client.CountedMonsters[960].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Yowien Territory24"))
-              client.SendMessage("{=bBaboons " + client.CountedMonsters[892].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Yowien Territory12") || client.MapInfo.Name.Equals("Yowien Territory13") || client.MapInfo.Name.Equals("Yowien Territory14"))
-              client.SendMessage("{=bBaby Brutes " + client.CountedMonsters[661].ToString(), (byte) 18);
-            if (client.MapInfo.Number == 7414 || client.MapInfo.Number == 7415 || client.MapInfo.Number == 7416 || client.MapInfo.Number == 7420 || client.MapInfo.Number == 7421)
-              client.SendMessage("{=uBlobs " + (client.CountedMonsters[334] + client.CountedMonsters[335]).ToString(), (byte) 18);
-            if (client.MapInfo.Number == 7442 || client.MapInfo.Number == 7439 || client.MapInfo.Number == 7440 || client.MapInfo.Number == 7441 || client.MapInfo.Number == 7438 || client.MapInfo.Number == 7437)
-              client.SendMessage("{=uPirates " + client.CountedMonsters[490].ToString(), (byte) 18);
-            if (client.MapInfo.Number == 7402 || client.MapInfo.Number == 7408 || client.MapInfo.Number == 7409)
-              client.SendMessage("{=uSlugs " + client.CountedMonsters[86].ToString(), (byte) 18);
-            if (client.MapInfo.Number == 7410 || client.MapInfo.Number == 7411)
-              client.SendMessage("{=uLimax " + client.CountedMonsters[410].ToString(), (byte) 18);
-            if (client.MapInfo.Number == 7422 || client.MapInfo.Number == 7401 || client.MapInfo.Number == 7406 || client.MapInfo.Number == 7407)
-              client.SendMessage("{=uRats " + client.CountedMonsters[625].ToString(), (byte) 18);
-            if (client.MapInfo.Number == 7433 || client.MapInfo.Number == 7434 || client.MapInfo.Number == 7435)
-              client.SendMessage("{=uBlobs " + client.CountedMonsters[512].ToString(), (byte) 18);
-            if (client.MapInfo.Number == 7404 || client.MapInfo.Number == 7418 || client.MapInfo.Number == 7419 || client.MapInfo.Number == 7431 || client.MapInfo.Number == 7426 || client.MapInfo.Number == 7427 || client.MapInfo.Number == 7429 || client.MapInfo.Number == 7428 || client.MapInfo.Number == 7430)
-              client.SendMessage("{=uBlobs " + (client.CountedMonsters[395] + client.CountedMonsters[396]).ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Veltain Mine 2"))
-              client.SendMessage("{=qS " + client.CountedMonsters[8].ToString() + ", G " + client.CountedMonsters[10].ToString() + ", W " + client.CountedMonsters[9].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Veltain Mine 3"))
-              client.SendMessage("{=qS " + client.CountedMonsters[680].ToString() + ", G " + client.CountedMonsters[682].ToString() + ", W " + client.CountedMonsters[681].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Veltain Mine 4"))
-              client.SendMessage("{=qS " + client.CountedMonsters[683].ToString() + ", G " + client.CountedMonsters[685].ToString() + ", W " + client.CountedMonsters[684].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Water Dungeon 1"))
-              client.SendMessage("{=bB " + client.CountedMonsters[703].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Water Dungeon 2"))
-              client.SendMessage("{=bB " + client.CountedMonsters[703].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Water Dungeon 3"))
-              client.SendMessage("{=bF " + client.CountedMonsters[704].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Water Dungeon 4"))
-              client.SendMessage("{=bB " + client.CountedMonsters[703].ToString() + ", F " + client.CountedMonsters[704].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Water Dungeon 5"))
-              client.SendMessage("{=bB " + client.CountedMonsters[703].ToString() + ", Si " + client.CountedMonsters[705].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Water Dungeon 6"))
-              client.SendMessage("{=bB " + client.CountedMonsters[703].ToString() + ", F " + client.CountedMonsters[704].ToString() + ", Si " + client.CountedMonsters[705].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Water Dungeon 7"))
-              client.SendMessage("{=bF " + client.CountedMonsters[704].ToString() + ", Si " + client.CountedMonsters[705].ToString() + ", R " + client.CountedMonsters[706].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Water Dungeon 8"))
-              client.SendMessage("{=bF " + client.CountedMonsters[704].ToString() + ", Si " + client.CountedMonsters[705].ToString() + ", R " + client.CountedMonsters[706].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Water Dungeon 9"))
-              client.SendMessage("{=bSq " + client.CountedMonsters[715].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Water Dungeon 10"))
-              client.SendMessage("{=bSi " + client.CountedMonsters[705].ToString() + ", R " + client.CountedMonsters[706].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Water Dungeon 11"))
-              client.SendMessage("{=bSi " + client.CountedMonsters[705].ToString() + ", R " + client.CountedMonsters[706].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Water Dungeon 12"))
-              client.SendMessage("{=bSi " + client.CountedMonsters[705].ToString() + ", R " + client.CountedMonsters[706].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Water Dungeon 13"))
-              client.SendMessage("{=bE " + client.CountedMonsters[716].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Water Dungeon 14"))
-              client.SendMessage("{=bSi " + client.CountedMonsters[705].ToString() + ", R " + client.CountedMonsters[706].ToString() + ", Sq " + client.CountedMonsters[715].ToString() + ", E " + client.CountedMonsters[716].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 1"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 2"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 3"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 4"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 5"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 6"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 7"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 8"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 9"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 10"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 11"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 12"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 13"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 14"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 15"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 16"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 17"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
-            if (client.MapInfo.Name.Equals("Blackstar Crypt 18"))
-              client.SendMessage("{=uK " + client.CountedMonsters[759].ToString() + ", P " + client.CountedMonsters[767].ToString() + ", L " + client.CountedMonsters[769].ToString(), (byte) 18);
+            //
+
           }
         }
         if (str1.Contains(" experience!") && client.MapInfo.Name.Contains("Mount Merry 5-"))
@@ -5338,37 +4997,42 @@ label_268:
         client.bugcount = client.bug30.ToString() + " - " + client.bug31.ToString() + " - " + client.bug32.ToString() + " - " + client.bug33.ToString() + " - " + client.bug34.ToString();
         client.SendMessage(client.bugcount, (byte) 18);
       }
-      if (client.MapInfo.Number == 9378)
-      {
-        client.CountedMonsters[697] = 0;
-        client.CountedMonsters[696] = 0;
-        client.CountedMonsters[698] = 0;
-        client.CountedMonsters[695] = 0;
-      }
-      if (client.MapInfo.Number == 8995)
-      {
-        client.CountedMonsters[422] = 0;
-        client.CountedMonsters[547] = 0;
-        client.CountedMonsters[779] = 0;
-        client.CountedMonsters[782] = 0;
-        client.CountedMonsters[788] = 0;
-        client.CountedMonsters[270] = 0;
-        client.CountedMonsters[760] = 0;
-        client.CountedMonsters[784] = 0;
-        client.CountedMonsters[785] = 0;
-      }
-      if (client.MapInfo.Number == 11342 || client.MapInfo.Number == 11300 || client.MapInfo.Number == 11363)
-      {
-        client.CountedMonsters[580] = 0;
-        client.CountedMonsters[926] = 0;
-        client.CountedMonsters[940] = 0;
-        client.CountedMonsters[953] = 0;
-        client.CountedMonsters[954] = 0;
-        client.CountedMonsters[955] = 0;
-        client.CountedMonsters[956] = 0;
-        client.CountedMonsters[957] = 0;
-        client.CountedMonsters[960] = 0;
-      }
+
+      // Code by Avi
+      client.monsterKills.Reset(client.MapInfo.Number);
+      //
+
+      //if (client.MapInfo.Number == 9378)
+      //{
+      //  client.CountedMonsters[697] = 0;
+      //  client.CountedMonsters[696] = 0;
+      //  client.CountedMonsters[698] = 0;
+      //  client.CountedMonsters[695] = 0;
+      //}
+      //if (client.MapInfo.Number == 8995)
+      //{
+      //  client.CountedMonsters[422] = 0;
+      //  client.CountedMonsters[547] = 0;
+      //  client.CountedMonsters[779] = 0;
+      //  client.CountedMonsters[782] = 0;
+      //  client.CountedMonsters[788] = 0;
+      //  client.CountedMonsters[270] = 0;
+      //  client.CountedMonsters[760] = 0;
+      //  client.CountedMonsters[784] = 0;
+      //  client.CountedMonsters[785] = 0;
+      //}
+      //if (client.MapInfo.Number == 11342 || client.MapInfo.Number == 11300 || client.MapInfo.Number == 11363)
+      //{
+      //  client.CountedMonsters[580] = 0;
+      //  client.CountedMonsters[926] = 0;
+      //  client.CountedMonsters[940] = 0;
+      //  client.CountedMonsters[953] = 0;
+      //  client.CountedMonsters[954] = 0;
+      //  client.CountedMonsters[955] = 0;
+      //  client.CountedMonsters[956] = 0;
+      //  client.CountedMonsters[957] = 0;
+      //  client.CountedMonsters[960] = 0;
+      //}
       if (client.MapInfo.Name.Equals("Yowien Territory25"))
         client.CountedMonsters[892] = 0;
       if (client.MapInfo.Number == 7412 || client.MapInfo.Number == 7403 || client.MapInfo.Number == 7432 || client.MapInfo.Number == 7436 || client.MapInfo.Number == 7405)
@@ -5394,19 +5058,19 @@ label_268:
         client.SendMessage("{=uBlobs 0", (byte) 18);
       if (client.MapInfo.Number == 7425)
         client.SendMessage("{=uPirates 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Veltain Mine 2") || client.MapInfo.Name.Equals("Veltain Mine 3") || client.MapInfo.Name.Equals("Veltain Mine 4"))
-      {
-        client.CountedMonsters[8] = 0;
-        client.CountedMonsters[10] = 0;
-        client.CountedMonsters[9] = 0;
-        client.CountedMonsters[680] = 0;
-        client.CountedMonsters[682] = 0;
-        client.CountedMonsters[681] = 0;
-        client.CountedMonsters[683] = 0;
-        client.CountedMonsters[685] = 0;
-        client.CountedMonsters[684] = 0;
-        client.SendMessage("{=qS 0, G 0, W 0", (byte) 18);
-      }
+      //if (client.MapInfo.Name.Equals("Veltain Mine 2") || client.MapInfo.Name.Equals("Veltain Mine 3") || client.MapInfo.Name.Equals("Veltain Mine 4"))
+      //{
+      //  client.CountedMonsters[8] = 0;
+      //  client.CountedMonsters[10] = 0;
+      //  client.CountedMonsters[9] = 0;
+      //  client.CountedMonsters[680] = 0;
+      //  client.CountedMonsters[682] = 0;
+      //  client.CountedMonsters[681] = 0;
+      //  client.CountedMonsters[683] = 0;
+      //  client.CountedMonsters[685] = 0;
+      //  client.CountedMonsters[684] = 0;
+      //  client.SendMessage("{=qS 0, G 0, W 0", (byte) 18);
+      //}
       if (client.MapInfo.Name.Contains("Water Dungeon"))
       {
         client.CountedMonsters[703] = 0;
