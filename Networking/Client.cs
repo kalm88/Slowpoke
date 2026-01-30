@@ -702,50 +702,8 @@ namespace Flintstones
       this.AegisTimer.Elapsed += new ElapsedEventHandler(this.UseAegisOkay);
       this.AegisTimer.Enabled = true;
       this.AegisTimer.Stop();
-      this.CantSpellMaps = new List<int>();
-      this.CantSpellMaps.Add(167);
-      this.CantSpellMaps.Add(422);
-      this.CantSpellMaps.Add(498);
-      this.CantSpellMaps.Add(136);
-      this.CantSpellMaps.Add(135);
-      this.CantSpellMaps.Add(130);
-      this.CantSpellMaps.Add(500);
-      this.CantSpellMaps.Add(3006);
-      this.CantSpellMaps.Add(3008);
-      this.CantSpellMaps.Add(11362);
-      this.CantSpellMaps.Add(11342);
-      this.CantSpellMaps.Add(3012);
-      this.CantSpellMaps.Add(3272);
-      this.CantSpellMaps.Add(3271);
-      this.CantSpellMaps.Add(3926);
-      this.CantSpellMaps.Add(3938);
-      this.CantSpellMaps.Add(3935);
-      this.CantSpellMaps.Add(3940);
-      this.CantSpellMaps.Add(8300);
-      this.CantSpellMaps.Add(10265);
-      this.CantSpellMaps.Add(7300);
-      this.CantSpellMaps.Add(8995);
-      this.CantSpellMaps.Add(3950);
-      this.CantSpellMaps.Add(3052);
-      this.CantSpellMaps.Add(3952);
-      this.CantSpellMaps.Add(3079);
-      this.CantSpellMaps.Add(5231);
-      this.CantSpellMaps.Add(5232);
-      this.CantSpellMaps.Add(8999);
-      this.CantSpellMaps.Add(8998);
-      this.CantSpellMaps.Add(8997);
-      this.CantSpellMaps.Add(8996);
-      this.CantSpellMaps.Add(7900);
-      this.CantSkillMaps = new List<int>();
-      this.CantSkillMaps.Add(10265);
-      this.CantSkillMaps.Add(7900);
-      this.CountedMonsters = new Dictionary<int, int>();
-      this.CountedMonsters.Add(703, 0);
-      this.CountedMonsters.Add(704, 0);
-      this.CountedMonsters.Add(705, 0);
-      this.CountedMonsters.Add(706, 0);
-      this.CountedMonsters.Add(715, 0);
-      this.CountedMonsters.Add(716, 0);
+      CantSpellMaps = LoadRestrictedSpellAreas();
+      CantSkillMaps = LoadRestrictedSkillAreas();
       this.GroupCounter = new Dictionary<string, GroupCounts>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
       this.WayRegions = new Dictionary<Location, string>();
       this.TempRegions = new Dictionary<int, MapNum>();
@@ -19847,6 +19805,37 @@ label_860:
     public void CreateSpell()
     {
     }
+
+    public List<int> LoadRestrictedSpellAreas()
+    {
+      string filePath = Program.StartupPath + "\\Settings\\restrictedareas.xml";
+      var document = XDocument.Load(filePath);
+
+      List<int> noSpellMapIds = document
+          .Root                                // <RestrictedAreas>
+          .Element("NoSpells")                 // <NoSpells>
+          .Elements("MapID")                   // <MapID>
+          .Select(e => int.Parse(e.Value))
+          .ToList();
+
+      return noSpellMapIds;
+    }
+
+    public List<int> LoadRestrictedSkillAreas()
+    {
+      string filePath = Program.StartupPath + "\\Settings\\restrictedareas.xml";
+      var document = XDocument.Load(filePath);
+
+      List<int> noSkillMapIds = document
+          .Root                                // <RestrictedAreas>
+          .Element("NoSkills")                 // <NoSkills>
+          .Elements("MapID")                   // <MapID>
+          .Select(e => int.Parse(e.Value))
+          .ToList();
+
+      return noSkillMapIds;
+    }
+
 
     public void LoadFakeNpcs()
     {

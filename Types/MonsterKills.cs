@@ -180,8 +180,7 @@ namespace Flintstones
     public string Display(string areaName)
     {
       string killInfo = "";
-      Console.WriteLine($"Displaying kill counts for area: {areaName}");
-      // Find the first matching area that starts with the provided area name
+      // Find the first matching area in the KillAreas list that starts with the provided areaName
       var matchingArea = KillAreas.Keys
         .FirstOrDefault(k => areaName.StartsWith(k));
 
