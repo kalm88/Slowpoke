@@ -36,6 +36,6 @@ namespace Flintstones
       this.NextUse = DateTime.UtcNow;
     }
 
-    public override string ToString() => string.Format("{0} (Lev:{1}/{2})", (object) this.Name, (object) this.CurrentLevel, (object) this.MaximumLevel);
+    public override string ToString() => $"{Name} (Lev:{CurrentLevel}/{MaximumLevel})";
   }
 }

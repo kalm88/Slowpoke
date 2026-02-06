@@ -54,9 +54,8 @@ namespace Flintstones
         return;
       if (xdocument.Element((XName) "Settings").Element((XName) "DarkAgesFileName") != null)
         Options.DarkAgesFileName = xdocument.Element((XName) "Settings").Element((XName) "DarkAgesFileName").Value;
-      if (xdocument.Element((XName) "Settings").Element((XName) "DarkAgesDirectory") == null)
-        return;
-      Options.DarkAgesDirectoryName = xdocument.Element((XName) "Settings").Element((XName) "DarkAgesDirectory").Value;
+      if (xdocument.Element((XName)"Settings").Element((XName)"DarkAgesDirectory") != null)
+        Options.DarkAgesDirectoryName = xdocument.Element((XName)"Settings").Element((XName)"DarkAgesDirectory").Value;
     }
   }
 }

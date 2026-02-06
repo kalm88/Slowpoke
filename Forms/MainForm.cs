@@ -1305,9 +1305,18 @@ namespace Flintstones
         this.oldanim.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "oldanim").Value);
       if (xdocument.Element((XName) "Settings").Element((XName) "relog") != null)
         this.relog.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "relog").Value);
-      if (xdocument.Element((XName) "Settings").Element((XName) "recordchestdata") == null)
-        return;
-      this.recordchestdata.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "recordchestdata").Value);
+      if (xdocument.Element((XName) "Settings").Element((XName) "recordchestdata") != null)
+        this.recordchestdata.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "recordchestdata").Value);
+      if (xdocument.Element((XName) "Settings").Element((XName) "LoadTemplate") != null)
+        this.preload.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "LoadTemplate").Value);
+      if (xdocument.Element((XName) "Settings").Element((XName) "TemplateName") != null)
+        this.preloadtemplate.Text = xdocument.Element((XName) "Settings").Element((XName) "TemplateName").Value;
+      if (xdocument.Element((XName) "Settings").Element((XName) "ForceGroup") != null)
+        this.pregroup.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "ForceGroup").Value);
+      if (xdocument.Element((XName) "Settings").Element((XName) "ForceGroupWith") != null)
+        this.pregroupname.Text = xdocument.Element((XName) "Settings").Element((XName) "ForceGroupWith").Value;
+      if (xdocument.Element((XName) "Settings").Element((XName) "StartPlayMode") != null)
+        this.preplay.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "StartPlayMode").Value);
     }
 
     public void SaveMainFormSettings()
@@ -1330,6 +1339,14 @@ namespace Flintstones
       xdocument.Element((XName) "Settings").Add((object) new XElement((XName) "oldanim", (object) this.oldanim.Checked));
       xdocument.Element((XName) "Settings").Add((object) new XElement((XName) "relog", (object) this.relog.Checked));
       xdocument.Element((XName) "Settings").Add((object) new XElement((XName) "recordchestdata", (object) this.recordchestdata.Checked));
+
+      xdocument.Element((XName)"Settings").Add((object)new XElement((XName)"LoadTemplate", (object)this.preload.Checked));
+      xdocument.Element((XName)"Settings").Add((object)new XElement((XName)"TemplateName", (object)this.preloadtemplate.Text));
+      xdocument.Element((XName)"Settings").Add((object)new XElement((XName)"ForceGroup", (object)this.pregroup.Checked));
+      xdocument.Element((XName)"Settings").Add((object)new XElement((XName)"ForceGroupWith", (object)this.pregroupname.Text));
+      xdocument.Element((XName)"Settings").Add((object)new XElement((XName)"StartInPlayMode", (object)this.preplay.Checked));
+
+
       if (Directory.Exists(Program.StartupPath + "\\Settings"))
       {
         xdocument.Save(Program.StartupPath + "\\Settings\\mainsettings.xml");
@@ -1548,6 +1565,12 @@ namespace Flintstones
     }
 
     private void recordchestdata_CheckedChanged(object sender, EventArgs e) => this.SaveMainFormSettings();
+
+    private void loadtemplate_CheckedChanged(object sender, EventArgs e) => this.SaveMainFormSettings();
+    private void preloadtemplate_TextChanged(object sender, EventArgs e) => this.SaveMainFormSettings();
+    private void forcegroup_CheckedChanged(object sender, EventArgs e) => this.SaveMainFormSettings();
+    private void forcegroupname_TextChanged(object sender, EventArgs e) => this.SaveMainFormSettings();
+    private void startplaymode_CheckedChanged(object sender, EventArgs e) => this.SaveMainFormSettings();
 
     private void viewPatchNotesToolStripMenuItem_Click(object sender, EventArgs e) => this.Updates.Show();
 
@@ -1805,19 +1828,14 @@ namespace Flintstones
       this.groupBox5.TabIndex = 84;
       this.groupBox5.TabStop = false;
       this.groupBox5.Text = "Preload";
-      this.preplay.AutoSize = true;
-      this.preplay.Location = new System.Drawing.Point(9, 145);
-      this.preplay.Name = "preplay";
-      this.preplay.Size = new Size(128, 19);
-      this.preplay.TabIndex = 84;
-      this.preplay.Text = "Start in 'Play' mode";
-      this.preplay.UseVisualStyleBackColor = true;
+
       this.label9.AutoSize = true;
       this.label9.Location = new System.Drawing.Point(6, 32);
       this.label9.Name = "label9";
       this.label9.Size = new Size(122, 15);
       this.label9.TabIndex = 83;
       this.label9.Text = "These trigger at log in";
+
       this.preload.AutoSize = true;
       this.preload.Location = new System.Drawing.Point(9, 67);
       this.preload.Name = "preload";
@@ -1825,6 +1843,14 @@ namespace Flintstones
       this.preload.TabIndex = 79;
       this.preload.Text = "Load Template";
       this.preload.UseVisualStyleBackColor = true;
+      this.preload.CheckedChanged += new EventHandler(this.loadtemplate_CheckedChanged);
+
+      this.preloadtemplate.Location = new System.Drawing.Point(120, 65);
+      this.preloadtemplate.Name = "preloadtemplate";
+      this.preloadtemplate.Size = new Size(105, 23);
+      this.preloadtemplate.TabIndex = 80;
+      this.preloadtemplate.TextChanged += new EventHandler(this.preloadtemplate_TextChanged);
+
       this.pregroup.AutoSize = true;
       this.pregroup.Location = new System.Drawing.Point(9, 107);
       this.pregroup.Name = "pregroup";
@@ -1832,14 +1858,23 @@ namespace Flintstones
       this.pregroup.TabIndex = 82;
       this.pregroup.Text = "Force group with";
       this.pregroup.UseVisualStyleBackColor = true;
-      this.preloadtemplate.Location = new System.Drawing.Point(120, 65);
-      this.preloadtemplate.Name = "preloadtemplate";
-      this.preloadtemplate.Size = new Size(105, 23);
-      this.preloadtemplate.TabIndex = 80;
+      this.pregroup.CheckedChanged += new EventHandler(this.forcegroup_CheckedChanged);
+
       this.pregroupname.Location = new System.Drawing.Point(131, 103);
       this.pregroupname.Name = "pregroupname";
       this.pregroupname.Size = new Size(94, 23);
       this.pregroupname.TabIndex = 81;
+      this.pregroupname.TextChanged += new EventHandler(this.forcegroupname_TextChanged);
+
+      this.preplay.AutoSize = true;
+      this.preplay.Location = new System.Drawing.Point(9, 145);
+      this.preplay.Name = "preplay";
+      this.preplay.Size = new Size(128, 19);
+      this.preplay.TabIndex = 84;
+      this.preplay.Text = "Start in 'Play' mode";
+      this.preplay.UseVisualStyleBackColor = true;
+      this.preplay.CheckedChanged += new EventHandler(this.startplaymode_CheckedChanged);
+
       this.addfriend_name.Location = new System.Drawing.Point(323, 141);
       this.addfriend_name.Name = "addfriend_name";
       this.addfriend_name.Size = new Size(135, 23);

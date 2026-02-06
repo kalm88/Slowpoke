@@ -2752,8 +2752,6 @@ label_2062:
           if (name != string.Empty)
             this.DropItems(name);
         }
-        else if (this.MySpeakMessage.Substring(6) != string.Empty)
-          ;
       }
       else if (this.MySpeakMessage.StartsWith("/r", StringComparison.CurrentCultureIgnoreCase))
         this.SkillSpellCaption("repair all");
@@ -19806,12 +19804,24 @@ label_860:
     {
     }
 
+    /// <summary>
+    /// Loads the list of map IDs where spell usage is restricted.
+    /// </summary>
+    /// <remarks>The restricted areas are read from the 'restrictedareas.xml' file located in the
+    /// settings directory.</remarks>
+    /// <returns>A list of integers representing the map IDs where spells are not permitted. The list will be empty if no
+    /// restricted areas are defined.</returns>
     public List<int> LoadRestrictedSpellAreas()
     {
       string filePath = Program.StartupPath + "\\Settings\\restrictedareas.xml";
+      List<int> noSpellMapIds = new List<int>();
+
+      if (File.Exists(filePath) == false)
+        return noSpellMapIds;
+      
       var document = XDocument.Load(filePath);
 
-      List<int> noSpellMapIds = document
+      noSpellMapIds = document
           .Root                                // <RestrictedAreas>
           .Element("NoSpells")                 // <NoSpells>
           .Elements("MapID")                   // <MapID>
@@ -19821,12 +19831,24 @@ label_860:
       return noSpellMapIds;
     }
 
+    /// <summary>
+    /// Loads the list of map IDs where skill usage is restricted.
+    /// </summary>
+    /// <remarks>The restricted areas are read from the 'restrictedareas.xml' file located in the
+    /// settings directory.</remarks>
+    /// <returns>A list of integers representing the map IDs where skills are not permitted. The list will be empty if no
+    /// restricted areas are defined.</returns>
     public List<int> LoadRestrictedSkillAreas()
     {
       string filePath = Program.StartupPath + "\\Settings\\restrictedareas.xml";
+      List<int> noSkillMapIds = new List<int>();
+
+      if (File.Exists(filePath) == false)
+          return noSkillMapIds;
+
       var document = XDocument.Load(filePath);
 
-      List<int> noSkillMapIds = document
+      noSkillMapIds = document
           .Root                                // <RestrictedAreas>
           .Element("NoSkills")                 // <NoSkills>
           .Elements("MapID")                   // <MapID>
