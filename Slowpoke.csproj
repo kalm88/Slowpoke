@@ -280,6 +280,7 @@
     <None Include="Resources\richTextBox1.text" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\ItemList.xml" />
     <Content Include="Resources\questcounts.xml" />
     <Content Include="Resources\199.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -290,6 +291,7 @@
     <Content Include="Resources\btnStop.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\SpellList.xml" />
     <Content Include="Resources\walklocations.xml" />
   </ItemGroup>
   <ItemGroup>
