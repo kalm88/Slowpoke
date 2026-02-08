@@ -1315,8 +1315,8 @@ namespace Flintstones
         this.pregroup.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "ForceGroup").Value);
       if (xdocument.Element((XName) "Settings").Element((XName) "ForceGroupWith") != null)
         this.pregroupname.Text = xdocument.Element((XName) "Settings").Element((XName) "ForceGroupWith").Value;
-      if (xdocument.Element((XName) "Settings").Element((XName) "StartPlayMode") != null)
-        this.preplay.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "StartPlayMode").Value);
+      if (xdocument.Element((XName) "Settings").Element((XName)"StartInPlayMode") != null)
+        this.preplay.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName)"StartInPlayMode").Value);
     }
 
     public void SaveMainFormSettings()

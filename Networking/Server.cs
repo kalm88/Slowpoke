@@ -304,7 +304,7 @@ namespace Flintstones
 
       foreach (var spell in document.Root.Elements("Item"))
       {
-        string name = spell.Attribute("Item")?.Value;
+        string name = spell.Attribute("name")?.Value;
 
         // Skip if name is null or whitespace
         if (string.IsNullOrWhiteSpace(name))
@@ -344,7 +344,7 @@ namespace Flintstones
 
       foreach (var spell in document.Root.Elements("Item"))
       {
-        string name = spell.Attribute("Item")?.Value;
+        string name = spell.Attribute("name")?.Value;
 
         // Skip if name is null or whitespace
         if (string.IsNullOrWhiteSpace(name))
@@ -382,7 +382,7 @@ namespace Flintstones
 
       foreach (var spell in document.Root.Elements("Spell"))
       {
-        string name = spell.Attribute("Spell")?.Value;
+        string name = spell.Attribute("name")?.Value;
 
         // Skip if name is null or whitespace
         if (string.IsNullOrWhiteSpace(name))
@@ -408,7 +408,7 @@ namespace Flintstones
       string filePath = Program.StartupPath + "\\Settings\\HerbNodes.xml";
       if (!File.Exists(filePath))
       {
-        MessageBox.Show("HerbNodes.xml not found in Settings folder.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+//        MessageBox.Show("HerbNodes.xml not found in Settings folder.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         return;
       }
       
