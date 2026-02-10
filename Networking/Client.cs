@@ -455,6 +455,7 @@ namespace Flintstones
     // Dictionary to hold max stats for each character class
     public Dictionary<CharacterClass, CharacterStats> maxClassStats = new Dictionary<CharacterClass, CharacterStats>
     {
+      [CharacterClass.Peasant] = new CharacterStats() { Maxhp = 0, Str = 0, Int = 0, Wis = 0, Con = 0, Dex = 0 },
       [CharacterClass.Warrior] = new CharacterStats() { Maxhp = 4000, Str = 215, Int = 100, Wis = 100, Con = 180, Dex = 150 },
       [CharacterClass.Rogue] = new CharacterStats() { Maxhp = 4250, Str = 180, Int = 100, Wis = 100, Con = 150, Dex = 215 },
       [CharacterClass.Wizard] = new CharacterStats() { Maxhp = 3750, Str = 100, Int = 215, Wis = 180, Con = 150, Dex = 100 },
@@ -780,6 +781,13 @@ namespace Flintstones
           this.Tab.walklocaleslist.SelectedItem = (object)localb;
         }
 
+        this.Tab.autowalker_button.Text = "Stop";
+        this.autowalkon = true;
+        if (!this.BotThread.IsAlive)
+          this.BotThread.Start();
+        this.pause = false;
+        this.Tab.btnPlay.Enabled = false;
+        this.Tab.btnStop.Enabled = true;
       }
     }
 
@@ -1164,64 +1172,46 @@ namespace Flintstones
             else
             {
               this.SpeakMessage = this.SpeakMessage.Substring(6);
-              bool flag = false;
 
               if (Server.WalkLocations.ContainsKey(this.SpeakMessage))
               {
                 var location = Server.WalkLocations[this.SpeakMessage];
-                this.Tab.autowalker_locales.SelectedItem = (object) location.Area;
-                if (!string.IsNullOrEmpty(location.Location))
-                  this.Tab.walklocaleslist.SelectedItem = (object) location.Location;
-                flag = true;
-              }
-
-              // TODO: Find out why Suomi song is used here
-              if (this.SpeakMessage.StartsWith("oct", StringComparison.CurrentCultureIgnoreCase))
-              {
-                if (!this.MapInfo.Name.Contains("Suomi") && !this.MapInfo.Name.Contains("Astrid") && !this.MapInfo.Name.Contains("Undine") && this.HasItem("Suomi Song"))
-                  this.UseItem("Suomi Song");
-                this.Tab.autowalker_locales.SelectedItem = (object) "Astrid";
-                this.Tab.walklocaleslist.SelectedItem = (object) "Octagram";
-                flag = true;
-              }
-
-              // TODO: Find out why pigwalk and medium walk are explicitly set here
-              if (this.SpeakMessage.Equals("maze", StringComparison.CurrentCultureIgnoreCase))
-              {
-                this.Tab.autowalker_locales.SelectedItem = (object) "Loures";
-                this.Tab.walklocaleslist.SelectedItem = (object) "Maze";
-                flag = true;
-                this.Tab.pigwalk.Checked = true;
-                this.Tab.mediumwalk.Checked = true;
-              }
-
-              if (flag)
-              {
-                this.Tab.autowalker_button.Text = "Stop";
-                this.autowalkon = true;
-                this.Tab.castwhilefollow.Checked = true;
-                if (this.Tab.iocself.Visible)
-                  this.Tab.iocself.Checked = true;
-                if (this.Tab.iocself.Visible && this.Tab.ioctype.Text == "nuadhaich")
-                  this.Tab.ioctype.Text = "ard ioc";
-                if (this.Tab.aocurse.Visible)
-                  this.Tab.aocurse.Checked = true;
-                if (this.Tab.dion_enemiesnext.Visible)
-                  this.Tab.dion_enemiesnext.Checked = true;
-                if (this.Tab.dion_enemiesnext.Visible)
-                  this.Tab.dion_enemiesnextcount.Value = 1M;
-                if (this.Tab.selfaopuinsein.Visible)
-                  this.Tab.selfaopuinsein.Checked = true;
-                if (this.Tab.selfaosuain.Visible)
-                  this.Tab.selfaosuain.Checked = true;
-                if (!this.BotThread.IsAlive)
-                  this.BotThread.Start();
-                this.pause = false;
-                this.Tab.btnPlay.Enabled = false;
-                this.Tab.btnStop.Enabled = true;
+                this.walkcommand(location.Area, location.Location, false);
               }
               else
+              {
                 this.SendMessage("That location does not exist.", "pink");
+              }
+
+
+
+              //if (flag)
+              //{
+              //  this.Tab.autowalker_button.Text = "Stop";
+              //  this.autowalkon = true;
+              //  this.Tab.castwhilefollow.Checked = true;
+              //  if (this.Tab.iocself.Visible)
+              //    this.Tab.iocself.Checked = true;
+              //  if (this.Tab.iocself.Visible && this.Tab.ioctype.Text == "nuadhaich")
+              //    this.Tab.ioctype.Text = "ard ioc";
+              //  if (this.Tab.aocurse.Visible)
+              //    this.Tab.aocurse.Checked = true;
+              //  if (this.Tab.dion_enemiesnext.Visible)
+              //    this.Tab.dion_enemiesnext.Checked = true;
+              //  if (this.Tab.dion_enemiesnext.Visible)
+              //    this.Tab.dion_enemiesnextcount.Value = 1M;
+              //  if (this.Tab.selfaopuinsein.Visible)
+              //    this.Tab.selfaopuinsein.Checked = true;
+              //  if (this.Tab.selfaosuain.Visible)
+              //    this.Tab.selfaosuain.Checked = true;
+              //  if (!this.BotThread.IsAlive)
+              //    this.BotThread.Start();
+              //  this.pause = false;
+              //  this.Tab.btnPlay.Enabled = false;
+              //  this.Tab.btnStop.Enabled = true;
+              //}
+              //else
+              //  this.SendMessage("That location does not exist.", "pink");
             }
           }
           else if (this.SpeakMessage.Equals("/attack count", StringComparison.CurrentCultureIgnoreCase))
