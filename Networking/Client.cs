@@ -669,6 +669,8 @@ namespace Flintstones
 
     public Socket ServerSocket { get; private set; }
 
+    private SpeakCommands Commands = new SpeakCommands();
+
     public Client(Server server, Socket socket, EndPoint endPoint)
     {
       this.PreventSpam = new Dictionary<string, DateTime>();
@@ -743,7 +745,7 @@ namespace Flintstones
       this.BotThread = new Thread(new ThreadStart(this.BotLoop));
       this.BotThread.Name = "BotThread";
       this.WalkThread = new Thread(new ThreadStart(this.Walking));
-      this.QuestsThread = new Thread(new ThreadStart(this.Quests));
+      this.QuestsThread = new Thread(new ThreadStart(this.Questing));
       this.SpeakCommandThread = new Thread(new ThreadStart(this.SpeakThread));
       this.ClientLoopThread = new Thread(new ThreadStart(this.ClientLoop));
       this.ClientLoopThread.Start();
@@ -755,7 +757,10 @@ namespace Flintstones
       {
         foreach (Client client in Server.Alts.Values.ToArray<Client>())
         {
-          if (client != null && !client.Tab.ignorewalkall.Checked && (!this.SpeakMessage.StartsWith("andor ", StringComparison.CurrentCultureIgnoreCase) && !this.SpeakMessage.StartsWith("queen", StringComparison.CurrentCultureIgnoreCase) || client.MapInfo.Name.StartsWith("Andor")) && (!this.SpeakMessage.StartsWith("chaos ", StringComparison.CurrentCultureIgnoreCase) || client.MapInfo.Name.Contains("Chaos")) && (this.SpeakMessage.StartsWith("chaos", StringComparison.CurrentCultureIgnoreCase) || !client.MapInfo.Name.Contains("Chaos")))
+          if (client != null && !client.Tab.ignorewalkall.Checked && (!this.SpeakMessage.StartsWith("andor ", StringComparison.CurrentCultureIgnoreCase) && !this.SpeakMessage.StartsWith("queen", StringComparison.CurrentCultureIgnoreCase) 
+                                                                   || client.MapInfo.Name.StartsWith("Andor")) && (!this.SpeakMessage.StartsWith("chaos ", StringComparison.CurrentCultureIgnoreCase) 
+                                                                   || client.MapInfo.Name.Contains("Chaos")) && (this.SpeakMessage.StartsWith("chaos", StringComparison.CurrentCultureIgnoreCase) 
+                                                                   || !client.MapInfo.Name.Contains("Chaos")))
           {
             client.Tab.autowalker_locales.SelectedItem = (object) locala;
             if (!string.IsNullOrEmpty(localb))
@@ -765,6 +770,21 @@ namespace Flintstones
 
             client.Tab.autowalker_button.Text = "Stop";
             client.autowalkon = true;
+            client.Tab.castwhilefollow.Checked = true;
+            if (client.Tab.iocself.Visible)
+              client.Tab.iocself.Checked = true;
+            if (client.Tab.iocself.Visible && client.Tab.ioctype.Text == "nuadhaich")
+              client.Tab.ioctype.Text = "ard ioc";
+            if (client.Tab.aocurse.Visible)
+              client.Tab.aocurse.Checked = true;
+            if (client.Tab.dion_enemiesnext.Visible)
+              client.Tab.dion_enemiesnext.Checked = true;
+            if (client.Tab.dion_enemiesnext.Visible)
+              client.Tab.dion_enemiesnextcount.Value = 1M;
+            if (client.Tab.selfaopuinsein.Visible)
+              client.Tab.selfaopuinsein.Checked = true;
+            if (client.Tab.selfaosuain.Visible)
+              client.Tab.selfaosuain.Checked = true;
             if (!client.BotThread.IsAlive)
               client.BotThread.Start();
             client.pause = false;
@@ -783,6 +803,21 @@ namespace Flintstones
 
         this.Tab.autowalker_button.Text = "Stop";
         this.autowalkon = true;
+        this.Tab.castwhilefollow.Checked = true;
+        if (this.Tab.iocself.Visible)
+          this.Tab.iocself.Checked = true;
+        if (this.Tab.iocself.Visible && this.Tab.ioctype.Text == "nuadhaich")
+          this.Tab.ioctype.Text = "ard ioc";
+        if (this.Tab.aocurse.Visible)
+          this.Tab.aocurse.Checked = true;
+        if (this.Tab.dion_enemiesnext.Visible)
+          this.Tab.dion_enemiesnext.Checked = true;
+        if (this.Tab.dion_enemiesnext.Visible)
+          this.Tab.dion_enemiesnextcount.Value = 1M;
+        if (this.Tab.selfaopuinsein.Visible)
+          this.Tab.selfaopuinsein.Checked = true;
+        if (this.Tab.selfaosuain.Visible)
+          this.Tab.selfaosuain.Checked = true;
         if (!this.BotThread.IsAlive)
           this.BotThread.Start();
         this.pause = false;
@@ -797,618 +832,47 @@ namespace Flintstones
       {
         if (this.SpeakMessage != string.Empty)
         {
-          if (this.SpeakMessage.Equals("/ascendhp", StringComparison.CurrentCultureIgnoreCase) || this.SpeakMessage.Equals("/ascend hp", StringComparison.CurrentCultureIgnoreCase) || this.SpeakMessage.StartsWith("/hp", StringComparison.CurrentCultureIgnoreCase))
+          bool commandExecuted = false;
+          if (Commands.TryExecuteCommand(this.SpeakMessage, this))
           {
-            this.Tab.AscendOptions.instantascend.Checked = true;
-            this.Tab.AscendOptions.ascendhp.Checked = true;
-            this.Tab.AscendOptions.ascendbutton.Text = "Stop";
+            commandExecuted = true;
           }
-          if (this.SpeakMessage.Equals("/ascendmp", StringComparison.CurrentCultureIgnoreCase) || this.SpeakMessage.Equals("/ascend mp", StringComparison.CurrentCultureIgnoreCase) || this.SpeakMessage.StartsWith("/mp", StringComparison.CurrentCultureIgnoreCase))
+
+          if (SpeakMessage.StartsWith("/walk "))
           {
-            this.Tab.AscendOptions.instantascend.Checked = true;
-            this.Tab.AscendOptions.ascendmp.Checked = true;
-            this.Tab.AscendOptions.ascendbutton.Text = "Stop";
+            bool walkAll;
+
+            if (SpeakMessage.StartsWith("/walk all "))
+            {
+              walkAll = true;
+              SpeakMessage = SpeakMessage.Substring(10); // Remove the "/walk all " prefix to get the location name
+            }
+            else
+            {
+              walkAll = false;
+              SpeakMessage = SpeakMessage.Substring(6);  // Remove the "/walk " prefix to get the location name
+            }
+
+            if (Server.WalkLocations.ContainsKey(SpeakMessage))
+            {
+              var location = Server.WalkLocations[SpeakMessage];
+              walkcommand(location.Area, location.Location, walkAll);
+            }
+            else
+            {
+              SendMessage("That location does not exist.", "pink");
+            }
+            commandExecuted = true;
           }
+
+          if (!commandExecuted)
+          {
+            SendMessage($"Command not implemented: {SpeakMessage}", "pink");
+          }
+
           int result1;
-          if (this.SpeakMessage.Equals("/warrior", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.warrior = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-            this.Tab.walklocaleslist.SelectedItem = (object) "ToC Warrior";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.Equals("/monk", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.monk = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-            this.Tab.walklocaleslist.SelectedItem = (object) "ToC Monk";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.Equals("/rogue", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.rogue = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-            this.Tab.walklocaleslist.SelectedItem = (object) "ToC Rogue";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.Equals("/priest", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.priest = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-            this.Tab.walklocaleslist.SelectedItem = (object) "ToC Priest";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.Equals("/wizard", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.wizard = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-            this.Tab.walklocaleslist.SelectedItem = (object) "ToC Wizard";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.Equals("/hat", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.claimsunprotection = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Loures";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Francis (summer)";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.Equals("/attire", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.claimbeachattire = true;
-            if (this.HasSkill("swimming"))
-            {
-              this.Tab.autowalker_locales.SelectedItem = (object) "Lynith";
-              this.Tab.walklocaleslist.SelectedItem = (object) "Paradise";
-            }
-            else
-            {
-              this.learnswim = true;
-              this.SendMessage("Learning to swim at mileth inn first");
-              this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-              this.Tab.walklocaleslist.SelectedItem = (object) "Inn";
-            }
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.StartsWith("/wish", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.makeawish = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Church";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.StartsWith("/frosty", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.frostygift = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Loures";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Frosty (x-mas)";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.mediumwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.StartsWith("/yule", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.yulequest = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Suomi";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Weapon Shop";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.mediumwalk.Checked = true;
-            this.LastnpcpopupID = 0U;
-          }
-          else if (this.SpeakMessage.StartsWith("/slab", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.slabquest = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Hwarone";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Inn";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.Equals("/darkmaze", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (!this.HasItem("beothaich deum") && !this.HasItem("Red Potion"))
-            {
-              this.SendMessage("Get some beothaich");
-            }
-            else
-            {
-              this.darkmaze = true;
-              this.Tab.autowalker_locales.SelectedItem = (object) "Loures";
-              this.Tab.walklocaleslist.SelectedItem = (object) "Dungeon (aite)";
-              this.Tab.autowalker_button.Text = "Stop";
-              this.autowalkon = true;
-              if (!this.BotThread.IsAlive)
-                this.BotThread.Start();
-              this.pause = false;
-              this.Tab.btnPlay.Enabled = false;
-              this.Tab.btnStop.Enabled = true;
-            }
-          }
-          else if (this.SpeakMessage.Equals("/dojo", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (this.Tab.dojo.Checked)
-              this.Tab.dojo.Checked = false;
-            this.Tab.dojo.Checked = true;
-          }
-          else if (this.SpeakMessage.Equals("/thel", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (this.GroupMembers.Count<string>() == 1)
-            {
-              Client[] array = Server.Alts.Values.ToArray<Client>();
-              for (result1 = 0; result1 < array.Length; ++result1)
-              {
-                Client client = array[result1];
-                if (client.Name.ToLower() == this.GroupMembers[0].ToLower())
-                {
-                  client.letterquest = 1;
-                  client.theletter = true;
-                  if (this.MapInfo.Number != 168 && this.MapInfo.Number != 393 && this.MapInfo.Number != 134 && this.MapInfo.Number != 136 && this.MapInfo.Number != 115 && this.MapInfo.Number != 118 && this.MapInfo.Number != 122 && this.MapInfo.Number != 303 && this.MapInfo.Number != 3041)
-                  {
-                    client.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-                    client.Tab.walklocaleslist.SelectedItem = (object) "Restaurant";
-                    client.Tab.autowalker_button.Text = "Stop";
-                    client.autowalkon = true;
-                  }
-                  if (!client.BotThread.IsAlive)
-                    client.BotThread.Start();
-                  client.pause = false;
-                  client.Tab.btnPlay.Enabled = false;
-                  client.Tab.btnStop.Enabled = true;
-                }
-              }
-            }
-            this.letterquest = 1;
-            this.theletter = true;
-            if (this.MapInfo.Number != 168 && this.MapInfo.Number != 393 && this.MapInfo.Number != 134 && this.MapInfo.Number != 136 && this.MapInfo.Number != 115 && this.MapInfo.Number != 118 && this.MapInfo.Number != 122 && this.MapInfo.Number != 303 && this.MapInfo.Number != 3041)
-            {
-              this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-              this.Tab.walklocaleslist.SelectedItem = (object) "Restaurant";
-              this.Tab.autowalker_button.Text = "Stop";
-              this.autowalkon = true;
-            }
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-          }
-          else if (this.SpeakMessage.Equals("/molo", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.Tab.fastwalk.Checked = true;
-            this.molo = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Nearest Restaurant";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-          }
-          else if (this.SpeakMessage.StartsWith("/meg", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.megprize = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Mt Merry";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Mother Erbie";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-          }
-          else if (this.SpeakMessage.StartsWith("/tali", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.buy2ndtalisman = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-          }
-          else if (this.SpeakMessage.StartsWith("/pearl", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.giantpearl = true;
-            this.Tab.looton.Checked = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Lynith";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Giant Pearl";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-          }
-          else if (this.SpeakMessage.StartsWith("/tent", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Tavern";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-          }
-          else if (this.SpeakMessage.StartsWith("/law all", StringComparison.CurrentCultureIgnoreCase))
-          {
-            Client[] array = Server.Alts.Values.ToArray<Client>();
-            for (result1 = 0; result1 < array.Length; ++result1)
-            {
-              Client client = array[result1];
-              if (client != null && client.Name != string.Empty && client.MapInfo.Number == 8995)
-              {
-                client.Tab.LoadTemplate("default");
-                client.lawquest = true;
-                client.Tab.fastwalk.Checked = true;
-                client.Tab.autowalker_locales.Text = "Lost Ruins";
-                client.Tab.walklocaleslist.SelectedItem = (object) "Nairn";
-                client.Tab.autowalker_button.Text = "Stop";
-                client.autowalkon = true;
-                if (!client.BotThread.IsAlive)
-                  client.BotThread.Start();
-                client.pause = false;
-                client.Tab.btnPlay.Enabled = false;
-                client.Tab.btnStop.Enabled = true;
-                this.LastnpcpopupID = 0U;
-              }
-            }
-          }
-          else if (this.SpeakMessage.StartsWith("/law", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.Tab.LoadTemplate("default");
-            this.lawquest = true;
-            this.Tab.fastwalk.Checked = true;
-            this.Tab.autowalker_locales.Text = "Lost Ruins";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Nairn";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.LastnpcpopupID = 0U;
-          }
-          else if (this.SpeakMessage.StartsWith("/teach", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.RequestGroupList();
-            this.SendMessage("wait a sec...");
-            Thread.Sleep(1000);
-            this.Speak("sabonim, please teach me the " + this.currentdugon + " dugon");
-          }
-          else if (this.SpeakMessage.StartsWith("/done", StringComparison.CurrentCultureIgnoreCase))
-            this.Speak("sabonim, i understand the " + this.currentdugon + " dugon");
-          else if (this.SpeakMessage.StartsWith("/walk "))
-          {
-            if (this.SpeakMessage.StartsWith("/walk all "))
-            {
-              this.SpeakMessage = this.SpeakMessage.Substring(10);
 
-              if (Server.WalkLocations.ContainsKey(this.SpeakMessage))
-              {
-                var location = Server.WalkLocations[this.SpeakMessage];
-                this.walkcommand(location.Area, location.Location, true);
-              }
-              else
-              {
-                this.SendMessage("That location does not exist.", "pink");
-              }
-            }
-            else
-            {
-              this.SpeakMessage = this.SpeakMessage.Substring(6);
-
-              if (Server.WalkLocations.ContainsKey(this.SpeakMessage))
-              {
-                var location = Server.WalkLocations[this.SpeakMessage];
-                this.walkcommand(location.Area, location.Location, false);
-              }
-              else
-              {
-                this.SendMessage("That location does not exist.", "pink");
-              }
-
-
-
-              //if (flag)
-              //{
-              //  this.Tab.autowalker_button.Text = "Stop";
-              //  this.autowalkon = true;
-              //  this.Tab.castwhilefollow.Checked = true;
-              //  if (this.Tab.iocself.Visible)
-              //    this.Tab.iocself.Checked = true;
-              //  if (this.Tab.iocself.Visible && this.Tab.ioctype.Text == "nuadhaich")
-              //    this.Tab.ioctype.Text = "ard ioc";
-              //  if (this.Tab.aocurse.Visible)
-              //    this.Tab.aocurse.Checked = true;
-              //  if (this.Tab.dion_enemiesnext.Visible)
-              //    this.Tab.dion_enemiesnext.Checked = true;
-              //  if (this.Tab.dion_enemiesnext.Visible)
-              //    this.Tab.dion_enemiesnextcount.Value = 1M;
-              //  if (this.Tab.selfaopuinsein.Visible)
-              //    this.Tab.selfaopuinsein.Checked = true;
-              //  if (this.Tab.selfaosuain.Visible)
-              //    this.Tab.selfaosuain.Checked = true;
-              //  if (!this.BotThread.IsAlive)
-              //    this.BotThread.Start();
-              //  this.pause = false;
-              //  this.Tab.btnPlay.Enabled = false;
-              //  this.Tab.btnStop.Enabled = true;
-              //}
-              //else
-              //  this.SendMessage("That location does not exist.", "pink");
-            }
-          }
-          else if (this.SpeakMessage.Equals("/attack count", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (Program.MainForm.attackcount)
-            {
-              Client[] array = Server.Alts.Values.ToArray<Client>();
-              for (result1 = 0; result1 < array.Length; ++result1)
-              {
-                Client client = array[result1];
-                if (client.Tab.Monsters != null)
-                {
-                  foreach (targetMonster targetMonster in client.targetmonster)
-                  {
-                    if (targetMonster != null && targetMonster.Text.Equals("814"))
-                    {
-                      if (targetMonster.attack1type.Text == "ard pian na dion")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack1type.Text == "mor pian na dion")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack1type.Text == "Shock Arrow")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack1type.Text == "Frost Arrow")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack1type.Text == "Frost + 3 Shocks")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack2type.Text == "Cursed Tune")
-                        targetMonster.attack2.Checked = false;
-                    }
-                  }
-                }
-              }
-              Program.MainForm.attackcount = false;
-              this.SendMessage("No longer attacking Count.", "pink");
-            }
-            else
-            {
-              Client[] array = Server.Alts.Values.ToArray<Client>();
-              for (result1 = 0; result1 < array.Length; ++result1)
-              {
-                Client client = array[result1];
-                if (client.Tab.Monsters != null)
-                {
-                  foreach (targetMonster targetMonster in client.targetmonster)
-                  {
-                    if (targetMonster != null && targetMonster.Text.Equals("814"))
-                    {
-                      if (targetMonster.attack1type.Text == "ard pian na dion")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack1type.Text == "mor pian na dion")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack1type.Text == "Frost Arrow")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack1type.Text == "Shock Arrow")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack1type.Text == "Frost + 3 Shocks")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack2type.Text == "Cursed Tune")
-                        targetMonster.attack2.Checked = true;
-                    }
-                  }
-                }
-              }
-              Program.MainForm.attackcount = true;
-              this.SendMessage("Now set to attack Count.", "pink");
-            }
-          }
-          else if (this.SpeakMessage.Equals("/attack countess", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (Program.MainForm.attackcountess)
-            {
-              Client[] array = Server.Alts.Values.ToArray<Client>();
-              for (result1 = 0; result1 < array.Length; ++result1)
-              {
-                Client client = array[result1];
-                if (client.Tab.Monsters != null)
-                {
-                  foreach (targetMonster targetMonster in client.targetmonster)
-                  {
-                    if (targetMonster != null && targetMonster.Text.Equals("815"))
-                    {
-                      if (targetMonster.attack1type.Text == "ard pian na dion")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack1type.Text == "mor pian na dion")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack1type.Text == "Frost Arrow")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack1type.Text == "Shock Arrow")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack1type.Text == "Frost + 3 Shocks")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack2type.Text == "Cursed Tune")
-                        targetMonster.attack2.Checked = false;
-                    }
-                  }
-                }
-              }
-              Program.MainForm.attackcountess = false;
-              this.SendMessage("No longer attacking Countess.", "pink");
-            }
-            else
-            {
-              Client[] array = Server.Alts.Values.ToArray<Client>();
-              for (result1 = 0; result1 < array.Length; ++result1)
-              {
-                Client client = array[result1];
-                if (client.Tab.Monsters != null)
-                {
-                  foreach (targetMonster targetMonster in client.targetmonster)
-                  {
-                    if (targetMonster != null && targetMonster.Text.Equals("815"))
-                    {
-                      if (targetMonster.attack1type.Text == "ard pian na dion")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack1type.Text == "mor pian na dion")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack1type.Text == "Shock Arrow")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack1type.Text == "Frost Arrow")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack1type.Text == "Frost + 3 Shocks")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack2type.Text == "Cursed Tune")
-                        targetMonster.attack2.Checked = true;
-                    }
-                  }
-                }
-              }
-              Program.MainForm.attackcountess = true;
-              this.SendMessage("Now set to attack Countess.", "pink");
-            }
-          }
-          else if (this.SpeakMessage.Equals("/ram", StringComparison.CurrentCultureIgnoreCase))
-          {
-            Client[] array = Server.Alts.Values.ToArray<Client>();
-            for (result1 = 0; result1 < array.Length; ++result1)
-            {
-              Client client = array[result1];
-              if (client.Tab.allMonsters != null)
-              {
-                --client.Tab.spellMonsters.SelectedIndex;
-                client.Tab.spellMonsters.TabPages.Remove((TabPage) client.Tab.allMonsters);
-                client.Tab.allMonsters = (targetAllMonster) null;
-                client.Tab.newmonster.Enabled = true;
-                client.Tab.newallmonsters.Enabled = true;
-                client.Tab.newmonsterbyplayer.Enabled = true;
-                client.Tab.createnewmonster.Enabled = true;
-              }
-            }
-            this.SendMessage("Removed All Monsters Tabs from all clients", "grey");
-          }
-          else if (this.SpeakMessage.Equals("/s", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.pause = true;
-            this.Tab.btnPlay.Enabled = true;
-            this.Tab.btnStop.Enabled = false;
-            this.SendMessage(this.Name + " is Stopped.", "grey");
-          }
-          else if (this.SpeakMessage.Equals("/p", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.lastaction = DateTime.UtcNow;
-            this.laststep = DateTime.UtcNow;
-            this.SendMessage(this.Name + " is Playing.", "grey");
-          }
-          else if (this.SpeakMessage.Equals("/p all", StringComparison.CurrentCultureIgnoreCase))
-          {
-            Client[] array = Server.Alts.Values.ToArray<Client>();
-            for (result1 = 0; result1 < array.Length; ++result1)
-            {
-              Client client = array[result1];
-              if (!client.BotThread.IsAlive)
-                client.BotThread.Start();
-              client.pause = false;
-              client.Tab.btnPlay.Enabled = false;
-              client.Tab.btnStop.Enabled = true;
-              client.lastaction = DateTime.UtcNow;
-              client.laststep = DateTime.UtcNow;
-            }
-            this.SendMessage("All clients are Playing.", "grey");
-          }
-          else if (this.SpeakMessage.Equals("/s all", StringComparison.CurrentCultureIgnoreCase))
-          {
-            Client[] array = Server.Alts.Values.ToArray<Client>();
-            for (result1 = 0; result1 < array.Length; ++result1)
-            {
-              Client client = array[result1];
-              client.pause = true;
-              client.Tab.btnPlay.Enabled = true;
-              client.Tab.btnStop.Enabled = false;
-            }
-            this.SendMessage("All clients are Stopped.", "grey");
-          }
+          // Save or load templates
           if (this.SpeakMessage.StartsWith("/save "))
           {
             this.SpeakMessage = this.SpeakMessage.Substring(6);
@@ -1426,30 +890,8 @@ namespace Flintstones
             for (result1 = 0; result1 < array.Length; ++result1)
               array[result1].Tab.LoadTemplate(this.SpeakMessage);
           }
-          else if (this.SpeakMessage.StartsWith("/stop all"))
-          {
-            Client[] array = Server.Alts.Values.ToArray<Client>();
-            for (result1 = 0; result1 < array.Length; ++result1)
-            {
-              Client client = array[result1];
-              client.Tab.followplayer.Checked = false;
-              client.Tab.autowalker_button.Text = "Start";
-              client.autowalkon = false;
-              client.Tab.wayregionson.Checked = false;
-              client.Tab.actonlyinmobs.Checked = false;
-            }
-            this.SendMessage("All clients have stopped walking.", "grey", true);
-          }
-          else if (this.SpeakMessage.StartsWith("/stop"))
-          {
-            this.Tab.followplayer.Checked = false;
-            this.Tab.autowalker_button.Text = "Start";
-            this.autowalkon = false;
-            this.Tab.wayregionson.Checked = false;
-            this.Tab.actonlyinmobs.Checked = false;
-            this.SendMessage("You have stopped walking.", "grey");
-          }
-          else if (this.SpeakMessage.Equals("/fast all"))
+          
+          if (this.SpeakMessage.Equals("/fast all"))
           {
             Client[] array = Server.Alts.Values.ToArray<Client>();
             for (result1 = 0; result1 < array.Length; ++result1)
@@ -2731,7 +2173,7 @@ label_2062:
 
     public void MySpeakMessageFunc()
     {
-      if (!(this.MySpeakMessage != string.Empty))
+      if (this.MySpeakMessage == string.Empty)
         return;
       string empty = string.Empty;
       if (this.MySpeakMessage.StartsWith("/drop ", StringComparison.CurrentCultureIgnoreCase))
@@ -3230,7 +2672,7 @@ label_2062:
       }
     }
 
-    private void Quests()
+    private void Questing()
     {
       while (true)
       {
@@ -19806,17 +19248,43 @@ label_860:
       string filePath = Program.StartupPath + "\\Settings\\restrictedareas.xml";
       List<int> noSpellMapIds = new List<int>();
 
-      if (File.Exists(filePath) == false)
-        return noSpellMapIds;
-      
-      var document = XDocument.Load(filePath);
+      try
+      {
+        var document = XDocument.Load(filePath);
 
-      noSpellMapIds = document
-          .Root                                // <RestrictedAreas>
-          .Element("NoSpells")                 // <NoSpells>
-          .Elements("MapID")                   // <MapID>
-          .Select(e => int.Parse(e.Value))
-          .ToList();
+        noSpellMapIds = document
+            .Root                                // <RestrictedAreas>
+            .Element("NoSpells")                 // <NoSpells>
+            .Elements("MapID")                   // <MapID>
+            .Select(e => int.Parse(e.Value))
+            .ToList();
+
+      }
+      catch (FileNotFoundException ex)
+      {
+        MessageBox.Show("restrictedareas.xml not found, creating empty file.", "Warning", MessageBoxButtons.OK);
+        var document = new XDocument(
+            new XDeclaration("1.0", "utf-8", null),
+            new XElement("RestrictedAreas",
+              new XElement("NoSpells",
+                  new XComment("Add MapID elements here, e.g. <MapID>101</MapID>")
+              ),
+              new XElement("NoSkill",
+                  new XComment("Add MapID elements here")
+              ))
+        );
+        document.Save(filePath);
+      }
+      catch (XmlException ex)
+      {
+        MessageBox.Show("Invalid XML format in restrictedareas.xml: " + ex.Message, "Error", MessageBoxButtons.OK);
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show("An unexpected error occurd reading restrictedareas.xml" + ex.Message, "Error", MessageBoxButtons.OK);
+
+      }
+
 
       return noSpellMapIds;
     }
@@ -19833,17 +19301,42 @@ label_860:
       string filePath = Program.StartupPath + "\\Settings\\restrictedareas.xml";
       List<int> noSkillMapIds = new List<int>();
 
-      if (File.Exists(filePath) == false)
-          return noSkillMapIds;
+      try
+      {
+        var document = XDocument.Load(filePath);
 
-      var document = XDocument.Load(filePath);
+        noSkillMapIds = document
+            .Root                                // <RestrictedAreas>
+            .Element("NoSkills")                 // <NoSkills>
+            .Elements("MapID")                   // <MapID>
+            .Select(e => int.Parse(e.Value))
+            .ToList();
+      }
+      catch (FileNotFoundException ex)
+      {
+        MessageBox.Show("restrictedareas.xml not found, creating empty file.", "Warning", MessageBoxButtons.OK);
+        var document = new XDocument(
+            new XDeclaration("1.0", "utf-8", null),
+            new XElement("RestrictedAreas",
+              new XElement("NoSpells",
+                  new XComment("Add MapID elements here, e.g. <MapID>101</MapID>")
+              ),
+              new XElement("NoSkill",
+                  new XComment("Add MapID elements here")
+              ))
+        );
+        document.Save(filePath);
+      }
+      catch (XmlException ex)
+      {
+        MessageBox.Show("Invalid XML format in restrictedareas.xml: " + ex.Message, "Error", MessageBoxButtons.OK);
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show("An unexpected error occurd reading restrictedareas.xml" + ex.Message, "Error", MessageBoxButtons.OK);
 
-      noSkillMapIds = document
-          .Root                                // <RestrictedAreas>
-          .Element("NoSkills")                 // <NoSkills>
-          .Elements("MapID")                   // <MapID>
-          .Select(e => int.Parse(e.Value))
-          .ToList();
+      }
+
 
       return noSkillMapIds;
     }

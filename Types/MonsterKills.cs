@@ -33,9 +33,9 @@ namespace Flintstones
     private Dictionary<int, Monster> LoadMonsters()
     {
       string filePath = Program.StartupPath + "\\Settings\\questcounts.xml";
-      var doc = XDocument.Load(filePath);
-
       Dictionary<int, Monster> monsters = new Dictionary<int, Monster>();
+
+      var doc = XDocument.Load(filePath);
 
       foreach (var m in doc.Root.Elements("Monster"))
       {
@@ -46,7 +46,7 @@ namespace Flintstones
           DisplayName = (string)m.Element("DisplayName"),
           CountTo = (int)m.Element("CountTo"),
           CombineWith = (int?)m.Element("CombineWith"),
-          CounterResetLocation = m.Element("CounterResetLocation")?
+          CounterResetLocation = m.Element("CounterResetLocations")?
                 .Elements("MapID")
                 .Select(x => (int)x)
                 .ToList() ?? new List<int>(),

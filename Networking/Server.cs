@@ -248,38 +248,79 @@ namespace Flintstones
     public static Dictionary<string, WalkLocation> LoadWalkLocations()
     {
       string filePath = Program.StartupPath + "\\Settings\\walklocations.xml";
-      if (!File.Exists(filePath))
+
+      var locations = XDocument.Load(filePath)
+    .Root
+    .Elements("Location")
+    .Select((location, index) => new
+    {
+      Index = index + 1, // 1-based for humans
+      Name = (string)location.Attribute("speech"),
+      Area = (string)location.Element("Area"),
+      Spot = (string)location.Element("Spot")
+    })
+    .Where(x =>
+        !string.IsNullOrWhiteSpace(x.Name) &&
+        x.Area != null &&
+        x.Spot != null
+    )
+    .ToList();
+
+      var duplicate = locations
+    .GroupBy(x => x.Name)
+    .FirstOrDefault(g => g.Count() > 1);
+
+      if (duplicate != null)
       {
-        MessageBox.Show("walklocations.xml not found in Settings folder.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        return new Dictionary<string, WalkLocation>();
+        var message =
+            $"Duplicate 'speech' value found: '{duplicate.Key}'\n\n" +
+            $"Occurrences:\n" +
+            string.Join("\n", duplicate.Select(d =>
+                $"  Location #{d.Index}: Area='{d.Area}', Spot='{d.Spot}'"));
+
+        throw new InvalidOperationException(message);
       }
 
-      var document = XDocument.Load(filePath);
-      var locations = new Dictionary<string, WalkLocation>();
-
-      foreach (var location in document.Root.Elements("Location"))
+      try
       {
-        string name = location.Attribute("speech")?.Value;
-
-        // Skip if name is null or whitespace
-        if (string.IsNullOrWhiteSpace(name))
-          continue;
-
-        string areaElement = (string)location.Element("Area");
-        string spotElement = (string)location.Element("Spot");
-
-        // Skip if either areaElement or spotElement is null
-        if (areaElement == null || spotElement == null)
-          continue;
-
-        locations[name] = new WalkLocation
-        {
-          Area = areaElement,
-          Location = spotElement
-        };
+        return XDocument.Load(filePath)
+            .Root?
+            .Elements("Location")
+            .Select(location => new
+            {
+              Name = (string)location.Attribute("speech"),
+              Area = (string)location.Element("Area"),
+              Spot = (string)location.Element("Spot")
+            })
+            .Where(x =>
+                !string.IsNullOrWhiteSpace(x.Name) &&
+                x.Area != null &&
+                x.Spot != null
+            )
+            .ToDictionary(
+                x => x.Name,
+                x => new WalkLocation
+                {
+                  Area = x.Area,
+                  Location = x.Spot
+                });
+      }
+      catch (FileNotFoundException ex)
+      {
+        MessageBox.Show("walklocations.xml not found, creating empty file. " + ex.Message, "Warning", MessageBoxButtons.OK);
+      }
+      catch (XmlException ex)
+      {
+        MessageBox.Show("Invalid XML format in walklocations.xml: " + ex.Message, "Error", MessageBoxButtons.OK);
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show("An unexpected error occurd reading walklocations.xml" + ex.Message, "Error", MessageBoxButtons.OK);
       }
 
-      return locations;
+
+
+      return new Dictionary<string, WalkLocation>();
     }
 
     /// <summary>
