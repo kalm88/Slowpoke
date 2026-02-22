@@ -209,6 +209,8 @@ namespace Flintstones
     public bool smallbagopen;
     public bool veltainchest;
     public bool veltainchestopen;
+    public bool LARaffle;
+    public bool LARaffleOpen;
     public bool heavychest;
     public bool heavychestopen;
     public DateTime herbnodewaittime = DateTime.MinValue;
@@ -4071,6 +4073,11 @@ label_2062:
               this.PopupNext(new uint?(this.CurrentnpcpopupID), (byte) 2);
               this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 0, (byte) 0, (byte) 0, (byte) 2, (byte) 2, this.Tab.openveltchestgold.Text, (byte) 2);
             }
+            if (!this.pause && this.Currentnpcname.StartsWith("LA Raffle") && this.Currentnpctext.StartsWith("This LA Raffle is good for one try in obtaining the Lumen Amulet"))
+            {
+              this.PopupNext(new uint?(this.CurrentnpcpopupID), (byte)2);
+            }
+
             if (this.Currentnpctext.StartsWith("You are about to enter a hostile area."))
               this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 0, (byte) 0, (byte) 0, (byte) 2, (byte) 1, (byte) 1, (byte) 4);
             if (this.Currentnpctext.StartsWith("You fall into a deep sleep"))
@@ -12592,10 +12599,14 @@ label_498:
                           this.UseItem(this.BestWeapon());
                           this.EquipWeaponDelay = DateTime.UtcNow;
                         }
-                        if (this.Tab.openveltchest.Checked && this.HasItem("Treasure Chest") && (this.openveltchestdelay == DateTime.MinValue || DateTime.UtcNow.Subtract(this.openveltchestdelay).TotalMilliseconds > 3000.0) && !this.ItemStackFull(1476, 20U) && !this.InventoryIsFull() && ((IEnumerable<Npc>) this.NearbyNormalMonsters()).Count<Npc>() == 0)
+                        if (this.Tab.openveltchest.Checked && this.HasItem("Treasure Chest") && (this.openveltchestdelay == DateTime.MinValue || DateTime.UtcNow.Subtract(this.openveltchestdelay).TotalMilliseconds > 3000.0) && !this.ItemStackFull(1476, 20U) && !this.InventoryIsFull() && ((IEnumerable<Npc>)this.NearbyNormalMonsters()).Count<Npc>() == 0)
                         {
                           this.UseItem("Treasure Chest");
                           this.openveltchestdelay = DateTime.UtcNow;
+                        }
+                        if (this.Tab.openLARaffle.Checked && this.HasItem("LA Raffle") && !this.InventoryIsFull() && ((IEnumerable<Npc>)this.NearbyNormalMonsters()).Count<Npc>() == 0)
+                        {
+                          this.UseItem("LA Raffle");
                         }
                         this.stopwalk = false;
                       }
