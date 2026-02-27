@@ -75,9 +75,9 @@ namespace Flintstones
 
     public static Dictionary<string, ItemXML> ItemDatabase { get; set; }
 
-    public static Dictionary<string, Flintstones.TimedEvent> TimedEvent { get; set; }
+    public static Dictionary<string, TimedEvent> TimedEvent { get; set; }
 
-    public static Dictionary<string, Flintstones.Relog> Relog { get; set; }
+    public static Dictionary<string, Relog> Relog { get; set; }
 
     public static Dictionary<string, Client> Alts { get; set; }
 
@@ -1817,7 +1817,7 @@ namespace Flintstones
             }
           }
           if (!Server.StaticCharacters.ContainsKey(npc1.ID))
-            Server.StaticCharacters.Add(npc1.ID, (Character) npc1);
+            Server.StaticCharacters.Add(npc1.ID, npc1);
           if (!client.Characters.ContainsKey(npc1.ID))
           {
             if (npc1.MapName.Equals("Lost Ruins 2") && npc1.Image - 16384 == 422)
