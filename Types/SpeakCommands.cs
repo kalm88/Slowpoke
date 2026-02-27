@@ -800,6 +800,7 @@ namespace Flintstones
               break;
             default:
               client.SendMessage("God's name unknown", "pink");
+              break;
           }
         }
       }
@@ -2027,7 +2028,7 @@ namespace Flintstones
         {
           foreach(Client runningClient in Server.Clients)
           {
-            LawAll(runningClient, null);
+            Law(runningClient, null);
           }
         }
       }
