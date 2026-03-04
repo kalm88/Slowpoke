@@ -536,20 +536,17 @@ namespace Flintstones
         return;
       }
 
-      if (args[0].Equals("all", StringComparison.CurrentCulture))
+      if (args[0].Equals("all", StringComparison.CurrentCultureIgnoreCase))
       {
         args = args.Skip(1).ToArray(); // remove "all" from arguments
 
         // If "all" parameter is provided, call this function without "all" for each client
-        if (args.Length > 0 && args[0].Equals("all", StringComparison.CurrentCulture))
+        foreach (var runningClient in Server.Clients)
         {
-          foreach (var runningClient in Server.Clients)
-          {
-            LoadTemplate(runningClient, args);
-          }
-
-          client.SendMessage($"Template {args[0]} loaded for all clients.", "grey");
+          LoadTemplate(runningClient, args);
         }
+
+        client.SendMessage($"Template loaded for all clients.", "grey");
       }
       else
       {
