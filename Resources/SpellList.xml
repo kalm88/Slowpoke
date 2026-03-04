@@ -1,0 +1,1115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Spells>
+  <Spell name="Leafhopper Chirp">
+    <ManaCost>50</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="dachaidh">
+    <ManaCost>50</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="mor dion comlha">
+    <ManaCost>300</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="mor dion">
+    <ManaCost>1000</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Stone Skin">
+    <ManaCost>1200</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="deireas faileas">
+    <ManaCost>980</ManaCost>
+    <BaseLines>3</BaseLines>
+  </Spell>
+  <Spell name="mor deo searg gar">
+    <ManaCost>12000</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="deo searg gar">
+    <ManaCost>8000</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="ard deo searg">
+    <ManaCost>3500</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="deo searg">
+    <ManaCost>1900</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="deo saighead">
+    <ManaCost>320</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="deo lamh">
+    <ManaCost>320</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="ard cradh">
+    <ManaCost>500</ManaCost>
+    <BaseLines>3</BaseLines>
+  </Spell>
+  <Spell name="mor cradh">
+    <ManaCost>120</ManaCost>
+    <BaseLines>3</BaseLines>
+  </Spell>
+  <Spell name="cradh">
+    <ManaCost>90</ManaCost>
+    <BaseLines>3</BaseLines>
+  </Spell>
+  <Spell name="beag cradh">
+    <ManaCost>60</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="ao dall">
+    <ManaCost>30</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="ao puinsein">
+    <ManaCost>30</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="ao suain">
+    <ManaCost>30</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="ao ard cradh">
+    <ManaCost>120</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="ao mor cradh">
+    <ManaCost>90</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="ao cradh">
+    <ManaCost>60</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="ao beag cradh">
+    <ManaCost>30</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="beag breisleich">
+    <ManaCost>110</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="breisleich">
+    <ManaCost>110</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="mor breisleich">
+    <ManaCost>110</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="beag puinsein">
+    <ManaCost>100</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="puinsein">
+    <ManaCost>300</ManaCost>
+    <BaseLines>3</BaseLines>
+  </Spell>
+  <Spell name="beag pramh">
+    <ManaCost>300</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="pramh">
+    <ManaCost>300</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="suain">
+    <ManaCost>330</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="dall">
+    <ManaCost>330</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="beag naomh aite">
+    <ManaCost>30</ManaCost>
+    <BaseLines>3</BaseLines>
+  </Spell>
+  <Spell name="naomh aite">
+    <ManaCost>30</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="mor naomh aite">
+    <ManaCost>200</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="ard naomh aite">
+    <ManaCost>600</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="ard ioc comlha">
+    <ManaCost>2000</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="mor ioc comlha">
+    <ManaCost>1100</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="ioc comlha">
+    <ManaCost>450</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="beag ioc comlha">
+    <ManaCost>70</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Spirit Essence">
+    <ManaCost>0</ManaCost>
+    <BaseLines>3</BaseLines>
+  </Spell>
+  <Spell name="nuadhaich">
+    <ManaCost>1260</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="ard ioc">
+    <ManaCost>800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="mor ioc">
+    <ManaCost>600</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="ioc">
+    <ManaCost>200</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="beag ioc">
+    <ManaCost>30</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="creag neart">
+    <ManaCost>30</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="fas deireas">
+    <ManaCost>30</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="beannaich">
+    <ManaCost>30</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="mor beannaich">
+    <ManaCost>90</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="armachd">
+    <ManaCost>30</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Dark Seal">
+    <ManaCost>350</ManaCost>
+    <BaseLines>6</BaseLines>
+  </Spell>
+  <Spell name="Darker Seal">
+    <ManaCost>450</ManaCost>
+    <BaseLines>6</BaseLines>
+  </Spell>
+  <Spell name="Demise">
+    <ManaCost>500</ManaCost>
+    <BaseLines>6</BaseLines>
+  </Spell>
+  <Spell name="Demon Seal">
+    <ManaCost>600</ManaCost>
+    <BaseLines>6</BaseLines>
+  </Spell>
+  <Spell name="Mesmerize">
+    <ManaCost>800</ManaCost>
+    <BaseLines>7</BaseLines>
+  </Spell>
+  <Spell name="Cursed Tune 12">
+    <ManaCost>3960</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Cursed Tune 11">
+    <ManaCost>3960</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Cursed Tune 10">
+    <ManaCost>3960</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Cursed Tune 9">
+    <ManaCost>3960</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Cursed Tune 8">
+    <ManaCost>3960</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Cursed Tune 7">
+    <ManaCost>3960</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Cursed Tune 6">
+    <ManaCost>3960</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Cursed Tune 5">
+    <ManaCost>3960</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Cursed Tune 4">
+    <ManaCost>3960</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Cursed Tune 3">
+    <ManaCost>3960</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Cursed Tune 2">
+    <ManaCost>3960</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Cursed Tune 1">
+    <ManaCost>3960</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="puinneag spiorad">
+    <ManaCost>350</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Regeneration 10">
+    <ManaCost>2720</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Regeneration 9">
+    <ManaCost>2720</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Regeneration 8">
+    <ManaCost>2720</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Regeneration 7">
+    <ManaCost>2720</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Regeneration 6">
+    <ManaCost>2720</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Regeneration 5">
+    <ManaCost>2720</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Regeneration 4">
+    <ManaCost>2720</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Regeneration 3">
+    <ManaCost>2720</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Regeneration 2">
+    <ManaCost>2720</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Regeneration 1">
+    <ManaCost>1220</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Counter Attack 11">
+    <ManaCost>3400</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Counter Attack 10">
+    <ManaCost>3400</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Counter Attack 9">
+    <ManaCost>3400</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Counter Attack 8">
+    <ManaCost>3400</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Counter Attack 7">
+    <ManaCost>3400</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Counter Attack 6">
+    <ManaCost>3400</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Counter Attack 5">
+    <ManaCost>3400</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Counter Attack 4">
+    <ManaCost>2720</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Counter Attack 3">
+    <ManaCost>2720</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Counter Attack 2">
+    <ManaCost>2720</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Counter Attack 1">
+    <ManaCost>2720</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Reflection">
+    <ManaCost>1080</ManaCost>
+    <BaseLines>8</BaseLines>
+  </Spell>
+  <Spell name="Increased Regeneration">
+    <ManaCost>5100</ManaCost>
+    <BaseLines>5</BaseLines>
+  </Spell>
+  <Spell name="Deception of Life">
+    <ManaCost>9000</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="srad gar">
+    <ManaCost>8160</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="sal gar">
+    <ManaCost>8160</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="creag gar">
+    <ManaCost>8160</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="athar gar">
+    <ManaCost>8160</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="ard srad">
+    <ManaCost>2530</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="ard sal">
+    <ManaCost>2530</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="ard creag">
+    <ManaCost>2530</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="ard athar">
+    <ManaCost>2530</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="srad meall">
+    <ManaCost>2400</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="sal meall">
+    <ManaCost>2400</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="creag meall">
+    <ManaCost>2400</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="athar meall">
+    <ManaCost>2400</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="mor srad">
+    <ManaCost>800</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="mor sal">
+    <ManaCost>800</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="mor creag">
+    <ManaCost>800</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="mor athar">
+    <ManaCost>800</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="srad lamh">
+    <ManaCost>320</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="sal lamh">
+    <ManaCost>320</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="creag lamh">
+    <ManaCost>320</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="athar lamh">
+    <ManaCost>320</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="srad">
+    <ManaCost>200</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="sal">
+    <ManaCost>200</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="creag">
+    <ManaCost>200</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="athar">
+    <ManaCost>200</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="beag srad lamh">
+    <ManaCost>30</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="beag sal lamh">
+    <ManaCost>30</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="beag creag lamh">
+    <ManaCost>30</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="beag athar lamh">
+    <ManaCost>30</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="beag srad">
+    <ManaCost>20</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="beag sal">
+    <ManaCost>20</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="beag creag">
+    <ManaCost>20</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="beag athar">
+    <ManaCost>20</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Unholy Explosion">
+    <ManaCost>5500</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="mor strioch pian gar">
+    <ManaCost>500</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="mor strioch bais">
+    <ManaCost>500</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="pian na dion">
+    <ManaCost>1500</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="mor pian na dion">
+    <ManaCost>3000</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="ard pian na dion">
+    <ManaCost>3000</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Wings of Protection">
+    <ManaCost>900</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Lyliac Plant">
+    <ManaCost>1000</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Lyliac Vineyard">
+    <ManaCost>200</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="beag puinneag spiorad">
+    <ManaCost>5</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="mor puinneag spiorad">
+    <ManaCost>5</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="ard puinneag spiorad">
+    <ManaCost>5</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="fas spiorad">
+    <ManaCost>0</ManaCost>
+    <BaseLines>8</BaseLines>
+  </Spell>
+  <Spell name="beag fas nadur">
+    <ManaCost>35</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="fas nadur">
+    <ManaCost>35</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="mor fas nadur">
+    <ManaCost>150</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="ard fas nadur">
+    <ManaCost>1000</ManaCost>
+    <BaseLines>8</BaseLines>
+  </Spell>
+  <Spell name="Disenchanter">
+    <ManaCost>3000</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="Bubble Block">
+    <ManaCost>700</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Bubble Shield">
+    <ManaCost>100</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Mud Wall">
+    <ManaCost>700</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Cyclone">
+    <ManaCost>1200</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Fiery Defender">
+    <ManaCost>3000</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="Keeter 15">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Keeter 14">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Keeter 13">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Keeter 12">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Keeter 11">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Keeter 10">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Keeter 9">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Keeter 8">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Keeter 7">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Keeter 6">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Keeter 5">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Keeter 4">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Keeter 3">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Keeter 2">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Keeter 1">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Groo 15">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Groo 14">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Groo 13">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Groo 12">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Groo 11">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Groo 10">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Groo 9">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Groo 8">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Groo 7">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Groo 6">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Groo 5">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Groo 4">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Groo 3">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Groo 2">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Groo 1">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Mermaid 15">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Mermaid 14">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Mermaid 13">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Mermaid 12">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Mermaid 11">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Mermaid 10">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Mermaid 9">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Mermaid 8">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Mermaid 7">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Mermaid 6">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Mermaid 5">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Mermaid 4">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Mermaid 3">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Mermaid 2">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Mermaid 1">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Torch 15">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Torch 14">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Torch 13">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Torch 12">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Torch 11">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Torch 10">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Torch 9">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Torch 8">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Torch 7">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Torch 6">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Torch 5">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Torch 4">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Torch 3">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Torch 2">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Torch 1">
+    <ManaCost>2800</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Dragon Blast">
+    <ManaCost>18000</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Gentle Touch">
+    <ManaCost>360</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Mist">
+    <ManaCost>60</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="dion">
+    <ManaCost>600</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Howl">
+    <ManaCost>360</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Wraith's Touch">
+    <ManaCost>1420</ManaCost>
+    <BaseLines>4</BaseLines>
+  </Spell>
+  <Spell name="Komodas Form">
+    <ManaCost>360</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Wild Komodas Form">
+    <ManaCost>360</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Fierce Komodas Form">
+    <ManaCost>360</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Master Komodas Form">
+    <ManaCost>360</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Feral Form">
+    <ManaCost>360</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Wild Feral Form">
+    <ManaCost>360</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Fierce Feral Form">
+    <ManaCost>360</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Master Feral Form">
+    <ManaCost>360</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Karura Form">
+    <ManaCost>360</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Wild Karura Form">
+    <ManaCost>360</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Fierce Karura Form">
+    <ManaCost>360</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Master Karura Form">
+    <ManaCost>360</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Cold Blood">
+    <ManaCost>1420</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Hail of Feathers 1">
+    <ManaCost>1420</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Hail of Feathers 2">
+    <ManaCost>760</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Hail of Feathers 3">
+    <ManaCost>760</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Hail of Feathers 4">
+    <ManaCost>1420</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Hail of Feathers 5">
+    <ManaCost>1420</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Hail of Feathers 6">
+    <ManaCost>1420</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Hail of Feathers 7">
+    <ManaCost>1420</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Hail of Feathers 8">
+    <ManaCost>1420</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Hail of Feathers 9">
+    <ManaCost>1420</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Hail of Feathers 10">
+    <ManaCost>1420</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="White Bat Stance">
+    <ManaCost>25</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Draco Stance">
+    <ManaCost>200</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Iron Skin">
+    <ManaCost>250</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="asgall faileas">
+    <ManaCost>310</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Aegis Sphere">
+    <ManaCost>5000</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Gem Polishing">
+    <ManaCost>20</ManaCost>
+    <BaseLines>2</BaseLines>
+  </Spell>
+  <Spell name="Hide">
+    <ManaCost>200</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Great Poison Snare">
+    <ManaCost>50</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Shock Arrow">
+    <ManaCost>1000</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Life Arrow">
+    <ManaCost>1500</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Star Arrow 11">
+    <ManaCost>1360</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Star Arrow 10">
+    <ManaCost>1360</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Star Arrow 9">
+    <ManaCost>775</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Star Arrow 8">
+    <ManaCost>775</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Star Arrow 7">
+    <ManaCost>775</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Star Arrow 6">
+    <ManaCost>775</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Star Arrow 5">
+    <ManaCost>475</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Star Arrow 4">
+    <ManaCost>475</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Star Arrow 3">
+    <ManaCost>475</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Star Arrow 2">
+    <ManaCost>475</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Star Arrow 1">
+    <ManaCost>400</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Frost Arrow 9">
+    <ManaCost>800</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Frost Arrow 8">
+    <ManaCost>800</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Frost Arrow 7">
+    <ManaCost>800</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Frost Arrow 6">
+    <ManaCost>800</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Frost Arrow 5">
+    <ManaCost>800</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Frost Arrow 4">
+    <ManaCost>800</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Frost Arrow 3">
+    <ManaCost>800</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Frost Arrow 2">
+    <ManaCost>700</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Frost Arrow 1">
+    <ManaCost>700</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Supernova Shot">
+    <ManaCost>1500</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Hypernova Shot">
+    <ManaCost>5000</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Chadul's Shot">
+    <ManaCost>5000</ManaCost>
+    <BaseLines>0</BaseLines>
+  </Spell>
+  <Spell name="Fiosachd Prayer">
+    <ManaCost>2</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Glioca Prayer">
+    <ManaCost>2</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Ceannlaidir Prayer">
+    <ManaCost>2</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Deoch Prayer">
+    <ManaCost>2</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Gramail Prayer">
+    <ManaCost>2</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Cail Prayer">
+    <ManaCost>2</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Luathas Prayer">
+    <ManaCost>2</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+  <Spell name="Sgrios Prayer">
+    <ManaCost>2</ManaCost>
+    <BaseLines>1</BaseLines>
+  </Spell>
+</Spells>

@@ -429,6 +429,7 @@ namespace Flintstones
     public CheckBox usecrasher;
     public CheckBox clickladder;
     public CheckBox openmedchest;
+    public CheckBox openLARaffle;
     public CheckBox bubblenorajo;
     public CheckBox halfcast;
     public NumericUpDown lootdelayb;
@@ -2416,7 +2417,8 @@ namespace Flintstones
       doc.Element((XName) "Settings").Add((object) new XElement((XName) "onlylurewithmpamount", (object) this.onlylurewithmpamount.Text));
       doc.Element((XName) "Settings").Add((object) new XElement((XName) "openveltchest", (object) this.openveltchest.Checked));
       doc.Element((XName) "Settings").Add((object) new XElement((XName) "openveltchestgold", (object) this.openveltchestgold.Text));
-      doc.Element((XName) "Settings").Add((object) new XElement((XName) "openmedchest", (object) this.openmedchest.Checked));
+      doc.Element((XName)"Settings").Add((object)new XElement((XName)"openmedchest", (object)this.openmedchest.Checked));
+      doc.Element((XName)"Settings").Add((object)new XElement((XName)"openLARaffle", (object)this.openLARaffle.Checked));
       doc.Element((XName) "Settings").Add((object) new XElement((XName) "throwtotems", (object) this.throwtotems.Checked));
       if (toSave != "default")
         doc.Element((XName) "Settings").Add((object) new XElement((XName) "reequiparmor", (object) this.reequiparmor.Checked));
@@ -3235,8 +3237,10 @@ namespace Flintstones
             this.openveltchestgold.Text = xdocument.Element((XName) "Settings").Element((XName) "openveltchestgold").Value;
           if (xdocument.Element((XName) "Settings").Element((XName) "reequiparmor") != null)
             this.reequiparmor.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "reequiparmor").Value);
-          if (xdocument.Element((XName) "Settings").Element((XName) "openmedchest") != null)
-            this.openmedchest.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "openmedchest").Value);
+          if (xdocument.Element((XName)"Settings").Element((XName)"openmedchest") != null)
+            this.openmedchest.Checked = Convert.ToBoolean(xdocument.Element((XName)"Settings").Element((XName)"openmedchest").Value);
+          if (xdocument.Element((XName)"Settings").Element((XName)"openLARaffle") != null)
+            this.openLARaffle.Checked = Convert.ToBoolean(xdocument.Element((XName)"Settings").Element((XName)"openLARaffle").Value);
           if (xdocument.Element((XName) "Settings").Element((XName) "throwtotems") != null)
             this.throwtotems.Checked = Convert.ToBoolean(xdocument.Element((XName) "Settings").Element((XName) "throwtotems").Value);
           if (xdocument.Element((XName) "Settings").Element((XName) "useexpgem") != null)
@@ -4589,6 +4593,9 @@ namespace Flintstones
     private void openmedchest_CheckedChanged(object sender, EventArgs e)
     {
     }
+    private void openLARaffle_CheckedChanged(object sender, EventArgs e)
+    {
+    }
 
     private void duarmor_CheckedChanged(object sender, EventArgs e)
     {
@@ -4869,8 +4876,9 @@ namespace Flintstones
             this.abrune = new System.Windows.Forms.CheckBox();
             this.reequiparmor = new System.Windows.Forms.CheckBox();
             this.throwtotems = new System.Windows.Forms.CheckBox();
-            this.openmedchest = new System.Windows.Forms.CheckBox();
-            this.pigwalk = new System.Windows.Forms.CheckBox();
+      this.openmedchest = new System.Windows.Forms.CheckBox();
+      this.openLARaffle = new System.Windows.Forms.CheckBox();
+      this.pigwalk = new System.Windows.Forms.CheckBox();
             this.openveltchest = new System.Windows.Forms.CheckBox();
             this.expapbonus = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -7279,8 +7287,9 @@ namespace Flintstones
             this.tabPage6.Controls.Add(this.abrune);
             this.tabPage6.Controls.Add(this.reequiparmor);
             this.tabPage6.Controls.Add(this.throwtotems);
-            this.tabPage6.Controls.Add(this.openmedchest);
-            this.tabPage6.Controls.Add(this.pigwalk);
+      this.tabPage6.Controls.Add(this.openmedchest);
+      this.tabPage6.Controls.Add(this.openLARaffle);
+      this.tabPage6.Controls.Add(this.pigwalk);
             this.tabPage6.Controls.Add(this.openveltchest);
             this.tabPage6.Controls.Add(this.expapbonus);
             this.tabPage6.Controls.Add(this.groupBox4);
@@ -7381,21 +7390,32 @@ namespace Flintstones
             this.throwtotems.TabIndex = 54;
             this.throwtotems.Text = "Tail Slam Totems (yowien vines)";
             this.throwtotems.UseVisualStyleBackColor = true;
-            // 
-            // openmedchest
-            // 
-            this.openmedchest.AutoSize = true;
-            this.openmedchest.Location = new System.Drawing.Point(24, 236);
-            this.openmedchest.Name = "openmedchest";
-            this.openmedchest.Size = new System.Drawing.Size(184, 19);
-            this.openmedchest.TabIndex = 53;
-            this.openmedchest.Text = "Open Medenia Chests (asilon)";
-            this.openmedchest.UseVisualStyleBackColor = true;
-            this.openmedchest.CheckedChanged += new System.EventHandler(this.openmedchest_CheckedChanged);
-            // 
-            // pigwalk
-            // 
-            this.pigwalk.AutoSize = true;
+      // 
+      // openLARaffle
+      // 
+      this.openLARaffle.AutoSize = true;
+      this.openLARaffle.Location = new System.Drawing.Point(24, 226);
+      this.openLARaffle.Name = "openLARaffle";
+      this.openLARaffle.Size = new System.Drawing.Size(184, 19);
+      this.openLARaffle.TabIndex = 53;
+      this.openLARaffle.Text = "Open LA Raffle";
+      this.openLARaffle.UseVisualStyleBackColor = true;
+      this.openLARaffle.CheckedChanged += new System.EventHandler(this.openLARaffle_CheckedChanged);
+      // 
+      // openmedchest
+      // 
+      this.openmedchest.AutoSize = true;
+      this.openmedchest.Location = new System.Drawing.Point(24, 241);
+      this.openmedchest.Name = "openmedchest";
+      this.openmedchest.Size = new System.Drawing.Size(184, 19);
+      this.openmedchest.TabIndex = 53;
+      this.openmedchest.Text = "Open Medenia Chests (asilon)";
+      this.openmedchest.UseVisualStyleBackColor = true;
+      this.openmedchest.CheckedChanged += new System.EventHandler(this.openmedchest_CheckedChanged);
+      // 
+      // pigwalk
+      // 
+      this.pigwalk.AutoSize = true;
             this.pigwalk.Location = new System.Drawing.Point(24, 286);
             this.pigwalk.Name = "pigwalk";
             this.pigwalk.Size = new System.Drawing.Size(123, 19);

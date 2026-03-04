@@ -209,6 +209,8 @@ namespace Flintstones
     public bool smallbagopen;
     public bool veltainchest;
     public bool veltainchestopen;
+    public bool LARaffle;
+    public bool LARaffleOpen;
     public bool heavychest;
     public bool heavychestopen;
     public DateTime herbnodewaittime = DateTime.MinValue;
@@ -455,6 +457,7 @@ namespace Flintstones
     // Dictionary to hold max stats for each character class
     public Dictionary<CharacterClass, CharacterStats> maxClassStats = new Dictionary<CharacterClass, CharacterStats>
     {
+      [CharacterClass.Peasant] = new CharacterStats() { Maxhp = 0, Str = 0, Int = 0, Wis = 0, Con = 0, Dex = 0 },
       [CharacterClass.Warrior] = new CharacterStats() { Maxhp = 4000, Str = 215, Int = 100, Wis = 100, Con = 180, Dex = 150 },
       [CharacterClass.Rogue] = new CharacterStats() { Maxhp = 4250, Str = 180, Int = 100, Wis = 100, Con = 150, Dex = 215 },
       [CharacterClass.Wizard] = new CharacterStats() { Maxhp = 3750, Str = 100, Int = 215, Wis = 180, Con = 150, Dex = 100 },
@@ -668,6 +671,8 @@ namespace Flintstones
 
     public Socket ServerSocket { get; private set; }
 
+    private SpeakCommands Commands = new SpeakCommands();
+
     public Client(Server server, Socket socket, EndPoint endPoint)
     {
       this.PreventSpam = new Dictionary<string, DateTime>();
@@ -702,50 +707,8 @@ namespace Flintstones
       this.AegisTimer.Elapsed += new ElapsedEventHandler(this.UseAegisOkay);
       this.AegisTimer.Enabled = true;
       this.AegisTimer.Stop();
-      this.CantSpellMaps = new List<int>();
-      this.CantSpellMaps.Add(167);
-      this.CantSpellMaps.Add(422);
-      this.CantSpellMaps.Add(498);
-      this.CantSpellMaps.Add(136);
-      this.CantSpellMaps.Add(135);
-      this.CantSpellMaps.Add(130);
-      this.CantSpellMaps.Add(500);
-      this.CantSpellMaps.Add(3006);
-      this.CantSpellMaps.Add(3008);
-      this.CantSpellMaps.Add(11362);
-      this.CantSpellMaps.Add(11342);
-      this.CantSpellMaps.Add(3012);
-      this.CantSpellMaps.Add(3272);
-      this.CantSpellMaps.Add(3271);
-      this.CantSpellMaps.Add(3926);
-      this.CantSpellMaps.Add(3938);
-      this.CantSpellMaps.Add(3935);
-      this.CantSpellMaps.Add(3940);
-      this.CantSpellMaps.Add(8300);
-      this.CantSpellMaps.Add(10265);
-      this.CantSpellMaps.Add(7300);
-      this.CantSpellMaps.Add(8995);
-      this.CantSpellMaps.Add(3950);
-      this.CantSpellMaps.Add(3052);
-      this.CantSpellMaps.Add(3952);
-      this.CantSpellMaps.Add(3079);
-      this.CantSpellMaps.Add(5231);
-      this.CantSpellMaps.Add(5232);
-      this.CantSpellMaps.Add(8999);
-      this.CantSpellMaps.Add(8998);
-      this.CantSpellMaps.Add(8997);
-      this.CantSpellMaps.Add(8996);
-      this.CantSpellMaps.Add(7900);
-      this.CantSkillMaps = new List<int>();
-      this.CantSkillMaps.Add(10265);
-      this.CantSkillMaps.Add(7900);
-      this.CountedMonsters = new Dictionary<int, int>();
-      this.CountedMonsters.Add(703, 0);
-      this.CountedMonsters.Add(704, 0);
-      this.CountedMonsters.Add(705, 0);
-      this.CountedMonsters.Add(706, 0);
-      this.CountedMonsters.Add(715, 0);
-      this.CountedMonsters.Add(716, 0);
+      CantSpellMaps = LoadRestrictedSpellAreas();
+      CantSkillMaps = LoadRestrictedSkillAreas();
       this.GroupCounter = new Dictionary<string, GroupCounts>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
       this.WayRegions = new Dictionary<Location, string>();
       this.TempRegions = new Dictionary<int, MapNum>();
@@ -784,7 +747,7 @@ namespace Flintstones
       this.BotThread = new Thread(new ThreadStart(this.BotLoop));
       this.BotThread.Name = "BotThread";
       this.WalkThread = new Thread(new ThreadStart(this.Walking));
-      this.QuestsThread = new Thread(new ThreadStart(this.Quests));
+      this.QuestsThread = new Thread(new ThreadStart(this.Questing));
       this.SpeakCommandThread = new Thread(new ThreadStart(this.SpeakThread));
       this.ClientLoopThread = new Thread(new ThreadStart(this.ClientLoop));
       this.ClientLoopThread.Start();
@@ -796,7 +759,10 @@ namespace Flintstones
       {
         foreach (Client client in Server.Alts.Values.ToArray<Client>())
         {
-          if (client != null && !client.Tab.ignorewalkall.Checked && (!this.SpeakMessage.StartsWith("andor ", StringComparison.CurrentCultureIgnoreCase) && !this.SpeakMessage.StartsWith("queen", StringComparison.CurrentCultureIgnoreCase) || client.MapInfo.Name.StartsWith("Andor")) && (!this.SpeakMessage.StartsWith("chaos ", StringComparison.CurrentCultureIgnoreCase) || client.MapInfo.Name.Contains("Chaos")) && (this.SpeakMessage.StartsWith("chaos", StringComparison.CurrentCultureIgnoreCase) || !client.MapInfo.Name.Contains("Chaos")))
+          if (client != null && !client.Tab.ignorewalkall.Checked && (!this.SpeakMessage.StartsWith("andor ", StringComparison.CurrentCultureIgnoreCase) && !this.SpeakMessage.StartsWith("queen", StringComparison.CurrentCultureIgnoreCase) 
+                                                                   || client.MapInfo.Name.StartsWith("Andor")) && (!this.SpeakMessage.StartsWith("chaos ", StringComparison.CurrentCultureIgnoreCase) 
+                                                                   || client.MapInfo.Name.Contains("Chaos")) && (this.SpeakMessage.StartsWith("chaos", StringComparison.CurrentCultureIgnoreCase) 
+                                                                   || !client.MapInfo.Name.Contains("Chaos")))
           {
             client.Tab.autowalker_locales.SelectedItem = (object) locala;
             if (!string.IsNullOrEmpty(localb))
@@ -806,6 +772,21 @@ namespace Flintstones
 
             client.Tab.autowalker_button.Text = "Stop";
             client.autowalkon = true;
+            client.Tab.castwhilefollow.Checked = true;
+            if (client.Tab.iocself.Visible)
+              client.Tab.iocself.Checked = true;
+            if (client.Tab.iocself.Visible && client.Tab.ioctype.Text == "nuadhaich")
+              client.Tab.ioctype.Text = "ard ioc";
+            if (client.Tab.aocurse.Visible)
+              client.Tab.aocurse.Checked = true;
+            if (client.Tab.dion_enemiesnext.Visible)
+              client.Tab.dion_enemiesnext.Checked = true;
+            if (client.Tab.dion_enemiesnext.Visible)
+              client.Tab.dion_enemiesnextcount.Value = 1M;
+            if (client.Tab.selfaopuinsein.Visible)
+              client.Tab.selfaopuinsein.Checked = true;
+            if (client.Tab.selfaosuain.Visible)
+              client.Tab.selfaosuain.Checked = true;
             if (!client.BotThread.IsAlive)
               client.BotThread.Start();
             client.pause = false;
@@ -822,6 +803,28 @@ namespace Flintstones
           this.Tab.walklocaleslist.SelectedItem = (object)localb;
         }
 
+        this.Tab.autowalker_button.Text = "Stop";
+        this.autowalkon = true;
+        this.Tab.castwhilefollow.Checked = true;
+        if (this.Tab.iocself.Visible)
+          this.Tab.iocself.Checked = true;
+        if (this.Tab.iocself.Visible && this.Tab.ioctype.Text == "nuadhaich")
+          this.Tab.ioctype.Text = "ard ioc";
+        if (this.Tab.aocurse.Visible)
+          this.Tab.aocurse.Checked = true;
+        if (this.Tab.dion_enemiesnext.Visible)
+          this.Tab.dion_enemiesnext.Checked = true;
+        if (this.Tab.dion_enemiesnext.Visible)
+          this.Tab.dion_enemiesnextcount.Value = 1M;
+        if (this.Tab.selfaopuinsein.Visible)
+          this.Tab.selfaopuinsein.Checked = true;
+        if (this.Tab.selfaosuain.Visible)
+          this.Tab.selfaosuain.Checked = true;
+        if (!this.BotThread.IsAlive)
+          this.BotThread.Start();
+        this.pause = false;
+        this.Tab.btnPlay.Enabled = false;
+        this.Tab.btnStop.Enabled = true;
       }
     }
 
@@ -831,1881 +834,16 @@ namespace Flintstones
       {
         if (this.SpeakMessage != string.Empty)
         {
-          if (this.SpeakMessage.Equals("/ascendhp", StringComparison.CurrentCultureIgnoreCase) || this.SpeakMessage.Equals("/ascend hp", StringComparison.CurrentCultureIgnoreCase) || this.SpeakMessage.StartsWith("/hp", StringComparison.CurrentCultureIgnoreCase))
+          bool commandExecuted = false;
+          if (Commands.TryExecuteCommand(this.SpeakMessage, this))
           {
-            this.Tab.AscendOptions.instantascend.Checked = true;
-            this.Tab.AscendOptions.ascendhp.Checked = true;
-            this.Tab.AscendOptions.ascendbutton.Text = "Stop";
+            commandExecuted = true;
           }
-          if (this.SpeakMessage.Equals("/ascendmp", StringComparison.CurrentCultureIgnoreCase) || this.SpeakMessage.Equals("/ascend mp", StringComparison.CurrentCultureIgnoreCase) || this.SpeakMessage.StartsWith("/mp", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.Tab.AscendOptions.instantascend.Checked = true;
-            this.Tab.AscendOptions.ascendmp.Checked = true;
-            this.Tab.AscendOptions.ascendbutton.Text = "Stop";
-          }
-          int result1;
-          if (this.SpeakMessage.Equals("/warrior", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.warrior = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-            this.Tab.walklocaleslist.SelectedItem = (object) "ToC Warrior";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.Equals("/monk", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.monk = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-            this.Tab.walklocaleslist.SelectedItem = (object) "ToC Monk";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.Equals("/rogue", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.rogue = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-            this.Tab.walklocaleslist.SelectedItem = (object) "ToC Rogue";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.Equals("/priest", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.priest = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-            this.Tab.walklocaleslist.SelectedItem = (object) "ToC Priest";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.Equals("/wizard", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.wizard = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-            this.Tab.walklocaleslist.SelectedItem = (object) "ToC Wizard";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.Equals("/hat", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.claimsunprotection = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Loures";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Francis (summer)";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.Equals("/attire", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.claimbeachattire = true;
-            if (this.HasSkill("swimming"))
-            {
-              this.Tab.autowalker_locales.SelectedItem = (object) "Lynith";
-              this.Tab.walklocaleslist.SelectedItem = (object) "Paradise";
-            }
-            else
-            {
-              this.learnswim = true;
-              this.SendMessage("Learning to swim at mileth inn first");
-              this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-              this.Tab.walklocaleslist.SelectedItem = (object) "Inn";
-            }
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.StartsWith("/wish", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.makeawish = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Church";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.StartsWith("/frosty", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.frostygift = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Loures";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Frosty (x-mas)";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.mediumwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.StartsWith("/yule", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.yulequest = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Suomi";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Weapon Shop";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.mediumwalk.Checked = true;
-            this.LastnpcpopupID = 0U;
-          }
-          else if (this.SpeakMessage.StartsWith("/slab", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.slabquest = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Hwarone";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Inn";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.Tab.fastwalk.Checked = true;
-          }
-          else if (this.SpeakMessage.Equals("/darkmaze", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (!this.HasItem("beothaich deum") && !this.HasItem("Red Potion"))
-            {
-              this.SendMessage("Get some beothaich");
-            }
-            else
-            {
-              this.darkmaze = true;
-              this.Tab.autowalker_locales.SelectedItem = (object) "Loures";
-              this.Tab.walklocaleslist.SelectedItem = (object) "Dungeon (aite)";
-              this.Tab.autowalker_button.Text = "Stop";
-              this.autowalkon = true;
-              if (!this.BotThread.IsAlive)
-                this.BotThread.Start();
-              this.pause = false;
-              this.Tab.btnPlay.Enabled = false;
-              this.Tab.btnStop.Enabled = true;
-            }
-          }
-          else if (this.SpeakMessage.Equals("/dojo", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (this.Tab.dojo.Checked)
-              this.Tab.dojo.Checked = false;
-            this.Tab.dojo.Checked = true;
-          }
-          else if (this.SpeakMessage.Equals("/thel", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (this.GroupMembers.Count<string>() == 1)
-            {
-              Client[] array = Server.Alts.Values.ToArray<Client>();
-              for (result1 = 0; result1 < array.Length; ++result1)
-              {
-                Client client = array[result1];
-                if (client.Name.ToLower() == this.GroupMembers[0].ToLower())
-                {
-                  client.letterquest = 1;
-                  client.theletter = true;
-                  if (this.MapInfo.Number != 168 && this.MapInfo.Number != 393 && this.MapInfo.Number != 134 && this.MapInfo.Number != 136 && this.MapInfo.Number != 115 && this.MapInfo.Number != 118 && this.MapInfo.Number != 122 && this.MapInfo.Number != 303 && this.MapInfo.Number != 3041)
-                  {
-                    client.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-                    client.Tab.walklocaleslist.SelectedItem = (object) "Restaurant";
-                    client.Tab.autowalker_button.Text = "Stop";
-                    client.autowalkon = true;
-                  }
-                  if (!client.BotThread.IsAlive)
-                    client.BotThread.Start();
-                  client.pause = false;
-                  client.Tab.btnPlay.Enabled = false;
-                  client.Tab.btnStop.Enabled = true;
-                }
-              }
-            }
-            this.letterquest = 1;
-            this.theletter = true;
-            if (this.MapInfo.Number != 168 && this.MapInfo.Number != 393 && this.MapInfo.Number != 134 && this.MapInfo.Number != 136 && this.MapInfo.Number != 115 && this.MapInfo.Number != 118 && this.MapInfo.Number != 122 && this.MapInfo.Number != 303 && this.MapInfo.Number != 3041)
-            {
-              this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-              this.Tab.walklocaleslist.SelectedItem = (object) "Restaurant";
-              this.Tab.autowalker_button.Text = "Stop";
-              this.autowalkon = true;
-            }
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-          }
-          else if (this.SpeakMessage.Equals("/molo", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.Tab.fastwalk.Checked = true;
-            this.molo = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Nearest Restaurant";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-          }
-          else if (this.SpeakMessage.StartsWith("/meg", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.megprize = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Mt Merry";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Mother Erbie";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-          }
-          else if (this.SpeakMessage.StartsWith("/tali", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.buy2ndtalisman = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-          }
-          else if (this.SpeakMessage.StartsWith("/pearl", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.giantpearl = true;
-            this.Tab.looton.Checked = true;
-            this.Tab.autowalker_locales.SelectedItem = (object) "Lynith";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Giant Pearl";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-          }
-          else if (this.SpeakMessage.StartsWith("/tent", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.Tab.autowalker_locales.SelectedItem = (object) "Mileth";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Tavern";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-          }
-          else if (this.SpeakMessage.StartsWith("/law all", StringComparison.CurrentCultureIgnoreCase))
-          {
-            Client[] array = Server.Alts.Values.ToArray<Client>();
-            for (result1 = 0; result1 < array.Length; ++result1)
-            {
-              Client client = array[result1];
-              if (client != null && client.Name != string.Empty && client.MapInfo.Number == 8995)
-              {
-                client.Tab.LoadTemplate("default");
-                client.lawquest = true;
-                client.Tab.fastwalk.Checked = true;
-                client.Tab.autowalker_locales.Text = "Lost Ruins";
-                client.Tab.walklocaleslist.SelectedItem = (object) "Nairn";
-                client.Tab.autowalker_button.Text = "Stop";
-                client.autowalkon = true;
-                if (!client.BotThread.IsAlive)
-                  client.BotThread.Start();
-                client.pause = false;
-                client.Tab.btnPlay.Enabled = false;
-                client.Tab.btnStop.Enabled = true;
-                this.LastnpcpopupID = 0U;
-              }
-            }
-          }
-          else if (this.SpeakMessage.StartsWith("/law", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.Tab.LoadTemplate("default");
-            this.lawquest = true;
-            this.Tab.fastwalk.Checked = true;
-            this.Tab.autowalker_locales.Text = "Lost Ruins";
-            this.Tab.walklocaleslist.SelectedItem = (object) "Nairn";
-            this.Tab.autowalker_button.Text = "Stop";
-            this.autowalkon = true;
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.LastnpcpopupID = 0U;
-          }
-          else if (this.SpeakMessage.StartsWith("/teach", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.RequestGroupList();
-            this.SendMessage("wait a sec...");
-            Thread.Sleep(1000);
-            this.Speak("sabonim, please teach me the " + this.currentdugon + " dugon");
-          }
-          else if (this.SpeakMessage.StartsWith("/done", StringComparison.CurrentCultureIgnoreCase))
-            this.Speak("sabonim, i understand the " + this.currentdugon + " dugon");
-          else if (this.SpeakMessage.StartsWith("/walk "))
-          {
-            if (this.SpeakMessage.StartsWith("/walk all "))
-            {
-              this.SpeakMessage = this.SpeakMessage.Substring(10);
 
-              if (Server.WalkLocations.ContainsKey(this.SpeakMessage))
-              {
-                var location = Server.WalkLocations[this.SpeakMessage];
-                this.walkcommand(location.Area, location.Location, true);
-              }
-              else
-              {
-                this.SendMessage("That location does not exist.", "pink");
-              }
-            }
-            else
-            {
-              this.SpeakMessage = this.SpeakMessage.Substring(6);
-              bool flag = false;
 
-              if (Server.WalkLocations.ContainsKey(this.SpeakMessage))
-              {
-                var location = Server.WalkLocations[this.SpeakMessage];
-                this.Tab.autowalker_locales.SelectedItem = (object) location.Area;
-                if (!string.IsNullOrEmpty(location.Location))
-                  this.Tab.walklocaleslist.SelectedItem = (object) location.Location;
-                flag = true;
-              }
-
-              // TODO: Find out why Suomi song is used here
-              if (this.SpeakMessage.StartsWith("oct", StringComparison.CurrentCultureIgnoreCase))
-              {
-                if (!this.MapInfo.Name.Contains("Suomi") && !this.MapInfo.Name.Contains("Astrid") && !this.MapInfo.Name.Contains("Undine") && this.HasItem("Suomi Song"))
-                  this.UseItem("Suomi Song");
-                this.Tab.autowalker_locales.SelectedItem = (object) "Astrid";
-                this.Tab.walklocaleslist.SelectedItem = (object) "Octagram";
-                flag = true;
-              }
-
-              // TODO: Find out why pigwalk and medium walk are explicitly set here
-              if (this.SpeakMessage.Equals("maze", StringComparison.CurrentCultureIgnoreCase))
-              {
-                this.Tab.autowalker_locales.SelectedItem = (object) "Loures";
-                this.Tab.walklocaleslist.SelectedItem = (object) "Maze";
-                flag = true;
-                this.Tab.pigwalk.Checked = true;
-                this.Tab.mediumwalk.Checked = true;
-              }
-
-              if (flag)
-              {
-                this.Tab.autowalker_button.Text = "Stop";
-                this.autowalkon = true;
-                this.Tab.castwhilefollow.Checked = true;
-                if (this.Tab.iocself.Visible)
-                  this.Tab.iocself.Checked = true;
-                if (this.Tab.iocself.Visible && this.Tab.ioctype.Text == "nuadhaich")
-                  this.Tab.ioctype.Text = "ard ioc";
-                if (this.Tab.aocurse.Visible)
-                  this.Tab.aocurse.Checked = true;
-                if (this.Tab.dion_enemiesnext.Visible)
-                  this.Tab.dion_enemiesnext.Checked = true;
-                if (this.Tab.dion_enemiesnext.Visible)
-                  this.Tab.dion_enemiesnextcount.Value = 1M;
-                if (this.Tab.selfaopuinsein.Visible)
-                  this.Tab.selfaopuinsein.Checked = true;
-                if (this.Tab.selfaosuain.Visible)
-                  this.Tab.selfaosuain.Checked = true;
-                if (!this.BotThread.IsAlive)
-                  this.BotThread.Start();
-                this.pause = false;
-                this.Tab.btnPlay.Enabled = false;
-                this.Tab.btnStop.Enabled = true;
-              }
-              else
-                this.SendMessage("That location does not exist.", "pink");
-            }
-          }
-          else if (this.SpeakMessage.Equals("/attack count", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (Program.MainForm.attackcount)
-            {
-              Client[] array = Server.Alts.Values.ToArray<Client>();
-              for (result1 = 0; result1 < array.Length; ++result1)
-              {
-                Client client = array[result1];
-                if (client.Tab.Monsters != null)
-                {
-                  foreach (targetMonster targetMonster in client.targetmonster)
-                  {
-                    if (targetMonster != null && targetMonster.Text.Equals("814"))
-                    {
-                      if (targetMonster.attack1type.Text == "ard pian na dion")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack1type.Text == "mor pian na dion")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack1type.Text == "Shock Arrow")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack1type.Text == "Frost Arrow")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack1type.Text == "Frost + 3 Shocks")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack2type.Text == "Cursed Tune")
-                        targetMonster.attack2.Checked = false;
-                    }
-                  }
-                }
-              }
-              Program.MainForm.attackcount = false;
-              this.SendMessage("No longer attacking Count.", "pink");
-            }
-            else
-            {
-              Client[] array = Server.Alts.Values.ToArray<Client>();
-              for (result1 = 0; result1 < array.Length; ++result1)
-              {
-                Client client = array[result1];
-                if (client.Tab.Monsters != null)
-                {
-                  foreach (targetMonster targetMonster in client.targetmonster)
-                  {
-                    if (targetMonster != null && targetMonster.Text.Equals("814"))
-                    {
-                      if (targetMonster.attack1type.Text == "ard pian na dion")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack1type.Text == "mor pian na dion")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack1type.Text == "Frost Arrow")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack1type.Text == "Shock Arrow")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack1type.Text == "Frost + 3 Shocks")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack2type.Text == "Cursed Tune")
-                        targetMonster.attack2.Checked = true;
-                    }
-                  }
-                }
-              }
-              Program.MainForm.attackcount = true;
-              this.SendMessage("Now set to attack Count.", "pink");
-            }
-          }
-          else if (this.SpeakMessage.Equals("/attack countess", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (Program.MainForm.attackcountess)
-            {
-              Client[] array = Server.Alts.Values.ToArray<Client>();
-              for (result1 = 0; result1 < array.Length; ++result1)
-              {
-                Client client = array[result1];
-                if (client.Tab.Monsters != null)
-                {
-                  foreach (targetMonster targetMonster in client.targetmonster)
-                  {
-                    if (targetMonster != null && targetMonster.Text.Equals("815"))
-                    {
-                      if (targetMonster.attack1type.Text == "ard pian na dion")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack1type.Text == "mor pian na dion")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack1type.Text == "Frost Arrow")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack1type.Text == "Shock Arrow")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack1type.Text == "Frost + 3 Shocks")
-                        targetMonster.attack1.Checked = false;
-                      if (targetMonster.attack2type.Text == "Cursed Tune")
-                        targetMonster.attack2.Checked = false;
-                    }
-                  }
-                }
-              }
-              Program.MainForm.attackcountess = false;
-              this.SendMessage("No longer attacking Countess.", "pink");
-            }
-            else
-            {
-              Client[] array = Server.Alts.Values.ToArray<Client>();
-              for (result1 = 0; result1 < array.Length; ++result1)
-              {
-                Client client = array[result1];
-                if (client.Tab.Monsters != null)
-                {
-                  foreach (targetMonster targetMonster in client.targetmonster)
-                  {
-                    if (targetMonster != null && targetMonster.Text.Equals("815"))
-                    {
-                      if (targetMonster.attack1type.Text == "ard pian na dion")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack1type.Text == "mor pian na dion")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack1type.Text == "Shock Arrow")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack1type.Text == "Frost Arrow")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack1type.Text == "Frost + 3 Shocks")
-                        targetMonster.attack1.Checked = true;
-                      if (targetMonster.attack2type.Text == "Cursed Tune")
-                        targetMonster.attack2.Checked = true;
-                    }
-                  }
-                }
-              }
-              Program.MainForm.attackcountess = true;
-              this.SendMessage("Now set to attack Countess.", "pink");
-            }
-          }
-          else if (this.SpeakMessage.Equals("/ram", StringComparison.CurrentCultureIgnoreCase))
-          {
-            Client[] array = Server.Alts.Values.ToArray<Client>();
-            for (result1 = 0; result1 < array.Length; ++result1)
-            {
-              Client client = array[result1];
-              if (client.Tab.allMonsters != null)
-              {
-                --client.Tab.spellMonsters.SelectedIndex;
-                client.Tab.spellMonsters.TabPages.Remove((TabPage) client.Tab.allMonsters);
-                client.Tab.allMonsters = (targetAllMonster) null;
-                client.Tab.newmonster.Enabled = true;
-                client.Tab.newallmonsters.Enabled = true;
-                client.Tab.newmonsterbyplayer.Enabled = true;
-                client.Tab.createnewmonster.Enabled = true;
-              }
-            }
-            this.SendMessage("Removed All Monsters Tabs from all clients", "grey");
-          }
-          else if (this.SpeakMessage.Equals("/s", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.pause = true;
-            this.Tab.btnPlay.Enabled = true;
-            this.Tab.btnStop.Enabled = false;
-            this.SendMessage(this.Name + " is Stopped.", "grey");
-          }
-          else if (this.SpeakMessage.Equals("/p", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (!this.BotThread.IsAlive)
-              this.BotThread.Start();
-            this.pause = false;
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.lastaction = DateTime.UtcNow;
-            this.laststep = DateTime.UtcNow;
-            this.SendMessage(this.Name + " is Playing.", "grey");
-          }
-          else if (this.SpeakMessage.Equals("/p all", StringComparison.CurrentCultureIgnoreCase))
-          {
-            Client[] array = Server.Alts.Values.ToArray<Client>();
-            for (result1 = 0; result1 < array.Length; ++result1)
-            {
-              Client client = array[result1];
-              if (!client.BotThread.IsAlive)
-                client.BotThread.Start();
-              client.pause = false;
-              client.Tab.btnPlay.Enabled = false;
-              client.Tab.btnStop.Enabled = true;
-              client.lastaction = DateTime.UtcNow;
-              client.laststep = DateTime.UtcNow;
-            }
-            this.SendMessage("All clients are Playing.", "grey");
-          }
-          else if (this.SpeakMessage.Equals("/s all", StringComparison.CurrentCultureIgnoreCase))
-          {
-            Client[] array = Server.Alts.Values.ToArray<Client>();
-            for (result1 = 0; result1 < array.Length; ++result1)
-            {
-              Client client = array[result1];
-              client.pause = true;
-              client.Tab.btnPlay.Enabled = true;
-              client.Tab.btnStop.Enabled = false;
-            }
-            this.SendMessage("All clients are Stopped.", "grey");
-          }
-          if (this.SpeakMessage.StartsWith("/save "))
-          {
-            this.SpeakMessage = this.SpeakMessage.Substring(6);
-            this.Tab.SaveTemplate(this.SpeakMessage);
-          }
-          else if (this.SpeakMessage.StartsWith("/load ") && !this.SpeakMessage.StartsWith("/load all"))
-          {
-            this.SpeakMessage = this.SpeakMessage.Substring(6);
-            this.Tab.LoadTemplate(this.SpeakMessage);
-          }
-          else if (this.SpeakMessage.StartsWith("/load all "))
-          {
-            this.SpeakMessage = this.SpeakMessage.Substring(10);
-            Client[] array = Server.Alts.Values.ToArray<Client>();
-            for (result1 = 0; result1 < array.Length; ++result1)
-              array[result1].Tab.LoadTemplate(this.SpeakMessage);
-          }
-          else if (this.SpeakMessage.StartsWith("/stop all"))
-          {
-            Client[] array = Server.Alts.Values.ToArray<Client>();
-            for (result1 = 0; result1 < array.Length; ++result1)
-            {
-              Client client = array[result1];
-              client.Tab.followplayer.Checked = false;
-              client.Tab.autowalker_button.Text = "Start";
-              client.autowalkon = false;
-              client.Tab.wayregionson.Checked = false;
-              client.Tab.actonlyinmobs.Checked = false;
-            }
-            this.SendMessage("All clients have stopped walking.", "grey", true);
-          }
-          else if (this.SpeakMessage.StartsWith("/stop"))
-          {
-            this.Tab.followplayer.Checked = false;
-            this.Tab.autowalker_button.Text = "Start";
-            this.autowalkon = false;
-            this.Tab.wayregionson.Checked = false;
-            this.Tab.actonlyinmobs.Checked = false;
-            this.SendMessage("You have stopped walking.", "grey");
-          }
-          else if (this.SpeakMessage.Equals("/fast all"))
-          {
-            Client[] array = Server.Alts.Values.ToArray<Client>();
-            for (result1 = 0; result1 < array.Length; ++result1)
-              array[result1].Tab.fastwalk.Checked = true;
-            this.SendMessage("All clients are set to fast walk.", "grey", true);
-          }
-          else if (this.SpeakMessage.StartsWith("/fast"))
-            this.Tab.fastwalk.Checked = true;
-          else if (this.SpeakMessage.Equals("/med all"))
-          {
-            Client[] array = Server.Alts.Values.ToArray<Client>();
-            for (result1 = 0; result1 < array.Length; ++result1)
-              array[result1].Tab.mediumwalk.Checked = true;
-            this.SendMessage("All clients are set to medium walk speed.", "grey", true);
-          }
-          else if (this.SpeakMessage.StartsWith("/med"))
-            this.Tab.mediumwalk.Checked = true;
-          else if (this.SpeakMessage.Equals("/slow all"))
-          {
-            Client[] array = Server.Alts.Values.ToArray<Client>();
-            for (result1 = 0; result1 < array.Length; ++result1)
-            {
-              Client client = array[result1];
-              client.Tab.mediumwalk.Checked = false;
-              client.Tab.fastwalk.Checked = false;
-            }
-            this.SendMessage("All clients are set to normal speed.", "grey", true);
-          }
-          else if (this.SpeakMessage.Equals("/slow"))
-          {
-            this.Tab.mediumwalk.Checked = false;
-            this.Tab.fastwalk.Checked = false;
-          }
-          else if (this.SpeakMessage.StartsWith("/follow all "))
-          {
-            string[] strArray = this.SpeakMessage.Split(' ');
-            if (strArray.Length != 4 || int.TryParse(strArray[3], out result1))
-            {
-              Client[] array = Server.Alts.Values.ToArray<Client>();
-              for (result1 = 0; result1 < array.Length; ++result1)
-              {
-                Client client = array[result1];
-                if ((!client.Name.Equals("sazae", StringComparison.CurrentCultureIgnoreCase) || !strArray[2].Equals("fechine", StringComparison.CurrentCultureIgnoreCase) || client.MapInfo.Number != 8995) && !client.Name.Equals(strArray[2], StringComparison.CurrentCultureIgnoreCase))
-                {
-                  client.Tab.followtarget.Text = strArray[2];
-                  client.Tab.followplayer.Checked = true;
-                  if (strArray.Length == 4)
-                    client.Tab.followdist.Value = Convert.ToDecimal(strArray[3]);
-                }
-              }
-              this.SendMessage("All clients were set to follow " + strArray[2], "grey");
-            }
-            else
-              break;
-          }
-          else if (this.SpeakMessage.StartsWith("/follow "))
-          {
-            string[] strArray = this.SpeakMessage.Split(' ');
-            if (strArray.Length != 3 || int.TryParse(strArray[2], out result1))
-            {
-              if (!this.Name.Equals(strArray[1], StringComparison.CurrentCultureIgnoreCase))
-              {
-                this.Tab.followtarget.Text = strArray[1];
-                this.Tab.followplayer.Checked = true;
-                if (strArray.Length == 3)
-                  this.Tab.followdist.Value = Convert.ToDecimal(strArray[2]);
-                this.SendMessage("You are set to follow " + strArray[1], "grey");
-              }
-              else
-                this.SendMessage("You can't follow yourself.", "pink");
-            }
-            else
-              goto label_2062;
-          }
-          else if (this.SpeakMessage.StartsWith("/m", StringComparison.CurrentCultureIgnoreCase) && !this.SpeakMessage.Equals("/map") && !this.SpeakMessage.Equals("/molo"))
-          {
-            this.SpeakMessage = this.SpeakMessage.Substring(2);
-            int result2;
-            if (this.SpeakMessage != "" && int.TryParse(this.SpeakMessage, out result2))
-            {
-              this.Tab.usemonsterid.Value = (Decimal) Convert.ToUInt32(result2);
-              this.Tab.usemonster.Checked = true;
-            }
-            else if (this.SpeakMessage == "" || this.SpeakMessage == " ")
-              this.Tab.usemonster.Checked = !this.Tab.usemonster.Checked;
-            else if (!int.TryParse(this.SpeakMessage, out result2))
-              this.SendMessage("Invalid monster form format.", "pink");
-          }
-          else if (this.SpeakMessage.StartsWith("/calc on", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (this.Tab.calc_toggle.Text == "Start")
-            {
-              this.Tab.StartCalc();
-              this.Tab.calc_toggle.Text = "Pause";
-            }
-          }
-          else if (this.SpeakMessage.StartsWith("/calc off", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (this.Tab.calc_toggle.Text == "Pause")
-              this.Tab.StopCalc();
-          }
-          else if (this.SpeakMessage.StartsWith("/calc reset", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (this.Tab.calc_toggle.Text == "Start")
-              this.Tab.StopCalc();
-          }
-          else if (this.SpeakMessage.StartsWith("/calc", StringComparison.CurrentCultureIgnoreCase))
-            this.Tab.Calculator_Message();
-          if (this.SpeakMessage.StartsWith("/drop ", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (this.SpeakMessage.StartsWith("/drop all ", StringComparison.CurrentCultureIgnoreCase))
-            {
-              this.SpeakMessage = this.SpeakMessage.Substring(10);
-              if (this.SpeakMessage != string.Empty)
-              {
-                if (this.SpeakMessage.ToLower().Equals("chaos"))
-                {
-                  this.DropItems("White Jade Ring");
-                  this.DropItems("Drake Tongue");
-                  this.DropItems("Fire Beetlalic Head");
-                  this.DropItems("Warrior Beetlalic Head");
-                  this.DropItems("Cracked Aosdic Helm");
-                  this.DropItems("Losgann Tail");
-                  this.DropItems("Ruidhtear Toe");
-                  this.DropItems("Draco's Jaw");
-                  this.DropItems("Kabungkl Tail");
-                  this.DropItems("Chaos Orb");
-                  this.DropItems("Scale Bracer");
-                  this.DropItems("Black Stone Ring");
-                  this.DropItems("Hydraco Horn");
-                  this.DropItems("Golem Stones");
-                  this.DropItems("Porboss Claw");
-                }
-                else
-                  this.DropItems(this.SpeakMessage);
-              }
-            }
-            else
-            {
-              this.SpeakMessage = this.SpeakMessage.Substring(6);
-              int num = this.SpeakMessage != string.Empty ? 1 : 0;
-            }
-          }
-          int num1;
-          if (this.SpeakMessage.StartsWith("/withdraw", StringComparison.CurrentCultureIgnoreCase))
-          {
-            uint num2 = 0;
-            Npc[] source = this.NearbyNpcs(Npc.NpcType.Mundane);
-            if (((IEnumerable<Npc>) source).Count<Npc>() > 0)
-            {
-              Npc[] npcArray = source;
-              for (result1 = 0; result1 < npcArray.Length; ++result1)
-              {
-                Npc npc = npcArray[result1];
-                if (npc != null && npc.IsOnScreen)
-                {
-                  num2 = npc.ID;
-                  break;
-                }
-              }
-            }
-            if (num2 != 0U && this.SafeToWalkFast)
-            {
-              if (this.SpeakMessage.StartsWith("/withdraw spore", StringComparison.CurrentCultureIgnoreCase))
-              {
-                this.DialogueRespond(new uint?(num2), "Withdraw Red Spore [10]");
-                this.PopupClose(new uint?(num2));
-                Thread.Sleep(1100);
-                if (this.SafeToWalkFast)
-                {
-                  this.DialogueRespond(new uint?(num2), "Withdraw Grey Spore [10]");
-                  this.PopupClose(new uint?(num2));
-                }
-              }
-              else if (this.SpeakMessage.StartsWith("/withdraw frog", StringComparison.CurrentCultureIgnoreCase))
-              {
-                this.DialogueRespond(new uint?(num2), "Withdraw Red Frog Meat [5]");
-                this.PopupClose(new uint?(num2));
-                Thread.Sleep(1100);
-                if (this.SafeToWalkFast)
-                {
-                  this.DialogueRespond(new uint?(num2), "Withdraw Grey Frog Meat [5]");
-                  this.PopupClose(new uint?(num2));
-                }
-                Thread.Sleep(1100);
-                if (this.SafeToWalkFast)
-                {
-                  this.DialogueRespond(new uint?(num2), "Withdraw Blue Frog Meat [5]");
-                  this.PopupClose(new uint?(num2));
-                }
-              }
-              else if (this.SpeakMessage.StartsWith("/withdraw all", StringComparison.CurrentCultureIgnoreCase))
-              {
-                this.SpeakMessage = this.SpeakMessage.Substring(14);
-                if (this.SpeakMessage != string.Empty)
-                {
-                  if (Server.ItemList.ContainsKey(this.SpeakMessage))
-                  {
-                    this.DialogueRespond(new uint?(num2), "Withdraw " + this.SpeakMessage + " [" + Server.ItemList[this.SpeakMessage].MaxStack.ToString() + "]");
-                    this.PopupClose(new uint?(num2));
-                  }
-                  else
-                  {
-                    int num3 = this.OpenSlotsCount();
-                    for (int index = 0; index < num3 && this.SafeToWalkFast; num1 = index++)
-                    {
-                      this.DialogueRespond(new uint?(num2), "Withdraw " + this.SpeakMessage);
-                      this.PopupClose(new uint?(num2));
-                      Thread.Sleep(1100);
-                    }
-                    this.SendMessage("done withdrawing " + this.SpeakMessage);
-                  }
-                }
-              }
-              else if (this.SpeakMessage.Length >= 10)
-              {
-                this.SpeakMessage = this.SpeakMessage.Substring(10);
-                if (this.SpeakMessage != string.Empty)
-                {
-                  if (this.SpeakMessage.ToLower().StartsWith("suc"))
-                    this.SpeakMessage = "succubus's hair";
-                  else if (this.SpeakMessage.ToLower().StartsWith("war"))
-                    this.SpeakMessage = "warranty bag";
-                  else if (this.SpeakMessage.ToLower().StartsWith("rec"))
-                    this.SpeakMessage = "recall scroll";
-                  else if (this.SpeakMessage.ToLower().StartsWith("xmas d"))
-                    this.SpeakMessage = "xmas double exp-ap(x5)";
-                  else if (this.SpeakMessage.ToLower().StartsWith("double"))
-                    this.SpeakMessage = "double bonus exp-ap(x5)";
-                  else if (this.SpeakMessage.ToLower().StartsWith("christmas"))
-                    this.SpeakMessage = "christmas double exp-ap(x5)";
-                  else if (this.SpeakMessage.ToLower().StartsWith("vday"))
-                    this.SpeakMessage = "vday bonus exp-ap(x5)";
-                  else if (this.SpeakMessage.ToLower().StartsWith("gsf"))
-                    this.SpeakMessage = "golden starfish";
-                  else if (this.SpeakMessage.ToLower().StartsWith("bog"))
-                    this.SpeakMessage = "band of gales";
-                  else if (this.SpeakMessage.ToLower().StartsWith("bos"))
-                    this.SpeakMessage = "band of storms";
-                  else if (this.SpeakMessage.ToLower().StartsWith("divinities"))
-                    this.SpeakMessage = "divinities staff";
-                  else if (this.SpeakMessage.ToLower().StartsWith("eagles"))
-                    this.SpeakMessage = "eagles grasp";
-                  else if (this.SpeakMessage.ToLower().StartsWith("hell"))
-                    this.SpeakMessage = "hellreavers blade";
-                  else if (this.SpeakMessage.ToLower().StartsWith("inferno"))
-                    this.SpeakMessage = "inferno blade";
-                  else if (this.SpeakMessage.ToLower().StartsWith("satchel"))
-                    this.SpeakMessage = "satchel of goods";
-                  else if (this.SpeakMessage.ToLower().StartsWith("skylight"))
-                    this.SpeakMessage = "skylight staff";
-                  else if (this.SpeakMessage.ToLower().StartsWith("thunder"))
-                    this.SpeakMessage = "thunderfury";
-                  this.DialogueRespond(new uint?(num2), "Withdraw " + this.SpeakMessage);
-                  this.PopupClose(new uint?(num2));
-                }
-              }
-              else
-              {
-                this.withdrawmode = 1;
-                this.DialogueRespond(new uint?(num2), "Withdraw");
-              }
-            }
-          }
-          else if (this.SpeakMessage.StartsWith("/deposit", StringComparison.CurrentCultureIgnoreCase))
-          {
-            uint num4 = 0;
-            Npc[] source = this.NearbyNpcs(Npc.NpcType.Mundane);
-            if (((IEnumerable<Npc>) source).Count<Npc>() > 0)
-            {
-              Npc[] npcArray = source;
-              for (result1 = 0; result1 < npcArray.Length; ++result1)
-              {
-                Npc npc = npcArray[result1];
-                if (npc != null && npc.IsOnScreen)
-                {
-                  num4 = npc.ID;
-                  break;
-                }
-              }
-            }
-            if (num4 != 0U && this.SafeToWalkFast)
-            {
-              if (this.SpeakMessage.StartsWith("/deposit all", StringComparison.CurrentCultureIgnoreCase))
-              {
-                this.SpeakMessage = this.SpeakMessage.Substring(13);
-                if (this.SpeakMessage != string.Empty)
-                {
-                  if (this.SpeakMessage.ToLower().StartsWith("suc"))
-                    this.SpeakMessage = "succubus's hair";
-                  else if (this.SpeakMessage.ToLower().StartsWith("war"))
-                    this.SpeakMessage = "warranty bag";
-                  else if (this.SpeakMessage.ToLower().StartsWith("xmas d"))
-                    this.SpeakMessage = "xmas double exp-ap(x5)";
-                  else if (this.SpeakMessage.ToLower().StartsWith("double"))
-                    this.SpeakMessage = "double bonus exp-ap(x5)";
-                  else if (this.SpeakMessage.ToLower().StartsWith("christmas"))
-                    this.SpeakMessage = "christmas double exp-ap(x5)";
-                  else if (this.SpeakMessage.ToLower().StartsWith("vday"))
-                    this.SpeakMessage = "vday bonus exp-ap(x5)";
-                  else if (this.SpeakMessage.ToLower().StartsWith("gsf"))
-                    this.SpeakMessage = "golden starfish";
-                  else if (this.SpeakMessage.ToLower().StartsWith("bog"))
-                    this.SpeakMessage = "band of gales";
-                  else if (this.SpeakMessage.ToLower().StartsWith("bos"))
-                    this.SpeakMessage = "band of storms";
-                  else if (this.SpeakMessage.ToLower().StartsWith("divinities"))
-                    this.SpeakMessage = "divinities staff";
-                  else if (this.SpeakMessage.ToLower().StartsWith("eagles"))
-                    this.SpeakMessage = "eagles grasp";
-                  else if (this.SpeakMessage.ToLower().StartsWith("hell"))
-                    this.SpeakMessage = "hellreavers blade";
-                  else if (this.SpeakMessage.ToLower().StartsWith("inferno"))
-                    this.SpeakMessage = "inferno blade";
-                  else if (this.SpeakMessage.ToLower().StartsWith("satchel"))
-                    this.SpeakMessage = "satchel of goods";
-                  else if (this.SpeakMessage.ToLower().StartsWith("skylight"))
-                    this.SpeakMessage = "skylight staff";
-                  else if (this.SpeakMessage.ToLower().StartsWith("thunder"))
-                    this.SpeakMessage = "thunderfury";
-                  Item[] inventory = this.Inventory;
-                  for (result1 = 0; result1 < inventory.Length; ++result1)
-                  {
-                    Item obj = inventory[result1];
-                    if (this.SafeToWalkFast)
-                    {
-                      if (obj != null && obj.Name.Equals(this.SpeakMessage, StringComparison.CurrentCultureIgnoreCase))
-                      {
-                        if (obj.Amount > 1U)
-                        {
-                          this.DialogueRespond(new uint?(num4), "Deposit " + obj.InventorySlot.ToString() + " [" + obj.Amount.ToString() + "]");
-                          this.PopupClose(new uint?(num4));
-                          Thread.Sleep(1100);
-                        }
-                        else
-                        {
-                          this.DialogueRespond(new uint?(num4), "Deposit " + obj.InventorySlot.ToString());
-                          this.PopupClose(new uint?(num4));
-                          Thread.Sleep(1100);
-                        }
-                      }
-                    }
-                    else
-                      break;
-                  }
-                }
-              }
-              else if (this.SpeakMessage.Length >= 9)
-              {
-                this.SpeakMessage = this.SpeakMessage.Substring(9);
-                if (this.SpeakMessage != string.Empty)
-                {
-                  if (this.SpeakMessage.ToLower().StartsWith("suc"))
-                    this.SpeakMessage = "succubus's hair";
-                  else if (this.SpeakMessage.ToLower().StartsWith("war"))
-                    this.SpeakMessage = "warranty bag";
-                  else if (this.SpeakMessage.ToLower().StartsWith("xmas d"))
-                    this.SpeakMessage = "xmas double exp-ap(x5)";
-                  else if (this.SpeakMessage.ToLower().StartsWith("double"))
-                    this.SpeakMessage = "double bonus exp-ap(x5)";
-                  else if (this.SpeakMessage.ToLower().StartsWith("christmas"))
-                    this.SpeakMessage = "christmas double exp-ap(x5)";
-                  else if (this.SpeakMessage.ToLower().StartsWith("vday"))
-                    this.SpeakMessage = "vday bonus exp-ap(x5)";
-                  else if (this.SpeakMessage.ToLower().StartsWith("gsf"))
-                    this.SpeakMessage = "golden starfish";
-                  else if (this.SpeakMessage.ToLower().StartsWith("bog"))
-                    this.SpeakMessage = "band of gales";
-                  else if (this.SpeakMessage.ToLower().StartsWith("bos"))
-                    this.SpeakMessage = "band of storms";
-                  else if (this.SpeakMessage.ToLower().StartsWith("divinities"))
-                    this.SpeakMessage = "divinities staff";
-                  else if (this.SpeakMessage.ToLower().StartsWith("eagles"))
-                    this.SpeakMessage = "eagles grasp";
-                  else if (this.SpeakMessage.ToLower().StartsWith("hell"))
-                    this.SpeakMessage = "hellreavers blade";
-                  else if (this.SpeakMessage.ToLower().StartsWith("inferno"))
-                    this.SpeakMessage = "inferno blade";
-                  else if (this.SpeakMessage.ToLower().StartsWith("satchel"))
-                    this.SpeakMessage = "satchel of goods";
-                  else if (this.SpeakMessage.ToLower().StartsWith("skylight"))
-                    this.SpeakMessage = "skylight staff";
-                  else if (this.SpeakMessage.ToLower().StartsWith("thunder"))
-                    this.SpeakMessage = "thunderfury";
-                  Item[] inventory = this.Inventory;
-                  for (result1 = 0; result1 < inventory.Length; ++result1)
-                  {
-                    Item obj = inventory[result1];
-                    if (obj != null && obj.Name.Equals(this.SpeakMessage, StringComparison.CurrentCultureIgnoreCase))
-                    {
-                      this.DialogueRespond(new uint?(num4), "Deposit " + obj.InventorySlot.ToString());
-                      this.PopupClose(new uint?(num4));
-                      break;
-                    }
-                  }
-                }
-              }
-              else
-              {
-                uint? npccode = new uint?(num4);
-                Character[] array = this.Characters.Values.ToArray<Character>();
-                for (result1 = 0; result1 < array.Length; ++result1)
-                {
-                  Character character = array[result1];
-                  if (character != null && character is Npc && (character as Npc).Type == Npc.NpcType.Mundane)
-                  {
-                    npccode = new uint?(character.ID);
-                    break;
-                  }
-                }
-                this.depositmode = 1;
-                this.DialogueRespond(npccode, "Deposit");
-              }
-            }
-          }
-          else if (this.SpeakMessage.StartsWith("/send", StringComparison.CurrentCultureIgnoreCase))
-          {
-            uint num5 = 0;
-            Npc[] source1 = this.NearbyNpcs(Npc.NpcType.Mundane);
-            if (((IEnumerable<Npc>) source1).Count<Npc>() > 0)
-            {
-              Npc[] npcArray = source1;
-              for (result1 = 0; result1 < npcArray.Length; ++result1)
-              {
-                Npc npc = npcArray[result1];
-                if (npc != null && npc.IsOnScreen)
-                {
-                  num5 = npc.ID;
-                  break;
-                }
-              }
-            }
-            if (num5 > 0U)
-            {
-              if (this.SpeakMessage.StartsWith("/send ", StringComparison.CurrentCultureIgnoreCase))
-              {
-                string[] source2 = this.SpeakMessage.Split(' ');
-                if (((IEnumerable<string>) source2).Count<string>() >= 2)
-                {
-                  this.SpeakMessage = this.SpeakMessage.Substring(this.SpeakMessage.IndexOf(source2[2]));
-                  if (this.SpeakMessage.ToLower().StartsWith("suc"))
-                    this.SpeakMessage = "succubus's hair";
-                  else if (this.SpeakMessage.ToLower().StartsWith("war"))
-                    this.SpeakMessage = "warranty bag";
-                  else if (this.SpeakMessage.ToLower().StartsWith("rec"))
-                    this.SpeakMessage = "recall scroll";
-                  else if (this.SpeakMessage.ToLower().StartsWith("xmas d"))
-                    this.SpeakMessage = "xmas double exp-ap(x5)";
-                  else if (this.SpeakMessage.ToLower().StartsWith("double"))
-                    this.SpeakMessage = "double bonus exp-ap(x5)";
-                  else if (this.SpeakMessage.ToLower().StartsWith("christmas"))
-                    this.SpeakMessage = "christmas double exp-ap(x5)";
-                  else if (this.SpeakMessage.ToLower().StartsWith("vday"))
-                    this.SpeakMessage = "vday bonus exp-ap(x5)";
-                  else if (this.SpeakMessage.ToLower().StartsWith("gsf"))
-                    this.SpeakMessage = "golden starfish";
-                  else if (this.SpeakMessage.ToLower().StartsWith("bog"))
-                    this.SpeakMessage = "band of gales";
-                  else if (this.SpeakMessage.ToLower().StartsWith("bos"))
-                    this.SpeakMessage = "band of storms";
-                  else if (this.SpeakMessage.ToLower().StartsWith("divinities"))
-                    this.SpeakMessage = "divinities staff";
-                  else if (this.SpeakMessage.ToLower().StartsWith("eagles"))
-                    this.SpeakMessage = "eagles grasp";
-                  else if (this.SpeakMessage.ToLower().StartsWith("hell"))
-                    this.SpeakMessage = "hellreavers blade";
-                  else if (this.SpeakMessage.ToLower().StartsWith("inferno"))
-                    this.SpeakMessage = "inferno blade";
-                  else if (this.SpeakMessage.ToLower().StartsWith("satchel"))
-                    this.SpeakMessage = "satchel of goods";
-                  else if (this.SpeakMessage.ToLower().StartsWith("skylight"))
-                    this.SpeakMessage = "skylight staff";
-                  else if (this.SpeakMessage.ToLower().StartsWith("thunder"))
-                    this.SpeakMessage = "thunderfury";
-                  this.DialogueRespond(new uint?(num5), "Send Parcel " + source2[1] + " " + this.SpeakMessage);
-                  this.PopupClose(new uint?(num5));
-                }
-              }
-              else if (this.SpeakMessage.Equals("/send", StringComparison.CurrentCultureIgnoreCase))
-              {
-                this.DialogueRespond(new uint?(num5), "Send Parcel");
-                this.sendmode = 1;
-              }
-            }
-          }
-          else if (this.SpeakMessage.StartsWith("/rec", StringComparison.CurrentCultureIgnoreCase))
-          {
-            uint num6 = 0;
-            Npc[] source = this.NearbyNpcs(Npc.NpcType.Mundane);
-            if (((IEnumerable<Npc>) source).Count<Npc>() > 0)
-            {
-              Npc[] npcArray = source;
-              for (result1 = 0; result1 < npcArray.Length; ++result1)
-              {
-                Npc npc = npcArray[result1];
-                if (npc != null && npc.IsOnScreen)
-                {
-                  num6 = npc.ID;
-                  break;
-                }
-              }
-            }
-            if (num6 > 0U)
-            {
-              if (this.SpeakMessage.StartsWith("/rec all", StringComparison.CurrentCultureIgnoreCase))
-              {
-                this.hasparcels = true;
-                this.DialogueRespond(new uint?(num6), "Receive Parcel");
-                this.PopupClose(new uint?(num6));
-                Thread.Sleep(1100);
-                if (this.hasparcels)
-                {
-                  do
-                  {
-                    this.DialogueRespond(new uint?(num6), "Receive Parcel");
-                    this.PopupClose(new uint?(num6));
-                    Thread.Sleep(1100);
-                  }
-                  while (this.hasparcels);
-                }
-              }
-              else
-              {
-                this.DialogueRespond(new uint?(num6), "Receive Parcel");
-                this.PopupClose(new uint?(num6));
-              }
-            }
-          }
-          else if (this.SpeakMessage.Equals("/repair"))
-          {
-            uint num7 = 0;
-            Npc[] source = this.NearbyNpcs(Npc.NpcType.Mundane);
-            if (((IEnumerable<Npc>) source).Count<Npc>() > 0)
-            {
-              Npc[] npcArray = source;
-              for (result1 = 0; result1 < npcArray.Length; ++result1)
-              {
-                Npc npc = npcArray[result1];
-                if (npc != null && npc.IsOnScreen)
-                {
-                  num7 = npc.ID;
-                  break;
-                }
-              }
-            }
-            if (num7 > 0U)
-            {
-              this.repairmode = true;
-              this.goldbefore = this.Statistics.Gold;
-              this.DialogueRespond(new uint?(num7), "Fix All");
-            }
-          }
-          else if (this.SpeakMessage.StartsWith("/r", StringComparison.CurrentCultureIgnoreCase))
-            this.SkillSpellCaption("repair all");
-          else if (this.SpeakMessage.StartsWith("/buy ", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.SpeakMessage = this.SpeakMessage.Substring(3);
-            if (this.SpeakMessage.ToLower().StartsWith("hem"))
-              this.BuyItem("hemloch", 30U - this.ItemCount("hemloch"));
-            else if (this.SpeakMessage.ToLower().StartsWith("kom"))
-              this.BuyItem("komadium", 52U - this.ItemCount("komadium"));
-            else
-              this.BuyItem(this.SpeakMessage, 1U);
-          }
-          else if (this.SpeakMessage.StartsWith("/d ", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.SpeakMessage = this.SpeakMessage.Substring(3);
-            if (this.SpeakMessage.ToLower().StartsWith("hem"))
-              this.Deposit("hemloch", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("kom"))
-              this.Deposit("komadium", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("suc"))
-              this.Deposit("succubus's hair", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("gsf"))
-              this.Deposit("golden starfish", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("war"))
-              this.Deposit("warranty bag", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("bog"))
-              this.Deposit("band of gales", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("bos"))
-              this.Deposit("band of storms", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("divinities"))
-              this.Deposit("divinities staff", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("eagles"))
-              this.Deposit("eagles grasp", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("hell"))
-              this.Deposit("hellreavers blade", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("inferno"))
-              this.Deposit("inferno blade", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("satchel"))
-              this.Deposit("satchel of goods", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("skylight"))
-              this.Deposit("skylight staff", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("thunder"))
-              this.Deposit("thunderfury", 1);
-            else
-              this.Deposit(this.SpeakMessage, 1);
-          }
-          else if (this.SpeakMessage.StartsWith("/da ", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.SpeakMessage = this.SpeakMessage.Substring(4);
-            if (this.SpeakMessage.ToLower().StartsWith("hem"))
-              this.SpeakMessage = "hemloch";
-            else if (this.SpeakMessage.ToLower().StartsWith("kom"))
-              this.SpeakMessage = "komadium";
-            else if (this.SpeakMessage.ToLower().StartsWith("suc"))
-              this.SpeakMessage = "succubus's hair";
-            else if (this.SpeakMessage.ToLower().StartsWith("gsf"))
-              this.SpeakMessage = "golden starfish";
-            else if (this.SpeakMessage.ToLower().StartsWith("war"))
-              this.SpeakMessage = "warranty bag";
-            else if (this.SpeakMessage.ToLower().StartsWith("bog"))
-              this.SpeakMessage = "band of gales";
-            else if (this.SpeakMessage.ToLower().StartsWith("bos"))
-              this.SpeakMessage = "band of storms";
-            else if (this.SpeakMessage.ToLower().StartsWith("divinities"))
-              this.SpeakMessage = "divinities staff";
-            else if (this.SpeakMessage.ToLower().StartsWith("eagles"))
-              this.SpeakMessage = "eagles grasp";
-            else if (this.SpeakMessage.ToLower().StartsWith("hell"))
-              this.SpeakMessage = "hellreavers blade";
-            else if (this.SpeakMessage.ToLower().StartsWith("inferno"))
-              this.SpeakMessage = "inferno blade";
-            else if (this.SpeakMessage.ToLower().StartsWith("satchel"))
-              this.SpeakMessage = "satchel of goods";
-            else if (this.SpeakMessage.ToLower().StartsWith("skylight"))
-              this.SpeakMessage = "skylight staff";
-            else if (this.SpeakMessage.ToLower().StartsWith("thunder"))
-              this.SpeakMessage = "thunderfury";
-            if (this.SpeakMessage.ToLower().StartsWith("armor"))
-            {
-              Item[] inventory = this.Inventory;
-              for (result1 = 0; result1 < inventory.Length; ++result1)
-              {
-                Item obj = inventory[result1];
-                if (obj != null && (obj.Name.Contains("Quilas") || obj.Name.Contains("Kano") || obj.Name.Contains("Aiquil") || obj.Name.Contains("Arglon") || obj.Name.Contains("Sinash") || obj.Name.Contains("Soron") || obj.Name.Contains("Talma") || obj.Name.Contains("Tarsil") || obj.Name.Contains("Yaina") || obj.Name.Contains("Lyrical") || obj.Name.Contains("Bell Skirt") || obj.Name.Contains("Fichu") || obj.Name.Contains("Jekin") || obj.Name.Contains("Casin") || obj.Name.Contains("Frayloc") || obj.Name.Contains("Hwarone") || obj.Name.Contains("Yumi Bow") || obj.Name.Contains("Serpant Sphere")))
-                  this.Deposit(obj.Name, 1);
-              }
-            }
-            else if (this.SpeakMessage.ToLower().StartsWith("cea"))
-            {
-              Item[] inventory = this.Inventory;
-              for (result1 = 0; result1 < inventory.Length; ++result1)
-              {
-                Item obj = inventory[result1];
-                if (obj != null && !obj.Name.Contains(" Prayer Necklace") && (obj.Name.StartsWith("Ceannlaidir") || obj.Name.Equals("Cursed Belt") || obj.Name.Equals("Grim Boots") || obj.Name.Equals("Orc Helmet")))
-                  this.Deposit(obj.Name, 1);
-              }
-            }
-            else if (this.SpeakMessage.ToLower().StartsWith("lua"))
-            {
-              Item[] inventory = this.Inventory;
-              for (result1 = 0; result1 < inventory.Length; ++result1)
-              {
-                Item obj = inventory[result1];
-                if (obj != null && !obj.Name.Contains(" Prayer Necklace") && (obj.Name.StartsWith("Luathas") || obj.Name.Equals("Great Emerald Sword") || obj.Name.Equals("Peace Boots")))
-                  this.Deposit(obj.Name, 1);
-              }
-            }
-            else if (this.SpeakMessage.ToLower().StartsWith("gli"))
-            {
-              Item[] inventory = this.Inventory;
-              for (result1 = 0; result1 < inventory.Length; ++result1)
-              {
-                Item obj = inventory[result1];
-                if (obj != null && !obj.Name.Contains(" Prayer Necklace") && (obj.Name.StartsWith("Glioca") || obj.Name.Equals("Hy-brasyl Belt") || obj.Name.Equals("Great Emerald Sword")))
-                  this.Deposit(obj.Name, 1);
-              }
-            }
-            else if (this.SpeakMessage.ToLower().StartsWith("cai"))
-            {
-              Item[] inventory = this.Inventory;
-              for (result1 = 0; result1 < inventory.Length; ++result1)
-              {
-                Item obj = inventory[result1];
-                if (obj != null && !obj.Name.Contains(" Prayer Necklace") && (obj.Name.StartsWith("Cail") || obj.Name.Equals("Hy-brasyl Belt") || obj.Name.Equals("Dwarvish Helmet")))
-                  this.Deposit(obj.Name, 1);
-              }
-            }
-            else if (this.SpeakMessage.ToLower().StartsWith("fio") && !this.SpeakMessage.ToLower().StartsWith("fior"))
-            {
-              Item[] inventory = this.Inventory;
-              for (result1 = 0; result1 < inventory.Length; ++result1)
-              {
-                Item obj = inventory[result1];
-                if (obj != null && !obj.Name.Contains(" Prayer Necklace") && (obj.Name.StartsWith("Fiosachd") || obj.Name.Equals("Cursed Belt") || obj.Name.Equals("Silk Boots")))
-                  this.Deposit(obj.Name, 1);
-              }
-            }
-            else
-              this.Deposit(this.SpeakMessage, (int) this.ItemCount(this.SpeakMessage));
-          }
-          else if (this.SpeakMessage.StartsWith("/w ", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.SpeakMessage = this.SpeakMessage.Substring(3);
-            if (this.SpeakMessage.ToLower().StartsWith("hem"))
-              this.Withdraw("hemloch", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("kom"))
-              this.Withdraw("komadium", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("suc"))
-              this.Withdraw("succubus's hair", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("gsf"))
-              this.Withdraw("golden starfish", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("war"))
-              this.Withdraw("warranty bag", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("bog"))
-              this.Withdraw("band of gales", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("bos"))
-              this.Withdraw("band of storms", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("divinities"))
-              this.Withdraw("divinities staff", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("eagles"))
-              this.Withdraw("eagles grasp", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("hell"))
-              this.Withdraw("hellreavers blade", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("inferno"))
-              this.Withdraw("inferno blade", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("satchel"))
-              this.Withdraw("satchel of goods", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("skylight"))
-              this.Withdraw("skylight staff", 1);
-            else if (this.SpeakMessage.ToLower().StartsWith("thunder"))
-              this.Withdraw("thunderfury", 1);
-            else
-              this.Withdraw(this.SpeakMessage, 1);
-          }
-          else if (this.SpeakMessage.StartsWith("/wa ", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.SpeakMessage = this.SpeakMessage.Substring(4);
-            if (this.SpeakMessage.ToLower().StartsWith("hem"))
-              this.Withdraw("hemloch", 30 - (int) this.ItemCount("hemloch"));
-            else if (this.SpeakMessage.ToLower().StartsWith("kom"))
-              this.Withdraw("komadium", 52 - (int) this.ItemCount("komadium"));
-            else if (this.SpeakMessage.ToLower().StartsWith("suc"))
-              this.Withdraw("succubus's hair", 100);
-            else if (this.SpeakMessage.ToLower().StartsWith("gsf"))
-              this.Withdraw("golden starfish", 30);
-            else if (this.SpeakMessage.ToLower().StartsWith("war"))
-              this.Withdraw("warranty bag", 30);
-            else if (this.SpeakMessage.ToLower().StartsWith("satchel"))
-              this.Withdraw("satchel of goods", 25);
-            else if (this.SpeakMessage.ToLower().Equals("andor ore"))
-              this.Withdraw("andor ore", 25);
-            else if (this.SpeakMessage.ToLower().StartsWith("veltain ore"))
-              this.Withdraw("veltain ore", 100);
-            else if (this.SpeakMessage.ToLower().StartsWith("cea"))
-            {
-              this.Withdraw("ceannlaidir leather gauntlet", 1);
-              this.Withdraw("grim boots", 1);
-              Thread.Sleep(1100);
-              this.Withdraw("ceannlaidir leather gauntlet", 1);
-              this.Withdraw("orc helmet", 1);
-              Thread.Sleep(1100);
-              this.Withdraw("ceannlaidir leather greaves", 1);
-              this.Withdraw("cursed belt", 1);
-              Thread.Sleep(1100);
-              this.Withdraw("ceannlaidir wooden shield", 1);
-              Thread.Sleep(1100);
-              this.Withdraw("ceannlaidir gold earrings", 1);
-            }
-            else if (this.SpeakMessage.ToLower().StartsWith("lua"))
-            {
-              this.Withdraw("luathas leather gauntlet", 1);
-              Thread.Sleep(1100);
-              this.Withdraw("luathas leather gauntlet", 1);
-              Thread.Sleep(1100);
-              this.Withdraw("luathas leather greaves", 1);
-              Thread.Sleep(1100);
-              this.Withdraw("luathas wooden shield", 1);
-              Thread.Sleep(1100);
-              this.Withdraw("luathas coral earrings", 1);
-              this.Withdraw("peace boots", 1);
-              this.Withdraw("great emerald sword", 1);
-            }
-            else if (this.SpeakMessage.ToLower().StartsWith("gli"))
-            {
-              this.Withdraw("glioca leather gauntlet", 1);
-              Thread.Sleep(1100);
-              this.Withdraw("glioca leather gauntlet", 1);
-              Thread.Sleep(1100);
-              this.Withdraw("glioca leather greaves", 1);
-              Thread.Sleep(1100);
-              this.Withdraw("glioca wooden shield", 1);
-              Thread.Sleep(1100);
-              this.Withdraw("glioca coral earrings", 1);
-              this.Withdraw("glioca boots", 1);
-              this.Withdraw("hy-brasyl belt", 1);
-              this.Withdraw("great emerald sword", 1);
-            }
-            else if (this.SpeakMessage.ToLower().StartsWith("cai"))
-            {
-              this.Withdraw("cail leather gauntlet", 1);
-              this.Withdraw("cail leather gauntlet", 1);
-              this.Withdraw("cail leather greaves", 1);
-              this.Withdraw("cail wooden shield", 1);
-              this.Withdraw("cail gold earrings", 1);
-              this.Withdraw("cail boots", 1);
-              this.Withdraw("dwarvish helmet", 1);
-              this.Withdraw("hy-brasyl belt", 1);
-            }
-            else if (this.SpeakMessage.ToLower().StartsWith("fio") && !this.SpeakMessage.ToLower().StartsWith("fior"))
-            {
-              this.Withdraw("fiosachd leather gauntlet", 1);
-              Thread.Sleep(1100);
-              this.Withdraw("fiosachd leather gauntlet", 1);
-              Thread.Sleep(1100);
-              this.Withdraw("fiosachd leather greaves", 1);
-              Thread.Sleep(1100);
-              this.Withdraw("fiosachd wooden shield", 1);
-              Thread.Sleep(1100);
-              this.Withdraw("fiosachd gold earrings", 1);
-              this.Withdraw("silk boots", 1);
-              this.Withdraw("cursed belt", 1);
-            }
-            else
-              this.Withdraw(this.SpeakMessage, 30);
-          }
-          else if (this.SpeakMessage.StartsWith("/c?", StringComparison.CurrentCultureIgnoreCase))
-            this.SkillSpellCaption("How many Coinss have I?");
-          if (this.SpeakMessage.StartsWith("/hide"))
-          {
-            if (this.SpeakMessage.Equals("/hide all"))
-            {
-              foreach (Client client in Server.Clients)
-              {
-                if (client != null && this.LoggedOn && (client.HasSpell("Hide") || client.HasSpell("White Bat Stance")))
-                  client.Tab.selfhide.Checked = !client.Tab.selfhide.Checked;
-              }
-            }
-            else if (this.HasSpell("Hide") || this.HasSpell("White Bat Stance"))
-              this.Tab.selfhide.Checked = !this.Tab.selfhide.Checked;
-          }
-          if (this.SpeakMessage.StartsWith("/g ", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.SpeakMessage = this.SpeakMessage.Remove(0, this.SpeakMessage.IndexOf("/g ") + 3);
-            if (this.SpeakMessage.Equals("alts", StringComparison.CurrentCultureIgnoreCase))
-            {
-              foreach (string key in Server.Alts.Keys)
-              {
-                if (key != null && !key.Equals(this.Name, StringComparison.OrdinalIgnoreCase) && !this.GroupMembers.Contains<string>(key, (IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase))
-                  this.ForceGroup(key, (byte) 2);
-              }
-            }
-            else if (this.SpeakMessage.Equals("friends", StringComparison.CurrentCultureIgnoreCase))
-            {
-              Player[] playerArray = this.AnyPlayer();
-              for (result1 = 0; result1 < playerArray.Length; ++result1)
-              {
-                Player player = playerArray[result1];
-                if (player != null && (int) player.ID != (int) this.PlayerID && player.IsOnScreen && !this.GroupMembers.Contains<string>(player.Name, (IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase) && Server.friendlist != null && Server.friendlist.Contains(player.Name.ToLower()))
-                  this.ForceGroup(player.Name, (byte) 2);
-              }
-            }
-            else if (!this.GroupMembers.Contains<string>(this.SpeakMessage, (IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase))
-              this.ForceGroup(this.SpeakMessage, (byte) 2);
-          }
-          if (this.SpeakMessage.StartsWith("/fg ", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.SpeakMessage = this.SpeakMessage.Remove(0, this.SpeakMessage.IndexOf("/fg ") + 4);
-            if (this.SpeakMessage.Equals("alts", StringComparison.CurrentCultureIgnoreCase))
-            {
-              foreach (string key in Server.Alts.Keys)
-              {
-                if (key != null && !key.Equals(this.Name, StringComparison.OrdinalIgnoreCase) && !this.GroupMembers.Contains<string>(key, (IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase))
-                  this.ForceGroup(key, (byte) 3);
-              }
-            }
-            else if (this.SpeakMessage.Equals("friends", StringComparison.CurrentCultureIgnoreCase))
-            {
-              Player[] playerArray = this.AnyPlayer();
-              for (result1 = 0; result1 < playerArray.Length; ++result1)
-              {
-                Player player = playerArray[result1];
-                if (player != null && (int) player.ID != (int) this.PlayerID && player.IsOnScreen && !this.GroupMembers.Contains<string>(player.Name, (IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase) && Server.friendlist != null && Server.friendlist.Contains(player.Name.ToLower()))
-                  this.ForceGroup(player.Name, (byte) 3);
-              }
-            }
-            else if (!this.GroupMembers.Contains<string>(this.SpeakMessage, (IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase))
-              this.ForceGroup(this.SpeakMessage, (byte) 3);
-          }
-          else if (this.SpeakMessage.Equals("/wd all", StringComparison.CurrentCultureIgnoreCase))
-          {
-            Client[] array = Server.Alts.Values.ToArray<Client>();
-            for (result1 = 0; result1 < array.Length; ++result1)
-            {
-              Client client = array[result1];
-              if (client != null && client.Name != string.Empty && client.MapInfo.Name.StartsWith("Water Dungeon "))
-                client.Speak("Water Spirit, I have done what you have asked of me.", 1);
-            }
-          }
-          else if (this.SpeakMessage.Equals("/wd", StringComparison.CurrentCultureIgnoreCase))
-            this.Speak("Water Spirit, I have done what you have asked of me.", 1);
-          if (this.SpeakMessage.StartsWith("/safe", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (this.safemode)
-            {
-              foreach (Client client in Server.Clients)
-              {
-                if (client != null)
-                {
-                  client.safemode = false;
-                  client.Tab.safemode.Checked = false;
-                  client.EnableSeeInvis();
-                  if (client.Tab.nowalls.Checked)
-                    client.DisableWalls();
-                  client.Refresh();
-                }
-              }
-              User32.Show();
-            }
-            else
-            {
-              foreach (Client client in Server.Clients)
-              {
-                if (client != null)
-                {
-                  client.SendMessage("", (byte) 18);
-                  client.safemode = true;
-                  client.DisableSeeInvis();
-                  client.EnableWalls();
-                  client.Refresh();
-                }
-              }
-              User32.Hide();
-            }
-          }
-          if (this.SpeakMessage.StartsWith("/beg "))
-          {
-            this.SpeakMessage = this.SpeakMessage.Substring(5);
-            if (this.SpeakMessage != string.Empty && this.HasItem(this.SpeakMessage))
-            {
-              Npc npcByName = this.FindNpcByName<Npc>("Beggar");
-              if (npcByName != null && npcByName.IsOnScreen)
-              {
-                this.DialogueRespond(npcByName.ID, (byte) 10, (byte) 155);
-                this.PopupRespond(new uint?(npcByName.ID), (byte) 0, (byte) 0, (byte) 0, (byte) 2);
-                this.PopupRespond(new uint?(npcByName.ID), (byte) 0, (byte) 0, (byte) 0, (byte) 2);
-                this.PopupRespond(new uint?(npcByName.ID), (byte) 0, (byte) 0, (byte) 0, (byte) 2, (byte) 2, this.SpeakMessage);
-                this.PopupRespond(new uint?(npcByName.ID), (byte) 0, (byte) 0, (byte) 0, (byte) 2, (byte) 1, (byte) 1);
-                this.PopupRespond(new uint?(npcByName.ID), (byte) 0, (byte) 0, (byte) 0, (byte) 1);
-              }
-            }
-          }
-          if (this.SpeakMessage.StartsWith("/fiorsrad"))
-            this.buyfiorsrads = true;
-          if (this.SpeakMessage.StartsWith("/readmail"))
-            this.openallmails();
-          if (this.SpeakMessage.StartsWith("/song", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (this.cancast)
-            {
-              string str = string.Empty;
-              Spell[] spellBook = this.SpellBook;
-              for (result1 = 0; result1 < spellBook.Length; ++result1)
-              {
-                Spell spell = spellBook[result1];
-                if (spell != null && spell.Name.Contains(" Prayer"))
-                {
-                  str = spell.Name.Substring(0, spell.Name.IndexOf(' '));
-                  break;
-                }
-              }
-              if (this.HasSpell(str + " Prayer") && !this.MapInfo.Tiles[this.ServerLocation.X, this.ServerLocation.Y].HasPrayerSpell)
-              {
-                this.MacroCast(str + " Prayer", new uint?());
-                Thread.Sleep(1200);
-              }
-              if (this.HasItem(str + " Prayer Necklace") && this.MapInfo.Tiles[this.ServerLocation.X, this.ServerLocation.Y].SafeToDropNecklace)
-              {
-                this.Drop(this.ServerLocation.X, this.ServerLocation.Y, this.ItemSlot(str + " Prayer Necklace"), 1);
-                Thread.Sleep(1200);
-                this.Pickup(this.ServerLocation.X, this.ServerLocation.Y);
-                Thread.Sleep(1200);
-                uint currentnpcpopupId = this.CurrentnpcpopupID;
-                this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 30, (byte) 0, (byte) 92, (byte) 1, (byte) 2, (byte) 4);
-                if (str == "Gramail")
-                {
-                  this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 34, (byte) 0, (byte) 248, (byte) 1, (byte) 2, (byte) 4);
-                  this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 34, (byte) 2, (byte) 109, (byte) 1, (byte) 5, (byte) 4);
-                }
-                else if (str == "Fiosachd")
-                {
-                  this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 35, (byte) 0, (byte) 248, (byte) 1, (byte) 2, (byte) 4);
-                  this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 35, (byte) 2, (byte) 94, (byte) 1, (byte) 7, (byte) 4);
-                }
-                else if (str == "Deoch")
-                {
-                  this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 30, (byte) 0, (byte) 252, (byte) 1, (byte) 2, (byte) 4);
-                  this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 30, (byte) 2, (byte) 78, (byte) 1, (byte) 7, (byte) 4);
-                }
-                else if (str == "Luathas")
-                {
-                  this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 33, (byte) 0, (byte) 248, (byte) 1, (byte) 2, (byte) 4);
-                  this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 33, (byte) 2, (byte) 42, (byte) 1, (byte) 6, (byte) 4);
-                }
-                else if (str == "Sgrios")
-                {
-                  this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 37, (byte) 0, (byte) 248, (byte) 1, (byte) 2, (byte) 4);
-                  this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 37, (byte) 2, (byte) 105, (byte) 1, (byte) 6, (byte) 4);
-                }
-                else if (str == "Glioca")
-                {
-                  this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 31, (byte) 0, (byte) 248, (byte) 1, (byte) 2, (byte) 4);
-                  this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 31, (byte) 2, (byte) 80, (byte) 1, (byte) 8, (byte) 4);
-                }
-                else if (str == "Cail")
-                {
-                  this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 32, (byte) 0, (byte) 248, (byte) 1, (byte) 2, (byte) 4);
-                  this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 32, (byte) 2, (byte) 45, (byte) 1, (byte) 6, (byte) 4);
-                }
-                else if (str == "Ceannlaidir")
-                {
-                  this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 36, (byte) 0, (byte) 248, (byte) 1, (byte) 2, (byte) 4);
-                  this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 36, (byte) 1, (byte) 248, (byte) 1, (byte) 6, (byte) 4);
-                }
-              }
-            }
-          }
-          else if (this.SpeakMessage.StartsWith("/fiobean", StringComparison.CurrentCultureIgnoreCase) || this.SpeakMessage.StartsWith("/fio bean", StringComparison.CurrentCultureIgnoreCase) || this.SpeakMessage.StartsWith("/diabean", StringComparison.CurrentCultureIgnoreCase) || this.SpeakMessage.StartsWith("/dia bean", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (this.cancast && this.HasItem("Fiosachd Prayer Necklace") && this.HasSpell("Fiosachd Prayer"))
-            {
-              this.MacroCast("Fiosachd Prayer", new uint?());
-              Thread.Sleep(1100);
-              this.Drop(this.ServerLocation.X, this.ServerLocation.Y, this.ItemSlot("Fiosachd Prayer Necklace"), 1);
-              Thread.Sleep(500);
-              this.Pickup(this.ServerLocation.X, this.ServerLocation.Y);
-              Thread.Sleep(500);
-              uint currentnpcpopupId = this.CurrentnpcpopupID;
-              this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 35, (byte) 0, (byte) 92, (byte) 1, (byte) 2, (byte) 4);
-              this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 35, (byte) 0, (byte) 248, (byte) 1, (byte) 2, (byte) 4);
-              this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 35, (byte) 2, (byte) 94, (byte) 1, (byte) 3, (byte) 4);
-            }
-          }
-          else if (this.SpeakMessage.StartsWith("/fiohide", StringComparison.CurrentCultureIgnoreCase) || this.SpeakMessage.StartsWith("/fio hide", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (this.cancast && this.HasItem("Fiosachd Prayer Necklace") && this.HasSpell("Fiosachd Prayer"))
-            {
-              this.MacroCast("Fiosachd Prayer", new uint?());
-              Thread.Sleep(1100);
-              this.Drop(this.ServerLocation.X, this.ServerLocation.Y, this.ItemSlot("Fiosachd Prayer Necklace"), 1);
-              Thread.Sleep(500);
-              this.Pickup(this.ServerLocation.X, this.ServerLocation.Y);
-              Thread.Sleep(500);
-              uint currentnpcpopupId = this.CurrentnpcpopupID;
-              this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 35, (byte) 0, (byte) 92, (byte) 1, (byte) 2, (byte) 4);
-              this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 35, (byte) 0, (byte) 248, (byte) 1, (byte) 2, (byte) 4);
-              this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 35, (byte) 2, (byte) 94, (byte) 1, (byte) 2, (byte) 4);
-            }
-          }
-          else if (this.SpeakMessage.StartsWith("/ref", StringComparison.CurrentCultureIgnoreCase))
-          {
-            if (this.cancast && this.HasItem("Gramail Prayer Necklace") && this.HasSpell("Gramail Prayer"))
-            {
-              this.MacroCast("Gramail Prayer", new uint?());
-              Thread.Sleep(1100);
-              this.Drop(this.ServerLocation.X, this.ServerLocation.Y, this.ItemSlot("Gramail Prayer Necklace"), 1);
-              Thread.Sleep(500);
-              this.Pickup(this.ServerLocation.X, this.ServerLocation.Y);
-              Thread.Sleep(500);
-              uint currentnpcpopupId = this.CurrentnpcpopupID;
-              this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 34, (byte) 0, (byte) 92, (byte) 1, (byte) 2, (byte) 4);
-              this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 34, (byte) 0, (byte) 248, (byte) 1, (byte) 2, (byte) 4);
-              this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 34, (byte) 2, (byte) 109, (byte) 1, (byte) 2, (byte) 4);
-            }
-          }
-          else if (this.SpeakMessage.StartsWith("/ao", StringComparison.CurrentCultureIgnoreCase) && this.cancast && this.HasItem("Gramail Prayer Necklace") && this.HasSpell("Gramail Prayer"))
-          {
-            this.MacroCast("Gramail Prayer", new uint?());
-            Thread.Sleep(1100);
-            this.Drop(this.ServerLocation.X, this.ServerLocation.Y, this.ItemSlot("Gramail Prayer Necklace"), 1);
-            Thread.Sleep(500);
-            this.Pickup(this.ServerLocation.X, this.ServerLocation.Y);
-            Thread.Sleep(500);
-            uint currentnpcpopupId = this.CurrentnpcpopupID;
-            this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 34, (byte) 0, (byte) 92, (byte) 1, (byte) 2, (byte) 4);
-            this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 34, (byte) 0, (byte) 248, (byte) 1, (byte) 2, (byte) 4);
-            this.PopupRespond(new uint?(currentnpcpopupId), (byte) 2, (byte) 34, (byte) 2, (byte) 109, (byte) 1, (byte) 1, (byte) 4);
-          }
-          if (this.SpeakMessage.StartsWith("/banklist", StringComparison.CurrentCultureIgnoreCase) && this.MapInfo.Name.Contains("Storage"))
-          {
-            Npc[] source = this.NearbyNpcs(Npc.NpcType.Mundane);
-            if (((IEnumerable<Npc>) source).Count<Npc>() > 0)
-            {
-              this.banklist = true;
-              this.DialogueRespond(new uint?(source[0].ID), "Withdraw");
-            }
-          }
-          if (this.SpeakMessage.StartsWith("/quest", StringComparison.CurrentCultureIgnoreCase))
-            this.LoadRepeatQuests();
-          if (this.SpeakMessage.StartsWith("/boss", StringComparison.CurrentCultureIgnoreCase))
-            this.LoadBossLog();
-          if (this.SpeakMessage.StartsWith("/higgle", StringComparison.CurrentCultureIgnoreCase) && this.MapInfo.Name.Contains("Storage"))
-          {
-            this.SendMessage("Pause program to stop this task.");
-            this.Tab.btnPlay.Enabled = false;
-            this.Tab.btnStop.Enabled = true;
-            this.pause = false;
-            int num8 = 0;
-            while (!this.outoflabor)
-            {
-              if (!this.HasItem("Wine") || this.ItemAmount("Wine") < 15U)
-              {
-                Npc[] npcArray = this.NearbyNpcs(Npc.NpcType.Mundane);
-                for (result1 = 0; result1 < npcArray.Length; ++result1)
-                {
-                  Npc npc = npcArray[result1];
-                  if (npc != null)
-                  {
-                    this.DialogueRespond(new uint?(npc.ID), "Higgle");
-                    this.PopupRespond(new uint?(npc.ID), (byte) 1, (byte) 125, (byte) 0, (byte) 19, (byte) 1, (byte) 2);
-                    this.PopupRespond(new uint?(npc.ID), (byte) 1, (byte) 125, (byte) 0, (byte) 26, (byte) 1, (byte) 2);
-                    this.PopupRespond(new uint?(npc.ID), (byte) 1, (byte) 125, (byte) 0, (byte) 45, (byte) 1, (byte) 2);
-                    this.PopupRespond(new uint?(npc.ID), (byte) 1, (byte) 125, (byte) 0, (byte) 102, (byte) 1, (byte) 4);
-                    Thread.Sleep(1000);
-                    break;
-                  }
-                }
-              }
-              else if (this.ItemAmount("Wine") == 15U)
-              {
-                this.DropItems("Wine");
-                num1 = num8++;
-                Thread.Sleep(1000);
-              }
-              Thread.Sleep(200);
-              if (num8 >= 12)
-              {
-                this.SendMessage("done higgling 180 wine");
-                goto label_1995;
-              }
-              else if (this.pause)
-                goto label_1995;
-            }
-            this.SendMessage("Out of labor.");
-            this.Tab.btnPlay.Enabled = true;
-            this.Tab.btnStop.Enabled = false;
-            this.pause = true;
-          }
-label_1995:
-          if (this.SpeakMessage.StartsWith("/labor ", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.SpeakMessage = this.SpeakMessage.Substring(7);
-            if (this.SpeakMessage != string.Empty)
-            {
-              this.Tab.laborname.Text = this.SpeakMessage;
-              this.Tab.laborbutton.Text = "Stop";
-              this.Tab.autowalker_locales.Text = "Nearest Bank";
-              this.Tab.walksettings.Value = 250M;
-              this.Tab.autowalker_button.Text = "Stop";
-              this.autowalkon = true;
-              this.Tab.btnPlay.Enabled = false;
-              this.Tab.btnStop.Enabled = true;
-              this.pause = false;
-            }
-          }
-          if (this.SpeakMessage.Equals("/n", StringComparison.CurrentCultureIgnoreCase))
-            this.Tab.nowalls.Checked = !this.Tab.nowalls.Checked;
-          else if (this.SpeakMessage.Equals("/b", StringComparison.CurrentCultureIgnoreCase))
-            this.Tab.disableallbody.Checked = !this.Tab.disableallbody.Checked;
-          else if (this.SpeakMessage.Equals("/t", StringComparison.CurrentCultureIgnoreCase))
-          {
-            this.Tab.monitords.Checked = !this.Tab.monitords.Checked;
-            this.Tab.monitorcurses.Checked = !this.Tab.monitorcurses.Checked;
-            this.Tab.monitordion.Checked = !this.Tab.monitordion.Checked;
-          }
-          else if (this.SpeakMessage.StartsWith("/icon", StringComparison.CurrentCultureIgnoreCase))
-          {
-            foreach (ushort num9 in this.SpellBar)
-              this.SendMessage(num9.ToString());
-          }
-          else if (this.SpeakMessage.StartsWith("/map", StringComparison.CurrentCultureIgnoreCase))
-          {
-            string[] strArray = new string[7];
-            strArray[0] = this.MapInfo.Name;
-            strArray[1] = " - ";
-            int number = this.MapInfo.Number;
-            strArray[2] = number.ToString();
-            strArray[3] = ", XY: ";
-            int width = this.MapInfo.Width;
-            strArray[4] = width.ToString();
-            strArray[5] = ",";
-            int height = this.MapInfo.Height;
-            strArray[6] = height.ToString();
-            this.SendMessage(string.Concat(strArray), "pink");
-          }
-          else if (this.SpeakMessage.StartsWith("/item", StringComparison.CurrentCultureIgnoreCase))
-          {
-            string[] strArray = new string[5]
-            {
-              this.Inventory[0].Name,
-              ", Img#: ",
-              null,
-              null,
-              null
-            };
-            int num10 = (int) this.Inventory[0].Icon - 32768;
-            strArray[2] = num10.ToString();
-            strArray[3] = ", Pal#:";
-            strArray[4] = this.Inventory[0].IconPal.ToString();
-            this.SendMessage(string.Concat(strArray));
-          }
           if (this.SpeakMessage.StartsWith("/count", StringComparison.CurrentCultureIgnoreCase))
           {
+            commandExecuted = true;
             if (this.SpeakMessage.StartsWith("/count+", StringComparison.CurrentCultureIgnoreCase))
             {
               foreach (string groupMember in this.GroupMembers)
@@ -2735,7 +873,10 @@ label_1995:
             }
           }
           if (this.SpeakMessage.StartsWith("/arm"))
+          {
             this.SendMessage(this.ClientArms.ToString());
+            commandExecuted = true;
+          }
           if (this.SpeakMessage.StartsWith("/legend"))
           {
             StreamWriter streamWriter = new StreamWriter("C:\\Users\\Russ\\Desktop\\" + this.Name + "marks.txt", true);
@@ -2745,6 +886,7 @@ label_1995:
                 streamWriter.WriteLine(legendMark.Key + " _ " + legendMark.Value);
             }
             streamWriter.Close();
+            commandExecuted = true;
           }
           if (this.SpeakMessage.StartsWith("/test"))
           {
@@ -2755,6 +897,7 @@ label_1995:
                 streamWriter.WriteLine(legendMark.Key + " _ " + legendMark.Value);
             }
             streamWriter.Close();
+            commandExecuted = true;
           }
           if (this.SpeakMessage.StartsWith("/balls"))
           {
@@ -2768,22 +911,23 @@ label_1995:
               this.SendMessage("Stopped buying potions.");
               this.buyballpots = false;
             }
+            commandExecuted = true;
           }
+
           this.SpeakMessage = string.Empty;
+          if (!commandExecuted)
+          {
+            SendMessage($"Command not implemented: {SpeakMessage}", "pink");
+          }
         }
+
         Thread.Sleep(200);
       }
-      this.SendMessage("The follow distance you input was invalid.", "pink");
-      this.SpeakMessage = string.Empty;
-      return;
-label_2062:
-      this.SendMessage("The follow distance you input was invalid.", "pink");
-      this.SpeakMessage = string.Empty;
     }
 
     public void MySpeakMessageFunc()
     {
-      if (!(this.MySpeakMessage != string.Empty))
+      if (this.MySpeakMessage == string.Empty)
         return;
       string empty = string.Empty;
       if (this.MySpeakMessage.StartsWith("/drop ", StringComparison.CurrentCultureIgnoreCase))
@@ -2794,8 +938,6 @@ label_2062:
           if (name != string.Empty)
             this.DropItems(name);
         }
-        else if (this.MySpeakMessage.Substring(6) != string.Empty)
-          ;
       }
       else if (this.MySpeakMessage.StartsWith("/r", StringComparison.CurrentCultureIgnoreCase))
         this.SkillSpellCaption("repair all");
@@ -3284,7 +1426,7 @@ label_2062:
       }
     }
 
-    private void Quests()
+    private void Questing()
     {
       while (true)
       {
@@ -4683,6 +2825,11 @@ label_2062:
               this.PopupNext(new uint?(this.CurrentnpcpopupID), (byte) 2);
               this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 0, (byte) 0, (byte) 0, (byte) 2, (byte) 2, this.Tab.openveltchestgold.Text, (byte) 2);
             }
+            if (!this.pause && this.Currentnpcname.StartsWith("LA Raffle") && this.Currentnpctext.StartsWith("This LA Raffle is good for one try in obtaining the Lumen Amulet"))
+            {
+              this.PopupNext(new uint?(this.CurrentnpcpopupID), (byte)2);
+            }
+
             if (this.Currentnpctext.StartsWith("You are about to enter a hostile area."))
               this.PopupRespond(new uint?(this.CurrentnpcpopupID), (byte) 0, (byte) 0, (byte) 0, (byte) 2, (byte) 1, (byte) 1, (byte) 4);
             if (this.Currentnpctext.StartsWith("You fall into a deep sleep"))
@@ -13204,10 +11351,14 @@ label_498:
                           this.UseItem(this.BestWeapon());
                           this.EquipWeaponDelay = DateTime.UtcNow;
                         }
-                        if (this.Tab.openveltchest.Checked && this.HasItem("Treasure Chest") && (this.openveltchestdelay == DateTime.MinValue || DateTime.UtcNow.Subtract(this.openveltchestdelay).TotalMilliseconds > 3000.0) && !this.ItemStackFull(1476, 20U) && !this.InventoryIsFull() && ((IEnumerable<Npc>) this.NearbyNormalMonsters()).Count<Npc>() == 0)
+                        if (this.Tab.openveltchest.Checked && this.HasItem("Treasure Chest") && (this.openveltchestdelay == DateTime.MinValue || DateTime.UtcNow.Subtract(this.openveltchestdelay).TotalMilliseconds > 3000.0) && !this.ItemStackFull(1476, 20U) && !this.InventoryIsFull() && ((IEnumerable<Npc>)this.NearbyNormalMonsters()).Count<Npc>() == 0)
                         {
                           this.UseItem("Treasure Chest");
                           this.openveltchestdelay = DateTime.UtcNow;
+                        }
+                        if (this.Tab.openLARaffle.Checked && this.HasItem("LA Raffle") && !this.InventoryIsFull() && ((IEnumerable<Npc>)this.NearbyNormalMonsters()).Count<Npc>() == 0)
+                        {
+                          this.UseItem("LA Raffle");
                         }
                         this.stopwalk = false;
                       }
@@ -19848,6 +17999,112 @@ label_860:
     {
     }
 
+    /// <summary>
+    /// Loads the list of map IDs where spell usage is restricted.
+    /// </summary>
+    /// <remarks>The restricted areas are read from the 'restrictedareas.xml' file located in the
+    /// settings directory.</remarks>
+    /// <returns>A list of integers representing the map IDs where spells are not permitted. The list will be empty if no
+    /// restricted areas are defined.</returns>
+    public List<int> LoadRestrictedSpellAreas()
+    {
+      string filePath = Program.StartupPath + "\\Settings\\restrictedareas.xml";
+      List<int> noSpellMapIds = new List<int>();
+
+      try
+      {
+        var document = XDocument.Load(filePath);
+
+        noSpellMapIds = document
+            .Root                                // <RestrictedAreas>
+            .Element("NoSpells")                 // <NoSpells>
+            .Elements("MapID")                   // <MapID>
+            .Select(e => int.Parse(e.Value))
+            .ToList();
+
+      }
+      catch (FileNotFoundException)
+      {
+        MessageBox.Show("restrictedareas.xml not found, creating empty file.", "Warning", MessageBoxButtons.OK);
+        var document = new XDocument(
+            new XDeclaration("1.0", "utf-8", null),
+            new XElement("RestrictedAreas",
+              new XElement("NoSpells",
+                  new XComment("Add MapID elements here, e.g. <MapID>101</MapID>")
+              ),
+              new XElement("NoSkill",
+                  new XComment("Add MapID elements here")
+              ))
+        );
+        document.Save(filePath);
+      }
+      catch (XmlException ex)
+      {
+        MessageBox.Show("Invalid XML format in restrictedareas.xml: " + ex.Message, "Error", MessageBoxButtons.OK);
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show("An unexpected error occurd reading restrictedareas.xml" + ex.Message, "Error", MessageBoxButtons.OK);
+
+      }
+
+
+      return noSpellMapIds;
+    }
+
+    /// <summary>
+    /// Loads the list of map IDs where skill usage is restricted.
+    /// </summary>
+    /// <remarks>The restricted areas are read from the 'restrictedareas.xml' file located in the
+    /// settings directory.</remarks>
+    /// <returns>A list of integers representing the map IDs where skills are not permitted. The list will be empty if no
+    /// restricted areas are defined.</returns>
+    public List<int> LoadRestrictedSkillAreas()
+    {
+      string filePath = Program.StartupPath + "\\Settings\\restrictedareas.xml";
+      List<int> noSkillMapIds = new List<int>();
+
+      try
+      {
+        var document = XDocument.Load(filePath);
+
+        noSkillMapIds = document
+            .Root                                // <RestrictedAreas>
+            .Element("NoSkills")                 // <NoSkills>
+            .Elements("MapID")                   // <MapID>
+            .Select(e => int.Parse(e.Value))
+            .ToList();
+      }
+      catch (FileNotFoundException)
+      {
+        MessageBox.Show("restrictedareas.xml not found, creating empty file.", "Warning", MessageBoxButtons.OK);
+        var document = new XDocument(
+            new XDeclaration("1.0", "utf-8", null),
+            new XElement("RestrictedAreas",
+              new XElement("NoSpells",
+                  new XComment("Add MapID elements here, e.g. <MapID>101</MapID>")
+              ),
+              new XElement("NoSkill",
+                  new XComment("Add MapID elements here")
+              ))
+        );
+        document.Save(filePath);
+      }
+      catch (XmlException ex)
+      {
+        MessageBox.Show("Invalid XML format in restrictedareas.xml: " + ex.Message, "Error", MessageBoxButtons.OK);
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show("An unexpected error occurd reading restrictedareas.xml" + ex.Message, "Error", MessageBoxButtons.OK);
+
+      }
+
+
+      return noSkillMapIds;
+    }
+
+
     public void LoadFakeNpcs()
     {
     }
@@ -23586,7 +21843,30 @@ label_860:
       int num2 = num % 3;
       string text = "I will deposit " + name;
       string empty = string.Empty;
-      if (name.Length <= 17 && !name.Contains(" fragment") && !name.StartsWith("uncut ") && !name.StartsWith("flawed ") && !name.StartsWith("finished ") && !name.StartsWith("cail ") && !name.StartsWith("luathas ") && !name.StartsWith("glioca ") && !name.StartsWith("fiosachd ") && !name.StartsWith("ceannlaidir ") && !name.StartsWith("sgrios ") && !name.StartsWith("gramail ") && !name.StartsWith("deoch ") && !name.StartsWith("magic ") && !name.StartsWith("might ") && !name.StartsWith("blessed ") && !name.StartsWith("abundance ") && !name.StartsWith("fire ") && !name.StartsWith("sea ") && !name.StartsWith("earth ") && !name.StartsWith("wind ") && !name.StartsWith("good ") && !name.StartsWith("fine ") && !name.StartsWith("grand ") && !name.StartsWith("great "))
+      if (name.Length <= 17 && !name.Contains(" fragment") 
+                            && !name.StartsWith("uncut ") 
+                            && !name.StartsWith("flawed ") 
+                            && !name.StartsWith("finished ") 
+                            && !name.StartsWith("cail ") 
+                            && !name.StartsWith("luathas ") 
+                            && !name.StartsWith("glioca ") 
+                            && !name.StartsWith("fiosachd ") 
+                            && !name.StartsWith("ceannlaidir ") 
+                            && !name.StartsWith("sgrios ")
+                            && !name.StartsWith("gramail ") 
+                            && !name.StartsWith("deoch ") 
+                            && !name.StartsWith("magic ") 
+                            && !name.StartsWith("might ") 
+                            && !name.StartsWith("blessed ") 
+                            && !name.StartsWith("abundance ") 
+                            && !name.StartsWith("fire ") 
+                            && !name.StartsWith("sea ") 
+                            && !name.StartsWith("earth ") 
+                            && !name.StartsWith("wind ") 
+                            && !name.StartsWith("good ") 
+                            && !name.StartsWith("fine ") 
+                            && !name.StartsWith("grand ") 
+                            && !name.StartsWith("great "))
       {
         for (int index = 0; index < num; ++index)
           this.SkillSpellCaption(text);
@@ -28283,20 +26563,19 @@ label_31:
     public Npc[] NearbyNpcs(Npc.NpcType npcType)
     {
       List<Npc> npcList = new List<Npc>();
-      try
+      lock (this.Characters)
       {
-        lock (this.Characters)
+        foreach (Character character in new Dictionary<uint, Character>(Characters).Values)
         {
-          foreach (Character character in new Dictionary<uint, Character>((IDictionary<uint, Character>) this.Characters).Values)
-          {
-            if (character != null && Server.StaticCharacters.ContainsKey(character.ID) && character.IsOnScreen && character is Npc && this.ServerLocation.DistanceFrom(character.Location) <= 12 && (character as Npc).Type == npcType)
-              npcList.Add((Npc) character);
-          }
+          if (character != null && Server.StaticCharacters.ContainsKey(character.ID) 
+                                && character.IsOnScreen 
+                                && character is Npc 
+                                && this.ServerLocation.DistanceFrom(character.Location) <= 12 
+                                && (character as Npc).Type == npcType)
+            npcList.Add((Npc) character);
         }
       }
-      catch
-      {
-      }
+
       return npcList.ToArray();
     }
 

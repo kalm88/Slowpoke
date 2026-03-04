@@ -21,6 +21,7 @@ using System.Timers;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace Flintstones
 {
@@ -74,9 +75,9 @@ namespace Flintstones
 
     public static Dictionary<string, ItemXML> ItemDatabase { get; set; }
 
-    public static Dictionary<string, Flintstones.TimedEvent> TimedEvent { get; set; }
+    public static Dictionary<string, TimedEvent> TimedEvent { get; set; }
 
-    public static Dictionary<string, Flintstones.Relog> Relog { get; set; }
+    public static Dictionary<string, Relog> Relog { get; set; }
 
     public static Dictionary<string, Client> Alts { get; set; }
 
@@ -116,12 +117,10 @@ namespace Flintstones
       this.Listener.Start(10);
       Server.Clients = new List<Client>();
       Server.gamemaps = new Dictionary<int, RootObject>();
-      this.Loadgamemaps();
       WalkLocations = LoadWalkLocations();
       Server.gamenpcs = new Dictionary<string, RootNpc>();
-      this.Loadgamenpcs();
-      Server.ParcelList = new Dictionary<string, Parcel>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
-      Server.ChestDatabase = new Dictionary<string, ChestItemXML>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
+      Server.ParcelList = new Dictionary<string, Parcel>(StringComparer.CurrentCultureIgnoreCase);
+      Server.ChestDatabase = new Dictionary<string, ChestItemXML>(StringComparer.CurrentCultureIgnoreCase);
       Server.ChestDatabase.Add("Arcella's Gift1", new ChestItemXML("Arcella's Gift1", 0U));
       Server.ChestDatabase.Add("Water Dungeon Chest", new ChestItemXML("Water Dungeon Chest", 0U));
       Server.ChestDatabase.Add("Water Dungeon Chest Gold", new ChestItemXML("Water Dungeon Chest Gold", 0U));
@@ -133,8 +132,8 @@ namespace Flintstones
       Server.ChestDatabase.Add("Big Canal Bag", new ChestItemXML("Big Canal Bag", 0U));
       Server.ChestDatabase.Add("Heavy Canal Bag", new ChestItemXML("Heavy Canal Bag", 0U));
       this.PopulateChestDatabase();
-      Server.ItemMapDatabase = new Dictionary<string, ItemMapXML>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
-      Server.ItemDatabase = new Dictionary<string, ItemXML>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
+      Server.ItemMapDatabase = new Dictionary<string, ItemMapXML>(StringComparer.CurrentCultureIgnoreCase);
+      Server.ItemDatabase = new Dictionary<string, ItemXML>(StringComparer.CurrentCultureIgnoreCase);
       this.PopulateItemDatabase();
       Server.BetonyNodes = new Dictionary<string, HerbNode>();
       Server.PersonacaNodes = new Dictionary<string, HerbNode>();
@@ -142,378 +141,18 @@ namespace Flintstones
       Server.HerbNodes = new Dictionary<string, HerbNode>();
       this.PopulateNodes();
       Server.AscendLog = new List<AscendData>();
-      Server.SkullList = new Dictionary<string, SkullData>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
-      Server.TimedEvent = new Dictionary<string, Flintstones.TimedEvent>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
-      Server.Relog = new Dictionary<string, Flintstones.Relog>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
-      Server.Alts = new Dictionary<string, Client>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
-      Server.Stuff = new Dictionary<string, string>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
-      Server.DAServer = new Dictionary<string, int>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
-      Server.DARegged = new Dictionary<string, bool>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
-      Server.ItemList = new Dictionary<string, ItemData>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
-      Server.ItemList.Add("purple potion", new ItemData("purple potion", 30));
-      Server.ItemList.Add("fior athar", new ItemData("fior athar", 100));
-      Server.ItemList.Add("fior sal", new ItemData("fior sal", 100));
-      Server.ItemList.Add("fior srad", new ItemData("fior srad", 100));
-      Server.ItemList.Add("fior creag", new ItemData("fior creag", 100));
-      Server.ItemList.Add("borim", new ItemData("borim", 100));
-      Server.ItemList.Add("pantica", new ItemData("pantica", 100));
-      Server.ItemList.Add("tentacle", new ItemData("tentacle", 30));
-      Server.ItemList.Add("red tentacle", new ItemData("red tentacle", 30));
-      Server.ItemList.Add("rambutan", new ItemData("rambutan", 30));
-      Server.ItemList.Add("papaya", new ItemData("papaya", 30));
-      Server.ItemList.Add("tangerines", new ItemData("tangerines", 30));
-      Server.ItemList.Add("green grapes", new ItemData("green grapes", 30));
-      Server.ItemList.Add("komadium", new ItemData("komadium", 52));
-      Server.ItemList.Add("beothaich deum", new ItemData("beothaich deum", 25));
-      Server.ItemList.Add("personaca deum", new ItemData("personaca deum", 25));
-      Server.ItemList.Add("betony deum", new ItemData("betony deum", 25));
-      Server.ItemList.Add("hydele deum", new ItemData("hydele deum", 25));
-      Server.ItemList.Add("brown potion", new ItemData("brown potion", 25));
-      Server.ItemList.Add("hemloch", new ItemData("hemloch", 30));
-      Server.ItemList.Add("hemloch deum", new ItemData("hemloch deum", 25));
-      Server.ItemList.Add("satchel of hemloch", new ItemData("satchel of hemloch", 150));
-      Server.ItemList.Add("red spore", new ItemData("red spore", 50));
-      Server.ItemList.Add("grey spore", new ItemData("grey spore", 50));
-      Server.ItemList.Add("blue frog meat", new ItemData("blue frog meat", 50));
-      Server.ItemList.Add("red frog meat", new ItemData("red frog meat", 50));
-      Server.ItemList.Add("grey frog meat", new ItemData("grey frog meat", 50));
-      Server.ItemList.Add("ginseng", new ItemData("ginseng", 5));
-      Server.ItemList.Add("gold mushroom", new ItemData("gold mushroom", 5));
-      Server.ItemList.Add("aqua stone", new ItemData("aqua stone", 200));
-      Server.ItemList.Add("wind stone", new ItemData("wind stone", 200));
-      Server.ItemList.Add("green tonic", new ItemData("green tonic", 100));
-      Server.ItemList.Add("green hitonic", new ItemData("green hitonic", 100));
-      Server.ItemList.Add("green extonic", new ItemData("green extonic", 100));
-      Server.ItemList.Add("red tonic", new ItemData("red tonic", 100));
-      Server.ItemList.Add("red hitonic", new ItemData("red hitonic", 100));
-      Server.ItemList.Add("red extonic", new ItemData("red extonic", 100));
-      Server.ItemList.Add("blue tonic", new ItemData("blue tonic", 100));
-      Server.ItemList.Add("blue hitonic", new ItemData("blue hitonic", 100));
-      Server.ItemList.Add("blue extonic", new ItemData("blue extonic", 100));
-      Server.ItemList.Add("scrap of clothing", new ItemData("scrap of clothing", 50));
-      Server.ItemList.Add("fire arrow", new ItemData("fire arrow", 200));
-      Server.ItemList.Add("veltain ore", new ItemData("veltain ore", 100));
-      Server.ItemList.Add("empty ice bottle", new ItemData("empty ice bottle", 100));
-      Server.ItemList.Add("ice bottle", new ItemData("ice bottle", 100));
-      Server.ItemList.Add("assassin wolf locks", new ItemData("assassin wolf locks", 100));
-      Server.ItemList.Add("crystal bar", new ItemData("crystal bar", 50));
-      Server.ItemList.Add("crystal orb", new ItemData("crystal orb", 100));
-      Server.ItemList.Add("dendron flower", new ItemData("dendron flower", 100));
-      Server.ItemList.Add("yowien fish", new ItemData("yowien fish", 30));
-      Server.ItemList.Add("stunned fire worm", new ItemData("stunned fire worm", 100));
-      Server.ItemList.Add("yowien blue vine", new ItemData("yowien blue vine", 1000));
-      Server.ItemList.Add("yowien yellow vine", new ItemData("yowien yellow vine", 1000));
-      Server.ItemList.Add("wind baem missives", new ItemData("wind baem missives", 75));
-      Server.ItemList.Add("silver baem egg", new ItemData("silver baem egg", 75));
-      Server.ItemList.Add("succubus's hair", new ItemData("succubus's hair", 100));
-      Server.ItemList.Add("bat's wing", new ItemData("bat's wing", 15));
-      Server.ItemList.Add("great bat's wing", new ItemData("great bat's wing", 15));
-      Server.ItemList.Add("white bat's wing", new ItemData("white bat's wing", 15));
-      Server.ItemList.Add("bee's sting", new ItemData("bee's sting", 15));
-      Server.ItemList.Add("black cat's tail", new ItemData("black cat's tail", 15));
-      Server.ItemList.Add("blue powder", new ItemData("blue powder", 15));
-      Server.ItemList.Add("centipede's gland", new ItemData("centipede's gland", 15));
-      Server.ItemList.Add("fiend pupa's skull", new ItemData("fiend pupa's skull", 15));
-      Server.ItemList.Add("gargoyle's skull", new ItemData("gargoyle's skull", 15));
-      Server.ItemList.Add("gargoyle fiend's skull", new ItemData("gargoyle fiend's skull", 15));
-      Server.ItemList.Add("ghast's skull", new ItemData("ghast's skull", 15));
-      Server.ItemList.Add("goblin's skull", new ItemData("goblin's skull", 15));
-      Server.ItemList.Add("kobold's skull", new ItemData("kobold's skull", 15));
-      Server.ItemList.Add("raw wax", new ItemData("raw wax", 15));
-      Server.ItemList.Add("royal wax", new ItemData("royal wax", 15));
-      Server.ItemList.Add("spider's eye", new ItemData("spider's eye", 15));
-      Server.ItemList.Add("spider's silk", new ItemData("spider's silk", 15));
-      Server.ItemList.Add("viper's gland", new ItemData("viper's gland", 15));
-      Server.ItemList.Add("wolf's fur", new ItemData("wolf's fur", 15));
-      Server.ItemList.Add("wolf's lock", new ItemData("wolf's lock", 15));
-      Server.ItemList.Add("wolf's skin", new ItemData("wolf's skin", 15));
-      Server.ItemList.Add("wolf's teeth", new ItemData("wolf's teeth", 15));
-      Server.ItemList.Add("abel song", new ItemData("abel song", 30));
-      Server.ItemList.Add("piet song", new ItemData("piet song", 30));
-      Server.ItemList.Add("loures song", new ItemData("loures song", 30));
-      Server.ItemList.Add("mileth song", new ItemData("mileth song", 30));
-      Server.ItemList.Add("rucesion song", new ItemData("rucesion song", 30));
-      Server.ItemList.Add("suomi song", new ItemData("suomi song", 30));
-      Server.ItemList.Add("undine song", new ItemData("undine song", 30));
-      Server.SpellList = new Dictionary<string, SpellData>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
-      Server.SpellList.Add("Leafhopper Chirp", new SpellData("Leafhopper Chirp", 50, 0));
-      Server.SpellList.Add("dachaidh", new SpellData("dachaidh", 50, 2));
-      Server.SpellList.Add("mor dion comlha", new SpellData("mor dion comlha", 300, 4));
-      Server.SpellList.Add("mor dion", new SpellData("mor dion", 1000, 2));
-      Server.SpellList.Add("Stone Skin", new SpellData("Stone Skin", 1200, 0));
-      Server.SpellList.Add("deireas faileas", new SpellData("deireas faileas", 980, 3));
-      Server.SpellList.Add("mor deo searg gar", new SpellData("mor deo searg gar", 12000, 2));
-      Server.SpellList.Add("deo searg gar", new SpellData("deo searg gar", 8000, 2));
-      Server.SpellList.Add("ard deo searg", new SpellData("ard deo searg", 3500, 2));
-      Server.SpellList.Add("deo searg", new SpellData("deo searg", 1900, 2));
-      Server.SpellList.Add("deo saighead", new SpellData("deo saighead", 320, 2));
-      Server.SpellList.Add("deo lamh", new SpellData("deo lamh", 320, 1));
-      Server.SpellList.Add("ard cradh", new SpellData("ard cradh", 500, 3));
-      Server.SpellList.Add("mor cradh", new SpellData("mor cradh", 120, 3));
-      Server.SpellList.Add("cradh", new SpellData("cradh", 90, 3));
-      Server.SpellList.Add("beag cradh", new SpellData("beag cradh", 60, 2));
-      Server.SpellList.Add("ao dall", new SpellData("ao dall", 30, 1));
-      Server.SpellList.Add("ao puinsein", new SpellData("ao puinsein", 30, 1));
-      Server.SpellList.Add("ao suain", new SpellData("ao suain", 30, 1));
-      Server.SpellList.Add("ao ard cradh", new SpellData("ao ard cradh", 120, 1));
-      Server.SpellList.Add("ao mor cradh", new SpellData("ao mor cradh", 90, 1));
-      Server.SpellList.Add("ao cradh", new SpellData("ao cradh", 60, 1));
-      Server.SpellList.Add("ao beag cradh", new SpellData("ao beag cradh", 30, 1));
-      Server.SpellList.Add("beag breisleich", new SpellData("beag breisleich", 110, 1));
-      Server.SpellList.Add("breisleich", new SpellData("breisleich", 110, 1));
-      Server.SpellList.Add("mor breisleich", new SpellData("mor breisleich", 110, 1));
-      Server.SpellList.Add("beag puinsein", new SpellData("beag puinsein", 100, 4));
-      Server.SpellList.Add("puinsein", new SpellData("puinsein", 300, 3));
-      Server.SpellList.Add("beag pramh", new SpellData("beag pramh", 300, 4));
-      Server.SpellList.Add("pramh", new SpellData("pramh", 300, 4));
-      Server.SpellList.Add("suain", new SpellData("suain", 330, 4));
-      Server.SpellList.Add("dall", new SpellData("dall", 330, 4));
-      Server.SpellList.Add("beag naomh aite", new SpellData("beag naomh aite", 30, 3));
-      Server.SpellList.Add("naomh aite", new SpellData("naomh aite", 30, 2));
-      Server.SpellList.Add("mor naomh aite", new SpellData("mor naomh aite", 200, 4));
-      Server.SpellList.Add("ard naomh aite", new SpellData("ard naomh aite", 600, 4));
-      Server.SpellList.Add("ard ioc comlha", new SpellData("ard ioc comlha", 2000, 2));
-      Server.SpellList.Add("mor ioc comlha", new SpellData("mor ioc comlha", 1100, 2));
-      Server.SpellList.Add("ioc comlha", new SpellData("ioc comlha", 450, 2));
-      Server.SpellList.Add("beag ioc comlha", new SpellData("beag ioc comlha", 70, 1));
-      Server.SpellList.Add("Spirit Essence", new SpellData("Spirit Essence", 0, 3));
-      Server.SpellList.Add("nuadhaich", new SpellData("nuadhaich", 1260, 2));
-      Server.SpellList.Add("ard ioc", new SpellData("ard ioc", 800, 2));
-      Server.SpellList.Add("mor ioc", new SpellData("mor ioc", 600, 2));
-      Server.SpellList.Add("ioc", new SpellData("ioc", 200, 1));
-      Server.SpellList.Add("beag ioc", new SpellData("beag ioc", 30, 1));
-      Server.SpellList.Add("creag neart", new SpellData("creag neart", 30, 0));
-      Server.SpellList.Add("fas deireas", new SpellData("fas deireas", 30, 1));
-      Server.SpellList.Add("beannaich", new SpellData("beannaich", 30, 1));
-      Server.SpellList.Add("mor beannaich", new SpellData("mor beannaich", 90, 2));
-      Server.SpellList.Add("armachd", new SpellData("armachd", 30, 2));
-      Server.SpellList.Add("Dark Seal", new SpellData("Dark Seal", 350, 6));
-      Server.SpellList.Add("Darker Seal", new SpellData("Darker Seal", 450, 6));
-      Server.SpellList.Add("Demise", new SpellData("Demise", 500, 6));
-      Server.SpellList.Add("Demon Seal", new SpellData("Demon Seal", 600, 6));
-      Server.SpellList.Add("Mesmerize", new SpellData("Mesmerize", 800, 7));
-      Server.SpellList.Add("Cursed Tune 12", new SpellData("Cursed Tune 12", 3960, 0));
-      Server.SpellList.Add("Cursed Tune 11", new SpellData("Cursed Tune 11", 3960, 0));
-      Server.SpellList.Add("Cursed Tune 10", new SpellData("Cursed Tune 10", 3960, 0));
-      Server.SpellList.Add("Cursed Tune 9", new SpellData("Cursed Tune 9", 3960, 0));
-      Server.SpellList.Add("Cursed Tune 8", new SpellData("Cursed Tune 8", 3960, 0));
-      Server.SpellList.Add("Cursed Tune 7", new SpellData("Cursed Tune 7", 3960, 0));
-      Server.SpellList.Add("Cursed Tune 6", new SpellData("Cursed Tune 6", 3960, 0));
-      Server.SpellList.Add("Cursed Tune 5", new SpellData("Cursed Tune 5", 3960, 0));
-      Server.SpellList.Add("Cursed Tune 4", new SpellData("Cursed Tune 4", 3960, 0));
-      Server.SpellList.Add("Cursed Tune 3", new SpellData("Cursed Tune 3", 3960, 0));
-      Server.SpellList.Add("Cursed Tune 2", new SpellData("Cursed Tune 2", 3960, 0));
-      Server.SpellList.Add("Cursed Tune 1", new SpellData("Cursed Tune 1", 3960, 0));
-      Server.SpellList.Add("puinneag spiorad", new SpellData("puinneag spiorad", 350, 2));
-      Server.SpellList.Add("Regeneration 10", new SpellData("Regeneration 10", 2720, 2));
-      Server.SpellList.Add("Regeneration 9", new SpellData("Regeneration 9", 2720, 2));
-      Server.SpellList.Add("Regeneration 8", new SpellData("Regeneration 8", 2720, 2));
-      Server.SpellList.Add("Regeneration 7", new SpellData("Regeneration 7", 2720, 2));
-      Server.SpellList.Add("Regeneration 6", new SpellData("Regeneration 6", 2720, 2));
-      Server.SpellList.Add("Regeneration 5", new SpellData("Regeneration 5", 2720, 2));
-      Server.SpellList.Add("Regeneration 4", new SpellData("Regeneration 4", 2720, 2));
-      Server.SpellList.Add("Regeneration 3", new SpellData("Regeneration 3", 2720, 2));
-      Server.SpellList.Add("Regeneration 2", new SpellData("Regeneration 2", 2720, 2));
-      Server.SpellList.Add("Regeneration 1", new SpellData("Regeneration 1", 1220, 2));
-      Server.SpellList.Add("Counter Attack 11", new SpellData("Counter Attack 11", 3400, 2));
-      Server.SpellList.Add("Counter Attack 10", new SpellData("Counter Attack 10", 3400, 2));
-      Server.SpellList.Add("Counter Attack 9", new SpellData("Counter Attack 9", 3400, 2));
-      Server.SpellList.Add("Counter Attack 8", new SpellData("Counter Attack 8", 3400, 2));
-      Server.SpellList.Add("Counter Attack 7", new SpellData("Counter Attack 7", 3400, 2));
-      Server.SpellList.Add("Counter Attack 6", new SpellData("Counter Attack 6", 3400, 2));
-      Server.SpellList.Add("Counter Attack 5", new SpellData("Counter Attack 5", 3400, 2));
-      Server.SpellList.Add("Counter Attack 4", new SpellData("Counter Attack 4", 2720, 2));
-      Server.SpellList.Add("Counter Attack 3", new SpellData("Counter Attack 3", 2720, 2));
-      Server.SpellList.Add("Counter Attack 2", new SpellData("Counter Attack 2", 2720, 2));
-      Server.SpellList.Add("Counter Attack 1", new SpellData("Counter Attack 1", 2720, 2));
-      Server.SpellList.Add("Reflection", new SpellData("Reflection", 1080, 8));
-      Server.SpellList.Add("Increased Regeneration", new SpellData("Increased Regeneration", 5100, 5));
-      Server.SpellList.Add("Deception of Life", new SpellData("Deception of Life", 9000, 2));
-      Server.SpellList.Add("srad gar", new SpellData("srad gar", 8160, 4));
-      Server.SpellList.Add("sal gar", new SpellData("sal gar", 8160, 4));
-      Server.SpellList.Add("creag gar", new SpellData("creag gar", 8160, 4));
-      Server.SpellList.Add("athar gar", new SpellData("athar gar", 8160, 4));
-      Server.SpellList.Add("ard srad", new SpellData("ard srad", 2530, 4));
-      Server.SpellList.Add("ard sal", new SpellData("ard sal", 2530, 4));
-      Server.SpellList.Add("ard creag", new SpellData("ard creag", 2530, 4));
-      Server.SpellList.Add("ard athar", new SpellData("ard athar", 2530, 4));
-      Server.SpellList.Add("srad meall", new SpellData("srad meall", 2400, 4));
-      Server.SpellList.Add("sal meall", new SpellData("sal meall", 2400, 4));
-      Server.SpellList.Add("creag meall", new SpellData("creag meall", 2400, 4));
-      Server.SpellList.Add("athar meall", new SpellData("athar meall", 2400, 4));
-      Server.SpellList.Add("mor srad", new SpellData("mor srad", 800, 4));
-      Server.SpellList.Add("mor sal", new SpellData("mor sal", 800, 4));
-      Server.SpellList.Add("mor creag", new SpellData("mor creag", 800, 4));
-      Server.SpellList.Add("mor athar", new SpellData("mor athar", 800, 4));
-      Server.SpellList.Add("srad lamh", new SpellData("srad lamh", 320, 1));
-      Server.SpellList.Add("sal lamh", new SpellData("sal lamh", 320, 1));
-      Server.SpellList.Add("creag lamh", new SpellData("creag lamh", 320, 1));
-      Server.SpellList.Add("athar lamh", new SpellData("athar lamh", 320, 1));
-      Server.SpellList.Add("srad", new SpellData("srad", 200, 2));
-      Server.SpellList.Add("sal", new SpellData("sal", 200, 2));
-      Server.SpellList.Add("creag", new SpellData("creag", 200, 2));
-      Server.SpellList.Add("athar", new SpellData("athar", 200, 2));
-      Server.SpellList.Add("beag srad lamh", new SpellData("beag srad lamh", 30, 2));
-      Server.SpellList.Add("beag sal lamh", new SpellData("beag sal lamh", 30, 2));
-      Server.SpellList.Add("beag creag lamh", new SpellData("beag creag lamh", 30, 2));
-      Server.SpellList.Add("beag athar lamh", new SpellData("beag athar lamh", 30, 2));
-      Server.SpellList.Add("beag srad", new SpellData("beag srad", 20, 2));
-      Server.SpellList.Add("beag sal", new SpellData("beag sal", 20, 2));
-      Server.SpellList.Add("beag creag", new SpellData("beag creag", 20, 2));
-      Server.SpellList.Add("beag athar", new SpellData("beag athar", 20, 2));
-      Server.SpellList.Add("Unholy Explosion", new SpellData("Unholy Explosion", 5500, 2));
-      Server.SpellList.Add("mor strioch pian gar", new SpellData("mor strioch pian gar", 500, 1));
-      Server.SpellList.Add("mor strioch bais", new SpellData("mor strioch bais", 500, 4));
-      Server.SpellList.Add("pian na dion", new SpellData("pian na dion", 1500, 1));
-      Server.SpellList.Add("mor pian na dion", new SpellData("mor pian na dion", 3000, 1));
-      Server.SpellList.Add("ard pian na dion", new SpellData("ard pian na dion", 3000, 2));
-      Server.SpellList.Add("Wings of Protection", new SpellData("Wings of Protection", 900, 0));
-      Server.SpellList.Add("Lyliac Plant", new SpellData("Lyliac Plant", 1000, 0));
-      Server.SpellList.Add("Lyliac Vineyard", new SpellData("Lyliac Vineyard", 200, 0));
-      Server.SpellList.Add("beag puinneag spiorad", new SpellData("beag puinneag spiorad", 5, 0));
-      Server.SpellList.Add("mor puinneag spiorad", new SpellData("mor puinneag spiorad", 5, 0));
-      Server.SpellList.Add("ard puinneag spiorad", new SpellData("ard puinneag spiorad", 5, 0));
-      Server.SpellList.Add("fas spiorad", new SpellData("fas spiorad", 0, 8));
-      Server.SpellList.Add("beag fas nadur", new SpellData("beag fas nadur", 35, 2));
-      Server.SpellList.Add("fas nadur", new SpellData("fas nadur", 35, 2));
-      Server.SpellList.Add("mor fas nadur", new SpellData("mor fas nadur", 150, 4));
-      Server.SpellList.Add("ard fas nadur", new SpellData("ard fas nadur", 1000, 8));
-      Server.SpellList.Add("Disenchanter", new SpellData("Disenchanter", 3000, 4));
-      Server.SpellList.Add("Bubble Block", new SpellData("Bubble Block", 700, 0));
-      Server.SpellList.Add("Bubble Shield", new SpellData("Bubble Shield", 100, 1));
-      Server.SpellList.Add("Mud Wall", new SpellData("Mud Wall", 700, 0));
-      Server.SpellList.Add("Cyclone", new SpellData("Cyclone", 1200, 0));
-      Server.SpellList.Add("Fiery Defender", new SpellData("Fiery Defender", 3000, 4));
-      Server.SpellList.Add("Keeter 15", new SpellData("Keeter 15", 2800, 2));
-      Server.SpellList.Add("Keeter 14", new SpellData("Keeter 14", 2800, 2));
-      Server.SpellList.Add("Keeter 13", new SpellData("Keeter 13", 2800, 2));
-      Server.SpellList.Add("Keeter 12", new SpellData("Keeter 12", 2800, 2));
-      Server.SpellList.Add("Keeter 11", new SpellData("Keeter 11", 2800, 2));
-      Server.SpellList.Add("Keeter 10", new SpellData("Keeter 10", 2800, 2));
-      Server.SpellList.Add("Keeter 9", new SpellData("Keeter 9", 2800, 2));
-      Server.SpellList.Add("Keeter 8", new SpellData("Keeter 8", 2800, 2));
-      Server.SpellList.Add("Keeter 7", new SpellData("Keeter 7", 2800, 2));
-      Server.SpellList.Add("Keeter 6", new SpellData("Keeter 6", 2800, 2));
-      Server.SpellList.Add("Keeter 5", new SpellData("Keeter 5", 2800, 2));
-      Server.SpellList.Add("Keeter 4", new SpellData("Keeter 4", 2800, 2));
-      Server.SpellList.Add("Keeter 3", new SpellData("Keeter 3", 2800, 2));
-      Server.SpellList.Add("Keeter 2", new SpellData("Keeter 2", 2800, 2));
-      Server.SpellList.Add("Keeter 1", new SpellData("Keeter 1", 2800, 2));
-      Server.SpellList.Add("Groo 15", new SpellData("Groo 15", 2800, 2));
-      Server.SpellList.Add("Groo 14", new SpellData("Groo 14", 2800, 2));
-      Server.SpellList.Add("Groo 13", new SpellData("Groo 13", 2800, 2));
-      Server.SpellList.Add("Groo 12", new SpellData("Groo 12", 2800, 2));
-      Server.SpellList.Add("Groo 11", new SpellData("Groo 11", 2800, 2));
-      Server.SpellList.Add("Groo 10", new SpellData("Groo 10", 2800, 2));
-      Server.SpellList.Add("Groo 9", new SpellData("Groo 9", 2800, 2));
-      Server.SpellList.Add("Groo 8", new SpellData("Groo 8", 2800, 2));
-      Server.SpellList.Add("Groo 7", new SpellData("Groo 7", 2800, 2));
-      Server.SpellList.Add("Groo 6", new SpellData("Groo 6", 2800, 2));
-      Server.SpellList.Add("Groo 5", new SpellData("Groo 5", 2800, 2));
-      Server.SpellList.Add("Groo 4", new SpellData("Groo 4", 2800, 2));
-      Server.SpellList.Add("Groo 3", new SpellData("Groo 3", 2800, 2));
-      Server.SpellList.Add("Groo 2", new SpellData("Groo 2", 2800, 2));
-      Server.SpellList.Add("Groo 1", new SpellData("Groo 1", 2800, 2));
-      Server.SpellList.Add("Mermaid 15", new SpellData("Mermaid 15", 2800, 2));
-      Server.SpellList.Add("Mermaid 14", new SpellData("Mermaid 14", 2800, 2));
-      Server.SpellList.Add("Mermaid 13", new SpellData("Mermaid 13", 2800, 2));
-      Server.SpellList.Add("Mermaid 12", new SpellData("Mermaid 12", 2800, 2));
-      Server.SpellList.Add("Mermaid 11", new SpellData("Mermaid 11", 2800, 2));
-      Server.SpellList.Add("Mermaid 10", new SpellData("Mermaid 10", 2800, 2));
-      Server.SpellList.Add("Mermaid 9", new SpellData("Mermaid 9", 2800, 2));
-      Server.SpellList.Add("Mermaid 8", new SpellData("Mermaid 8", 2800, 2));
-      Server.SpellList.Add("Mermaid 7", new SpellData("Mermaid 7", 2800, 2));
-      Server.SpellList.Add("Mermaid 6", new SpellData("Mermaid 6", 2800, 2));
-      Server.SpellList.Add("Mermaid 5", new SpellData("Mermaid 5", 2800, 2));
-      Server.SpellList.Add("Mermaid 4", new SpellData("Mermaid 4", 2800, 2));
-      Server.SpellList.Add("Mermaid 3", new SpellData("Mermaid 3", 2800, 2));
-      Server.SpellList.Add("Mermaid 2", new SpellData("Mermaid 2", 2800, 2));
-      Server.SpellList.Add("Mermaid 1", new SpellData("Mermaid 1", 2800, 2));
-      Server.SpellList.Add("Torch 15", new SpellData("Torch 15", 2800, 2));
-      Server.SpellList.Add("Torch 14", new SpellData("Torch 14", 2800, 2));
-      Server.SpellList.Add("Torch 13", new SpellData("Torch 13", 2800, 2));
-      Server.SpellList.Add("Torch 12", new SpellData("Torch 12", 2800, 2));
-      Server.SpellList.Add("Torch 11", new SpellData("Torch 11", 2800, 2));
-      Server.SpellList.Add("Torch 10", new SpellData("Torch 10", 2800, 2));
-      Server.SpellList.Add("Torch 9", new SpellData("Torch 9", 2800, 2));
-      Server.SpellList.Add("Torch 8", new SpellData("Torch 8", 2800, 2));
-      Server.SpellList.Add("Torch 7", new SpellData("Torch 7", 2800, 2));
-      Server.SpellList.Add("Torch 6", new SpellData("Torch 6", 2800, 2));
-      Server.SpellList.Add("Torch 5", new SpellData("Torch 5", 2800, 2));
-      Server.SpellList.Add("Torch 4", new SpellData("Torch 4", 2800, 2));
-      Server.SpellList.Add("Torch 3", new SpellData("Torch 3", 2800, 2));
-      Server.SpellList.Add("Torch 2", new SpellData("Torch 2", 2800, 2));
-      Server.SpellList.Add("Torch 1", new SpellData("Torch 1", 2800, 2));
-      Server.SpellList.Add("Dragon Blast", new SpellData("Dragon Blast", 18000, 2));
-      Server.SpellList.Add("Gentle Touch", new SpellData("Gentle Touch", 360, 1));
-      Server.SpellList.Add("Mist", new SpellData("Mist", 60, 0));
-      Server.SpellList.Add("dion", new SpellData("dion", 600, 0));
-      Server.SpellList.Add("Howl", new SpellData("Howl", 360, 1));
-      Server.SpellList.Add("Wraith's Touch", new SpellData("Wraith's Touch", 1420, 4));
-      Server.SpellList.Add("Komodas Form", new SpellData("Komodas Form", 360, 0));
-      Server.SpellList.Add("Wild Komodas Form", new SpellData("Wild Komodas Form", 360, 0));
-      Server.SpellList.Add("Fierce Komodas Form", new SpellData("Fierce Komodas Form", 360, 0));
-      Server.SpellList.Add("Master Komodas Form", new SpellData("Master Komodas Form", 360, 0));
-      Server.SpellList.Add("Feral Form", new SpellData("Feral Form", 360, 0));
-      Server.SpellList.Add("Wild Feral Form", new SpellData("Wild Feral Form", 360, 0));
-      Server.SpellList.Add("Fierce Feral Form", new SpellData("Fierce Feral Form", 360, 0));
-      Server.SpellList.Add("Master Feral Form", new SpellData("Master Feral Form", 360, 0));
-      Server.SpellList.Add("Karura Form", new SpellData("Karura Form", 360, 0));
-      Server.SpellList.Add("Wild Karura Form", new SpellData("Wild Karura Form", 360, 0));
-      Server.SpellList.Add("Fierce Karura Form", new SpellData("Fierce Karura Form", 360, 0));
-      Server.SpellList.Add("Master Karura Form", new SpellData("Master Karura Form", 360, 0));
-      Server.SpellList.Add("Cold Blood", new SpellData("Cold Blood", 1420, 1));
-      Server.SpellList.Add("Hail of Feathers 1", new SpellData("Hail of Feathers 1", 1420, 0));
-      Server.SpellList.Add("Hail of Feathers 2", new SpellData("Hail of Feathers 2", 760, 0));
-      Server.SpellList.Add("Hail of Feathers 3", new SpellData("Hail of Feathers 3", 760, 0));
-      Server.SpellList.Add("Hail of Feathers 4", new SpellData("Hail of Feathers 4", 1420, 0));
-      Server.SpellList.Add("Hail of Feathers 5", new SpellData("Hail of Feathers 5", 1420, 0));
-      Server.SpellList.Add("Hail of Feathers 6", new SpellData("Hail of Feathers 6", 1420, 0));
-      Server.SpellList.Add("Hail of Feathers 7", new SpellData("Hail of Feathers 7", 1420, 0));
-      Server.SpellList.Add("Hail of Feathers 8", new SpellData("Hail of Feathers 8", 1420, 0));
-      Server.SpellList.Add("Hail of Feathers 9", new SpellData("Hail of Feathers 9", 1420, 0));
-      Server.SpellList.Add("Hail of Feathers 10", new SpellData("Hail of Feathers 10", 1420, 0));
-      Server.SpellList.Add("White Bat Stance", new SpellData("White Bat Stance", 25, 0));
-      Server.SpellList.Add("Draco Stance", new SpellData("Draco Stance", 200, 0));
-      Server.SpellList.Add("Iron Skin", new SpellData("Iron Skin", 250, 2));
-      Server.SpellList.Add("asgall faileas", new SpellData("asgall faileas", 310, 1));
-      Server.SpellList.Add("Aegis Sphere", new SpellData("Aegis Sphere", 5000, 0));
-      Server.SpellList.Add("Gem Polishing", new SpellData("Gem Polishing", 20, 2));
-      Server.SpellList.Add("Hide", new SpellData("Hide", 200, 0));
-      Server.SpellList.Add("Great Poison Snare", new SpellData("Great Poison Snare", 50, 0));
-      Server.SpellList.Add("Shock Arrow", new SpellData("Shock Arrow", 1000, 0));
-      Server.SpellList.Add("Life Arrow", new SpellData("Life Arrow", 1500, 0));
-      Server.SpellList.Add("Star Arrow 11", new SpellData("Star Arrow 11", 1360, 0));
-      Server.SpellList.Add("Star Arrow 10", new SpellData("Star Arrow 10", 1360, 0));
-      Server.SpellList.Add("Star Arrow 9", new SpellData("Star Arrow 9", 775, 0));
-      Server.SpellList.Add("Star Arrow 8", new SpellData("Star Arrow 8", 775, 0));
-      Server.SpellList.Add("Star Arrow 7", new SpellData("Star Arrow 7", 775, 0));
-      Server.SpellList.Add("Star Arrow 6", new SpellData("Star Arrow 6", 775, 0));
-      Server.SpellList.Add("Star Arrow 5", new SpellData("Star Arrow 5", 475, 0));
-      Server.SpellList.Add("Star Arrow 4", new SpellData("Star Arrow 4", 475, 0));
-      Server.SpellList.Add("Star Arrow 3", new SpellData("Star Arrow 3", 475, 0));
-      Server.SpellList.Add("Star Arrow 2", new SpellData("Star Arrow 2", 475, 0));
-      Server.SpellList.Add("Star Arrow 1", new SpellData("Star Arrow 1", 400, 0));
-      Server.SpellList.Add("Frost Arrow 9", new SpellData("Frost Arrow 9", 800, 1));
-      Server.SpellList.Add("Frost Arrow 8", new SpellData("Frost Arrow 8", 800, 1));
-      Server.SpellList.Add("Frost Arrow 7", new SpellData("Frost Arrow 7", 800, 1));
-      Server.SpellList.Add("Frost Arrow 6", new SpellData("Frost Arrow 6", 800, 1));
-      Server.SpellList.Add("Frost Arrow 5", new SpellData("Frost Arrow 5", 800, 1));
-      Server.SpellList.Add("Frost Arrow 4", new SpellData("Frost Arrow 4", 800, 1));
-      Server.SpellList.Add("Frost Arrow 3", new SpellData("Frost Arrow 3", 800, 1));
-      Server.SpellList.Add("Frost Arrow 2", new SpellData("Frost Arrow 2", 700, 1));
-      Server.SpellList.Add("Frost Arrow 1", new SpellData("Frost Arrow 1", 700, 1));
-      Server.SpellList.Add("Supernova Shot", new SpellData("Supernova Shot", 1500, 0));
-      Server.SpellList.Add("Hypernova Shot", new SpellData("Hypernova Shot", 5000, 0));
-      Server.SpellList.Add("Chadul's Shot", new SpellData("Chadul's Shot", 5000, 0));
-      Server.SpellList.Add("Fiosachd Prayer", new SpellData("Fiosachd Prayer", 2, 1));
-      Server.SpellList.Add("Glioca Prayer", new SpellData("Glioca Prayer", 2, 1));
-      Server.SpellList.Add("Ceannlaidir Prayer", new SpellData("Ceannlaidir Prayer", 2, 1));
-      Server.SpellList.Add("Deoch Prayer", new SpellData("Deoch Prayer", 2, 1));
-      Server.SpellList.Add("Gramail Prayer", new SpellData("Gramail Prayer", 2, 1));
-      Server.SpellList.Add("Cail Prayer", new SpellData("Cail Prayer", 2, 1));
-      Server.SpellList.Add("Luathas Prayer", new SpellData("Luathas Prayer", 2, 1));
-      Server.SpellList.Add("Sgrios Prayer", new SpellData("Sgrios Prayer", 2, 1));
+      Server.SkullList = new Dictionary<string, SkullData>(StringComparer.CurrentCultureIgnoreCase);
+      Server.TimedEvent = new Dictionary<string, Flintstones.TimedEvent>(StringComparer.CurrentCultureIgnoreCase);
+      Server.Relog = new Dictionary<string, Flintstones.Relog>(StringComparer.CurrentCultureIgnoreCase);
+      Server.Alts = new Dictionary<string, Client>(StringComparer.CurrentCultureIgnoreCase);
+      Server.Stuff = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
+      Server.DAServer = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase);
+      Server.DARegged = new Dictionary<string, bool>(StringComparer.CurrentCultureIgnoreCase);
+
+      ItemList = LoadUnidentifyItems();
+      NeedsIdentifiedList = LoadIdentifyItems();
+      SpellList = LoadSpells();
+
       Server.StaticCharacters = new Dictionary<uint, Character>();
       Server.alarmTimer = DateTime.MinValue;
       Server.friendlist = new List<string>();
@@ -522,97 +161,6 @@ namespace Flintstones
       Server.CustomLoot = new List<int>();
       Server.IdentifyItems = new List<string>();
       Server.TrashList = new List<string>();
-      Server.NeedsIdentifiedList = new List<string>();
-      Server.NeedsIdentifiedList.Add("Leather Belt");
-      Server.NeedsIdentifiedList.Add("Mythril Belt");
-      Server.NeedsIdentifiedList.Add("Hy-brasyl Belt");
-      Server.NeedsIdentifiedList.Add(" Boots");
-      Server.NeedsIdentifiedList.Add("Boots");
-      Server.NeedsIdentifiedList.Add("Gray Boots");
-      Server.NeedsIdentifiedList.Add("Cured Boots");
-      Server.NeedsIdentifiedList.Add("Shagreen Boots");
-      Server.NeedsIdentifiedList.Add("Cordovan Boots");
-      Server.NeedsIdentifiedList.Add("Lapis Boots");
-      Server.NeedsIdentifiedList.Add("Saffian Boots");
-      Server.NeedsIdentifiedList.Add("Magma Boots");
-      Server.NeedsIdentifiedList.Add("Enchanted Boots");
-      Server.NeedsIdentifiedList.Add("Beryl Earrings");
-      Server.NeedsIdentifiedList.Add("Coral Earrings");
-      Server.NeedsIdentifiedList.Add("Ruby Earrings");
-      Server.NeedsIdentifiedList.Add("Silver Earrings");
-      Server.NeedsIdentifiedList.Add("Gold Earrings");
-      Server.NeedsIdentifiedList.Add("Leather Gauntlet");
-      Server.NeedsIdentifiedList.Add("Iron Gauntlet");
-      Server.NeedsIdentifiedList.Add("Mythril Gauntlet");
-      Server.NeedsIdentifiedList.Add("Hy-brasyl Gauntlet");
-      Server.NeedsIdentifiedList.Add("Leather Bracer");
-      Server.NeedsIdentifiedList.Add("Iron Bracer");
-      Server.NeedsIdentifiedList.Add("Mythril Bracer");
-      Server.NeedsIdentifiedList.Add("Hy-brasyl Bracer");
-      Server.NeedsIdentifiedList.Add("Leather Greaves");
-      Server.NeedsIdentifiedList.Add("Iron Greaves");
-      Server.NeedsIdentifiedList.Add("Mythril Greaves");
-      Server.NeedsIdentifiedList.Add("Hy-brasyl Greaves");
-      Server.NeedsIdentifiedList.Add("Pearl Necklace");
-      Server.NeedsIdentifiedList.Add("Gold Jade Necklace");
-      Server.NeedsIdentifiedList.Add("Jade Necklace");
-      Server.NeedsIdentifiedList.Add("Amber Necklace");
-      Server.NeedsIdentifiedList.Add("Bone Necklace");
-      Server.NeedsIdentifiedList.Add("Talos Ring");
-      Server.NeedsIdentifiedList.Add("Beryl Ring");
-      Server.NeedsIdentifiedList.Add("Ruby Ring");
-      Server.NeedsIdentifiedList.Add("Coral Ring");
-      Server.NeedsIdentifiedList.Add("Lapis Ring");
-      Server.NeedsIdentifiedList.Add("Grave Ring");
-      Server.NeedsIdentifiedList.Add("Red Jade Ring");
-      Server.NeedsIdentifiedList.Add("Amethyst Ring");
-      Server.NeedsIdentifiedList.Add("Jade Ring");
-      Server.NeedsIdentifiedList.Add("Wooden Shield");
-      Server.NeedsIdentifiedList.Add("Leather Shield");
-      Server.NeedsIdentifiedList.Add("Bronze Shield");
-      Server.NeedsIdentifiedList.Add("Iron Shield");
-      Server.NeedsIdentifiedList.Add("Mythril Shield");
-      Server.NeedsIdentifiedList.Add("Hy-brasyl Shield");
-      Server.NeedsIdentifiedList.Add("Talos Shield");
-      Server.NeedsIdentifiedList.Add("Stilla");
-      Server.NeedsIdentifiedList.Add("Long Sword");
-      Server.NeedsIdentifiedList.Add("Two-handed Claidhmore");
-      Server.NeedsIdentifiedList.Add("Two-handed Emerald Sword");
-      Server.NeedsIdentifiedList.Add("Two-handed Gladius");
-      Server.NeedsIdentifiedList.Add("Two-handed Kindjal");
-      Server.NeedsIdentifiedList.Add("Center Dagger");
-      Server.NeedsIdentifiedList.Add("Light Dagger");
-      Server.NeedsIdentifiedList.Add("Sun Dagger");
-      Server.NeedsIdentifiedList.Add("Lotus Dagger");
-      Server.NeedsIdentifiedList.Add("Lotus Secret");
-      Server.NeedsIdentifiedList.Add("Light Secret");
-      Server.NeedsIdentifiedList.Add("Sun Secret");
-      Server.NeedsIdentifiedList.Add("Raw Beryl");
-      Server.NeedsIdentifiedList.Add("Raw Coral");
-      Server.NeedsIdentifiedList.Add("Raw Ruby");
-      Server.NeedsIdentifiedList.Add("Raw Talgonite");
-      Server.NeedsIdentifiedList.Add("Raw Hy-brasyl");
-      Server.NeedsIdentifiedList.Add("Shocker Piece");
-      Server.NeedsIdentifiedList.Add("Cowl");
-      Server.NeedsIdentifiedList.Add("Galuchat Coat");
-      Server.NeedsIdentifiedList.Add("Gardcorp");
-      Server.NeedsIdentifiedList.Add("Journeyman");
-      Server.NeedsIdentifiedList.Add("Dobok");
-      Server.NeedsIdentifiedList.Add("Culotte");
-      Server.NeedsIdentifiedList.Add("Leather Tunic");
-      Server.NeedsIdentifiedList.Add("Jupe");
-      Server.NeedsIdentifiedList.Add("Scout Leather");
-      Server.NeedsIdentifiedList.Add("Dwarvish Leather");
-      Server.NeedsIdentifiedList.Add("Cotte");
-      Server.NeedsIdentifiedList.Add("Brigandine");
-      Server.NeedsIdentifiedList.Add("Magi Skirt");
-      Server.NeedsIdentifiedList.Add("Benusta");
-      Server.NeedsIdentifiedList.Add("Gorget Gown");
-      Server.NeedsIdentifiedList.Add("Mystic Gown");
-      Server.NeedsIdentifiedList.Add("Earth Bodice");
-      Server.NeedsIdentifiedList.Add("Lotus Bodice");
-      Server.NeedsIdentifiedList.Add("Leather Bliaut");
-      Server.NeedsIdentifiedList.Add("Cuirass");
       Server.AlertNonFriendTimer = new System.Timers.Timer(30000.0);
       Server.AlertNonFriendTimer.Elapsed += new ElapsedEventHandler(Server.AlertNonFriendOkay);
       Server.AlertNonFriendTimer.Enabled = true;
@@ -690,17 +238,6 @@ namespace Flintstones
       Server.TimedEvents.Start();
     }
 
-    public void Loadgamenpcs() => System.IO.File.Exists("C:\\Users\\Russ\\Desktop\\npcs.json");
-
-    public void Savegamemaps(Client client)
-    {
-      if (!client.Tab.recordmaps.Checked)
-        return;
-      System.IO.File.Exists("C:\\Users\\Russ\\Desktop\\maps.json");
-    }
-
-    public void Loadgamemaps() => System.IO.File.Exists("C:\\Users\\Russ\\Desktop\\maps.json");
-
     /// <summary>
     /// Loads walk location definitions from the application's walklocations.xml file.
     /// </summary>
@@ -711,47 +248,213 @@ namespace Flintstones
     public static Dictionary<string, WalkLocation> LoadWalkLocations()
     {
       string filePath = Program.StartupPath + "\\Settings\\walklocations.xml";
-      var document = XDocument.Load(filePath);
-      var locations = new Dictionary<string, WalkLocation>();
 
-      foreach (var location in document.Root.Elements("Location"))
+      var locations = XDocument.Load(filePath)
+    .Root
+    .Elements("Location")
+    .Select((location, index) => new
+    {
+      Index = index + 1, // 1-based for humans
+      Name = (string)location.Attribute("speech"),
+      Area = (string)location.Element("Area"),
+      Spot = (string)location.Element("Spot")
+    })
+    .Where(x =>
+        !string.IsNullOrWhiteSpace(x.Name) &&
+        x.Area != null &&
+        x.Spot != null
+    )
+    .ToList();
+
+      var duplicate = locations
+    .GroupBy(x => x.Name)
+    .FirstOrDefault(g => g.Count() > 1);
+
+      if (duplicate != null)
       {
-        string name = location.Attribute("speech")?.Value;
+        var message =
+            $"Duplicate 'speech' value found: '{duplicate.Key}'\n\n" +
+            $"Occurrences:\n" +
+            string.Join("\n", duplicate.Select(d =>
+                $"  Location #{d.Index}: Area='{d.Area}', Spot='{d.Spot}'"));
+
+        throw new InvalidOperationException(message);
+      }
+
+      try
+      {
+        return XDocument.Load(filePath)
+            .Root?
+            .Elements("Location")
+            .Select(location => new
+            {
+              Name = (string)location.Attribute("speech"),
+              Area = (string)location.Element("Area"),
+              Spot = (string)location.Element("Spot")
+            })
+            .Where(x =>
+                !string.IsNullOrWhiteSpace(x.Name) &&
+                x.Area != null &&
+                x.Spot != null
+            )
+            .ToDictionary(
+                x => x.Name,
+                x => new WalkLocation
+                {
+                  Area = x.Area,
+                  Location = x.Spot
+                });
+      }
+      catch (FileNotFoundException ex)
+      {
+        MessageBox.Show("walklocations.xml not found, creating empty file. " + ex.Message, "Warning", MessageBoxButtons.OK);
+      }
+      catch (XmlException ex)
+      {
+        MessageBox.Show("Invalid XML format in walklocations.xml: " + ex.Message, "Error", MessageBoxButtons.OK);
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show("An unexpected error occurd reading walklocations.xml" + ex.Message, "Error", MessageBoxButtons.OK);
+      }
+
+
+
+      return new Dictionary<string, WalkLocation>();
+    }
+
+    /// <summary>
+    /// Loads item data from the ItemList.xml file when item identification is <see langword="false"/> and returns a dictionary of 
+    /// item names and their associated data.
+    /// </summary>
+    /// <remarks>The method reads the ItemList.xml file located in the application's Settings directory. Only
+    /// items with a non-empty name are included in the returned dictionary.</remarks>
+    /// <returns>A dictionary containing item names as keys and their corresponding <see cref="ItemData"/> objects as values for all
+    /// items that do not need identification. The dictionary will be empty if no items are found in the file.</returns>
+    public static Dictionary<string, ItemData> LoadUnidentifyItems()
+    {
+      string filePath = Program.StartupPath + "\\Settings\\ItemList.xml";
+      if (!File.Exists(filePath))
+      {
+        MessageBox.Show("ItemList.xml not found in Settings folder. Continuing with an empty item list", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return new Dictionary<string, ItemData>();
+      }
+
+      var document = XDocument.Load(filePath);
+      var itemList = new Dictionary<string, ItemData>();
+
+      foreach (var spell in document.Root.Elements("Item"))
+      {
+        string name = spell.Attribute("name")?.Value;
 
         // Skip if name is null or whitespace
         if (string.IsNullOrWhiteSpace(name))
           continue;
 
-        string areaElement = (string)location.Element("Area");
-        string spotElement = (string)location.Element("Spot");
+        int maxStack = (int)spell.Element("MaxStack");
+        bool needsIdentify = (bool)spell.Element("NeedsIdentify");
+        if (!needsIdentify)
+        {
+          itemList[name] = new ItemData(
+            name,
+            maxStack
+          );
+        }
+      }
 
-        // Skip if either areaElement or spotElement is null
-        if (areaElement == null || spotElement == null)
+      return itemList;
+    }
+
+    /// <summary>
+    /// Loads item data from the ItemList.xml file when item identification is <see langword="true"/> and returns a list of item names.
+    /// </summary>
+    /// <remarks>The method reads the ItemList.xml file located in the application's Settings directory. Only
+    /// items with a non-empty name are included in the returned dictionary. </remarks>
+    /// <returns>A list containing item names. The list will be empty if no items that need identification are found in the file.</returns>
+    public static List<string> LoadIdentifyItems()
+    {
+      string filePath = Program.StartupPath + "\\Settings\\ItemList.xml";
+      if (!File.Exists(filePath))
+      {
+        MessageBox.Show("ItemList.xml not found in Settings folder. Continuing with an empty item list", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return new List<string>();
+      }
+
+      var document = XDocument.Load(filePath);
+      var itemList = new List<string>();
+
+      foreach (var spell in document.Root.Elements("Item"))
+      {
+        string name = spell.Attribute("name")?.Value;
+
+        // Skip if name is null or whitespace
+        if (string.IsNullOrWhiteSpace(name))
           continue;
 
-        locations[name] = new WalkLocation
+        bool needsIdentify = (bool)spell.Element("NeedsIdentify");
+        if (needsIdentify)
         {
-          Area = areaElement,
-          Location = spotElement
-        };
+          itemList.Add(name);
+        }
+      }
+
+      return itemList;
+    }
+
+    /// <summary>
+    /// Loads all spell definitions from the SpellList.xml file and returns them as a dictionary.
+    /// </summary>
+    /// <remarks>The method reads the SpellList.xml file located in the application's Settings directory. Each
+    /// spell entry must include a name, mana cost, and base lines. Spells with missing or invalid names are
+    /// ignored.</remarks>
+    /// <returns>A dictionary containing spell names as keys and their corresponding <see cref="SpellData"/> objects as values.
+    /// The dictionary will be empty if no spells are defined.</returns>
+    public static Dictionary<string, SpellData> LoadSpells()
+    {
+      string filePath = Program.StartupPath + "\\Settings\\SpellList.xml";
+      if (!File.Exists(filePath))
+      {
+        MessageBox.Show("SpellList.xml not found in Settings folder. Continuing with an empty spell list", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return new Dictionary<string, SpellData>();
+      }
+
+      var document = XDocument.Load(filePath);
+      var spellList = new Dictionary<string, SpellData>();
+
+      foreach (var spell in document.Root.Elements("Spell"))
+      {
+        string name = spell.Attribute("name")?.Value;
+
+        // Skip if name is null or whitespace
+        if (string.IsNullOrWhiteSpace(name))
+          continue;
+
+        int manaCost = (int)spell.Element("ManaCost");
+        int baseLines = (int)spell.Element("BaseLines");
+
+
+        spellList[name] = new SpellData(
+          name,
+          manaCost,
+          baseLines
+        );
 
       }
 
-      return locations;
-    }
-
-
-    public void PopulateSenseMonsters()
-    {
+      return spellList;
     }
 
     public void PopulateNodes()
     {
-      string str1 = Program.StartupPath + "\\Settings\\HerbNodes.xml";
-      if (!System.IO.File.Exists(str1))
+      string filePath = Program.StartupPath + "\\Settings\\HerbNodes.xml";
+      if (!File.Exists(filePath))
+      {
+//        MessageBox.Show("HerbNodes.xml not found in Settings folder.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         return;
+      }
+      
       XmlDocument xmlDocument = new XmlDocument();
-      xmlDocument.Load(str1);
+      xmlDocument.Load(filePath);
       foreach (XmlElement childNode in xmlDocument.DocumentElement.ChildNodes)
       {
         if (childNode.InnerText != string.Empty)
@@ -820,8 +523,12 @@ namespace Flintstones
     public void PopulateItemDatabase()
     {
       string str1 = Program.StartupPath + "\\Settings\\ItemDatabase.xml";
-      if (!System.IO.File.Exists(str1))
+      if (!File.Exists(str1))
+      {
+        // MessageBox.Show("ItemDatabase.xml not found in Settings folder.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         return;
+      }
+        
       XmlDocument xmlDocument = new XmlDocument();
       xmlDocument.Load(str1);
       foreach (XmlElement childNode1 in xmlDocument.DocumentElement.ChildNodes)
@@ -1862,7 +1569,6 @@ namespace Flintstones
     {
       client.ServerLocation.X = (int) msg.ReadUInt16();
       client.ServerLocation.Y = (int) msg.ReadUInt16();
-      this.Savegamemaps(client);
       List<string> checkedtiles = client.checkedtiles;
       int num = client.ServerLocation.X;
       string str1 = num.ToString();
@@ -1932,14 +1638,7 @@ namespace Flintstones
       }
       else
       {
-        if (System.IO.File.Exists(Program.StartupPath + "\\Settings\\" + client.Name.ToLower() + "\\" + client.Name.ToLower() + "_default.xml"))
-        {
-          if (System.IO.File.Exists(Program.StartupPath + "\\Settings\\" + client.Name.ToLower() + "\\default.xml"))
-            System.IO.File.Delete(Program.StartupPath + "\\Settings\\" + client.Name.ToLower() + "\\default.xml");
-          System.IO.File.Move(Program.StartupPath + "\\Settings\\" + client.Name.ToLower() + "\\" + client.Name.ToLower() + "_default.xml", Program.StartupPath + "\\Settings\\" + client.Name.ToLower() + "\\default.xml");
-          client.Tab.LoadTemplate("default");
-        }
-        else if (!System.IO.File.Exists(Program.StartupPath + "\\Settings\\" + client.Name.ToLower() + "\\default.xml"))
+        if (!System.IO.File.Exists(Program.StartupPath + "\\Settings\\" + client.Name.ToLower() + "\\default.xml"))
           client.Tab.SaveTemplate("default");
         else if (Program.MainForm.preload.Checked && Program.MainForm.preloadtemplate.Text != string.Empty)
           client.Tab.LoadTemplate(Program.MainForm.preloadtemplate.Text);
@@ -2118,7 +1817,7 @@ namespace Flintstones
             }
           }
           if (!Server.StaticCharacters.ContainsKey(npc1.ID))
-            Server.StaticCharacters.Add(npc1.ID, (Character) npc1);
+            Server.StaticCharacters.Add(npc1.ID, npc1);
           if (!client.Characters.ContainsKey(npc1.ID))
           {
             if (npc1.MapName.Equals("Lost Ruins 2") && npc1.Image - 16384 == 422)
@@ -5000,156 +4699,9 @@ label_53:
 
       // Code by Avi
       client.monsterKills.Reset(client.MapInfo.Number);
+      client.monsterKills.Display(client.MapInfo.Name);
       //
 
-      //if (client.MapInfo.Number == 9378)
-      //{
-      //  client.CountedMonsters[697] = 0;
-      //  client.CountedMonsters[696] = 0;
-      //  client.CountedMonsters[698] = 0;
-      //  client.CountedMonsters[695] = 0;
-      //}
-      //if (client.MapInfo.Number == 8995)
-      //{
-      //  client.CountedMonsters[422] = 0;
-      //  client.CountedMonsters[547] = 0;
-      //  client.CountedMonsters[779] = 0;
-      //  client.CountedMonsters[782] = 0;
-      //  client.CountedMonsters[788] = 0;
-      //  client.CountedMonsters[270] = 0;
-      //  client.CountedMonsters[760] = 0;
-      //  client.CountedMonsters[784] = 0;
-      //  client.CountedMonsters[785] = 0;
-      //}
-      //if (client.MapInfo.Number == 11342 || client.MapInfo.Number == 11300 || client.MapInfo.Number == 11363)
-      //{
-      //  client.CountedMonsters[580] = 0;
-      //  client.CountedMonsters[926] = 0;
-      //  client.CountedMonsters[940] = 0;
-      //  client.CountedMonsters[953] = 0;
-      //  client.CountedMonsters[954] = 0;
-      //  client.CountedMonsters[955] = 0;
-      //  client.CountedMonsters[956] = 0;
-      //  client.CountedMonsters[957] = 0;
-      //  client.CountedMonsters[960] = 0;
-      //}
-      if (client.MapInfo.Name.Equals("Yowien Territory25"))
-        client.CountedMonsters[892] = 0;
-      if (client.MapInfo.Number == 7412 || client.MapInfo.Number == 7403 || client.MapInfo.Number == 7432 || client.MapInfo.Number == 7436 || client.MapInfo.Number == 7405)
-      {
-        client.CountedMonsters[335] = 0;
-        client.CountedMonsters[334] = 0;
-        client.CountedMonsters[625] = 0;
-        client.CountedMonsters[395] = 0;
-        client.CountedMonsters[396] = 0;
-        client.CountedMonsters[86] = 0;
-        client.CountedMonsters[410] = 0;
-        client.CountedMonsters[512] = 0;
-        client.CountedMonsters[490] = 0;
-        client.SendMessage("", (byte) 18);
-      }
-      if (client.MapInfo.Number == 7401)
-        client.SendMessage("{=uRats 0", (byte) 18);
-      if (client.MapInfo.Number == 7414)
-        client.SendMessage("{=uBlobs 0", (byte) 18);
-      if (client.MapInfo.Number == 7431)
-        client.SendMessage("{=uBlobs 0", (byte) 18);
-      if (client.MapInfo.Number == 7433)
-        client.SendMessage("{=uBlobs 0", (byte) 18);
-      if (client.MapInfo.Number == 7425)
-        client.SendMessage("{=uPirates 0", (byte) 18);
-      //if (client.MapInfo.Name.Equals("Veltain Mine 2") || client.MapInfo.Name.Equals("Veltain Mine 3") || client.MapInfo.Name.Equals("Veltain Mine 4"))
-      //{
-      //  client.CountedMonsters[8] = 0;
-      //  client.CountedMonsters[10] = 0;
-      //  client.CountedMonsters[9] = 0;
-      //  client.CountedMonsters[680] = 0;
-      //  client.CountedMonsters[682] = 0;
-      //  client.CountedMonsters[681] = 0;
-      //  client.CountedMonsters[683] = 0;
-      //  client.CountedMonsters[685] = 0;
-      //  client.CountedMonsters[684] = 0;
-      //  client.SendMessage("{=qS 0, G 0, W 0", (byte) 18);
-      //}
-      if (client.MapInfo.Name.Contains("Water Dungeon"))
-      {
-        client.CountedMonsters[703] = 0;
-        client.CountedMonsters[704] = 0;
-        client.CountedMonsters[705] = 0;
-        client.CountedMonsters[706] = 0;
-        client.CountedMonsters[715] = 0;
-        client.CountedMonsters[716] = 0;
-      }
-      if (client.MapInfo.Name.Equals("Water Dungeon 1"))
-        client.SendMessage("{=bB 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Water Dungeon 2"))
-        client.SendMessage("{=bB 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Water Dungeon 3"))
-        client.SendMessage("{=bF 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Water Dungeon 4"))
-        client.SendMessage("{=bB 0, F 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Water Dungeon 5"))
-        client.SendMessage("{=bB 0, Si 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Water Dungeon 6"))
-        client.SendMessage("{=bB 0, F 0, Si 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Water Dungeon 7"))
-        client.SendMessage("{=bF 0, Si 0, R 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Water Dungeon 8"))
-        client.SendMessage("{=bF 0, Si 0, R 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Water Dungeon 9"))
-        client.SendMessage("{=bSq 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Water Dungeon 10"))
-        client.SendMessage("{=bSi 0, R 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Water Dungeon 11"))
-        client.SendMessage("{=bSi 0, R 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Water Dungeon 12"))
-        client.SendMessage("{=bSi 0, R 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Water Dungeon 13"))
-        client.SendMessage("{=bE 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Water Dungeon 14"))
-        client.SendMessage("{=bSi 0, R 0, Sq 0, E 0", (byte) 18);
-      if (client.MapInfo.Name.Contains("Blackstar Crypt"))
-      {
-        client.CountedMonsters[759] = 0;
-        client.CountedMonsters[767] = 0;
-        client.CountedMonsters[769] = 0;
-      }
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 1"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 2"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 3"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 4"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 5"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 6"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 7"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 8"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 9"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 10"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 11"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 12"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 13"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 14"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 15"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 16"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 17"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
-      if (client.MapInfo.Name.Equals("Blackstar Crypt 18"))
-        client.SendMessage("{=uK 0, P 0, L 0", (byte) 18);
       return true;
     }
 

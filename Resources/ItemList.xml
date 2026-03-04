@@ -1,0 +1,703 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Item name="purple potion">
+    <MaxStack>30</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="fior athar">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="fior sal">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="fior srad">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="fior creag">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="borim">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="pantica">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="tentacle">
+    <MaxStack>30</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="red tentacle">
+    <MaxStack>30</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="rambutan">
+    <MaxStack>30</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="papaya">
+    <MaxStack>30</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="tangerines">
+    <MaxStack>30</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="green grapes">
+    <MaxStack>30</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="komadium">
+    <MaxStack>52</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="beothaich deum">
+    <MaxStack>25</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="personaca deum">
+    <MaxStack>25</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="betony deum">
+    <MaxStack>25</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="hydele deum">
+    <MaxStack>25</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="brown potion">
+    <MaxStack>25</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="hemloch">
+    <MaxStack>30</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="hemloch deum">
+    <MaxStack>25</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="satchel of hemloch">
+    <MaxStack>150</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="red spore">
+    <MaxStack>50</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="grey spore">
+    <MaxStack>50</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="blue frog meat">
+    <MaxStack>50</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="red frog meat">
+    <MaxStack>50</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="grey frog meat">
+    <MaxStack>50</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="ginseng">
+    <MaxStack>5</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="gold mushroom">
+    <MaxStack>5</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="aqua stone">
+    <MaxStack>200</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="wind stone">
+    <MaxStack>200</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="green tonic">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="green hitonic">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="green extonic">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="red tonic">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="red hitonic">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="red extonic">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="blue tonic">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="blue hitonic">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="blue extonic">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="scrap of clothing">
+    <MaxStack>50</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="fire arrow">
+    <MaxStack>200</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="veltain ore">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="empty ice bottle">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="ice bottle">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="assassin wolf locks">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="crystal bar">
+    <MaxStack>50</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="crystal orb">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="dendron flower">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="yowien fish">
+    <MaxStack>30</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="stunned fire worm">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="yowien blue vine">
+    <MaxStack>1000</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="yowien yellow vine">
+    <MaxStack>1000</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="wind baem missives">
+    <MaxStack>75</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="silver baem egg">
+    <MaxStack>75</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="succubus's hair">
+    <MaxStack>100</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="bat's wing">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="great bat's wing">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="white bat's wing">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="bee's sting">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="black cat's tail">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="blue powder">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="centipede's gland">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="fiend pupa's skull">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="gargoyle's skull">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="gargoyle fiend's skull">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="ghast's skull">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="goblin's skull">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="kobold's skull">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="raw wax">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="royal wax">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="spider's eye">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="spider's silk">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="viper's gland">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="wolf's fur">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="wolf's lock">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="wolf's skin">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="wolf's teeth">
+    <MaxStack>15</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="abel song">
+    <MaxStack>30</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="piet song">
+    <MaxStack>30</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="loures song">
+    <MaxStack>30</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="mileth song">
+    <MaxStack>30</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="rucesion song">
+    <MaxStack>30</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="suomi song">
+    <MaxStack>30</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item name="undine song">
+    <MaxStack>30</MaxStack>
+    <NeedsIdentify>False</NeedsIdentify>
+  </Item>
+  <Item>
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Mythril Belt">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Hy-brasyl Belt">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name=" Boots">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Boots">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Gray Boots">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Cured Boots">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Shagreen Boots">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Cordovan Boots">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Lapis Boots">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Saffian Boots">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Magma Boots">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Enchanted Boots">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Beryl Earrings">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Coral Earrings">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Ruby Earrings">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Silver Earrings">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Gold Earrings">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Leather Gauntlet">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Iron Gauntlet">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Mythril Gauntlet">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Hy-brasyl Gauntlet">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Leather Bracer">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Iron Bracer">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Mythril Bracer">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Hy-brasyl Bracer">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Leather Greaves">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Iron Greaves">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Mythril Greaves">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Hy-brasyl Greaves">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Pearl Necklace">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Gold Jade Necklace">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Jade Necklace">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Amber Necklace">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Bone Necklace">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Talos Ring">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Beryl Ring">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Ruby Ring">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Coral Ring">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Lapis Ring">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Grave Ring">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Red Jade Ring">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Amethyst Ring">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Jade Ring">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Wooden Shield">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Leather Shield">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Bronze Shield">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Iron Shield">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Mythril Shield">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Hy-brasyl Shield">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Talos Shield">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Stilla">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Long Sword">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Two-handed Claidhmore">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Two-handed Emerald Sword">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Two-handed Gladius">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Two-handed Kindjal">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Center Dagger">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Light Dagger">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Sun Dagger">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Lotus Dagger">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Lotus Secret">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Light Secret">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Sun Secret">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Raw Beryl">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Raw Coral">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Raw Ruby">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Raw Talgonite">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Raw Hy-brasyl">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Shocker Piece">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Cowl">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Galuchat Coat">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Gardcorp">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Journeyman">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Dobok">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Culotte">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Leather Tunic">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Jupe">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Scout Leather">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Dwarvish Leather">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Cotte">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Brigandine">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Magi Skirt">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Benusta">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Gorget Gown">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Mystic Gown">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Earth Bodice">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Lotus Bodice">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Leather Bliaut">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>
+  <Item name="Cuirass">
+    <MaxStack>1</MaxStack>
+    <NeedsIdentify>True</NeedsIdentify>
+  </Item>  
+</Items>

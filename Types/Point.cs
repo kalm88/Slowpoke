@@ -45,8 +45,6 @@ namespace Flintstones
 
     public int DistanceFrom(Location loc)
     {
-      if (this.X <= loc.X || this.X <= loc.X + 5)
-        ;
       return Math.Abs(this.X - loc.X) + Math.Abs(this.Y - loc.Y);
     }
 
