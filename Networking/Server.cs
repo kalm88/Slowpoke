@@ -106,6 +106,8 @@ namespace Flintstones
 
     public static Dictionary<int, RootObject> gamemaps { get; set; }
 
+    public static Dictionary<string, WalkLocation> WalkLocations { get; set; }
+
     public static Thread TimedEvents { get; set; }
 
     public Server()
@@ -115,6 +117,7 @@ namespace Flintstones
       Server.Clients = new List<Client>();
       Server.gamemaps = new Dictionary<int, RootObject>();
       this.Loadgamemaps();
+      WalkLocations = LoadWalkLocations();
       Server.gamenpcs = new Dictionary<string, RootNpc>();
       this.Loadgamenpcs();
       Server.ParcelList = new Dictionary<string, Parcel>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
@@ -697,6 +700,38 @@ namespace Flintstones
     }
 
     public void Loadgamemaps() => System.IO.File.Exists("C:\\Users\\Russ\\Desktop\\maps.json");
+
+    public static Dictionary<string, WalkLocation> LoadWalkLocations()
+    {
+      string filePath = Program.StartupPath + "\\Settings\\walklocations.xml";
+      var document = XDocument.Load(filePath);
+      var locations = new Dictionary<string, WalkLocation>();
+
+      foreach (var location in document.Root.Elements("Location"))
+      {
+        string name = location.Attribute("speech")?.Value;
+
+        // Skip if name is null or whitespace
+        if (string.IsNullOrWhiteSpace(name))
+          continue;
+
+        string areaElement = (string)location.Element("Area");
+        string spotElement = (string)location.Element("Spot");
+
+        // Skip if either areaElement or spotElement is null
+        if (areaElement == null || spotElement == null)
+          continue;
+
+        locations[name] = new WalkLocation
+        {
+          Area = areaElement,
+          Location = spotElement
+        };
+
+      }
+
+      return locations;
+    }
 
     public void PopulateSenseMonsters()
     {
@@ -1839,51 +1874,16 @@ namespace Flintstones
       msg.Read(1);
       client.Gender = msg.ReadByte();
       msg.BodyData[6] = (byte) 2;
-      if (client.Path == (byte) 1)
-      {
-        client.pathmaxhp = client.warmax;
-        client.pathstr = client.warstr;
-        client.pathint = client.warint;
-        client.pathwis = client.warwis;
-        client.pathcon = client.warcon;
-        client.pathdex = client.wardex;
-      }
-      else if (client.Path == (byte) 2)
-      {
-        client.pathmaxhp = client.roguemax;
-        client.pathstr = client.roguestr;
-        client.pathint = client.rogueint;
-        client.pathwis = client.roguewis;
-        client.pathcon = client.roguecon;
-        client.pathdex = client.roguedex;
-      }
-      else if (client.Path == (byte) 3)
-      {
-        client.pathmaxhp = client.wizmax;
-        client.pathstr = client.wizstr;
-        client.pathint = client.wizint;
-        client.pathwis = client.wizwis;
-        client.pathcon = client.wizcon;
-        client.pathdex = client.wizdex;
-      }
-      else if (client.Path == (byte) 4)
-      {
-        client.pathmaxhp = client.priestmax;
-        client.pathstr = client.prieststr;
-        client.pathint = client.priestint;
-        client.pathwis = client.priestwis;
-        client.pathcon = client.priestcon;
-        client.pathdex = client.priestdex;
-      }
-      else if (client.Path == (byte) 5)
-      {
-        client.pathmaxhp = client.monkmax;
-        client.pathstr = client.monkstr;
-        client.pathint = client.monkint;
-        client.pathwis = client.monkwis;
-        client.pathcon = client.monkcon;
-        client.pathdex = client.monkdex;
-      }
+
+      // Set path stats using CharacterClass enum to identify class in maxClassStats dictionary
+      CharacterClass activeClass = (CharacterClass)client.Path;
+      client.pathmaxhp = client.maxClassStats[activeClass].Maxhp;
+      client.pathstr = client.maxClassStats[activeClass].Str;
+      client.pathint = client.maxClassStats[activeClass].Int;
+      client.pathwis = client.maxClassStats[activeClass].Wis;
+      client.pathcon = client.maxClassStats[activeClass].Con;
+      client.pathdex = client.maxClassStats[activeClass].Dex;
+
       client.GetHandle();
       client.BestAites();
       client.BestFases();
@@ -3107,6 +3107,8 @@ label_53:
             Program.MainForm.BeginInvoke((Action) (() => Program.MainForm.ItemXMLEditor.UpdateChestsForm()));
           }
         }
+
+        // monster kill counting for daily quests
         if ((str1.Contains(" experience!") || str1.StartsWith("No more experience") || str1.StartsWith("You have reached level 99,")) && client.LastDeadMonster != 0U)
         {
           timeSpan = DateTime.UtcNow.Subtract(client.Characters[client.LastDeadMonster].DeathTime);
