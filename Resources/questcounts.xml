@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Monsters>
+	<Monster id="856">
+		<Name>Dendron</Name>
+		<DisplayName>Dendrons</DisplayName>
+		<CountTo>20</CountTo>
+		<CountAtMaps>
+			<MapName>Yowien Territory3</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>2901</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="661">
+		<Name>Baby Brutes</Name>
+		<DisplayName>Baby Brutes</DisplayName>
+		<CountTo>10</CountTo>
+		<CountAtMaps>
+			<MapName>Yowien Territory</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>2901</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="892">
+		<Name>White Baboon</Name>
+		<DisplayName>Baboon</DisplayName>
+		<CountTo>10</CountTo>
+		<CountAtMaps>
+			<MapName>Yowien Territory24</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>2901</MapID>
+		</CounterResetLocations>
+	</Monster>
+
+	<Monster id="8">
+		<Name>Veltain Soldier</Name>
+		<DisplayName>Sold</DisplayName>
+		<CountTo>15</CountTo>
+		<CountAtMaps>
+			<MapName>Veltain Mine</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>2901</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="680">
+		<Name>Veltain Soldier</Name>
+		<DisplayName>Sold</DisplayName>
+		<CountTo>15</CountTo>
+		<CountAtMaps>
+			<MapName>Veltain Mine</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>2901</MapID>
+		</CounterResetLocations>
+	</Monster>	
+	<Monster id="683">
+		<Name>Veltain Soldier</Name>
+		<DisplayName>Sold</DisplayName>
+		<CountTo>15</CountTo>
+		<CountAtMaps>
+			<MapName>Veltain Mine</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>2901</MapID>
+		</CounterResetLocations>
+	</Monster>	
+	<Monster id="9">
+		<Name>Veltain Warrior</Name>
+		<DisplayName>Warr</DisplayName>
+		<CountTo>15</CountTo>
+		<CountAtMaps>
+			<MapName>Veltain Mine</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>2901</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="681">
+		<Name>Veltain Warrior</Name>
+		<DisplayName>Warr</DisplayName>
+		<CountTo>15</CountTo>
+		<CountAtMaps>
+			<MapName>Veltain Mine</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>2901</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="684">
+		<Name>Veltain Warrior</Name>
+		<DisplayName>Warr</DisplayName>
+		<CountTo>15</CountTo>
+		<CountAtMaps>
+			<MapName>Veltain Mine</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>2901</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="10">
+		<Name>Veltain Guard</Name>
+		<DisplayName>Guard</DisplayName>
+		<CountTo>10</CountTo>
+		<CountAtMaps>
+			<MapName>Veltain Mine</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>2901</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="682">
+		<Name>Veltain Guard</Name>
+		<DisplayName>Guard</DisplayName>
+		<CountTo>10</CountTo>
+		<CountAtMaps>
+			<MapName>Veltain Mine</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>2901</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="685">
+		<Name>Veltain Guard</Name>
+		<DisplayName>Guard</DisplayName>
+		<CountTo>10</CountTo>
+		<CountAtMaps>
+			<MapName>Veltain Mine</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>2901</MapID>
+		</CounterResetLocations>
+	</Monster>
+
+	<Monster id="529">
+		<Name>Fowl</Name>
+		<DisplayName>Fowl</DisplayName>
+		<CountTo>20</CountTo>
+		<CountAtMaps>
+			<MapName>Balanced Arena</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>5232</MapID>
+		</CounterResetLocations>
+	</Monster>
+	
+	<Monster id="160">
+		<Name>Penguin</Name>
+		<DisplayName>Penguins</DisplayName>
+		<CountTo>100</CountTo>
+		<CombineWith>549</CombineWith>
+		<CountAtMaps>
+			<MapName>Mount Merry</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>5232</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="549">
+		<Name>Penguins</Name>
+		<DisplayName>Penguins</DisplayName>
+		<CountTo>100</CountTo>
+		<CombineWith>160</CombineWith>
+		<CountAtMaps>
+			<MapName>Mount Merry</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>5232</MapID>
+		</CounterResetLocations>
+	</Monster>
+	
+	<Monster id="422">
+		<Name>Grime</Name>
+		<DisplayName>Grime</DisplayName>
+		<CountTo>20</CountTo>
+		<CountAtMaps>
+			<MapName>Lost Ruins 2</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>8995</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="547">
+		<Name>Wolf</Name>
+		<DisplayName>Wolf</DisplayName>
+		<CountTo>20</CountTo>
+		<CountAtMaps>
+			<MapName>Lost Ruins 3</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>8995</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="779">
+		<Name>Giant Skeleton</Name>
+		<DisplayName>Skele</DisplayName>
+		<CountTo>20</CountTo>
+		<CountAtMaps>
+			<MapName>Lost Ruins 4</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>8995</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="782">
+		<Name>Giant Golem</Name>
+		<DisplayName>Golem</DisplayName>
+		<CountTo>20</CountTo>
+		<CountAtMaps>
+			<MapName>Lost Ruins 4</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>8995</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="788">
+		<Name>Giant Beetalic</Name>
+		<DisplayName>Beet</DisplayName>
+		<CountTo>20</CountTo>
+		<CountAtMaps>
+			<MapName>Lost Ruins 4</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>8995</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="270">
+		<Name>Fire Worm</Name>
+		<DisplayName>Worm</DisplayName>
+		<CountTo>20</CountTo>
+		<CountAtMaps>
+			<MapName>Lost Ruins 5</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>8995</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="760">
+		<Name>Kabungkl</Name>
+		<DisplayName>Kab</DisplayName>
+		<CountTo>20</CountTo>
+		<CountAtMaps>
+			<MapName>Lost Ruins 6</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>8995</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="784">
+		<Name>Giant Proboss</Name>
+		<DisplayName>Pro</DisplayName>
+		<CountTo>20</CountTo>
+		<CountAtMaps>
+			<MapName>Lost Ruins 6</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>8995</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="785">
+		<Name>Giant Losgaan</Name>
+		<DisplayName>Los</DisplayName>
+		<CountTo>20</CountTo>
+		<CountAtMaps>
+			<MapName>Lost Ruins 6</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>8995</MapID>
+		</CounterResetLocations>
+	</Monster>
+
+	<Monster id="580">
+		<Name>Rouge Mushroom 1</Name>
+		<DisplayName>Ro1</DisplayName>
+		<CountTo>15</CountTo>
+		<CountAtMaps>
+			<MapName>Muisir Hunting Ground</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>11342</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="953">
+		<Name>Rouge Mushroom 2</Name>
+		<DisplayName>Ro2</DisplayName>
+		<CountTo>15</CountTo>
+		<CountAtMaps>
+			<MapName>Muisir Hunting Ground</MapName>
+			<MapName>Muisir Path</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>11342</MapID>
+			<MapID>11300</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="954">
+		<Name>Rouge Mushroom 3</Name>
+		<DisplayName>Ro3</DisplayName>
+		<CountTo>10</CountTo>
+		<CountAtMaps>
+			<MapName>Muisir Hunting Ground</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>11342</MapID>
+		</CounterResetLocations>
+	</Monster>
+
+	<Monster id="926">
+		<Name>Rouge Serpent</Name>
+		<DisplayName>Se</DisplayName>
+		<CountTo>15</CountTo>
+		<CountAtMaps>
+			<MapName>Muisir Path</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>11300</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="940">
+		<Name>Dark Clouds</Name>
+		<DisplayName>DC</DisplayName>
+		<CountTo>15</CountTo>
+		<CountAtMaps>
+			<MapName>Muisir Path</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>11300</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="953">
+		<Name>Rouge Mycena 1</Name>
+		<DisplayName>My</DisplayName>
+		<CountTo>15</CountTo>
+		<CountAtMaps>
+			<MapName>Muisir Path</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>11300</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="954">
+		<Name>Rouge Amanita 1</Name>
+		<DisplayName>Am</DisplayName>
+		<CountTo>10</CountTo>
+		<CountAtMaps>
+			<MapName>Muisir Path</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>11300</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="955">
+		<Name>Rouge Cacti 1</Name>
+		<DisplayName>Ca</DisplayName>
+		<CountTo>8</CountTo>
+		<CountAtMaps>
+			<MapName>Muisir Path</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>11300</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="956">
+		<Name>Rouge Dandelion 1</Name>
+		<DisplayName>Da</DisplayName>
+		<CountTo>8</CountTo>
+		<CountAtMaps>
+			<MapName>Muisir Path</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>11300</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="957">
+		<Name>Rouge Venus 1</Name>
+		<DisplayName>Ve</DisplayName>
+		<CountTo>5</CountTo>
+		<CountAtMaps>
+			<MapName>Muisir Path</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>11300</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="960">
+		<Name>Rouge Thichol 1</Name>
+		<DisplayName>Tr</DisplayName>
+		<CountTo>15</CountTo>
+		<CountAtMaps>
+			<MapName>Muisir Path</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>11300</MapID>
+		</CounterResetLocations>
+	</Monster>
+
+	<Monster id="697">
+		<Name>Baem Gaedeu</Name>
+		<DisplayName>Ga</DisplayName>
+		<CountTo>30</CountTo>
+		<CountAtMaps>
+			<MapName>Plamit's Cave</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>9378</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="696">
+		<Name>Baem Soldata</Name>
+		<DisplayName>So</DisplayName>
+		<CountTo>30</CountTo>
+		<CountAtMaps>
+			<MapName>Plamit's Cave</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>9378</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="698">
+		<Name>Baem Sinturi</Name>
+		<DisplayName>Si</DisplayName>
+		<CountTo>20</CountTo>
+		<CountAtMaps>
+			<MapName>Plamit's Cave</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>9378</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="695">
+		<Name>Baem of Wind</Name>
+		<DisplayName>Wi</DisplayName>
+		<CountTo>10</CountTo>
+		<CountAtMaps>
+			<MapName>Plamit's Cave</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>9378</MapID>
+		</CounterResetLocations>
+	</Monster>
+	
+	<Monster id="625">
+		<Name>Sewer Rat</Name>
+		<DisplayName>Rat</DisplayName>
+		<CountTo>10</CountTo>
+		<CountAtMaps>
+			<MapName>Loures Sewer</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7403</MapID>
+			<MapID>7405</MapID>
+			<MapID>7412</MapID>
+			<MapID>7432</MapID>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="86">
+		<Name>Sewer Slug</Name>
+		<DisplayName>Slug</DisplayName>
+		<CountTo>50</CountTo>
+		<CountAtMaps>
+			<MapName>Loures Sewer</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7403</MapID>
+			<MapID>7405</MapID>
+			<MapID>7412</MapID>
+			<MapID>7432</MapID>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="410">
+		<Name>Limax</Name>
+		<DisplayName>Limax</DisplayName>
+		<CountTo>50</CountTo>
+		<CountAtMaps>
+			<MapName>Loures Sewer</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7403</MapID>
+			<MapID>7405</MapID>
+			<MapID>7412</MapID>
+			<MapID>7432</MapID>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="489">
+		<Name>Sewer Pirate</Name>
+		<DisplayName>Pirate</DisplayName>
+		<CountTo>50</CountTo>
+		<CombineWith>490</CombineWith>
+		<CountAtMaps>
+			<MapName>Loures Sewer</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7403</MapID>
+			<MapID>7405</MapID>
+			<MapID>7412</MapID>
+			<MapID>7432</MapID>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="490">
+		<Name>Sewer Pirate</Name>
+		<DisplayName>Pirate</DisplayName>
+		<CountTo>50</CountTo>
+		<CombineWith>489</CombineWith>
+		<CountAtMaps>
+			<MapName>Loures Sewer</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7403</MapID>
+			<MapID>7405</MapID>
+			<MapID>7412</MapID>
+			<MapID>7432</MapID>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="334">
+		<Name>Sewer Blob</Name>
+		<DisplayName>Blob</DisplayName>
+		<CountTo>5</CountTo>
+		<CombineWith>335</CombineWith>
+		<CountAtMaps>
+			<MapName>Loures Sewer</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7403</MapID>
+			<MapID>7405</MapID>
+			<MapID>7412</MapID>
+			<MapID>7432</MapID>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="335">
+		<Name>Sewer Blob</Name>
+		<DisplayName>Blob</DisplayName>
+		<CountTo>5</CountTo>
+		<CombineWith>334</CombineWith>
+		<CountAtMaps>
+			<MapName>Loures Sewer</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7403</MapID>
+			<MapID>7405</MapID>
+			<MapID>7412</MapID>
+			<MapID>7432</MapID>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="395">
+		<Name>Male Peasant Blob</Name>
+		<DisplayName>PBlob</DisplayName>
+		<CountTo>5</CountTo>
+		<CombineWith>396</CombineWith>
+		<CountAtMaps>
+			<MapName>Loures Sewer</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7403</MapID>
+			<MapID>7405</MapID>
+			<MapID>7412</MapID>
+			<MapID>7432</MapID>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="396">
+		<Name>Femal Peasant Blob</Name>
+		<DisplayName>PBlob</DisplayName>
+		<CountTo>5</CountTo>
+		<CombineWith>395</CombineWith>
+		<CountAtMaps>
+			<MapName>Loures Sewer</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7403</MapID>
+			<MapID>7405</MapID>
+			<MapID>7412</MapID>
+			<MapID>7432</MapID>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="512">
+		<Name>Smily Blob</Name>
+		<DisplayName>SBlob</DisplayName>
+		<CountTo>5</CountTo>
+		<CountAtMaps>
+			<MapName>Loures Sewer</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7403</MapID>
+			<MapID>7405</MapID>
+			<MapID>7412</MapID>
+			<MapID>7432</MapID>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+
+	<Monster id="759">
+		<Name>???</Name>
+		<DisplayName>K</DisplayName>
+		<CountTo>10</CountTo>
+		<CountAtMaps>
+			<MapName>Blackstar Crypt</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="767">
+		<Name>???</Name>
+		<DisplayName>P</DisplayName>
+		<CountTo>10</CountTo>
+		<CountAtMaps>
+			<MapName>Blackstar Crypt</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="769">
+		<Name>???</Name>
+		<DisplayName>L</DisplayName>
+		<CountTo>10</CountTo>
+		<CountAtMaps>
+			<MapName>Blackstar Crypt</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+
+	<Monster id="703">
+		<Name>???</Name>
+		<DisplayName>B</DisplayName>
+		<CountTo>5</CountTo>
+		<CountAtMaps>
+			<MapName>Water Dungeon</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="704">
+		<Name>???</Name>
+		<DisplayName>F</DisplayName>
+		<CountTo>5</CountTo>
+		<CountAtMaps>
+			<MapName>Water Dungeon</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="705">
+		<Name>???</Name>
+		<DisplayName>Si</DisplayName>
+		<CountTo>5</CountTo>
+		<CountAtMaps>
+			<MapName>Water Dungeon</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="706">
+		<Name>???</Name>
+		<DisplayName>R</DisplayName>
+		<CountTo>5</CountTo>
+		<CountAtMaps>
+			<MapName>Water Dungeon</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="715">
+		<Name>???</Name>
+		<DisplayName>Sq</DisplayName>
+		<CountTo>5</CountTo>
+		<CountAtMaps>
+			<MapName>Water Dungeon</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+	<Monster id="716">
+		<Name>???</Name>
+		<DisplayName>E</DisplayName>
+		<CountTo>5</CountTo>
+		<CountAtMaps>
+			<MapName>Water Dungeon</MapName>
+		</CountAtMaps>
+		<CounterResetLocations>
+			<MapID>7436</MapID>
+		</CounterResetLocations>
+	</Monster>
+
+</Monsters>

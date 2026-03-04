@@ -61,6 +61,8 @@
   <ItemGroup>
     <Compile Include="Types\CharacterClass.cs" />
     <Compile Include="Types\CharacterStats.cs" />
+    <Compile Include="Types\Monster.cs" />
+    <Compile Include="Types\MonsterKills.cs" />
     <Compile Include="Types\WalkLocation.cs" />
     <Compile Include="Views\ClientTab.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -278,6 +280,7 @@
     <None Include="Resources\richTextBox1.text" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\questcounts.xml" />
     <Content Include="Resources\199.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -287,7 +290,7 @@
     <Content Include="Resources\btnStop.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="walklocations.xml" />
+    <Content Include="Resources\walklocations.xml" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
