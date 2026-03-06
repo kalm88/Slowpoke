@@ -552,7 +552,6 @@ namespace Flintstones
       {
         string templateName = string.Join(" ", args).ToLower();
         client.Tab.LoadTemplate(templateName);
-        client.SendMessage($"Template {templateName} loaded.", "grey");
       }
     }
 

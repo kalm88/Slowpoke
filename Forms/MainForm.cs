@@ -1140,11 +1140,11 @@ namespace Flintstones
     {
       if (!this.loglabormules.Checked || this.labormulelist.Items.Count <= 0)
         return;
-      foreach (Client client in Server.Alts.Values.ToArray<Client>())
+      foreach (Client client in Server.Clients)
       {
         foreach (object obj in this.labormulelist.Items)
         {
-          if (obj.ToString().ToLower().Contains(client.Name.ToLower()))
+          if (obj.ToString().IndexOf(client.Name, StringComparison.CurrentCultureIgnoreCase) >= 0)
           {
             client.Tab.laborname.Text = Program.MainForm.laborname.Text;
             client.Tab.btnPlay.PerformClick();

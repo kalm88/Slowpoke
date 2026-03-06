@@ -641,29 +641,31 @@ namespace Flintstones
 
     public void PopulateSkullListView()
     {
-      if (Server.SkullList.Count<KeyValuePair<string, SkullData>>() <= 0)
+      if (Server.SkullList.Count == 0)
         return;
-      foreach (SkullData skullData in Server.SkullList.Values.ToArray<SkullData>())
+
+      var listView = Program.MainForm.skulledlistview;
+
+      listView.BeginUpdate();
+      foreach (var skullData in Server.SkullList.Values)
       {
-        if (Server.SkullList.ContainsKey(skullData.Name) && skullData != null)
+        if (skullData == null)
+          continue;
+
+        if (!listView.Items.ContainsKey(skullData.Name))
         {
-          if (!Program.MainForm.skulledlistview.Items.ContainsKey(skullData.Name))
-          {
-            Program.MainForm.skulledlistview.BeginUpdate();
-            ListViewItem listViewItem = Program.MainForm.skulledlistview.Items.Add(skullData.Name, skullData.Name, -1);
-            listViewItem.SubItems.Add(skullData.Map);
-            listViewItem.SubItems.Add(skullData.XY);
-            Program.MainForm.skulledlistview.EndUpdate();
-          }
-          else if (Program.MainForm.skulledlistview.Items[skullData.Name] != null)
-          {
-            Program.MainForm.skulledlistview.BeginUpdate();
-            Program.MainForm.skulledlistview.Items[skullData.Name].SubItems[1].Text = skullData.Map;
-            Program.MainForm.skulledlistview.Items[skullData.Name].SubItems[2].Text = skullData.XY;
-            Program.MainForm.skulledlistview.EndUpdate();
-          }
+          var item = listView.Items.Add(skullData.Name, skullData.Name, -1);
+          item.SubItems.Add(skullData.Map);
+          item.SubItems.Add(skullData.XY);
+        }
+        else
+        {
+          var item = listView.Items[skullData.Name];
+          item.SubItems[1].Text = skullData.Map;
+          item.SubItems[2].Text = skullData.XY;
         }
       }
+      listView.EndUpdate();
     }
 
     public void SaveSkullList()
@@ -1030,18 +1032,21 @@ namespace Flintstones
 
     public void ServerLoop()
     {
-      this.Running = true;
-      while (this.Running)
+      Running = true;
+      while (Running)
       {
-        if (this.Listener.Pending())
+        if (Listener.Pending())
         {
-          Server.Clients.Add(new Client(this, this.Listener.AcceptSocket(), this.RemoteEndPoint));
-          try
+          Server.Clients.Add(new Client(this, Listener.AcceptSocket(), RemoteEndPoint));
+
+          IPAddress ip;
+          if (IPAddress.TryParse("52.88.55.94", out ip))
           {
-            this.RemoteEndPoint = (EndPoint) new IPEndPoint(IPAddress.Parse("52.88.55.94"), 2610);
+            RemoteEndPoint = new IPEndPoint(ip, 2610);
           }
-          catch
+          else
           {
+            Console.WriteLine("Invalid IP address.");
           }
         }
         Thread.Sleep(1);
@@ -6532,7 +6537,7 @@ label_53:
     {
       if (Server.Relog.Count > 0)
       {
-        foreach (Flintstones.Relog relog in Server.Relog.Values)
+        foreach (Relog relog in Server.Relog.Values)
         {
           if (relog != null && relog.WaitForOk)
           {

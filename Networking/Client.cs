@@ -442,6 +442,13 @@ namespace Flintstones
     public uint bug43;
     public uint bug44;
     public DateTime bugtimer = DateTime.MinValue;
+
+    private bool BotThreadRunning = true;
+    private bool SpeakCommandThreadRunning = true;
+    private bool EntityNameThreadRunning = true;
+    private bool WalkThreadRunning = true;
+    private bool QuestThreadRunning = true;
+
     private bool clientReceiving;
     private bool serverReceiving;
     private byte[] clientBuffer = new byte[(int) ushort.MaxValue];
@@ -748,7 +755,7 @@ namespace Flintstones
       this.RelogThread = new Thread(new ThreadStart(this.LogAfterDC));
       this.RelogThread.Abort();
       this.EntityNameThread = new Thread(new ThreadStart(this.EntityNameLoop));
-      this.BotThread = new Thread(new ThreadStart(this.BotLoop));
+      this.BotThread = new Thread(new ThreadStart(BotLoop));
       this.BotThread.Name = "BotThread";
       this.WalkThread = new Thread(new ThreadStart(this.Walking));
       this.QuestsThread = new Thread(new ThreadStart(this.Questing));
@@ -834,7 +841,8 @@ namespace Flintstones
 
     public void SpeakThread()
     {
-      while (true)
+      SpeakCommandThreadRunning = true;
+      while (SpeakCommandThreadRunning)
       {
         if (this.SpeakMessage != string.Empty)
         {
@@ -1213,7 +1221,8 @@ namespace Flintstones
 
     private void EntityNameLoop()
     {
-      while (true)
+      EntityNameThreadRunning = true;
+      while (EntityNameThreadRunning)
       {
         try
         {
@@ -1440,7 +1449,8 @@ namespace Flintstones
 
     private void Questing()
     {
-      while (true)
+      QuestThreadRunning = true;
+      while (QuestThreadRunning)
       {
         try
         {
@@ -1984,7 +1994,7 @@ namespace Flintstones
             this.SendMessage(this.throwername + " threw me.");
             this.throwername = string.Empty;
           }
-          if (!this.pause && (this.Tab.dojo.Checked ? (this.MapInfo.Name.Contains("Training Dojo") ? 1 : 0) : (!this.Tab.dojo.Checked ? 1 : 0)) != 0 && !this.autowalkon)
+          if (!this.pause && (!this.Tab.dojo.Checked || this.MapInfo.Name.Contains("Training Dojo")) && !this.autowalkon)
           {
             if (this.Tab.MacroOptions.macroskill.Checked)
             {
@@ -2036,9 +2046,9 @@ namespace Flintstones
           }
           if (!this.pause && this.Tab.dojo.Checked)
           {
-            if (this.MapInfo.Name.Equals("Training Dojo 1") || this.MapInfo.Name.Equals("Training Dojo 2") || this.MapInfo.Name.Equals("Training Dojo 3") || this.MapInfo.Name.Equals("Training Dojo 4") || this.MapInfo.Name.Equals("Training Dojo 5") || this.MapInfo.Name.Equals("Training Dojo 6") || this.MapInfo.Name.Equals("Training Dojo 7") || this.MapInfo.Name.Equals("Training Dojo 8") || this.MapInfo.Name.Equals("Training Dojo 9"))
+            if (this.MapInfo.Name.StartsWith("Training Dojo"))
             {
-              if (this.Tab.autowalker_button.Text == "Stop")
+              if (dojowalk && this.Tab.autowalker_button.Text == "Stop")
               {
                 this.Tab.autowalker_button.Text = "Start";
                 this.autowalkon = false;
@@ -7413,7 +7423,8 @@ label_3045:
 
     private void Walking()
     {
-      while (true)
+      WalkThreadRunning = true;
+      while (WalkThreadRunning)
       {
         try
         {
@@ -7632,11 +7643,11 @@ label_92:
 
     private void BotLoop()
     {
-      while (true)
+      while (BotThreadRunning)
       {
         try
         {
-          Thread.Sleep(1);
+          Thread.Sleep(10);
           if (!this.pause)
           {
             if (this.Statistics.CurrentHP != 0U)
@@ -9505,7 +9516,8 @@ label_498:
                               this.DropItems(obj.ToString());
                           }
                         }
-                        if ((this.Tab.dojo.Checked ? (this.MapInfo.Name.Contains("Training Dojo") ? 1 : 0) : (!this.Tab.dojo.Checked ? 1 : 0)) != 0 && !this.autowalkon)
+
+                        if ((!this.Tab.dojo.Checked || this.MapInfo.Name.Contains("Training Dojo")) && !this.autowalkon)
                         {
                           if (this.Tab.MacroOptions.macroassail.Checked && !this.castingoneline)
                           {
@@ -12682,8 +12694,21 @@ label_11:
         }
       }
 label_146:
-      Thread.Sleep(1);
+      Thread.Sleep(15);
     }
+
+
+    public void SpellMonsters(Client client)
+    {
+      // Jump out when skulled or dead
+      if (Statistics.CurrentHP == 0 || IsSkulled)
+        return;
+
+      // Jump out when no monsters are around
+
+    }
+
+
 
     public void SpellMonsters()
     {
@@ -12747,6 +12772,7 @@ label_146:
             npcArray1 = this.ArenaAI(npcArray1);
         }
       }
+
       if (this.Tab.briescantattack.Checked && (this.HasSpell("beag breisleich") || this.HasSpell("breisleich") || this.HasSpell("mor breisleich")))
       {
         foreach (Character character in Server.StaticCharacters.Values.ToArray<Character>())
@@ -12762,6 +12788,7 @@ label_146:
           }
         }
       }
+
       if (this.Tab.allMonsters != null && this.Tab.allMonsters.attack1.Checked && this.Tab.allMonsters.attack1type.Text == "mor strioch pian gar" && this.Tab.fs.Checked && this.Statistics.CurrentMP < this.Statistics.MaximumMP / 2U)
       {
         this.CastSpell("fas spiorad");
@@ -14907,115 +14934,129 @@ label_860:
 
     public void ClientLoop()
     {
-      this.Connected = true;
-      while (this.Connected)
+      Connected = true;
+      while (Connected)
       {
-        lock (Program.SyncObj)
+        // lock (Program.SyncObj) // probably not necessary to lock, testing without it.
         {
           try
           {
-            this.ClientReceive();
-            this.ClientProcess();
-            this.ClientDequeue();
-            this.ServerReceive();
-            this.ServerProcess();
-            this.ServerDequeue();
+            ClientReceive();
+            ClientProcess();
+            ClientDequeue();
+            ServerReceive();
+            ServerProcess();
+            ServerDequeue();
           }
-          catch
+          catch (Exception ex)
           {
-            this.Connected = false;
+            Connected = false;
+            Console.WriteLine($"Client loop running: {ex}");
           }
         }
-        Thread.Sleep(1);
+        Thread.Sleep(15); // windows scheduler has 15ms resolution, so this is effectively 15ms
       }
-      lock (Program.SyncObj)
+
+      try
       {
-        try
+        BotThreadRunning = false;
+        SpeakCommandThreadRunning = false;
+        EntityNameThreadRunning = false;
+        WalkThreadRunning = false;
+        QuestThreadRunning = false;
+
+        if (BotThread != null && BotThread.IsAlive)
+          BotThread.Join();
+
+        if (SpeakCommandThread != null && SpeakCommandThread.IsAlive)
+          SpeakCommandThread.Join();
+
+        if (EntityNameThread != null && EntityNameThread.IsAlive)
+          EntityNameThread.Join();
+
+        if (WalkThread != null && WalkThread.IsAlive)
+          WalkThread.Join();
+
+        if (QuestsThread != null && QuestsThread.IsAlive)
+          QuestsThread.Join();
+
+        if (IsSkulled)
         {
-          this.BotThread.Abort();
-          this.SpeakCommandThread.Abort();
-          this.EntityNameThread.Abort();
-          this.WalkThread.Abort();
-          this.QuestsThread.Abort();
-          if (this.IsSkulled)
+          SkullData skullData = new SkullData
           {
-            SkullData skullData1 = new SkullData();
-            skullData1.Name = this.Name;
-            skullData1.Map = this.MapInfo.Name;
-            SkullData skullData2 = skullData1;
-            int num = this.ServerLocation.X;
-            string str1 = num.ToString();
-            num = this.ServerLocation.Y;
-            string str2 = num.ToString();
-            string str3 = str1 + "," + str2;
-            skullData2.XY = str3;
-            if (!Server.SkullList.ContainsKey(this.Name))
-              Server.SkullList.Add(this.Name, skullData1);
-            else
-              Server.SkullList[this.Name] = skullData1;
-            this.Server.SaveSkullList();
-          }
-          this.Loaded = false;
-          if (this.LoggedOn && !this.manuallog && !this.RelogThread.IsAlive)
-          {
-            Relog relog = new Relog();
-            relog.Name = this.Name;
-            relog.Process = this.mainProc;
-            relog.WaitForOk = true;
-            relog.Redirected = this.Redirected;
-            relog.ServerReset = false;
-            if (this.serverreset)
-              relog.ServerReset = true;
-            if (!Server.Relog.ContainsKey(this.Name))
-              Server.Relog.Add(this.Name, relog);
-            else
-              Server.Relog[this.Name] = relog;
-            this.Tab.SaveTemplate(OnDC: true);
-            if (Program.MainForm.relog.Checked && !relog.Redirected)
-            {
-              this.RelogThread = new Thread(new ThreadStart(this.LogAfterDC));
-              this.RelogThread.Start();
-            }
-          }
-          this.LoggedOn = false;
-          if (this.safemode)
-          {
-            this.safemode = false;
-            User32.Show();
-          }
-          this.Tab.ExternalChat.Dispose();
-          this.Tab.SpellPriority.Dispose();
-          this.Tab.Wayregion.Dispose();
-          this.Tab.AscendOptions.Dispose();
-          this.Tab.ComboOptions.Dispose();
-          this.Tab.MacroOptions.Dispose();
-          this.Tab.HideTrinketOptions.Dispose();
-          this.Tab.ArenaCounter.Dispose();
-          this.Tab.SkillSwap.Dispose();
-          this.Tab.LegendMarks.Dispose();
-          this.Tab.calctimer.Stop();
-          if (this.Name != null && Server.Alts.ContainsKey(this.Name.ToLower()))
-            Server.Alts.Remove(this.Name.ToLower());
-          foreach (Client client in Server.Alts.Values.ToArray<Client>())
-          {
-            if (client != null && client.targetplayer != null)
-            {
-              foreach (targetPlayer targetPlayer in client.targetplayer)
-                targetPlayer?.updatePlayerTargets();
-            }
-          }
-          Program.MainForm.RemoveTab(this.Tab);
-          Server.Clients.Remove(this);
-          if (this.ClientSocket.Connected)
-            this.ClientSocket.Close();
-          if (!this.ServerSocket.Connected)
-            return;
-          this.ServerSocket.Close();
+            Name = this.Name,
+            Map = MapInfo.Name,
+            XY = ServerLocation.X.ToString() + "," + ServerLocation.Y.ToString()
+          };
+
+          if (Server.SkullList.ContainsKey(this.Name))
+            Server.SkullList[this.Name] = skullData;
+          else
+            Server.SkullList.Add(this.Name, skullData);
+
+          Server.SaveSkullList();
         }
-        catch (Exception ex)
+
+        this.Loaded = false;
+        if (this.LoggedOn && !this.manuallog && !this.RelogThread.IsAlive)
         {
-          int num = (int) MessageBox.Show(ex.GetBaseException().ToString());
+          Relog relog = new Relog();
+          relog.Name = this.Name;
+          relog.Process = this.mainProc;
+          relog.WaitForOk = true;
+          relog.Redirected = this.Redirected;
+          relog.ServerReset = false;
+          if (this.serverreset)
+            relog.ServerReset = true;
+          if (!Server.Relog.ContainsKey(this.Name))
+            Server.Relog.Add(this.Name, relog);
+          else
+            Server.Relog[this.Name] = relog;
+          this.Tab.SaveTemplate(OnDC: true);
+          if (Program.MainForm.relog.Checked && !relog.Redirected)
+          {
+            this.RelogThread = new Thread(new ThreadStart(this.LogAfterDC));
+            this.RelogThread.Start();
+          }
         }
+        this.LoggedOn = false;
+        if (this.safemode)
+        {
+          this.safemode = false;
+          User32.Show();
+        }
+        this.Tab.ExternalChat.Dispose();
+        this.Tab.SpellPriority.Dispose();
+        this.Tab.Wayregion.Dispose();
+        this.Tab.AscendOptions.Dispose();
+        this.Tab.ComboOptions.Dispose();
+        this.Tab.MacroOptions.Dispose();
+        this.Tab.HideTrinketOptions.Dispose();
+        this.Tab.ArenaCounter.Dispose();
+        this.Tab.SkillSwap.Dispose();
+        this.Tab.LegendMarks.Dispose();
+        this.Tab.calctimer.Stop();
+        if (this.Name != null && Server.Alts.ContainsKey(this.Name.ToLower()))
+          Server.Alts.Remove(this.Name.ToLower());
+        foreach (Client client in Server.Alts.Values.ToArray<Client>())
+        {
+          if (client != null && client.targetplayer != null)
+          {
+            foreach (targetPlayer targetPlayer in client.targetplayer)
+              targetPlayer?.updatePlayerTargets();
+          }
+        }
+        Program.MainForm.RemoveTab(this.Tab);
+        Server.Clients.Remove(this);
+        if (this.ClientSocket.Connected)
+          this.ClientSocket.Close();
+        if (!this.ServerSocket.Connected)
+          return;
+        this.ServerSocket.Close();
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine($"Client loop exit: {ex}");
       }
     }
 
@@ -25664,125 +25705,156 @@ label_31:
 
     public Npc[] ChaosAI(Npc[] R)
     {
-      List<Npc> npcList = new List<Npc>();
+      //create dictionary to store monsters (npc)  and their kill order (int)
+      Dictionary<int,List <Npc>> monsterKillOrder = new Dictionary<int,List <Npc>>();
+      int killPriority = 1; // Start with highest priority
+
       foreach (Npc npc in R)
       {
-        if (npc != null && npc.IsOnScreen && Server.StaticCharacters[npc.ID] != null && (Server.StaticCharacters[npc.ID].hasmonsterdion || Server.StaticCharacters[npc.ID].hasdion))
-          npcList.Add(npc);
+        if (npc != null && npc.IsOnScreen)
+        {
+          // Check for Diond monsters first
+          if (Server.StaticCharacters[npc.ID] != null && (Server.StaticCharacters[npc.ID].hasmonsterdion || Server.StaticCharacters[npc.ID].hasdion))
+            killPriority = 1; // Diond monsters get highest priority
+          else
+            switch (npc.Image)
+            {
+              case 199: // Death Knight
+                killPriority = 2;
+                break;
+              case 204: // Verdant Losgann
+              case 208: // Losgann
+                killPriority = 3;
+                break;
+              case 198: // Kabungkl
+                killPriority = 4;
+                break;
+              case 196: // Porboss
+              case 209: // Ruidhtear
+                killPriority = 5;
+                break;
+              default:
+                killPriority = 6; // Everything else gets lowest priority
+                break;
+            }
+
+          // if the kill priority doesn't exist in the dictionary, add it with an empty list
+          if (!monsterKillOrder.ContainsKey(killPriority))
+            monsterKillOrder.Add(killPriority, new List<Npc>());
+
+          monsterKillOrder[killPriority].Add(npc);
+        }
       }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 199 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && (npc.Image == 204 || npc.Image == 208) && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 198 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && (npc.Image == 196 || npc.Image == 209) && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 315 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image != 315 && npc.Image != 208 && npc.Image != 204 && npc.Image != 198 && npc.Image != 209 && npc.Image != 199 && npc.Image != 196 && npc.IsOnScreen && npc.Type == Npc.NpcType.NormalMonster && (npc.Image == 197 || npc.Image == 189 || npc.Image == 200 || npc.Image == 203 || npc.Image == 211 || npc.Image == 205 || npc.Image == 201 || npc.Image == 242 || npc.Image == 320 || npc.Image == 243 || npc.Image == 240 || npc.Image == 210 || npc.Image == 325 || npc.Image == 190 || npc.Image == 206 || npc.Image == 324 || npc.Image == 323 || npc.Image == 202 || npc.Image == 317 || npc.Image == 313))
-          npcList.Add(npc);
-      }
-      return npcList.ToArray();
+
+      return monsterKillOrder
+              .OrderBy(kvp => kvp.Key)
+              .SelectMany(kvp => kvp.Value)
+              .ToArray(); ;
     }
 
     public Npc[] DesertDunesAI(Npc[] R)
     {
-      List<Npc> npcList = new List<Npc>();
+      //create dictionary to store monsters (npc)  and their kill order (int)
+      Dictionary<int, List<Npc>> monsterKillOrder = new Dictionary<int, List<Npc>>();
+      int killPriority = 1;
+
       foreach (Npc npc in R)
       {
-        if (npc != null && npc.Image == 491 && npc.IsOnScreen)
-          npcList.Add(npc);
+        if (npc != null && npc.IsOnScreen)
+        {
+          switch (npc.Image)
+          {
+            case 491: // Desert Fox
+              killPriority = 1;
+              break;
+            case 188: // Sand Mummy
+              killPriority = 2;
+              break;
+            case 593: // Sand Rat
+              killPriority = 3;
+              break;
+            case 467: // Vulture
+              killPriority = 4;
+              break;
+            case 592: // Sand Guum
+              killPriority = 5;
+              break;
+            case 460: // Soul Stone
+              killPriority = 6;
+              break;
+            case 594: // Bast Cat
+              killPriority = 7;
+              break;
+            case 462: // Brown Cactus
+              killPriority = 8;
+              break;
+            default:
+              killPriority = 9; // Everything else gets lowest priority
+              break;
+          }
+
+          // if the kill priority doesn't exist in the dictionary, add it with an empty list
+          if (!monsterKillOrder.ContainsKey(killPriority))
+            monsterKillOrder.Add(killPriority, new List<Npc>());
+
+          monsterKillOrder[killPriority].Add(npc);
+        }
       }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 188 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 593 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 467 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 592 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 460 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 594 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 462 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      return npcList.ToArray();
+
+      return monsterKillOrder
+              .OrderBy(kvp => kvp.Key)
+              .SelectMany(kvp => kvp.Value)
+              .ToArray(); ;
+
     }
 
     public Npc[] WaterDungeonAI(Npc[] R)
     {
-      List<Npc> npcList = new List<Npc>();
+      //create dictionary to store monsters (npc)  and their kill order (int)
+      Dictionary<int, List<Npc>> monsterKillOrder = new Dictionary<int, List<Npc>>();
+      int killPriority = 1;
+
       foreach (Npc npc in R)
       {
-        if (npc != null && npc.Image == 704 && npc.IsOnScreen)
-          npcList.Add(npc);
+        if (npc != null && npc.IsOnScreen)
+        {
+          switch (npc.Image)
+          {
+            case 704: // ?
+              killPriority = 1;
+              break;
+            case 716: // ?
+              killPriority = 2;
+              break;
+            case 715: // ?
+              killPriority = 3;
+              break;
+            case 706: // ?
+              killPriority = 4;
+              break;
+            case 703: // ?
+              killPriority = 5;
+              break;
+            case 705: // ?
+              killPriority = 6;
+              break;
+            default:
+              killPriority = 7; // Everything else gets lowest priority
+              break;
+          }
+
+          // if the kill priority doesn't exist in the dictionary, add it with an empty list
+          if (!monsterKillOrder.ContainsKey(killPriority))
+            monsterKillOrder.Add(killPriority, new List<Npc>());
+
+          monsterKillOrder[killPriority].Add(npc);
+        }
       }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 716 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 715 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 706 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 703 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 705 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      return npcList.ToArray();
+
+      return monsterKillOrder
+              .OrderBy(kvp => kvp.Key)
+              .SelectMany(kvp => kvp.Value)
+              .ToArray(); ;
     }
 
     public Npc[] AndorAI(Npc[] R)
