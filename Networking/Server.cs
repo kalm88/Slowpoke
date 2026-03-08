@@ -887,9 +887,9 @@ namespace Flintstones
     {
       if (!Directory.Exists(Program.StartupPath + "\\Settings\\Lists"))
         Directory.CreateDirectory(Program.StartupPath + "\\Settings\\Lists");
-      if (!System.IO.File.Exists(Program.StartupPath + "\\Settings\\Lists\\customlootlist.txt"))
+      if (!File.Exists(Program.StartupPath + "\\Settings\\Lists\\customlootlist.txt"))
       {
-        System.IO.File.Create(Program.StartupPath + "\\Settings\\Lists\\customlootlist.txt").Close();
+        File.Create(Program.StartupPath + "\\Settings\\Lists\\customlootlist.txt").Close();
       }
       else
       {
@@ -901,9 +901,9 @@ namespace Flintstones
           Server.CustomLoot.Add(int.Parse(s));
         streamReader.Close();
       }
-      if (!System.IO.File.Exists(Program.StartupPath + "\\Settings\\Lists\\identifyitemslist.txt"))
+      if (!File.Exists(Program.StartupPath + "\\Settings\\Lists\\identifyitemslist.txt"))
       {
-        System.IO.File.Create(Program.StartupPath + "\\Settings\\Lists\\identifyitemslist.txt").Close();
+        File.Create(Program.StartupPath + "\\Settings\\Lists\\identifyitemslist.txt").Close();
       }
       else
       {
@@ -915,9 +915,9 @@ namespace Flintstones
           Server.IdentifyItems.Add(str.ToLower());
         streamReader.Close();
       }
-      if (!System.IO.File.Exists(Program.StartupPath + "\\Settings\\Lists\\trashlist.txt"))
+      if (!File.Exists(Program.StartupPath + "\\Settings\\Lists\\trashlist.txt"))
       {
-        System.IO.File.Create(Program.StartupPath + "\\Settings\\Lists\\trashlist.txt").Close();
+        File.Create(Program.StartupPath + "\\Settings\\Lists\\trashlist.txt").Close();
       }
       else
       {
@@ -929,9 +929,9 @@ namespace Flintstones
           Server.TrashList.Add(str.ToLower());
         streamReader.Close();
       }
-      if (!System.IO.File.Exists(Program.StartupPath + "\\Settings\\Lists\\ignoreaislingslist.txt"))
+      if (!File.Exists(Program.StartupPath + "\\Settings\\Lists\\ignoreaislingslist.txt"))
       {
-        System.IO.File.Create(Program.StartupPath + "\\Settings\\Lists\\ignoreaislingslist.txt").Close();
+        File.Create(Program.StartupPath + "\\Settings\\Lists\\ignoreaislingslist.txt").Close();
       }
       else
       {
@@ -951,7 +951,7 @@ namespace Flintstones
         Server.gmlist.Clear();
       if (!Directory.Exists(Program.StartupPath + "\\Settings"))
         return;
-      if (!System.IO.File.Exists(Program.StartupPath + "\\Settings\\GMs.txt"))
+      if (!File.Exists(Program.StartupPath + "\\Settings\\GMs.txt"))
       {
         StreamWriter streamWriter = new StreamWriter(Program.StartupPath + "\\Settings\\GMs.txt", true);
         streamWriter.WriteLine("kru");

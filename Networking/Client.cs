@@ -764,9 +764,9 @@ namespace Flintstones
       this.ClientLoopThread.Start();
     }
 
-    public void walkcommand(string locala, string localb = "", bool allclients = true)
+    public void walkcommand(string locala, string localb = "", bool allClients = true)
     {
-      if (allclients)
+      if (allClients)
       {
         foreach (Client client in Server.Alts.Values.ToArray<Client>())
         {
@@ -24003,7 +24003,7 @@ label_232:
       List<Npc> npcList = new List<Npc>();
       try
       {
-        foreach (Character character1 in this.Characters.Values.ToArray<Character>())
+        foreach (Character character1 in Characters.Values.ToArray<Character>())
         {
           if (character1 != null && character1 is Npc && character1.IsOnScreen && (character1 as Npc).Image > 16384 && this.ServerLocation.DistanceFrom(character1.Location) <= 12)
           {
@@ -24055,13 +24055,12 @@ label_232:
 
     public bool InventoryIsFull()
     {
-      int num = 0;
       foreach (Item obj in this.Inventory)
       {
-        if (obj != null)
-          ++num;
+        if (obj is null)
+          return false;
       }
-      return num == 59;
+      return true;
     }
 
     public int OpenSlotsCount()
@@ -25639,68 +25638,68 @@ label_31:
 
     public Npc[] ChadulAI(Npc[] R)
     {
-      List<Npc> npcList = new List<Npc>();
+      //create dictionary to store monsters (npc)  and their kill order (int)
+      Dictionary<int, List<Npc>> monsterKillOrder = new Dictionary<int, List<Npc>>();
+      int killPriority = 1;
+
       foreach (Npc npc in R)
       {
-        if (npc != null && npc.Image == 398 && npc.IsOnScreen)
-          npcList.Add(npc);
+        if (npc != null && npc.IsOnScreen)
+        {
+          switch (npc.Image)
+          {
+            case 398: // Guardian of Chadul
+              killPriority = 1;
+              break;
+            case 650: // ?
+            case 707: // ?
+            case 397: // ?
+            case 400: // ?
+            case 401: // ?
+              killPriority = 2;
+              break;
+            case 356: // Monk of Chadul
+            case 357: // Monk of Chadul
+              killPriority = 3;
+              break;
+            case 595: // Corrupt Druid
+            case 596: // Corrupt Druid
+            case 597: // Corrupt Druid
+              killPriority = 4;
+              break;
+            case 346: // Priest of Chadul
+            case 350: // Priest of Chadul
+              killPriority = 5;
+              break;
+            case 348: // Rogue of Chadul
+            case 353: // Rogue of Chadul
+              killPriority = 6;
+              break;
+            case 347: // Wizard of Chadul
+            case 354: // Wizard of Chadul
+              killPriority = 7;
+              break;
+            case 351: // Warrior of Chadul
+            case 355: // Warrior of Chadul
+              killPriority = 8;
+              break;
+            default:
+              killPriority = 9; // Everything else gets lowest priority
+              break;
+          }
+
+          // if the kill priority doesn't exist in the dictionary, add it with an empty list
+          if (!monsterKillOrder.ContainsKey(killPriority))
+            monsterKillOrder.Add(killPriority, new List<Npc>());
+
+          monsterKillOrder[killPriority].Add(npc);
+        }
       }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 650 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 707 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 397 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 400 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 401 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && (npc.Image == 356 || npc.Image == 357) && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && (npc.Image == 595 || npc.Image == 596 || npc.Image == 597) && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && (npc.Image == 346 || npc.Image == 350) && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && (npc.Image == 348 || npc.Image == 353) && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && (npc.Image == 347 || npc.Image == 354) && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && (npc.Image == 355 || npc.Image == 351) && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      return npcList.ToArray();
+
+      return monsterKillOrder
+              .OrderBy(kvp => kvp.Key)
+              .SelectMany(kvp => kvp.Value)
+              .ToArray();
     }
 
     public Npc[] ChaosAI(Npc[] R)
@@ -25749,7 +25748,7 @@ label_31:
       return monsterKillOrder
               .OrderBy(kvp => kvp.Key)
               .SelectMany(kvp => kvp.Value)
-              .ToArray(); ;
+              .ToArray();
     }
 
     public Npc[] DesertDunesAI(Npc[] R)
@@ -25804,7 +25803,7 @@ label_31:
       return monsterKillOrder
               .OrderBy(kvp => kvp.Key)
               .SelectMany(kvp => kvp.Value)
-              .ToArray(); ;
+              .ToArray();
 
     }
 
@@ -25854,7 +25853,7 @@ label_31:
       return monsterKillOrder
               .OrderBy(kvp => kvp.Key)
               .SelectMany(kvp => kvp.Value)
-              .ToArray(); ;
+              .ToArray();
     }
 
     public Npc[] AndorAI(Npc[] R)
@@ -25954,7 +25953,7 @@ label_31:
         if (npc != null && npc.Image == 554 && npc.IsOnScreen)
           npcList.Add(npc);
       }
-      foreach (Npc npc in (IEnumerable<Npc>) ((IEnumerable<Npc>) R).OrderByDescending<Npc, int>((Func<Npc, int>) (e => e.Location.DistanceFrom(this.ServerLocation))))
+      foreach (Npc npc in (IEnumerable<Npc>)R.OrderByDescending<Npc, int>(e => e.Location.DistanceFrom(this.ServerLocation)))
       {
         if (npc != null && npc.Image == 537 && npc.IsOnScreen)
           npcList.Add(npc);
@@ -25975,447 +25974,424 @@ label_31:
     public Npc[] YowienAI(Npc[] R)
     {
       Npc[] npcArray = this.AllNearbyMonsters();
-      List<Npc> npcList = new List<Npc>();
-      foreach (Npc npc in npcArray)
-      {
-        if (npc != null && npc.Image == 634 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && (npc.Image == 873 || npc.Image == 874 || npc.Image == 875) && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 856 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && (npc.Image == 668 || npc.Image == 666) && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 661 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 664 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
+
+      //create dictionary to store monsters (npc)  and their kill order (int)
+      Dictionary<int, List<Npc>> monsterKillOrder = new Dictionary<int, List<Npc>>();
+      int killPriority = 0;
+
+      monsterKillOrder.Add(killPriority, new List<Npc>());
+      monsterKillOrder[killPriority].AddRange(npcArray);
+
       foreach (Npc npc in R)
       {
         if (npc != null && npc.IsOnScreen)
-          npcList.Add(npc);
+        {
+          switch (npc.Image)
+          {
+            case 634: // Yowien Sundews
+              killPriority = 1;
+              break;
+            case 873: // Aman Blue Frog
+            case 874: // Aman Red Frog
+            case 875: // Aman Grey Frog
+              killPriority = 2;
+              break;
+            case 856: // Dendron
+              killPriority = 3;
+              break;
+            case 666: // Yowien Tree
+            case 668: // Yowien Tree
+              killPriority = 4;
+              break;
+            case 661: // Baby Brute
+              killPriority = 5;
+              break;
+            case 664: // Brute
+              killPriority = 6;
+              break;
+            default:  // Everything else gets lowest priority
+              killPriority = 7; 
+              break;
+          }
+
+          // if the kill priority doesn't exist in the dictionary, add it with an empty list
+          if (!monsterKillOrder.ContainsKey(killPriority))
+            monsterKillOrder.Add(killPriority, new List<Npc>());
+
+          monsterKillOrder[killPriority].Add(npc);
+        }
       }
-      return npcList.ToArray();
+
+      return monsterKillOrder
+              .OrderBy(kvp => kvp.Key)
+              .SelectMany(kvp => kvp.Value)
+              .ToArray();
     }
 
     public Npc[] PlamitAI(Npc[] R)
     {
-      List<Npc> npcList = new List<Npc>();
+      //create dictionary to store monsters (npc)  and their kill order (int)
+      Dictionary<int, List<Npc>> monsterKillOrder = new Dictionary<int, List<Npc>>();
+      int killPriority = 1;
+
       foreach (Npc npc in R)
       {
-        if (npc != null && npc.Image == 692 && npc.IsOnScreen)
-          npcList.Add(npc);
+        if (npc != null && npc.IsOnScreen)
+        {
+          switch (npc.Image)
+          {
+            case 692: // Son of Drakari
+              killPriority = 1;
+              break;
+            case 695: // Baem of Wind
+              killPriority = 2;
+              break;
+            case 698: // Baem Sinturi
+              killPriority = 3;
+              break;
+            case 696: // Baem Soldata
+              killPriority = 4;
+              break;
+            case 697: // Baem Gaedeu
+              killPriority = 5;
+              break;
+            default:
+              killPriority = 6; // Everything else gets lowest priority
+              break;
+          }
+
+          // if the kill priority doesn't exist in the dictionary, add it with an empty list
+          if (!monsterKillOrder.ContainsKey(killPriority))
+            monsterKillOrder.Add(killPriority, new List<Npc>());
+
+          monsterKillOrder[killPriority].Add(npc);
+        }
       }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 695 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 698 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 696 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 697 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      return npcList.ToArray();
+
+      return monsterKillOrder
+              .OrderBy(kvp => kvp.Key)
+              .SelectMany(kvp => kvp.Value)
+              .ToArray();
     }
 
     public Npc[] MuisirAI(Npc[] R)
     {
-      Npc[] npcArray = this.AllNearbyMonsters();
-      List<Npc> npcList = new List<Npc>();
-      foreach (Npc npc in npcArray)
-      {
-        if (npc != null && npc.Image == 580 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
+      //create dictionary to store monsters (npc)  and their kill order (int)
+      Dictionary<int, List<Npc>> monsterKillOrder = new Dictionary<int, List<Npc>>();
+      int killPriority = 1;
+
       foreach (Npc npc in R)
       {
-        if (npc != null && npc.Image == 926 && npc.IsOnScreen)
-          npcList.Add(npc);
+        if (npc != null && npc.IsOnScreen)
+        {
+          switch (npc.Image)
+          {
+            case 933: // Muisir Beast (Boss)
+              killPriority = 1;
+              break;
+            case 926: // Rogue Serpent
+            case 940: // Dark Clouds
+              killPriority = 2;
+              break;
+            case 580: // Rouge Russula 1
+            case 953: // Rouge Mycena 1
+            case 954: // Rogue Amanita 2
+            case 955: // Rouge Cacti 1
+              killPriority = 3;
+              break;
+            case 956: // Rogue Dandelion 1
+            case 957: // Rogue Venus 1
+              killPriority = 4;
+              break;
+            case 960: // Rouge Trichol 1
+              killPriority = 5;
+              break;
+            default:
+              killPriority = 6; // Everything else gets lowest priority
+              break;
+          }
+
+          // if the kill priority doesn't exist in the dictionary, add it with an empty list
+          if (!monsterKillOrder.ContainsKey(killPriority))
+            monsterKillOrder.Add(killPriority, new List<Npc>());
+
+          monsterKillOrder[killPriority].Add(npc);
+        }
       }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 933 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 940 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 953 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 954 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 955 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 956 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 957 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 960 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      return npcList.ToArray();
+
+      return monsterKillOrder
+              .OrderBy(kvp => kvp.Key)
+              .SelectMany(kvp => kvp.Value)
+              .ToArray();
     }
 
     public Npc[] SacredForestAI(Npc[] R)
     {
-      List<Npc> npcList = new List<Npc>();
+      //create dictionary to store monsters (npc)  and their kill order (int)
+      Dictionary<int, List<Npc>> monsterKillOrder = new Dictionary<int, List<Npc>>();
+      int killPriority = 1;
+
       foreach (Npc npc in R)
       {
-        if (npc != null && npc.Image == 937 && npc.IsOnScreen)
-          npcList.Add(npc);
+        if (npc != null && npc.IsOnScreen)
+        {
+          switch (npc.Image)
+          {
+            case 937: // ?
+              killPriority = 1;
+              break;
+            case 938: // ?
+              killPriority = 2;
+              break;
+            case 939: // ?
+              killPriority = 3;
+              break;
+            default:
+              killPriority = 4; // Everything else gets lowest priority
+              break;
+          }
+
+          // if the kill priority doesn't exist in the dictionary, add it with an empty list
+          if (!monsterKillOrder.ContainsKey(killPriority))
+            monsterKillOrder.Add(killPriority, new List<Npc>());
+
+          monsterKillOrder[killPriority].Add(npc);
+        }
       }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 938 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 939 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      return npcList.ToArray();
+
+      return monsterKillOrder
+              .OrderBy(kvp => kvp.Key)
+              .SelectMany(kvp => kvp.Value)
+              .ToArray();
     }
 
     public Npc[] MtMerryAI(Npc[] R)
     {
-      List<Npc> npcList = new List<Npc>();
+      //create dictionary to store monsters (npc)  and their kill order (int)
+      Dictionary<int, List<Npc>> monsterKillOrder = new Dictionary<int, List<Npc>>();
+      int killPriority = 1;
+
       foreach (Npc npc in R)
       {
-        if (npc != null && npc.Image == 246 && npc.IsOnScreen)
-          npcList.Add(npc);
+        if (npc != null && npc.IsOnScreen)
+        {
+          switch (npc.Image)
+          {
+            case 246: // ?
+              killPriority = 1;
+              break;
+            case 250: // ?
+              killPriority = 2;
+              break;
+            case 929: // ?
+              killPriority = 3;
+              break;
+            case 559: // ?
+              killPriority = 4;
+              break;
+            case 893: // ?
+              killPriority = 5;
+              break;
+            default:
+              killPriority = 6; // Everything else gets lowest priority
+              break;
+          }
+
+          // if the kill priority doesn't exist in the dictionary, add it with an empty list
+          if (!monsterKillOrder.ContainsKey(killPriority))
+            monsterKillOrder.Add(killPriority, new List<Npc>());
+
+          monsterKillOrder[killPriority].Add(npc);
+        }
       }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 250 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 929 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 559 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 893 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      return npcList.ToArray();
+
+      return monsterKillOrder
+              .OrderBy(kvp => kvp.Key)
+              .SelectMany(kvp => kvp.Value)
+              .ToArray();
     }
 
     public Npc[] GrassFieldsAI(Npc[] R)
     {
-      List<Npc> npcList = new List<Npc>();
+      //create dictionary to store monsters (npc)  and their kill order (int)
+      Dictionary<int, List<Npc>> monsterKillOrder = new Dictionary<int, List<Npc>>();
+      int killPriority = 1;
+
       foreach (Npc npc in R)
       {
-        if (npc != null && npc.Image == 14 && npc.IsOnScreen)
-          npcList.Add(npc);
+        if (npc != null && npc.IsOnScreen)
+        {
+          switch (npc.Image)
+          {
+            case 238: // Law (Boss)
+            case 18:  // Goblin Warlord
+              killPriority = 1;
+              break;
+            case 346: // Dark Priest
+              killPriority = 2;
+              break;
+            case 347: // Dark Wizard
+              killPriority = 3;
+              break;
+            default:
+              killPriority = 4; // Everything else gets lowest priority
+              break;
+          }
+
+          // if the kill priority doesn't exist in the dictionary, add it with an empty list
+          if (!monsterKillOrder.ContainsKey(killPriority))
+            monsterKillOrder.Add(killPriority, new List<Npc>());
+
+          monsterKillOrder[killPriority].Add(npc);
+        }
       }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 15 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 16 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 17 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 18 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 238 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 346 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 347 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 348 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 350 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 351 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 353 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 354 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 355 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 356 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 357 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      return npcList.ToArray();
+
+      return monsterKillOrder
+              .OrderBy(kvp => kvp.Key)
+              .SelectMany(kvp => kvp.Value)
+              .ToArray();
     }
 
     public Npc[] BlackstarAI(Npc[] R)
     {
-      List<Npc> npcList = new List<Npc>();
+      //create dictionary to store monsters (npc)  and their kill order (int)
+      Dictionary<int, List<Npc>> monsterKillOrder = new Dictionary<int, List<Npc>>();
+      int killPriority = 1;
+
       foreach (Npc npc in R)
       {
-        if (npc != null && npc.Image == 759 && npc.IsOnScreen)
-          npcList.Add(npc);
+        if (npc != null && npc.IsOnScreen)
+        {
+          switch (npc.Image)
+          {
+            case 759: // ?
+              killPriority = 1;
+              break;
+            case 767: // ?
+              killPriority = 2;
+              break;
+            case 769: // ?
+              killPriority = 3;
+              break;
+            case 401: // ?
+              killPriority = 4;
+              break;
+            case 205: // ?
+              killPriority = 5;
+              break;
+            case 397: // ?
+              killPriority = 6;
+              break;
+            default:
+              killPriority = 7; // Everything else gets lowest priority
+              break;
+          }
+
+          // if the kill priority doesn't exist in the dictionary, add it with an empty list
+          if (!monsterKillOrder.ContainsKey(killPriority))
+            monsterKillOrder.Add(killPriority, new List<Npc>());
+
+          monsterKillOrder[killPriority].Add(npc);
+        }
       }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 767 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 769 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 401 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 205 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 397 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      return npcList.ToArray();
+
+      return monsterKillOrder
+              .OrderBy(kvp => kvp.Key)
+              .SelectMany(kvp => kvp.Value)
+              .ToArray();
     }
 
     public Npc[] AlsaidsFireCanyonAI(Npc[] R)
     {
-      List<Npc> npcList = new List<Npc>();
+      //create dictionary to store monsters (npc)  and their kill order (int)
+      Dictionary<int, List<Npc>> monsterKillOrder = new Dictionary<int, List<Npc>>();
+      int killPriority = 1;
+
       foreach (Npc npc in R)
       {
-        if (npc != null && npc.Image == 453 && npc.IsOnScreen)
-          npcList.Add(npc);
+        if (npc != null && npc.IsOnScreen)
+        {
+          switch (npc.Image)
+          {
+            case 453: // Magma Cube
+              killPriority = 1;
+              break;
+            case 454: // Molten Cube
+              killPriority = 2;
+              break;
+            case 591: // Blaze
+              killPriority = 3;
+              break;
+            case 607: // Red Scrummel
+              killPriority = 4;
+              break;
+            case 608: // Red Dropper
+              killPriority = 5;
+              break;
+            default:
+              killPriority = 6; // Everything else gets lowest priority
+              break;
+          }
+
+          // if the kill priority doesn't exist in the dictionary, add it with an empty list
+          if (!monsterKillOrder.ContainsKey(killPriority))
+            monsterKillOrder.Add(killPriority, new List<Npc>());
+
+          monsterKillOrder[killPriority].Add(npc);
+        }
       }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 454 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 591 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 607 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 608 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      return npcList.ToArray();
+
+      return monsterKillOrder
+              .OrderBy(kvp => kvp.Key)
+              .SelectMany(kvp => kvp.Value)
+              .ToArray();
     }
 
     public Npc[] ArenaAI(Npc[] R)
     {
-      List<Npc> npcList = new List<Npc>();
+      //create dictionary to store monsters (npc)  and their kill order (int)
+      Dictionary<int, List<Npc>> monsterKillOrder = new Dictionary<int, List<Npc>>();
+      int killPriority = 1;
+
       foreach (Npc npc in R)
       {
-        if (npc != null && npc.Image == 69 && npc.IsOnScreen)
-          npcList.Add(npc);
+        if (npc != null && npc.IsOnScreen)
+        {
+          switch (npc.Image)
+          {
+            case 69:  // ?
+              killPriority = 1;
+              break;
+            case 363: // ?
+            case 365: // ?
+            case 366: // ?
+            case 367: // ?
+              killPriority = 2;
+              break;
+            case 912: // ?
+              killPriority = 3;
+              break;
+            case 790: // ?
+            case 791: // ?
+              killPriority = 4;
+              break;
+            default:
+              killPriority = 5; // Everything else gets lowest priority
+              break;
+          }
+
+          // if the kill priority doesn't exist in the dictionary, add it with an empty list
+          if (!monsterKillOrder.ContainsKey(killPriority))
+            monsterKillOrder.Add(killPriority, new List<Npc>());
+
+          monsterKillOrder[killPriority].Add(npc);
+        }
       }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 363 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 365 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 366 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 367 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 912 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 790 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 827 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 832 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 826 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 825 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 824 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 823 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 822 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 821 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 820 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 819 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 818 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 817 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 816 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      foreach (Npc npc in R)
-      {
-        if (npc != null && npc.Image == 791 && npc.IsOnScreen)
-          npcList.Add(npc);
-      }
-      return npcList.ToArray();
+
+      return monsterKillOrder
+              .OrderBy(kvp => kvp.Key)
+              .SelectMany(kvp => kvp.Value)
+              .ToArray();
     }
 
     public bool HasInfiniteMR(int image)
@@ -26428,76 +26404,49 @@ label_31:
           || image == 897;
     }
 
-    public bool IgnoreCurse(int image) => image == 635 || image == 411;
+    public bool IgnoreCurse(int image)
+    { 
+      return image == 635 
+          || image == 411; 
+    }
 
-    public bool IgnoreFas(int image) => image == 210 || image == 190;
+    public bool IgnoreFas(int image)  
+    { 
+      return image == 210 
+          || image == 190; 
+    }
 
     public bool IgnoreLure(int image)
     {
-      switch (image)
-      {
-        case 583:
-          return true;
-        case 666:
-          return true;
-        case 668:
-          return true;
-        case 859:
-          return true;
-        case 860:
-          return true;
-        case 873:
-          return true;
-        case 874:
-          return true;
-        case 875:
-          return true;
-        case 892:
-          return true;
-        case 896:
-          return true;
-        case 897:
-          return true;
-        default:
-          return false;
-      }
+      return image == 583
+          || image == 666
+          || image == 668
+          || image == 859
+          || image == 860
+          || image == 873
+          || image == 874
+          || image == 875
+          || image == 892
+          || image == 896
+          || image == 897;
     }
 
     public bool IgnoreHP(int image)
     {
-      switch (image)
-      {
-        case 382:
-          return true;
-        case 399:
-          return true;
-        case 411:
-          return true;
-        case 635:
-          return true;
-        case 651:
-          return true;
-        case 814:
-          return true;
-        case 815:
-          return true;
-        case 852:
-          return true;
-        case 853:
-          return true;
-        case 854:
-          return true;
-        case 855:
-          return true;
-        case 914:
-          return true;
-        case 915:
-          return true;
-        case 916:
-          return true;
-        default:
-          return false;
-      }
+      return image == 382
+          || image == 399
+          || image == 411
+          || image == 635
+          || image == 651
+          || image == 814
+          || image == 815
+          || image == 852
+          || image == 853
+          || image == 854
+          || image == 855
+          || image == 914
+          || image == 915
+          || image == 916;
     }
 
     public bool IgnoreAtLocation(Location loc)
