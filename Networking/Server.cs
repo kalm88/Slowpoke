@@ -1589,13 +1589,13 @@ namespace Flintstones
       client.PlayerID = msg.ReadUInt32();
       msg.Read(1);
       msg.Read(1);
-      client.Path = msg.ReadByte();
+      client.myPath = msg.ReadByte();
       msg.Read(1);
       client.Gender = msg.ReadByte();
       msg.BodyData[6] = (byte) 2;
 
       // Set path stats using CharacterClass enum to identify class in maxClassStats dictionary
-      CharacterClass activeClass = (CharacterClass)client.Path;
+      CharacterClass activeClass = (CharacterClass)client.myPath;
       client.pathmaxhp = client.maxClassStats[activeClass].Maxhp;
       client.pathstr = client.maxClassStats[activeClass].Str;
       client.pathint = client.maxClassStats[activeClass].Int;
@@ -1792,7 +1792,9 @@ namespace Flintstones
           if (npc1.Type == Npc.NpcType.Mundane)
           {
             npc1.Name = msg.ReadString((int) msg.ReadByte());
-            if (client.Tab.recordmaps.Checked && npc1.Name != "Fish" && System.IO.File.Exists("C:\\Users\\Russ\\Desktop\\npcs.json") && !Server.gamenpcs.ContainsKey(npc1.Name + npc1.Map.ToString()))
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string filePath = Path.Combine(desktopPath, "npcs.json");
+            if (client.Tab.recordmaps.Checked && npc1.Name != "Fish" && File.Exists(filePath) && !Server.gamenpcs.ContainsKey(npc1.Name + npc1.Map.ToString()))
             {
               RootNpc rootNpc1 = new RootNpc();
               rootNpc1.name = npc1.Name;

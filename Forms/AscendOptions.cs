@@ -440,13 +440,13 @@ namespace Flintstones
     {
       if (this.powermonk.Checked)
       {
-        if (this.Client.Path != (byte) 5)
+        if (this.Client.myPath != (byte) 5)
           return;
         this.Client.pathmaxhp = 8850U;
       }
       else
       {
-        if (this.Client.Path != (byte) 5)
+        if (this.Client.myPath != (byte) 5)
           return;
         this.Client.pathmaxhp = 6850U;
       }

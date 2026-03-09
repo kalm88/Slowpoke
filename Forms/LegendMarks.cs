@@ -546,14 +546,14 @@ namespace Flintstones
         {
           if (mark.Key == "PetMouse" || mark.Key == "PetRedStarfish" || mark.Key == "PetGreenStarfish" || mark.Key == "PetFrog" || mark.Key == "PetRockScorpian")
             flag = true;
-          if (mark.Value.Name == "Herbalist" && this.Client.Path != (byte) 3 && this.Client.Path != (byte) 4 && this.Client.Path != (byte) 5)
+          if (mark.Value.Name == "Herbalist" && this.Client.myPath != (byte) 3 && this.Client.myPath != (byte) 4 && this.Client.myPath != (byte) 5)
           {
             if (this.Client.LegendMarks.ContainsKey("CPriest") || this.Client.LegendMarks.ContainsKey("CMonk") || this.Client.LegendMarks.ContainsKey("CMage"))
               flag = true;
             else if (!this.Client.HasSkill("Herbal Lore"))
               continue;
           }
-          if (mark.Value.Name == "Tailor" && this.Client.Path != (byte) 1 && this.Client.Path != (byte) 2 && this.Client.Path != (byte) 5)
+          if (mark.Value.Name == "Tailor" && this.Client.myPath != (byte) 1 && this.Client.myPath != (byte) 2 && this.Client.myPath != (byte) 5)
           {
             if (this.Client.LegendMarks.ContainsKey("CWarror") || this.Client.LegendMarks.ContainsKey("CMonk") || this.Client.LegendMarks.ContainsKey("CThief"))
               flag = true;
@@ -582,223 +582,223 @@ namespace Flintstones
           {
             if (this.Client.LegendMarks.ContainsKey("CWarror"))
               flag = true;
-            else if (this.Client.Path != (byte) 1)
+            else if (this.Client.myPath != (byte) 1)
               continue;
           }
           if (mark.Key == "WarA")
           {
             if (this.Client.LegendMarks.ContainsKey("CWarror"))
               flag = true;
-            else if (this.Client.Path != (byte) 1)
+            else if (this.Client.myPath != (byte) 1)
               continue;
           }
           if (mark.Key == "PitFight")
           {
             if (this.Client.LegendMarks.ContainsKey("CWarror"))
               flag = true;
-            else if (this.Client.Path != (byte) 1)
+            else if (this.Client.myPath != (byte) 1)
               continue;
           }
           if (mark.Key == "NgmCrn3")
           {
             if (this.Client.LegendMarks.ContainsKey("CWarror"))
               flag = true;
-            else if (this.Client.Path != (byte) 1)
+            else if (this.Client.myPath != (byte) 1)
               continue;
           }
-          if (mark.Value.Name == "Blade Smith" && this.Client.Path != (byte) 2 && this.Client.Path != (byte) 1)
+          if (mark.Value.Name == "Blade Smith" && this.Client.myPath != (byte) 2 && this.Client.myPath != (byte) 1)
           {
-            if (this.Client.Path != (byte) 1 && this.Client.Path != (byte) 2 && (this.Client.LegendMarks.ContainsKey("CThief") || this.Client.LegendMarks.ContainsKey("CWarror")))
+            if (this.Client.myPath != (byte) 1 && this.Client.myPath != (byte) 2 && (this.Client.LegendMarks.ContainsKey("CThief") || this.Client.LegendMarks.ContainsKey("CWarror")))
               flag = true;
-            else if (this.Client.Path != (byte) 1 && this.Client.Path != (byte) 2)
+            else if (this.Client.myPath != (byte) 1 && this.Client.myPath != (byte) 2)
               continue;
           }
-          if ((!(mark.Key == "KRareWarrior") || this.Client.Path == (byte) 1) && (!(mark.Key == "Sep6") || this.Client.LegendMarks.ContainsKey("CWarror") || this.Client.Path == (byte) 1))
+          if ((!(mark.Key == "KRareWarrior") || this.Client.myPath == (byte) 1) && (!(mark.Key == "Sep6") || this.Client.LegendMarks.ContainsKey("CWarror") || this.Client.myPath == (byte) 1))
           {
             if (mark.Key == "RogMt")
             {
               if (this.Client.LegendMarks.ContainsKey("CThief"))
                 flag = true;
-              else if (this.Client.Path != (byte) 2)
+              else if (this.Client.myPath != (byte) 2)
                 continue;
             }
             if (mark.Key == "RogA")
             {
               if (this.Client.LegendMarks.ContainsKey("CThief"))
                 flag = true;
-              else if (this.Client.Path != (byte) 2)
+              else if (this.Client.myPath != (byte) 2)
                 continue;
             }
             if (mark.Key == "NgmMrd3")
             {
               if (this.Client.LegendMarks.ContainsKey("CThief"))
                 flag = true;
-              else if (this.Client.Path != (byte) 2)
+              else if (this.Client.myPath != (byte) 2)
                 continue;
             }
             if (mark.Value.Name == "Gem Smith")
             {
               if (this.Client.LegendMarks.ContainsKey("CThief"))
                 flag = true;
-              else if (this.Client.Path != (byte) 2)
+              else if (this.Client.myPath != (byte) 2)
                 continue;
             }
-            if ((!(mark.Key == "KRareRogue") || this.Client.Path == (byte) 2) && (!(mark.Key == "Sep4") || this.Client.LegendMarks.ContainsKey("CThief") || this.Client.Path == (byte) 2))
+            if ((!(mark.Key == "KRareRogue") || this.Client.myPath == (byte) 2) && (!(mark.Key == "Sep4") || this.Client.LegendMarks.ContainsKey("CThief") || this.Client.myPath == (byte) 2))
             {
               if (mark.Key == "WizMt")
               {
                 if (this.Client.LegendMarks.ContainsKey("CMage"))
                   flag = true;
-                else if (this.Client.Path != (byte) 3)
+                else if (this.Client.myPath != (byte) 3)
                   continue;
               }
               if (mark.Key == "WizA")
               {
                 if (this.Client.LegendMarks.ContainsKey("CMage"))
                   flag = true;
-                else if (this.Client.Path != (byte) 3)
+                else if (this.Client.myPath != (byte) 3)
                   continue;
               }
               if (mark.Value.Name == "Elementalist")
               {
                 if (this.Client.LegendMarks.ContainsKey("CMage"))
                   flag = true;
-                else if (this.Client.Path != (byte) 3)
+                else if (this.Client.myPath != (byte) 3)
                   continue;
               }
               if (mark.Value.Name == "Wizardry Researcher")
               {
                 if (this.Client.LegendMarks.ContainsKey("CMage"))
                   flag = true;
-                else if (this.Client.Path != (byte) 3)
+                else if (this.Client.myPath != (byte) 3)
                   continue;
               }
               if (mark.Value.Name == "Walks the path of Necromancy")
               {
                 if (this.Client.LegendMarks.ContainsKey("CMage"))
                   flag = true;
-                else if (this.Client.Path != (byte) 3)
+                else if (this.Client.myPath != (byte) 3)
                   continue;
               }
-              if (mark.Value.Name == "Cthonic Disciple of Dawn/Death/Decay (male)" && this.Client.Path != (byte) 4 && this.Client.Path != (byte) 3)
+              if (mark.Value.Name == "Cthonic Disciple of Dawn/Death/Decay (male)" && this.Client.myPath != (byte) 4 && this.Client.myPath != (byte) 3)
               {
-                if (this.Client.Path != (byte) 3 && this.Client.Path != (byte) 4 && (this.Client.LegendMarks.ContainsKey("CMage") || this.Client.LegendMarks.ContainsKey("CPriest")))
+                if (this.Client.myPath != (byte) 3 && this.Client.myPath != (byte) 4 && (this.Client.LegendMarks.ContainsKey("CMage") || this.Client.LegendMarks.ContainsKey("CPriest")))
                   flag = true;
-                else if (this.Client.Path != (byte) 3 && this.Client.Path != (byte) 4)
+                else if (this.Client.myPath != (byte) 3 && this.Client.myPath != (byte) 4)
                   continue;
               }
-              if (mark.Value.Name == "Dreamed of Ana/Macha/Madb (female)" && this.Client.Path != (byte) 4 && this.Client.Path != (byte) 3)
+              if (mark.Value.Name == "Dreamed of Ana/Macha/Madb (female)" && this.Client.myPath != (byte) 4 && this.Client.myPath != (byte) 3)
               {
-                if (this.Client.Path != (byte) 3 && this.Client.Path != (byte) 4 && (this.Client.LegendMarks.ContainsKey("CMage") || this.Client.LegendMarks.ContainsKey("CPriest")))
+                if (this.Client.myPath != (byte) 3 && this.Client.myPath != (byte) 4 && (this.Client.LegendMarks.ContainsKey("CMage") || this.Client.LegendMarks.ContainsKey("CPriest")))
                   flag = true;
-                else if (this.Client.Path != (byte) 3 && this.Client.Path != (byte) 4)
+                else if (this.Client.myPath != (byte) 3 && this.Client.myPath != (byte) 4)
                   continue;
               }
-              if ((!(mark.Key == "KRareWizard") || this.Client.Path == (byte) 3) && (!(mark.Key == "Sep3") || this.Client.LegendMarks.ContainsKey("CMage") || this.Client.Path == (byte) 3))
+              if ((!(mark.Key == "KRareWizard") || this.Client.myPath == (byte) 3) && (!(mark.Key == "Sep3") || this.Client.LegendMarks.ContainsKey("CMage") || this.Client.myPath == (byte) 3))
               {
                 if (mark.Key == "PriMt")
                 {
                   if (this.Client.LegendMarks.ContainsKey("CPriest"))
                     flag = true;
-                  else if (this.Client.Path != (byte) 4)
+                  else if (this.Client.myPath != (byte) 4)
                     continue;
                 }
                 if (mark.Key == "PriA")
                 {
                   if (this.Client.LegendMarks.ContainsKey("CPriest"))
                     flag = true;
-                  else if (this.Client.Path != (byte) 4)
+                  else if (this.Client.myPath != (byte) 4)
                     continue;
                 }
                 if (mark.Key == "Alt")
                 {
                   if (this.Client.LegendMarks.ContainsKey("CPriest"))
                     flag = true;
-                  else if (this.Client.Path != (byte) 4)
+                  else if (this.Client.myPath != (byte) 4)
                     continue;
                 }
                 if (mark.Key == "LoveAr")
                 {
                   if (this.Client.LegendMarks.ContainsKey("CPriest"))
                     flag = true;
-                  else if (this.Client.Path != (byte) 4)
+                  else if (this.Client.myPath != (byte) 4)
                     continue;
                 }
                 if (mark.Key == "LoveLr")
                 {
                   if (this.Client.LegendMarks.ContainsKey("CPriest"))
                     flag = true;
-                  else if (this.Client.Path != (byte) 4)
+                  else if (this.Client.myPath != (byte) 4)
                     continue;
                 }
                 if (mark.Key == "WedLr")
                 {
                   if (this.Client.LegendMarks.ContainsKey("CPriest"))
                     flag = true;
-                  else if (this.Client.Path != (byte) 4)
+                  else if (this.Client.myPath != (byte) 4)
                     continue;
                 }
                 if (mark.Key == "Rlg-1r")
                 {
                   if (this.Client.LegendMarks.ContainsKey("CPriest"))
                     flag = true;
-                  else if (this.Client.Path != (byte) 4)
+                  else if (this.Client.myPath != (byte) 4)
                     continue;
                 }
                 if (mark.Key == "RlgEr")
                 {
                   if (this.Client.LegendMarks.ContainsKey("CPriest"))
                     flag = true;
-                  else if (this.Client.Path != (byte) 4)
+                  else if (this.Client.myPath != (byte) 4)
                     continue;
                 }
                 if (mark.Key == "RlgHeld")
                 {
                   if (this.Client.LegendMarks.ContainsKey("CPriest"))
                     flag = true;
-                  else if (this.Client.Path != (byte) 4)
+                  else if (this.Client.myPath != (byte) 4)
                     continue;
                 }
-                if ((!(mark.Key == "KRarePriest") || this.Client.Path == (byte) 4) && (!(mark.Key == "Sep2") || this.Client.LegendMarks.ContainsKey("CPriest") || this.Client.Path == (byte) 4))
+                if ((!(mark.Key == "KRarePriest") || this.Client.myPath == (byte) 4) && (!(mark.Key == "Sep2") || this.Client.LegendMarks.ContainsKey("CPriest") || this.Client.myPath == (byte) 4))
                 {
                   if (mark.Key == "MnkMt")
                   {
                     if (this.Client.LegendMarks.ContainsKey("CMonk"))
                       flag = true;
-                    else if (this.Client.Path != (byte) 5)
+                    else if (this.Client.myPath != (byte) 5)
                       continue;
                   }
                   if (mark.Key == "MnkA")
                   {
                     if (this.Client.LegendMarks.ContainsKey("CMonk"))
                       flag = true;
-                    else if (this.Client.Path != (byte) 5)
+                    else if (this.Client.myPath != (byte) 5)
                       continue;
                   }
                   if (mark.Value.Name == "(Animal) Form")
                   {
                     if (this.Client.LegendMarks.ContainsKey("CMonk"))
                       flag = true;
-                    else if (this.Client.Path != (byte) 5)
+                    else if (this.Client.myPath != (byte) 5)
                       continue;
                   }
-                  if (!(mark.Key == "Dgnr") || this.Client.Path == (byte) 5)
+                  if (!(mark.Key == "Dgnr") || this.Client.myPath == (byte) 5)
                   {
                     if (mark.Value.Name == "(Color) Dugon by (self/name)")
                     {
                       if (this.Client.LegendMarks.ContainsKey("CMonk"))
                         flag = true;
-                      else if (this.Client.Path != (byte) 5)
+                      else if (this.Client.myPath != (byte) 5)
                         continue;
                     }
                     if (mark.Value.Name == "Pattern Walker of Earth/Night/Sea")
                     {
                       if (this.Client.LegendMarks.ContainsKey("CMonk"))
                         flag = true;
-                      else if (this.Client.Path != (byte) 5)
+                      else if (this.Client.myPath != (byte) 5)
                         continue;
                     }
-                    if ((!(mark.Key == "KRareMonk") || this.Client.Path == (byte) 5) && (!(mark.Value.Name == "Druid (Animal) Form") || this.Client.Path == (byte) 5) && (!(mark.Value.Name == "Two/Three Move") || this.Client.Path == (byte) 5) && (!(mark.Key == "Sep5") || this.Client.LegendMarks.ContainsKey("CMonk") || this.Client.Path == (byte) 5) && (!(mark.Key == "Sep16") || this.Client.LegendMarks.ContainsKey("CftSwd") || this.Client.LegendMarks.ContainsKey("CftSew") || this.Client.LegendMarks.ContainsKey("CftHrb") || this.Client.LegendMarks.ContainsKey("NgmMrg1") || this.Client.LegendMarks.ContainsKey("NgmMrg2") || this.Client.LegendMarks.ContainsKey("NgmMrg3") || this.Client.LegendMarks.ContainsKey("NgmCth1") || this.Client.LegendMarks.ContainsKey("NgmCth2") || this.Client.LegendMarks.ContainsKey("NgmCth3")))
+                    if ((!(mark.Key == "KRareMonk") || this.Client.myPath == (byte) 5) && (!(mark.Value.Name == "Druid (Animal) Form") || this.Client.myPath == (byte) 5) && (!(mark.Value.Name == "Two/Three Move") || this.Client.myPath == (byte) 5) && (!(mark.Key == "Sep5") || this.Client.LegendMarks.ContainsKey("CMonk") || this.Client.myPath == (byte) 5) && (!(mark.Key == "Sep16") || this.Client.LegendMarks.ContainsKey("CftSwd") || this.Client.LegendMarks.ContainsKey("CftSew") || this.Client.LegendMarks.ContainsKey("CftHrb") || this.Client.LegendMarks.ContainsKey("NgmMrg1") || this.Client.LegendMarks.ContainsKey("NgmMrg2") || this.Client.LegendMarks.ContainsKey("NgmMrg3") || this.Client.LegendMarks.ContainsKey("NgmCth1") || this.Client.LegendMarks.ContainsKey("NgmCth2") || this.Client.LegendMarks.ContainsKey("NgmCth3")))
                     {
                       ListViewItem listViewItem = this.listView1.Items.Add(mark.Value.Name.ToString(), mark.Value.Name.ToString(), -1);
                       if (mark.Key == "MilethLove" || mark.Key == "SuomiLove" || mark.Key == "Terror" || mark.Key.StartsWith("Urchin") || mark.Key.Contains("Mtr") || mark.Key == "PorteSave" || mark.Value.Name.Contains("of Mythril") || mark.Value.Name.Contains("of Hy-brasyl") || mark.Key == "Master" || mark.Value.Name.Contains(" Dedication") || mark.Key == "KeptSecret" || mark.Key == "RevLev" || mark.Key == "Alt" || mark.Key == "TAWins" || mark.Key == "RpC1" || mark.Key.StartsWith("Insect") || mark.Key == "DoneYuleLog" || mark.Key == "ElgAdr" || mark.Key == "VDayL2" || mark.Key == "STroupeLeader" || mark.Key == "SuomiMark2" || mark.Key == "CNbl0" || mark.Key == "CNbl1" || mark.Key == "Pol-3" || mark.Key == "Pol-4" || mark.Key == "PicC3" || mark.Key == "PicC4" || mark.Key == "ManC1" || mark.Key == "ManC2" || mark.Key == "ManC3" || mark.Key == "ManC4" || mark.Key == "ArtC1" || mark.Key == "ArtC2" || mark.Key == "ArtC3" || mark.Key == "ArtC4" || mark.Key == "BioC1" || mark.Key == "BioC2" || mark.Key == "BioC3" || mark.Key == "BioC4" || mark.Key == "LitC1" || mark.Key == "LitC2" || mark.Key == "LitC3" || mark.Key == "LitC4" || mark.Key == "PhiC1" || mark.Key == "PhiC2" || mark.Key == "PhiC3" || mark.Key == "PhiC4" || mark.Key == "HisC1" || mark.Key == "HisC2" || mark.Key == "HisC3" || mark.Key == "HisC4" || mark.Key == "Gld1-3" || mark.Key == "Gld1Ct" || mark.Key == "Gld1-6" || mark.Key == "MotleyCo" || mark.Key == "GuildCo" || mark.Key == "MotleyCt" || mark.Key == "MotleyMa" || mark.Key == "GuildMa" || mark.Key == "Gld1-3rI")

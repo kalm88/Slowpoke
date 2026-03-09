@@ -576,7 +576,7 @@ namespace Flintstones
 
     public uint PlayerID { get; set; }
 
-    public byte Path { get; set; }
+    public byte myPath { get; set; }
 
     public byte Gender { get; set; }
 
@@ -889,9 +889,11 @@ namespace Flintstones
             this.SendMessage(this.ClientArms.ToString());
             commandExecuted = true;
           }
+          string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
           if (this.SpeakMessage.StartsWith("/legend"))
           {
-            StreamWriter streamWriter = new StreamWriter("C:\\Users\\Russ\\Desktop\\" + this.Name + "marks.txt", true);
+            string filePath = Path.Combine(desktopPath, $"{this.Name}-marks.txt");
+            StreamWriter streamWriter = new StreamWriter(filePath, true);
             foreach (KeyValuePair<string, string> legendMark in this.LegendMarks)
             {
               if (legendMark.Key != null)
@@ -902,7 +904,8 @@ namespace Flintstones
           }
           if (this.SpeakMessage.StartsWith("/test"))
           {
-            StreamWriter streamWriter = new StreamWriter("C:\\Users\\Russ\\Desktop\\" + this.Name + "marks.txt", true);
+            string filePath = Path.Combine(desktopPath, $"{this.Name}-test.txt");
+            StreamWriter streamWriter = new StreamWriter(filePath, true);
             foreach (KeyValuePair<string, string> legendMark in this.LegendMarks)
             {
               if (legendMark.Key != null)
@@ -3394,15 +3397,15 @@ namespace Flintstones
                       {
                         byte action = 0;
                         byte un = 0;
-                        if (this.Path == (byte) 3)
+                        if (this.myPath == (byte) 3)
                           action = (byte) 186;
-                        else if (this.Path == (byte) 4)
+                        else if (this.myPath == (byte) 4)
                           action = (byte) 237;
-                        else if (this.Path == (byte) 1)
+                        else if (this.myPath == (byte) 1)
                           action = (byte) 84;
-                        else if (this.Path == (byte) 2)
+                        else if (this.myPath == (byte) 2)
                           action = (byte) 135;
-                        else if (this.Path == (byte) 5)
+                        else if (this.myPath == (byte) 5)
                         {
                           action = (byte) 45;
                           un = (byte) 1;
@@ -22768,23 +22771,24 @@ label_20:
       new Thread(new ParameterizedThreadStart(this.LogNext)).Start(hwnd);
     }
 
-    public void LogNext(object hwnd)
+    public void LogNext(object param)
     {
+      IntPtr hwnd = (IntPtr) param;
       if (!Program.MainForm.loglabormules.Checked && !Program.MainForm.getmentored.Checked && !Program.MainForm.logpigchase.Checked && !Program.MainForm.frostylog.Checked || Program.MainForm.labormulelist.Items.Count <= 0)
         return;
       string[] strArray = Program.MainForm.labormulelist.Items[0].ToString().Split(',');
       string text = strArray[0];
       string keys = strArray[1];
       Thread.Sleep(3000);
-      User32._MouseClick((IntPtr) hwnd, 120, 318, (int) this.windowSize);
+      User32._MouseClick(hwnd, 120, 318, (int) this.windowSize);
       Thread.Sleep(500);
-      User32._SendText((IntPtr) hwnd, text);
+      User32._SendText(hwnd, text);
       Thread.Sleep(200);
-      User32.PopupHitReturn((IntPtr) hwnd);
+      User32.PopupHitReturn(hwnd);
       Thread.Sleep(200);
-      User32._SendKeys((IntPtr) hwnd, keys);
+      User32._SendKeys(hwnd, keys);
       Thread.Sleep(200);
-      User32.PopupHitReturn((IntPtr) hwnd);
+      User32.PopupHitReturn(hwnd);
     }
 
     public void LogAfterDC()
@@ -23132,7 +23136,7 @@ label_11:
           return false;
         if (this.Tab.vstaffswitch && (spellName == "ao suain" || spellName == "Leafhopper Chirp" ? (!target.HasValue ? 1 : ((int) target.Value == (int) this.PlayerID ? 1 : 0)) : (spellName.Contains("ao suain") ? 0 : (spellName != "Leafhopper Chirp" ? 1 : 0))) != 0)
         {
-          if (this.Path != (byte) 3 && this.Path != (byte) 4 && (spellName.Equals("dion") || spellName.Equals("Draco Stance") || spellName.Equals("Stone Skin")) && this.staffnow.Contains("Staff of "))
+          if (this.myPath != (byte) 3 && this.myPath != (byte) 4 && (spellName.Equals("dion") || spellName.Equals("Draco Stance") || spellName.Equals("Stone Skin")) && this.staffnow.Contains("Staff of "))
           {
             if (this.HasSpell("Iron Skin"))
             {
@@ -23145,7 +23149,7 @@ label_11:
               return false;
             }
           }
-          if (this.Path != (byte) 3 && this.Path != (byte) 4 && (spellName.Equals("Iron Skin") || spellName.Equals("mor dion")) && !this.staffnow.Contains("Staff of "))
+          if (this.myPath != (byte) 3 && this.myPath != (byte) 4 && (spellName.Equals("Iron Skin") || spellName.Equals("mor dion")) && !this.staffnow.Contains("Staff of "))
           {
             if (this.HasSpell("Draco Stance"))
             {
@@ -23181,7 +23185,7 @@ label_11:
               this.shakeyhands = false;
             if (!this.SpellBar.Contains((ushort) 90) && !this.IsSuained && !this.shakeyhands)
             {
-              if (this.Path == (byte) 3)
+              if (this.myPath == (byte) 3)
               {
                 if ((spell.Name == "ard naomh aite" || spell.Name == "mor fas nadur") && this.HasItem("Magus Zeus") && this.staffnow != "Magus Zeus")
                 {
@@ -23210,7 +23214,7 @@ label_11:
                   goto label_151;
                 }
               }
-              if (this.staffnow.Contains("Staff of ") && Server.SpellList[spellName].BaseLines == 0 && (this.Path != (byte) 3 || this.Path != (byte) 4) && this.BestWeapon() != string.Empty)
+              if (this.staffnow.Contains("Staff of ") && Server.SpellList[spellName].BaseLines == 0 && (this.myPath != (byte) 3 || this.myPath != (byte) 4) && this.BestWeapon() != string.Empty)
               {
                 int num3;
                 if (!(this.EquipWeaponDelay == DateTime.MinValue))
@@ -23908,7 +23912,7 @@ label_232:
     public string BestWeapon()
     {
       string str = string.Empty;
-      if (this.Path == (byte)CharacterClass.Warrior)
+      if (this.myPath == (byte)CharacterClass.Warrior)
       {
         if (this.staffnow != "Eclipse" && this.staffnow != "Hwarone Guandao" && this.staffnow != "Empowered Hwarone Guandao" && !this.staffnow.Contains("Crystal Blade") && !this.staffnow.Contains("Yowien Hatchet") && !this.staffnow.Contains("Defiled Ruby Saber") && !this.staffnow.Contains("Hellreavers Blade"))
         {
@@ -23932,7 +23936,7 @@ label_232:
             str = "Eclipse";
         }
       }
-      else if (this.Path == (byte)CharacterClass.Rogue)
+      else if (this.myPath == (byte)CharacterClass.Rogue)
       {
         if (this.staffnow != "Andor Bow" && this.staffnow != "Yumi Bow" && this.staffnow != "Empowered Yumi Bow" && this.staffnow != "Thunderfury")
         {
@@ -23954,7 +23958,7 @@ label_232:
             str = "Wooden Bow";
         }
       }
-      else if (this.Path == (byte)CharacterClass.Monk && this.staffnow != "Wolf Claw" && this.staffnow != "Tilian Claw" && this.staffnow != "Nunchaku" && this.staffnow != "Obsidian" && !this.staffnow.Contains("Yowien's Claw") && !this.staffnow.Contains("Yowien's Fist") && !this.staffnow.Contains("Eagles Grasp") && !this.staffnow.Contains("Blackstar Night Claw"))
+      else if (this.myPath == (byte)CharacterClass.Monk && this.staffnow != "Wolf Claw" && this.staffnow != "Tilian Claw" && this.staffnow != "Nunchaku" && this.staffnow != "Obsidian" && !this.staffnow.Contains("Yowien's Claw") && !this.staffnow.Contains("Yowien's Fist") && !this.staffnow.Contains("Eagles Grasp") && !this.staffnow.Contains("Blackstar Night Claw"))
       {
         if (this.HasItem("Blackstar Night Claw"))
           str = "Blackstar Night Claw";
@@ -27490,7 +27494,7 @@ label_11:
           this.FindAutoWalkPath(303);
         else if (this.Tab.vwalklocaleslist == "Black Market")
         {
-          if (this.Path == (byte) 2)
+          if (this.myPath == (byte) 2)
             this.FindAutoWalkPath(424);
           else if (this.MapInfo.Number != 505)
             this.FindAutoWalkPath(424);

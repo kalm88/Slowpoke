@@ -30,30 +30,34 @@ namespace Flintstones
 
     public static void _SendKeys(IntPtr hwnd, string keys)
     {
-      if (keys == "F1")
+      if (keys.Equals("F1"))
       {
         User32._PostMessage(hwnd, 256, 112, User32.MakeLParam(1, User32.MapVirtualKey(112, 0)));
         User32._PostMessage(hwnd, 257, 112, User32.MakeLParam(1, User32.MapVirtualKey(112, 0)));
       }
-      else if (keys == "F5")
+      else if (keys.Equals("F5"))
       {
         User32._PostMessage(hwnd, 256, 116, User32.MakeLParam(1, User32.MapVirtualKey(116, 0)));
         User32._PostMessage(hwnd, 257, 116, User32.MakeLParam(1, User32.MapVirtualKey(116, 0)));
       }
-      else if (keys == "F12")
+      else if (keys.Equals("F12"))
       {
         User32._PostMessage(hwnd, 256, 123, User32.MakeLParam(1, User32.MapVirtualKey(123, 0)));
         User32._PostMessage(hwnd, 257, 123, User32.MakeLParam(1, User32.MapVirtualKey(123, 0)));
       }
-      else if (keys == "Esc")
+      else if (keys.Equals("Esc"))
       {
         User32._PostMessage(hwnd, 256, 27, User32.MakeLParam(1, User32.MapVirtualKey(27, 0)));
         User32._PostMessage(hwnd, 257, 27, User32.MakeLParam(1, User32.MapVirtualKey(27, 0)));
       }
-      else if (keys == "Space")
-      {
+      else if (keys.Equals("Space"))      {
         User32._PostMessage(hwnd, 256, 32, User32.MakeLParam(1, User32.MapVirtualKey(32, 0)));
         User32._PostMessage(hwnd, 257, 32, User32.MakeLParam(1, User32.MapVirtualKey(32, 0)));
+      }
+      else if (keys.Equals("Enter"))
+      {
+        User32._PostMessage(hwnd, 256, 13, User32.MakeLParam(1, User32.MapVirtualKey(13, 0)));
+        User32._PostMessage(hwnd, 257, 13, User32.MakeLParam(1, User32.MapVirtualKey(13, 0)));
       }
       else
       {

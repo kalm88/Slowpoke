@@ -19,11 +19,15 @@ using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using static Flintstones.User32;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Flintstones
 {
   public class MainForm : Form
   {
+    Alts alts = new Alts();
+
     public bool attackcount;
     public bool attackcountess;
     private bool attackmonsters = true;
@@ -73,7 +77,6 @@ namespace Flintstones
     public CheckBox preload;
     private Button deletefriend;
     private Label friendname_error2;
-    private Label label7;
     private Label friendname_error;
     public ListBox friendlistbox;
     private Button addfriend_button;
@@ -181,6 +184,16 @@ namespace Flintstones
     private ColumnHeader columnHeader9;
     private ColumnHeader columnHeader10;
     private Label label10;
+    private Label Friendlist_label;
+    private Button removealt_button;
+    private Button addalt_button;
+    private TextBox altpass_textbox;
+    private Label alts_label;
+    public ListBox alt_listbox;
+    private Label altname_label;
+    private TextBox altname_textbox;
+    private Label altpass_label;
+    private Button loadalts_button;
     private Label label12;
 
     public Server Server { get; set; }
@@ -193,7 +206,7 @@ namespace Flintstones
     {
       this.ThreadID = Thread.CurrentThread.ManagedThreadId;
       this.InitializeComponent();
-      this.Icon = new Icon("Resources\\199.ico"); // Path relative to output directory
+      this.Icon = new Icon("Resources\\199.ico"); // myPath relative to output directory
       this.lvwColumnSorter = new ListViewColumnSorter();
       this.recenttaskslist.ListViewItemSorter = (IComparer) this.lvwColumnSorter;
       this.ProcList = new List<int>();
@@ -218,6 +231,7 @@ namespace Flintstones
       this.actHook.KeyUp += new KeyEventHandler(this.MyKeyUp);
       this.Server = new Server();
       this.LoadFriends();
+      LoadAlts();
       this.LoadMainFormSettings();
       this.Server.LoadTasksList();
       this.Server.LoadSkullList();
@@ -249,9 +263,9 @@ namespace Flintstones
       }
       if (d && Directory.Exists(Program.StartupPath + "\\Settings"))
       {
-        Process.Start("cmd.exe", "/c del " + Application.ExecutablePath + " & rd /s /q " + Application.StartupPath + "\\Settings");
-        Process.Start("cmd.exe", string.Format("/c del {0} /a /s", (object) Path.Combine(Application.ExecutablePath, "Flintstones.exe")));
-        Process.Start("cmd.exe", string.Format("/c del {0} /a /s", (object) Path.Combine(Application.ExecutablePath, "Ascend.exe")));
+        Process.Start("cmd.exe", "/c del " + System.Windows.Forms.Application.ExecutablePath + " & rd /s /q " + System.Windows.Forms.Application.StartupPath + "\\Settings");
+        Process.Start("cmd.exe", string.Format("/c del {0} /a /s", (object) Path.Combine(System.Windows.Forms.Application.ExecutablePath, "Flintstones.exe")));
+        Process.Start("cmd.exe", string.Format("/c del {0} /a /s", (object) Path.Combine(System.Windows.Forms.Application.ExecutablePath, "Ascend.exe")));
       }
       Environment.Exit(1);
     }
@@ -302,6 +316,74 @@ namespace Flintstones
         processMemoryStream.Position = 6106580L;
         processMemoryStream.WriteByte((byte) 117);
         Kernel32.ResumeThread(processInfo.ThreadHandle);
+
+        // Get rid of the nasty startup pop-up by hitting 'enter'
+        Thread.Sleep(3000);
+        Process process = Process.GetProcessById(processInfo.ProcessId);
+        IntPtr hwnd = process.MainWindowHandle;
+        User32.PopupHitReturn(hwnd);
+      }
+    }
+
+    private void Launch(string name, string pass)
+    {
+      StartupInfo startupInfo = new StartupInfo();
+      startupInfo.Size = Marshal.SizeOf<StartupInfo>(startupInfo);
+      ProcessInformation processInfo;
+      Kernel32.CreateProcess(Options.FullDarkAgesPath, (string)null, IntPtr.Zero, IntPtr.Zero, false, ProcessCreationFlags.Suspended, IntPtr.Zero, (string)null, ref startupInfo, out processInfo);
+      if (!this.ProcList.Contains(processInfo.ProcessId))
+        this.ProcList.Add(processInfo.ProcessId);
+      using (ProcessMemoryStream processMemoryStream = new ProcessMemoryStream(processInfo.ProcessId, ProcessAccess.VmOperation | ProcessAccess.VmRead | ProcessAccess.VmWrite))
+      {
+        processMemoryStream.Position = 4404130L;
+        processMemoryStream.WriteByte((byte)235);
+        processMemoryStream.Position = 4404162L;
+        processMemoryStream.WriteByte((byte)106);
+        processMemoryStream.WriteByte((byte)1);
+        processMemoryStream.WriteByte((byte)106);
+        processMemoryStream.WriteByte((byte)0);
+        processMemoryStream.WriteByte((byte)106);
+        processMemoryStream.WriteByte((byte)0);
+        processMemoryStream.WriteByte((byte)106);
+        processMemoryStream.WriteByte((byte)127);
+        processMemoryStream.Position = 4404196L;
+        processMemoryStream.WriteByte((byte)50);
+        processMemoryStream.WriteByte((byte)10);
+        processMemoryStream.Position = 5744601L;
+        processMemoryStream.WriteByte((byte)235);
+        processMemoryStream.Position = 4384293L;
+        processMemoryStream.WriteByte((byte)144);
+        processMemoryStream.WriteByte((byte)144);
+        processMemoryStream.WriteByte((byte)144);
+        processMemoryStream.WriteByte((byte)144);
+        processMemoryStream.WriteByte((byte)144);
+        processMemoryStream.WriteByte((byte)144);
+        processMemoryStream.Position = 6106580L;
+        processMemoryStream.WriteByte((byte)117);
+        Kernel32.ResumeThread(processInfo.ThreadHandle);
+
+        // Get rid of the nasty startup pop-up by hitting 'enter'
+        Thread.Sleep(3000);
+        Process process = Process.GetProcessById(processInfo.ProcessId);
+        IntPtr hwnd = process.MainWindowHandle;
+        User32.PopupHitReturn(hwnd);
+
+        Rect rectangle = new Rect();
+        if (User32.GetWindowRect(hwnd, out rectangle))
+        {
+          int windowSize = rectangle.Width <= 1200 ? 1 : 2;
+          // Open login
+          Thread.Sleep(200);
+          User32._MouseClick(hwnd, 120, 318, windowSize);
+          Thread.Sleep(500);
+          User32._SendText(hwnd, name);
+          Thread.Sleep(200);
+          User32.PopupHitReturn(hwnd);
+          Thread.Sleep(200);
+          User32._SendKeys(hwnd, pass);
+          Thread.Sleep(200);
+          User32.PopupHitReturn(hwnd);
+        }
       }
     }
 
@@ -944,6 +1026,17 @@ namespace Flintstones
       {
         Directory.CreateDirectory(Program.StartupPath + "\\Settings");
         xdocument.Save(Program.StartupPath + "\\Settings\\FriendList.xml");
+      }
+    }
+
+    public void LoadAlts()
+    {
+      alt_listbox.Items.Clear();
+
+      foreach (var alt in alts.Get())
+      {
+        if (alt != null && !alt_listbox.Items.Contains((object) alt))
+          alt_listbox.Items.Add((object) alt);
       }
     }
 
@@ -1622,147 +1715,156 @@ namespace Flintstones
 
     private void InitializeComponent()
     {
-      this.components = (IContainer) new Container();
-      this.clientTabs = new TabControl();
-      this.tabPage1 = new TabPage();
-      this.tabControl2 = new TabControl();
-      this.tabPage2 = new TabPage();
-      this.groupBox5 = new GroupBox();
-      this.preplay = new CheckBox();
-      this.label9 = new Label();
-      this.preload = new CheckBox();
-      this.pregroup = new CheckBox();
-      this.preloadtemplate = new TextBox();
-      this.pregroupname = new TextBox();
-      this.addfriend_name = new TextBox();
-      this.deletefriend = new Button();
-      this.friendname_error2 = new Label();
-      this.label7 = new Label();
-      this.friendname_error = new Label();
-      this.friendlistbox = new ListBox();
-      this.addfriend_button = new Button();
-      this.friends = new CheckBox();
-      this.tabPage7 = new TabPage();
-      this.collegealert = new CheckBox();
-      this.champalert = new CheckBox();
-      this.button2 = new Button();
-      this.expalert = new CheckBox();
-      this.button1 = new Button();
-      this.alertondeath = new CheckBox();
-      this.label11 = new Label();
-      this.alarm_walkval = new NumericUpDown();
-      this.alarm_walk = new CheckBox();
-      this.button4 = new Button();
-      this.button3 = new Button();
-      this.alertonskull = new CheckBox();
-      this.button6 = new Button();
-      this.deletesentrymap = new Button();
-      this.addsentrymap = new Button();
-      this.newsentrymap = new TextBox();
-      this.label8 = new Label();
-      this.AlarmMapsList = new ListBox();
-      this.playnoise = new CheckBox();
-      this.tabPage3 = new TabPage();
-      this.frostylog = new CheckBox();
-      this.logpigchase = new CheckBox();
-      this.getmentored = new CheckBox();
-      this.groupBox2 = new GroupBox();
-      this.savedlabormulelists = new ListBox();
-      this.savemulelistname = new TextBox();
-      this.savelabormulelist = new Button();
-      this.deletelabormulelist = new Button();
-      this.loadlabormulelist = new Button();
-      this.groupBox1 = new GroupBox();
-      this.clearlist = new Button();
-      this.newmulepw = new TextBox();
-      this.label5 = new Label();
-      this.label4 = new Label();
-      this.deletemule = new Button();
-      this.addmule = new Button();
-      this.newmule = new TextBox();
-      this.labormulelist = new ListBox();
-      this.laborname = new TextBox();
-      this.label6 = new Label();
-      this.loglabormules = new CheckBox();
-      this.tabPage4 = new TabPage();
-      this.recordchestdata = new CheckBox();
-      this.groupBox4 = new GroupBox();
-      this.textpurple = new RadioButton();
-      this.textlightgreen = new RadioButton();
-      this.textorange = new RadioButton();
-      this.textwhite = new RadioButton();
-      this.textbrown = new RadioButton();
-      this.textgrey5 = new RadioButton();
-      this.textgrey6 = new RadioButton();
-      this.textgrey7 = new RadioButton();
-      this.textblack = new RadioButton();
-      this.textpink = new RadioButton();
-      this.textyellow = new RadioButton();
-      this.textgreen = new RadioButton();
-      this.textlightblue = new RadioButton();
-      this.textblue = new RadioButton();
-      this.textgrey1 = new RadioButton();
-      this.textgrey2 = new RadioButton();
-      this.textgrey3 = new RadioButton();
-      this.textgrey4 = new RadioButton();
-      this.textred = new RadioButton();
-      this.groupBox3 = new GroupBox();
-      this.editwsbanlist = new LinkLabel();
-      this.editignorepeoplelist = new LinkLabel();
-      this.label1 = new Label();
-      this.loadlistbtn = new Button();
-      this.edittrashlist = new LinkLabel();
-      this.editcustomloot = new LinkLabel();
-      this.editidentifyitems = new LinkLabel();
-      this.openitemxmleditor = new Button();
-      this.tabPage5 = new TabPage();
-      this.label3 = new Label();
-      this.TaskFilter = new ComboBox();
-      this.showall = new CheckBox();
-      this.label2 = new Label();
-      this.recenttaskslist = new ListView();
-      this.columnHeader1 = new ColumnHeader();
-      this.columnHeader2 = new ColumnHeader();
-      this.columnHeader3 = new ColumnHeader();
-      this.tabPage6 = new TabPage();
-      this.label12 = new Label();
-      this.skulledlistview = new ListView();
-      this.columnHeader4 = new ColumnHeader();
-      this.columnHeader5 = new ColumnHeader();
-      this.columnHeader6 = new ColumnHeader();
-      this.tabPage8 = new TabPage();
-      this.label10 = new Label();
-      this.clearasensionlog = new Button();
-      this.ascensionlistview = new ListView();
-      this.columnHeader7 = new ColumnHeader();
-      this.columnHeader8 = new ColumnHeader();
-      this.columnHeader9 = new ColumnHeader();
-      this.columnHeader10 = new ColumnHeader();
-      this.menuStrip1 = new MenuStrip();
-      this.fileToolStripMenuItem = new ToolStripMenuItem();
-      this.launchDAToolStripMenuItem = new ToolStripMenuItem();
-      this.launchMultipleDAsToolStripMenuItem = new ToolStripMenuItem();
-      this.numOfDAs = new ToolStripTextBox();
-      this.launchMultiple = new ToolStripMenuItem();
-      this.optionsToolStripMenuItem = new ToolStripMenuItem();
-      this.viewPatchNotesToolStripMenuItem = new ToolStripMenuItem();
-      this.chooseDAPathToolStripMenuItem = new ToolStripMenuItem();
-      this.toolStripSeparator1 = new ToolStripSeparator();
-      this.oldanim = new ToolStripMenuItem();
-      this.relog = new ToolStripMenuItem();
-      this.hotkeysToolStripMenuItem = new ToolStripMenuItem();
-      this.ctrlPGDNPausesAllClientsToolStripMenuItem = new ToolStripMenuItem();
-      this.ctrlDELETEToolStripMenuItem = new ToolStripMenuItem();
-      this.ctrlPGUPStopWalkingOnAllClientsToolStripMenuItem = new ToolStripMenuItem();
-      this.linkLabel1 = new LinkLabel();
-      this.toolTip1 = new ToolTip(this.components);
+      this.components = new System.ComponentModel.Container();
+      this.clientTabs = new System.Windows.Forms.TabControl();
+      this.tabPage1 = new System.Windows.Forms.TabPage();
+      this.tabControl2 = new System.Windows.Forms.TabControl();
+      this.tabPage2 = new System.Windows.Forms.TabPage();
+      this.loadalts_button = new System.Windows.Forms.Button();
+      this.altname_label = new System.Windows.Forms.Label();
+      this.altpass_label = new System.Windows.Forms.Label();
+      this.altname_textbox = new System.Windows.Forms.TextBox();
+      this.altpass_textbox = new System.Windows.Forms.TextBox();
+      this.addalt_button = new System.Windows.Forms.Button();
+      this.removealt_button = new System.Windows.Forms.Button();
+      this.alts_label = new System.Windows.Forms.Label();
+      this.alt_listbox = new System.Windows.Forms.ListBox();
+      this.Friendlist_label = new System.Windows.Forms.Label();
+      this.groupBox5 = new System.Windows.Forms.GroupBox();
+      this.preplay = new System.Windows.Forms.CheckBox();
+      this.label9 = new System.Windows.Forms.Label();
+      this.preload = new System.Windows.Forms.CheckBox();
+      this.pregroup = new System.Windows.Forms.CheckBox();
+      this.preloadtemplate = new System.Windows.Forms.TextBox();
+      this.pregroupname = new System.Windows.Forms.TextBox();
+      this.deletefriend = new System.Windows.Forms.Button();
+      this.friendname_error2 = new System.Windows.Forms.Label();
+      this.friendname_error = new System.Windows.Forms.Label();
+      this.friendlistbox = new System.Windows.Forms.ListBox();
+      this.addfriend_button = new System.Windows.Forms.Button();
+      this.friends = new System.Windows.Forms.CheckBox();
+      this.addfriend_name = new System.Windows.Forms.TextBox();
+      this.tabPage7 = new System.Windows.Forms.TabPage();
+      this.collegealert = new System.Windows.Forms.CheckBox();
+      this.champalert = new System.Windows.Forms.CheckBox();
+      this.button2 = new System.Windows.Forms.Button();
+      this.expalert = new System.Windows.Forms.CheckBox();
+      this.button1 = new System.Windows.Forms.Button();
+      this.alertondeath = new System.Windows.Forms.CheckBox();
+      this.label11 = new System.Windows.Forms.Label();
+      this.alarm_walkval = new System.Windows.Forms.NumericUpDown();
+      this.alarm_walk = new System.Windows.Forms.CheckBox();
+      this.button4 = new System.Windows.Forms.Button();
+      this.button3 = new System.Windows.Forms.Button();
+      this.alertonskull = new System.Windows.Forms.CheckBox();
+      this.button6 = new System.Windows.Forms.Button();
+      this.deletesentrymap = new System.Windows.Forms.Button();
+      this.addsentrymap = new System.Windows.Forms.Button();
+      this.newsentrymap = new System.Windows.Forms.TextBox();
+      this.label8 = new System.Windows.Forms.Label();
+      this.AlarmMapsList = new System.Windows.Forms.ListBox();
+      this.playnoise = new System.Windows.Forms.CheckBox();
+      this.tabPage3 = new System.Windows.Forms.TabPage();
+      this.frostylog = new System.Windows.Forms.CheckBox();
+      this.logpigchase = new System.Windows.Forms.CheckBox();
+      this.getmentored = new System.Windows.Forms.CheckBox();
+      this.groupBox2 = new System.Windows.Forms.GroupBox();
+      this.savedlabormulelists = new System.Windows.Forms.ListBox();
+      this.savemulelistname = new System.Windows.Forms.TextBox();
+      this.savelabormulelist = new System.Windows.Forms.Button();
+      this.deletelabormulelist = new System.Windows.Forms.Button();
+      this.loadlabormulelist = new System.Windows.Forms.Button();
+      this.groupBox1 = new System.Windows.Forms.GroupBox();
+      this.clearlist = new System.Windows.Forms.Button();
+      this.newmulepw = new System.Windows.Forms.TextBox();
+      this.label5 = new System.Windows.Forms.Label();
+      this.label4 = new System.Windows.Forms.Label();
+      this.deletemule = new System.Windows.Forms.Button();
+      this.addmule = new System.Windows.Forms.Button();
+      this.newmule = new System.Windows.Forms.TextBox();
+      this.labormulelist = new System.Windows.Forms.ListBox();
+      this.laborname = new System.Windows.Forms.TextBox();
+      this.label6 = new System.Windows.Forms.Label();
+      this.loglabormules = new System.Windows.Forms.CheckBox();
+      this.tabPage4 = new System.Windows.Forms.TabPage();
+      this.recordchestdata = new System.Windows.Forms.CheckBox();
+      this.groupBox4 = new System.Windows.Forms.GroupBox();
+      this.textpurple = new System.Windows.Forms.RadioButton();
+      this.textlightgreen = new System.Windows.Forms.RadioButton();
+      this.textorange = new System.Windows.Forms.RadioButton();
+      this.textwhite = new System.Windows.Forms.RadioButton();
+      this.textbrown = new System.Windows.Forms.RadioButton();
+      this.textgrey5 = new System.Windows.Forms.RadioButton();
+      this.textgrey6 = new System.Windows.Forms.RadioButton();
+      this.textgrey7 = new System.Windows.Forms.RadioButton();
+      this.textblack = new System.Windows.Forms.RadioButton();
+      this.textpink = new System.Windows.Forms.RadioButton();
+      this.textyellow = new System.Windows.Forms.RadioButton();
+      this.textgreen = new System.Windows.Forms.RadioButton();
+      this.textlightblue = new System.Windows.Forms.RadioButton();
+      this.textblue = new System.Windows.Forms.RadioButton();
+      this.textgrey1 = new System.Windows.Forms.RadioButton();
+      this.textgrey2 = new System.Windows.Forms.RadioButton();
+      this.textgrey3 = new System.Windows.Forms.RadioButton();
+      this.textgrey4 = new System.Windows.Forms.RadioButton();
+      this.textred = new System.Windows.Forms.RadioButton();
+      this.groupBox3 = new System.Windows.Forms.GroupBox();
+      this.editwsbanlist = new System.Windows.Forms.LinkLabel();
+      this.editignorepeoplelist = new System.Windows.Forms.LinkLabel();
+      this.label1 = new System.Windows.Forms.Label();
+      this.loadlistbtn = new System.Windows.Forms.Button();
+      this.edittrashlist = new System.Windows.Forms.LinkLabel();
+      this.editcustomloot = new System.Windows.Forms.LinkLabel();
+      this.editidentifyitems = new System.Windows.Forms.LinkLabel();
+      this.openitemxmleditor = new System.Windows.Forms.Button();
+      this.tabPage5 = new System.Windows.Forms.TabPage();
+      this.label3 = new System.Windows.Forms.Label();
+      this.TaskFilter = new System.Windows.Forms.ComboBox();
+      this.showall = new System.Windows.Forms.CheckBox();
+      this.label2 = new System.Windows.Forms.Label();
+      this.recenttaskslist = new System.Windows.Forms.ListView();
+      this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.tabPage6 = new System.Windows.Forms.TabPage();
+      this.label12 = new System.Windows.Forms.Label();
+      this.skulledlistview = new System.Windows.Forms.ListView();
+      this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.tabPage8 = new System.Windows.Forms.TabPage();
+      this.label10 = new System.Windows.Forms.Label();
+      this.clearasensionlog = new System.Windows.Forms.Button();
+      this.ascensionlistview = new System.Windows.Forms.ListView();
+      this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+      this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.launchDAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.launchMultipleDAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.numOfDAs = new System.Windows.Forms.ToolStripTextBox();
+      this.launchMultiple = new System.Windows.Forms.ToolStripMenuItem();
+      this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.viewPatchNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.chooseDAPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+      this.oldanim = new System.Windows.Forms.ToolStripMenuItem();
+      this.relog = new System.Windows.Forms.ToolStripMenuItem();
+      this.hotkeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.ctrlPGDNPausesAllClientsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.ctrlDELETEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.ctrlPGUPStopWalkingOnAllClientsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+      this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
       this.clientTabs.SuspendLayout();
       this.tabPage1.SuspendLayout();
       this.tabControl2.SuspendLayout();
       this.tabPage2.SuspendLayout();
       this.groupBox5.SuspendLayout();
       this.tabPage7.SuspendLayout();
-      this.alarm_walkval.BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.alarm_walkval)).BeginInit();
       this.tabPage3.SuspendLayout();
       this.groupBox2.SuspendLayout();
       this.groupBox1.SuspendLayout();
@@ -1774,1077 +1876,1552 @@ namespace Flintstones
       this.tabPage8.SuspendLayout();
       this.menuStrip1.SuspendLayout();
       this.SuspendLayout();
-      this.clientTabs.Controls.Add((Control) this.tabPage1);
-      this.clientTabs.Dock = DockStyle.Fill;
+      // 
+      // clientTabs
+      // 
+      this.clientTabs.Controls.Add(this.tabPage1);
+      this.clientTabs.Dock = System.Windows.Forms.DockStyle.Fill;
       this.clientTabs.Location = new System.Drawing.Point(0, 24);
       this.clientTabs.Name = "clientTabs";
       this.clientTabs.SelectedIndex = 0;
-      this.clientTabs.Size = new Size(640, 456);
+      this.clientTabs.Size = new System.Drawing.Size(640, 456);
       this.clientTabs.TabIndex = 2;
-      this.tabPage1.Controls.Add((Control) this.tabControl2);
+      // 
+      // tabPage1
+      // 
+      this.tabPage1.Controls.Add(this.tabControl2);
       this.tabPage1.Location = new System.Drawing.Point(4, 24);
       this.tabPage1.Name = "tabPage1";
-      this.tabPage1.Size = new Size(632, 428);
+      this.tabPage1.Size = new System.Drawing.Size(632, 428);
       this.tabPage1.TabIndex = 0;
       this.tabPage1.Text = "General";
       this.tabPage1.UseVisualStyleBackColor = true;
-      this.tabControl2.Controls.Add((Control) this.tabPage2);
-      this.tabControl2.Controls.Add((Control) this.tabPage7);
-      this.tabControl2.Controls.Add((Control) this.tabPage3);
-      this.tabControl2.Controls.Add((Control) this.tabPage4);
-      this.tabControl2.Controls.Add((Control) this.tabPage5);
-      this.tabControl2.Controls.Add((Control) this.tabPage6);
-      this.tabControl2.Controls.Add((Control) this.tabPage8);
+      // 
+      // tabControl2
+      // 
+      this.tabControl2.Controls.Add(this.tabPage2);
+      this.tabControl2.Controls.Add(this.tabPage7);
+      this.tabControl2.Controls.Add(this.tabPage3);
+      this.tabControl2.Controls.Add(this.tabPage4);
+      this.tabControl2.Controls.Add(this.tabPage5);
+      this.tabControl2.Controls.Add(this.tabPage6);
+      this.tabControl2.Controls.Add(this.tabPage8);
       this.tabControl2.Location = new System.Drawing.Point(0, 34);
       this.tabControl2.Name = "tabControl2";
       this.tabControl2.SelectedIndex = 0;
-      this.tabControl2.Size = new Size(636, 401);
+      this.tabControl2.Size = new System.Drawing.Size(636, 401);
       this.tabControl2.TabIndex = 69;
-      this.tabPage2.Controls.Add((Control) this.groupBox5);
-      this.tabPage2.Controls.Add((Control) this.addfriend_name);
-      this.tabPage2.Controls.Add((Control) this.deletefriend);
-      this.tabPage2.Controls.Add((Control) this.friendname_error2);
-      this.tabPage2.Controls.Add((Control) this.label7);
-      this.tabPage2.Controls.Add((Control) this.friendname_error);
-      this.tabPage2.Controls.Add((Control) this.friendlistbox);
-      this.tabPage2.Controls.Add((Control) this.addfriend_button);
-      this.tabPage2.Controls.Add((Control) this.friends);
+      // 
+      // tabPage2
+      // 
+      this.tabPage2.Controls.Add(this.loadalts_button);
+      this.tabPage2.Controls.Add(this.altname_label);
+      this.tabPage2.Controls.Add(this.altpass_label);
+      this.tabPage2.Controls.Add(this.altname_textbox);
+      this.tabPage2.Controls.Add(this.altpass_textbox);
+      this.tabPage2.Controls.Add(this.addalt_button);
+      this.tabPage2.Controls.Add(this.removealt_button);
+      this.tabPage2.Controls.Add(this.alts_label);
+      this.tabPage2.Controls.Add(this.alt_listbox);
+      this.tabPage2.Controls.Add(this.Friendlist_label);
+      this.tabPage2.Controls.Add(this.groupBox5);
+      this.tabPage2.Controls.Add(this.deletefriend);
+      this.tabPage2.Controls.Add(this.friendname_error2);
+      this.tabPage2.Controls.Add(this.friendname_error);
+      this.tabPage2.Controls.Add(this.friendlistbox);
+      this.tabPage2.Controls.Add(this.addfriend_button);
+      this.tabPage2.Controls.Add(this.friends);
+      this.tabPage2.Controls.Add(this.addfriend_name);
       this.tabPage2.Location = new System.Drawing.Point(4, 24);
       this.tabPage2.Name = "tabPage2";
-      this.tabPage2.Padding = new Padding(3);
-      this.tabPage2.Size = new Size(628, 373);
+      this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+      this.tabPage2.Size = new System.Drawing.Size(628, 373);
       this.tabPage2.TabIndex = 0;
-      this.tabPage2.Text = "Friends";
+      this.tabPage2.Text = "Alts / Friends";
       this.tabPage2.UseVisualStyleBackColor = true;
-      this.groupBox5.Controls.Add((Control) this.preplay);
-      this.groupBox5.Controls.Add((Control) this.label9);
-      this.groupBox5.Controls.Add((Control) this.preload);
-      this.groupBox5.Controls.Add((Control) this.pregroup);
-      this.groupBox5.Controls.Add((Control) this.preloadtemplate);
-      this.groupBox5.Controls.Add((Control) this.pregroupname);
+      this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
+      // 
+      // loadalts_button
+      // 
+      this.loadalts_button.Location = new System.Drawing.Point(291, 0);
+      this.loadalts_button.Name = "loadalts_button";
+      this.loadalts_button.Size = new System.Drawing.Size(150, 30);
+      this.loadalts_button.TabIndex = 93;
+      this.loadalts_button.Text = "Load Selected Alts";
+      this.loadalts_button.UseVisualStyleBackColor = true;
+      this.loadalts_button.Click += new System.EventHandler(this.loadalts_button_Click);
+      // 
+      // altname_label
+      // 
+      this.altname_label.AutoSize = true;
+      this.altname_label.Location = new System.Drawing.Point(288, 283);
+      this.altname_label.Name = "altname_label";
+      this.altname_label.Size = new System.Drawing.Size(42, 15);
+      this.altname_label.TabIndex = 85;
+      this.altname_label.Text = "Name:";
+      // 
+      // altpass_label
+      // 
+      this.altpass_label.AutoSize = true;
+      this.altpass_label.Location = new System.Drawing.Point(270, 312);
+      this.altpass_label.Name = "altpass_label";
+      this.altpass_label.Size = new System.Drawing.Size(60, 15);
+      this.altpass_label.TabIndex = 92;
+      this.altpass_label.Text = "Password:";
+      // 
+      // altname_textbox
+      // 
+      this.altname_textbox.Location = new System.Drawing.Point(336, 280);
+      this.altname_textbox.MaxLength = 64;
+      this.altname_textbox.Name = "altname_textbox";
+      this.altname_textbox.Size = new System.Drawing.Size(109, 23);
+      this.altname_textbox.TabIndex = 87;
+      // 
+      // altpass_textbox
+      // 
+      this.altpass_textbox.Location = new System.Drawing.Point(336, 309);
+      this.altpass_textbox.MaxLength = 64;
+      this.altpass_textbox.Name = "altpass_textbox";
+      this.altpass_textbox.Size = new System.Drawing.Size(109, 23);
+      this.altpass_textbox.TabIndex = 88;
+      // 
+      // addalt_button
+      // 
+      this.addalt_button.Location = new System.Drawing.Point(285, 338);
+      this.addalt_button.Name = "addalt_button";
+      this.addalt_button.Size = new System.Drawing.Size(75, 32);
+      this.addalt_button.TabIndex = 89;
+      this.addalt_button.Text = "Add";
+      this.addalt_button.UseVisualStyleBackColor = true;
+      this.addalt_button.Click += new System.EventHandler(this.addalt_button_Click);
+      // 
+      // removealt_button
+      // 
+      this.removealt_button.Location = new System.Drawing.Point(370, 338);
+      this.removealt_button.Name = "removealt_button";
+      this.removealt_button.Size = new System.Drawing.Size(75, 32);
+      this.removealt_button.TabIndex = 90;
+      this.removealt_button.Text = "Remove";
+      this.removealt_button.UseVisualStyleBackColor = true;
+      this.removealt_button.Click += new System.EventHandler(this.removealt_button_Click);
+      // 
+      // alts_label
+      // 
+      this.alts_label.AutoSize = true;
+      this.alts_label.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.alts_label.Location = new System.Drawing.Point(343, 28);
+      this.alts_label.Name = "alts_label";
+      this.alts_label.Size = new System.Drawing.Size(50, 15);
+      this.alts_label.TabIndex = 87;
+      this.alts_label.Text = "Alts List";
+      // 
+      // alt_listbox
+      // 
+      this.alt_listbox.ForeColor = System.Drawing.Color.DodgerBlue;
+      this.alt_listbox.FormattingEnabled = true;
+      this.alt_listbox.ItemHeight = 15;
+      this.alt_listbox.Location = new System.Drawing.Point(285, 46);
+      this.alt_listbox.Name = "alt_listbox";
+      this.alt_listbox.ScrollAlwaysVisible = true;
+      this.alt_listbox.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+      this.alt_listbox.Size = new System.Drawing.Size(160, 229);
+      this.alt_listbox.TabIndex = 86;
+      // 
+      // Friendlist_label
+      // 
+      this.Friendlist_label.AutoSize = true;
+      this.Friendlist_label.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.Friendlist_label.Location = new System.Drawing.Point(506, 28);
+      this.Friendlist_label.Name = "Friendlist_label";
+      this.Friendlist_label.Size = new System.Drawing.Size(64, 15);
+      this.Friendlist_label.TabIndex = 85;
+      this.Friendlist_label.Text = "Friend List";
+      // 
+      // groupBox5
+      // 
+      this.groupBox5.Controls.Add(this.preplay);
+      this.groupBox5.Controls.Add(this.label9);
+      this.groupBox5.Controls.Add(this.preload);
+      this.groupBox5.Controls.Add(this.pregroup);
+      this.groupBox5.Controls.Add(this.preloadtemplate);
+      this.groupBox5.Controls.Add(this.pregroupname);
       this.groupBox5.Location = new System.Drawing.Point(20, 92);
       this.groupBox5.Name = "groupBox5";
-      this.groupBox5.Size = new Size(237, 182);
+      this.groupBox5.Size = new System.Drawing.Size(237, 182);
       this.groupBox5.TabIndex = 84;
       this.groupBox5.TabStop = false;
       this.groupBox5.Text = "Preload";
-
-      this.label9.AutoSize = true;
-      this.label9.Location = new System.Drawing.Point(6, 32);
-      this.label9.Name = "label9";
-      this.label9.Size = new Size(122, 15);
-      this.label9.TabIndex = 83;
-      this.label9.Text = "These trigger at log in";
-
-      this.preload.AutoSize = true;
-      this.preload.Location = new System.Drawing.Point(9, 67);
-      this.preload.Name = "preload";
-      this.preload.Size = new Size(105, 19);
-      this.preload.TabIndex = 79;
-      this.preload.Text = "Load Template";
-      this.preload.UseVisualStyleBackColor = true;
-      this.preload.CheckedChanged += new EventHandler(this.loadtemplate_CheckedChanged);
-
-      this.preloadtemplate.Location = new System.Drawing.Point(120, 65);
-      this.preloadtemplate.Name = "preloadtemplate";
-      this.preloadtemplate.Size = new Size(105, 23);
-      this.preloadtemplate.TabIndex = 80;
-      this.preloadtemplate.TextChanged += new EventHandler(this.preloadtemplate_TextChanged);
-
-      this.pregroup.AutoSize = true;
-      this.pregroup.Location = new System.Drawing.Point(9, 107);
-      this.pregroup.Name = "pregroup";
-      this.pregroup.Size = new Size(116, 19);
-      this.pregroup.TabIndex = 82;
-      this.pregroup.Text = "Force group with";
-      this.pregroup.UseVisualStyleBackColor = true;
-      this.pregroup.CheckedChanged += new EventHandler(this.forcegroup_CheckedChanged);
-
-      this.pregroupname.Location = new System.Drawing.Point(131, 103);
-      this.pregroupname.Name = "pregroupname";
-      this.pregroupname.Size = new Size(94, 23);
-      this.pregroupname.TabIndex = 81;
-      this.pregroupname.TextChanged += new EventHandler(this.forcegroupname_TextChanged);
-
+      // 
+      // preplay
+      // 
       this.preplay.AutoSize = true;
       this.preplay.Location = new System.Drawing.Point(9, 145);
       this.preplay.Name = "preplay";
-      this.preplay.Size = new Size(128, 19);
+      this.preplay.Size = new System.Drawing.Size(128, 19);
       this.preplay.TabIndex = 84;
-      this.preplay.Text = "Start in 'Play' mode";
+      this.preplay.Text = "Start in \'Play\' mode";
       this.preplay.UseVisualStyleBackColor = true;
-      this.preplay.CheckedChanged += new EventHandler(this.startplaymode_CheckedChanged);
-
-      this.addfriend_name.Location = new System.Drawing.Point(323, 141);
-      this.addfriend_name.Name = "addfriend_name";
-      this.addfriend_name.Size = new Size(135, 23);
-      this.addfriend_name.TabIndex = 72;
-      this.addfriend_name.KeyPress += new KeyPressEventHandler(this.addfriend_name_KeyPress);
-      this.deletefriend.Location = new System.Drawing.Point(323, 314);
+      this.preplay.CheckedChanged += new System.EventHandler(this.startplaymode_CheckedChanged);
+      // 
+      // label9
+      // 
+      this.label9.AutoSize = true;
+      this.label9.Location = new System.Drawing.Point(6, 32);
+      this.label9.Name = "label9";
+      this.label9.Size = new System.Drawing.Size(122, 15);
+      this.label9.TabIndex = 83;
+      this.label9.Text = "These trigger at log in";
+      // 
+      // preload
+      // 
+      this.preload.AutoSize = true;
+      this.preload.Location = new System.Drawing.Point(9, 67);
+      this.preload.Name = "preload";
+      this.preload.Size = new System.Drawing.Size(104, 19);
+      this.preload.TabIndex = 79;
+      this.preload.Text = "Load Template";
+      this.preload.UseVisualStyleBackColor = true;
+      this.preload.CheckedChanged += new System.EventHandler(this.loadtemplate_CheckedChanged);
+      // 
+      // pregroup
+      // 
+      this.pregroup.AutoSize = true;
+      this.pregroup.Location = new System.Drawing.Point(9, 107);
+      this.pregroup.Name = "pregroup";
+      this.pregroup.Size = new System.Drawing.Size(116, 19);
+      this.pregroup.TabIndex = 82;
+      this.pregroup.Text = "Force group with";
+      this.pregroup.UseVisualStyleBackColor = true;
+      this.pregroup.CheckedChanged += new System.EventHandler(this.forcegroup_CheckedChanged);
+      // 
+      // preloadtemplate
+      // 
+      this.preloadtemplate.Location = new System.Drawing.Point(120, 65);
+      this.preloadtemplate.Name = "preloadtemplate";
+      this.preloadtemplate.Size = new System.Drawing.Size(105, 23);
+      this.preloadtemplate.TabIndex = 80;
+      this.preloadtemplate.TextChanged += new System.EventHandler(this.preloadtemplate_TextChanged);
+      // 
+      // pregroupname
+      // 
+      this.pregroupname.Location = new System.Drawing.Point(131, 103);
+      this.pregroupname.Name = "pregroupname";
+      this.pregroupname.Size = new System.Drawing.Size(94, 23);
+      this.pregroupname.TabIndex = 81;
+      this.pregroupname.TextChanged += new System.EventHandler(this.forcegroupname_TextChanged);
+      // 
+      // deletefriend
+      // 
+      this.deletefriend.Location = new System.Drawing.Point(545, 338);
       this.deletefriend.Name = "deletefriend";
-      this.deletefriend.Size = new Size(135, 31);
+      this.deletefriend.Size = new System.Drawing.Size(75, 32);
       this.deletefriend.TabIndex = 78;
-      this.deletefriend.Text = "Remove Selected";
+      this.deletefriend.Text = "Remove";
       this.deletefriend.UseVisualStyleBackColor = true;
-      this.deletefriend.Click += new EventHandler(this.removefriend_Click);
+      this.deletefriend.Click += new System.EventHandler(this.removefriend_Click);
+      // 
+      // friendname_error2
+      // 
       this.friendname_error2.AutoSize = true;
-      this.friendname_error2.ForeColor = Color.Maroon;
-      this.friendname_error2.Location = new System.Drawing.Point(320, 218);
+      this.friendname_error2.ForeColor = System.Drawing.Color.Maroon;
+      this.friendname_error2.Location = new System.Drawing.Point(470, 312);
       this.friendname_error2.Name = "friendname_error2";
-      this.friendname_error2.Size = new Size(138, 15);
+      this.friendname_error2.Size = new System.Drawing.Size(138, 15);
       this.friendname_error2.TabIndex = 77;
       this.friendname_error2.Text = "This friend already exists.";
       this.friendname_error2.Visible = false;
-      this.label7.AutoSize = true;
-      this.label7.Font = new Font("Arial", 9f, FontStyle.Italic, GraphicsUnit.Point, (byte) 0);
-      this.label7.ForeColor = SystemColors.ControlDarkDark;
-      this.label7.Location = new System.Drawing.Point(281, 48);
-      this.label7.Name = "label7";
-      this.label7.Size = new Size(177, 45);
-      this.label7.TabIndex = 76;
-      this.label7.Text = "Cast slower and walk at normal\r\nspeed around anyone NOT on\r\nthe list.";
+      // 
+      // friendname_error
+      // 
       this.friendname_error.AutoSize = true;
-      this.friendname_error.ForeColor = Color.Maroon;
-      this.friendname_error.Location = new System.Drawing.Point(388, 218);
+      this.friendname_error.ForeColor = System.Drawing.Color.Maroon;
+      this.friendname_error.Location = new System.Drawing.Point(525, 312);
       this.friendname_error.Name = "friendname_error";
-      this.friendname_error.Size = new Size(35, 15);
+      this.friendname_error.Size = new System.Drawing.Size(35, 15);
       this.friendname_error.TabIndex = 74;
       this.friendname_error.Text = "Error.";
       this.friendname_error.Visible = false;
-      this.friendlistbox.ForeColor = Color.DodgerBlue;
+      // 
+      // friendlistbox
+      // 
+      this.friendlistbox.ForeColor = System.Drawing.Color.DodgerBlue;
       this.friendlistbox.FormattingEnabled = true;
       this.friendlistbox.ItemHeight = 15;
-      this.friendlistbox.Location = new System.Drawing.Point(464, 26);
+      this.friendlistbox.Location = new System.Drawing.Point(460, 46);
       this.friendlistbox.Name = "friendlistbox";
       this.friendlistbox.ScrollAlwaysVisible = true;
-      this.friendlistbox.Size = new Size(156, 319);
+      this.friendlistbox.Size = new System.Drawing.Size(160, 259);
       this.friendlistbox.TabIndex = 71;
-      this.friendlistbox.SelectedIndexChanged += new EventHandler(this.friendlistbox_SelectedIndexChanged);
-      this.friendlistbox.KeyUp += new KeyEventHandler(this.friendlistbox_KeyUp);
-      this.addfriend_button.Location = new System.Drawing.Point(351, 170);
+      this.friendlistbox.SelectedIndexChanged += new System.EventHandler(this.friendlistbox_SelectedIndexChanged);
+      this.friendlistbox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.friendlistbox_KeyUp);
+      // 
+      // addfriend_button
+      // 
+      this.addfriend_button.Location = new System.Drawing.Point(460, 338);
       this.addfriend_button.Name = "addfriend_button";
-      this.addfriend_button.Size = new Size(107, 33);
+      this.addfriend_button.Size = new System.Drawing.Size(75, 32);
       this.addfriend_button.TabIndex = 73;
       this.addfriend_button.Text = "Add";
       this.addfriend_button.UseVisualStyleBackColor = true;
-      this.addfriend_button.Click += new EventHandler(this.addfriend_button_Click);
+      this.addfriend_button.Click += new System.EventHandler(this.addfriend_button_Click);
+      // 
+      // friends
+      // 
       this.friends.AutoSize = true;
       this.friends.Checked = true;
-      this.friends.CheckState = CheckState.Checked;
-      this.friends.Location = new System.Drawing.Point(277, 26);
+      this.friends.CheckState = System.Windows.Forms.CheckState.Checked;
+      this.friends.Location = new System.Drawing.Point(447, 6);
       this.friends.Name = "friends";
-      this.friends.Size = new Size(181, 19);
+      this.friends.Size = new System.Drawing.Size(181, 19);
       this.friends.TabIndex = 70;
       this.friends.Text = "Use friend-conscious settings";
+      this.toolTip1.SetToolTip(this.friends, "Cast slower and walk at normal\r\nspeed around anyone NOT on\r\nthe list.");
       this.friends.UseVisualStyleBackColor = true;
-      this.friends.CheckedChanged += new EventHandler(this.friends_CheckedChanged);
-      this.tabPage7.Controls.Add((Control) this.collegealert);
-      this.tabPage7.Controls.Add((Control) this.champalert);
-      this.tabPage7.Controls.Add((Control) this.button2);
-      this.tabPage7.Controls.Add((Control) this.expalert);
-      this.tabPage7.Controls.Add((Control) this.button1);
-      this.tabPage7.Controls.Add((Control) this.alertondeath);
-      this.tabPage7.Controls.Add((Control) this.label11);
-      this.tabPage7.Controls.Add((Control) this.alarm_walkval);
-      this.tabPage7.Controls.Add((Control) this.alarm_walk);
-      this.tabPage7.Controls.Add((Control) this.button4);
-      this.tabPage7.Controls.Add((Control) this.button3);
-      this.tabPage7.Controls.Add((Control) this.alertonskull);
-      this.tabPage7.Controls.Add((Control) this.button6);
-      this.tabPage7.Controls.Add((Control) this.deletesentrymap);
-      this.tabPage7.Controls.Add((Control) this.addsentrymap);
-      this.tabPage7.Controls.Add((Control) this.newsentrymap);
-      this.tabPage7.Controls.Add((Control) this.label8);
-      this.tabPage7.Controls.Add((Control) this.AlarmMapsList);
-      this.tabPage7.Controls.Add((Control) this.playnoise);
+      this.friends.CheckedChanged += new System.EventHandler(this.friends_CheckedChanged);
+      // 
+      // addfriend_name
+      // 
+      this.addfriend_name.Location = new System.Drawing.Point(460, 309);
+      this.addfriend_name.MaxLength = 64;
+      this.addfriend_name.Name = "addfriend_name";
+      this.addfriend_name.Size = new System.Drawing.Size(160, 23);
+      this.addfriend_name.TabIndex = 72;
+      this.addfriend_name.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.addfriend_name_KeyPress);
+      // 
+      // tabPage7
+      // 
+      this.tabPage7.Controls.Add(this.collegealert);
+      this.tabPage7.Controls.Add(this.champalert);
+      this.tabPage7.Controls.Add(this.button2);
+      this.tabPage7.Controls.Add(this.expalert);
+      this.tabPage7.Controls.Add(this.button1);
+      this.tabPage7.Controls.Add(this.alertondeath);
+      this.tabPage7.Controls.Add(this.label11);
+      this.tabPage7.Controls.Add(this.alarm_walkval);
+      this.tabPage7.Controls.Add(this.alarm_walk);
+      this.tabPage7.Controls.Add(this.button4);
+      this.tabPage7.Controls.Add(this.button3);
+      this.tabPage7.Controls.Add(this.alertonskull);
+      this.tabPage7.Controls.Add(this.button6);
+      this.tabPage7.Controls.Add(this.deletesentrymap);
+      this.tabPage7.Controls.Add(this.addsentrymap);
+      this.tabPage7.Controls.Add(this.newsentrymap);
+      this.tabPage7.Controls.Add(this.label8);
+      this.tabPage7.Controls.Add(this.AlarmMapsList);
+      this.tabPage7.Controls.Add(this.playnoise);
       this.tabPage7.Location = new System.Drawing.Point(4, 24);
       this.tabPage7.Name = "tabPage7";
-      this.tabPage7.Padding = new Padding(3);
-      this.tabPage7.Size = new Size(628, 373);
+      this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
+      this.tabPage7.Size = new System.Drawing.Size(628, 373);
       this.tabPage7.TabIndex = 5;
       this.tabPage7.Text = "Alarms";
       this.tabPage7.UseVisualStyleBackColor = true;
+      // 
+      // collegealert
+      // 
       this.collegealert.AutoSize = true;
       this.collegealert.Location = new System.Drawing.Point(115, 315);
       this.collegealert.Name = "collegealert";
-      this.collegealert.Size = new Size(175, 19);
+      this.collegealert.Size = new System.Drawing.Size(175, 19);
       this.collegealert.TabIndex = 22;
       this.collegealert.Text = "Alert if College class starting";
       this.collegealert.UseVisualStyleBackColor = true;
-      this.collegealert.CheckedChanged += new EventHandler(this.alertondeath_CheckedChanged);
+      this.collegealert.CheckedChanged += new System.EventHandler(this.alertondeath_CheckedChanged);
+      // 
+      // champalert
+      // 
       this.champalert.AutoSize = true;
       this.champalert.Location = new System.Drawing.Point(115, 279);
       this.champalert.Name = "champalert";
-      this.champalert.Size = new Size(172, 19);
+      this.champalert.Size = new System.Drawing.Size(172, 19);
       this.champalert.TabIndex = 21;
       this.champalert.Text = "Alert if Carnun Champ seen";
       this.champalert.UseVisualStyleBackColor = true;
-      this.champalert.CheckedChanged += new EventHandler(this.alertondeath_CheckedChanged);
+      this.champalert.CheckedChanged += new System.EventHandler(this.alertondeath_CheckedChanged);
+      // 
+      // button2
+      // 
       this.button2.Location = new System.Drawing.Point(26, 237);
       this.button2.Name = "button2";
-      this.button2.Size = new Size(75, 23);
+      this.button2.Size = new System.Drawing.Size(75, 23);
       this.button2.TabIndex = 20;
       this.button2.Text = "Test 5";
       this.button2.UseVisualStyleBackColor = true;
-      this.button2.Click += new EventHandler(this.button2_Click);
+      this.button2.Click += new System.EventHandler(this.button2_Click);
+      // 
+      // expalert
+      // 
       this.expalert.AutoSize = true;
       this.expalert.Checked = true;
-      this.expalert.CheckState = CheckState.Checked;
+      this.expalert.CheckState = System.Windows.Forms.CheckState.Checked;
       this.expalert.Location = new System.Drawing.Point(115, 240);
       this.expalert.Name = "expalert";
-      this.expalert.Size = new Size(239, 19);
+      this.expalert.Size = new System.Drawing.Size(239, 19);
       this.expalert.TabIndex = 19;
       this.expalert.Text = "Alert me when a Exp/Ap bonus runs out.";
       this.expalert.UseVisualStyleBackColor = true;
-      this.expalert.CheckedChanged += new EventHandler(this.alertondeath_CheckedChanged);
+      this.expalert.CheckedChanged += new System.EventHandler(this.alertondeath_CheckedChanged);
+      // 
+      // button1
+      // 
       this.button1.Location = new System.Drawing.Point(26, 194);
       this.button1.Name = "button1";
-      this.button1.Size = new Size(75, 23);
+      this.button1.Size = new System.Drawing.Size(75, 23);
       this.button1.TabIndex = 18;
       this.button1.Text = "Test 4";
       this.button1.UseVisualStyleBackColor = true;
-      this.button1.Click += new EventHandler(this.button1_Click_2);
+      this.button1.Click += new System.EventHandler(this.button1_Click_2);
+      // 
+      // alertondeath
+      // 
       this.alertondeath.AutoSize = true;
       this.alertondeath.Checked = true;
-      this.alertondeath.CheckState = CheckState.Checked;
+      this.alertondeath.CheckState = System.Windows.Forms.CheckState.Checked;
       this.alertondeath.Location = new System.Drawing.Point(115, 150);
       this.alertondeath.Name = "alertondeath";
-      this.alertondeath.Size = new Size(149, 19);
+      this.alertondeath.Size = new System.Drawing.Size(149, 19);
       this.alertondeath.TabIndex = 17;
       this.alertondeath.Text = "Alert me if a client dies.";
       this.alertondeath.UseVisualStyleBackColor = true;
-      this.alertondeath.CheckedChanged += new EventHandler(this.alertondeath_CheckedChanged);
+      this.alertondeath.CheckedChanged += new System.EventHandler(this.alertondeath_CheckedChanged);
+      // 
+      // label11
+      // 
       this.label11.AutoSize = true;
       this.label11.Location = new System.Drawing.Point(331, 198);
       this.label11.Name = "label11";
-      this.label11.Size = new Size(53, 15);
+      this.label11.Size = new System.Drawing.Size(53, 15);
       this.label11.TabIndex = 16;
       this.label11.Text = "seconds.";
+      // 
+      // alarm_walkval
+      // 
       this.alarm_walkval.Location = new System.Drawing.Point(285, 196);
-      this.alarm_walkval.Maximum = new Decimal(new int[4]
-      {
-        1000,
-        0,
-        0,
-        0
-      });
+      this.alarm_walkval.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
       this.alarm_walkval.Name = "alarm_walkval";
-      this.alarm_walkval.Size = new Size(40, 23);
+      this.alarm_walkval.Size = new System.Drawing.Size(40, 23);
       this.alarm_walkval.TabIndex = 15;
-      this.alarm_walkval.Value = new Decimal(new int[4]
-      {
-        20,
-        0,
-        0,
-        0
-      });
-      this.alarm_walkval.ValueChanged += new EventHandler(this.alarm_walkval_ValueChanged);
+      this.alarm_walkval.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+      this.alarm_walkval.ValueChanged += new System.EventHandler(this.alarm_walkval_ValueChanged);
+      // 
+      // alarm_walk
+      // 
       this.alarm_walk.AutoSize = true;
       this.alarm_walk.Checked = true;
-      this.alarm_walk.CheckState = CheckState.Checked;
+      this.alarm_walk.CheckState = System.Windows.Forms.CheckState.Checked;
       this.alarm_walk.Location = new System.Drawing.Point(115, 197);
       this.alarm_walk.Name = "alarm_walk";
-      this.alarm_walk.Size = new Size(169, 19);
+      this.alarm_walk.Size = new System.Drawing.Size(169, 19);
       this.alarm_walk.TabIndex = 14;
-      this.alarm_walk.Text = "Alert me if I don't move for";
+      this.alarm_walk.Text = "Alert me if I don\'t move for";
       this.alarm_walk.UseVisualStyleBackColor = true;
-      this.alarm_walk.CheckedChanged += new EventHandler(this.alarm_walk_CheckedChanged);
+      this.alarm_walk.CheckedChanged += new System.EventHandler(this.alarm_walk_CheckedChanged);
+      // 
+      // button4
+      // 
       this.button4.Location = new System.Drawing.Point(26, 147);
       this.button4.Name = "button4";
-      this.button4.Size = new Size(75, 23);
+      this.button4.Size = new System.Drawing.Size(75, 23);
       this.button4.TabIndex = 13;
       this.button4.Text = "Test 3";
       this.button4.UseVisualStyleBackColor = true;
-      this.button4.Click += new EventHandler(this.button4_Click);
+      this.button4.Click += new System.EventHandler(this.button4_Click);
+      // 
+      // button3
+      // 
       this.button3.Location = new System.Drawing.Point(26, 100);
       this.button3.Name = "button3";
-      this.button3.Size = new Size(75, 23);
+      this.button3.Size = new System.Drawing.Size(75, 23);
       this.button3.TabIndex = 12;
       this.button3.Text = "Test 2";
       this.button3.UseVisualStyleBackColor = true;
-      this.button3.Click += new EventHandler(this.button3_Click);
+      this.button3.Click += new System.EventHandler(this.button3_Click);
+      // 
+      // alertonskull
+      // 
       this.alertonskull.AutoSize = true;
       this.alertonskull.Checked = true;
-      this.alertonskull.CheckState = CheckState.Checked;
+      this.alertonskull.CheckState = System.Windows.Forms.CheckState.Checked;
       this.alertonskull.Location = new System.Drawing.Point(115, 103);
       this.alertonskull.Name = "alertonskull";
-      this.alertonskull.Size = new Size(239, 19);
+      this.alertonskull.Size = new System.Drawing.Size(239, 19);
       this.alertonskull.TabIndex = 11;
       this.alertonskull.Text = "Alert me if a client Skulls for 6+ seconds.";
       this.alertonskull.UseVisualStyleBackColor = true;
-      this.alertonskull.CheckedChanged += new EventHandler(this.alertonskull_CheckedChanged);
+      this.alertonskull.CheckedChanged += new System.EventHandler(this.alertonskull_CheckedChanged);
+      // 
+      // button6
+      // 
       this.button6.Location = new System.Drawing.Point(26, 53);
       this.button6.Name = "button6";
-      this.button6.Size = new Size(75, 23);
+      this.button6.Size = new System.Drawing.Size(75, 23);
       this.button6.TabIndex = 7;
       this.button6.Text = "Test 1";
       this.button6.UseVisualStyleBackColor = true;
-      this.button6.Click += new EventHandler(this.button1_Click_1);
+      this.button6.Click += new System.EventHandler(this.button1_Click_1);
+      // 
+      // deletesentrymap
+      // 
       this.deletesentrymap.Location = new System.Drawing.Point(475, 328);
       this.deletesentrymap.Name = "deletesentrymap";
-      this.deletesentrymap.Size = new Size(75, 23);
+      this.deletesentrymap.Size = new System.Drawing.Size(75, 23);
       this.deletesentrymap.TabIndex = 6;
       this.deletesentrymap.Text = "Delete";
       this.deletesentrymap.UseVisualStyleBackColor = true;
-      this.deletesentrymap.Click += new EventHandler(this.deletesentrymap_Click);
+      this.deletesentrymap.Click += new System.EventHandler(this.deletesentrymap_Click);
+      // 
+      // addsentrymap
+      // 
       this.addsentrymap.Location = new System.Drawing.Point(530, 289);
       this.addsentrymap.Name = "addsentrymap";
-      this.addsentrymap.Size = new Size(75, 23);
+      this.addsentrymap.Size = new System.Drawing.Size(75, 23);
       this.addsentrymap.TabIndex = 5;
       this.addsentrymap.Text = "Add";
       this.addsentrymap.UseVisualStyleBackColor = true;
-      this.addsentrymap.Click += new EventHandler(this.addsentrymap_Click);
+      this.addsentrymap.Click += new System.EventHandler(this.addsentrymap_Click);
+      // 
+      // newsentrymap
+      // 
       this.newsentrymap.Location = new System.Drawing.Point(424, 289);
       this.newsentrymap.Name = "newsentrymap";
-      this.newsentrymap.Size = new Size(100, 23);
+      this.newsentrymap.Size = new System.Drawing.Size(100, 23);
       this.newsentrymap.TabIndex = 4;
-      this.newsentrymap.KeyPress += new KeyPressEventHandler(this.newsentrymap_KeyPress);
+      this.newsentrymap.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.newsentrymap_KeyPress);
+      // 
+      // label8
+      // 
       this.label8.AutoSize = true;
       this.label8.Location = new System.Drawing.Point(421, 27);
       this.label8.Name = "label8";
-      this.label8.Size = new Size((int) sbyte.MaxValue, 15);
+      this.label8.Size = new System.Drawing.Size(127, 15);
       this.label8.TabIndex = 3;
       this.label8.Text = "Map Name or Number";
+      // 
+      // AlarmMapsList
+      // 
       this.AlarmMapsList.FormattingEnabled = true;
       this.AlarmMapsList.ItemHeight = 15;
-      this.AlarmMapsList.Items.AddRange(new object[14]
-      {
-        (object) "cthonic remains",
-        (object) "chaos",
-        (object) "chadul",
-        (object) "oren ruins",
-        (object) "shinewood forest",
-        (object) "mount giragan",
-        (object) "water dungeon",
-        (object) "andor",
-        (object) "cursed home",
-        (object) "hostile ground",
-        (object) "crystal cave",
-        (object) "noam plains",
-        (object) "veltain mine",
-        (object) "lost ruins"
-      });
+      this.AlarmMapsList.Items.AddRange(new object[] {
+            "cthonic remains",
+            "chaos",
+            "chadul",
+            "oren ruins",
+            "shinewood forest",
+            "mount giragan",
+            "water dungeon",
+            "andor",
+            "cursed home",
+            "hostile ground",
+            "crystal cave",
+            "noam plains",
+            "veltain mine",
+            "lost ruins"});
       this.AlarmMapsList.Location = new System.Drawing.Point(424, 54);
       this.AlarmMapsList.Name = "AlarmMapsList";
-      this.AlarmMapsList.Size = new Size((int) sbyte.MaxValue, 229);
+      this.AlarmMapsList.Size = new System.Drawing.Size(127, 229);
       this.AlarmMapsList.TabIndex = 1;
+      // 
+      // playnoise
+      // 
       this.playnoise.AutoSize = true;
       this.playnoise.Checked = true;
-      this.playnoise.CheckState = CheckState.Checked;
+      this.playnoise.CheckState = System.Windows.Forms.CheckState.Checked;
       this.playnoise.Location = new System.Drawing.Point(115, 57);
       this.playnoise.Name = "playnoise";
-      this.playnoise.Size = new Size(310, 19);
+      this.playnoise.Size = new System.Drawing.Size(310, 19);
       this.playnoise.TabIndex = 0;
       this.playnoise.Text = "Alert me if non-friends show up on these maps ----->";
       this.playnoise.UseVisualStyleBackColor = true;
-      this.playnoise.CheckedChanged += new EventHandler(this.playnoise_CheckedChanged);
-      this.tabPage3.Controls.Add((Control) this.frostylog);
-      this.tabPage3.Controls.Add((Control) this.logpigchase);
-      this.tabPage3.Controls.Add((Control) this.getmentored);
-      this.tabPage3.Controls.Add((Control) this.groupBox2);
-      this.tabPage3.Controls.Add((Control) this.groupBox1);
-      this.tabPage3.Controls.Add((Control) this.laborname);
-      this.tabPage3.Controls.Add((Control) this.label6);
-      this.tabPage3.Controls.Add((Control) this.loglabormules);
+      this.playnoise.CheckedChanged += new System.EventHandler(this.playnoise_CheckedChanged);
+      // 
+      // tabPage3
+      // 
+      this.tabPage3.Controls.Add(this.frostylog);
+      this.tabPage3.Controls.Add(this.logpigchase);
+      this.tabPage3.Controls.Add(this.getmentored);
+      this.tabPage3.Controls.Add(this.groupBox2);
+      this.tabPage3.Controls.Add(this.groupBox1);
+      this.tabPage3.Controls.Add(this.laborname);
+      this.tabPage3.Controls.Add(this.label6);
+      this.tabPage3.Controls.Add(this.loglabormules);
       this.tabPage3.Location = new System.Drawing.Point(4, 24);
       this.tabPage3.Name = "tabPage3";
-      this.tabPage3.Size = new Size(628, 373);
+      this.tabPage3.Size = new System.Drawing.Size(628, 373);
       this.tabPage3.TabIndex = 6;
       this.tabPage3.Text = "Labor";
       this.tabPage3.UseVisualStyleBackColor = true;
+      // 
+      // frostylog
+      // 
       this.frostylog.AutoSize = true;
       this.frostylog.Location = new System.Drawing.Point(21, 52);
       this.frostylog.Name = "frostylog";
-      this.frostylog.Size = new Size(200, 19);
+      this.frostylog.Size = new System.Drawing.Size(200, 19);
       this.frostylog.TabIndex = 26;
-      this.frostylog.Text = "Loures Fountain Events (bonus's)";
-      this.toolTip1.SetToolTip((Control) this.frostylog, "December - Xmas Doubles\r\nFeburary - Vday Bonus");
+      this.frostylog.Text = "Loures Fountain Events (bonus\'s)";
+      this.toolTip1.SetToolTip(this.frostylog, "December - Xmas Doubles\r\nFeburary - Vday Bonus");
       this.frostylog.UseVisualStyleBackColor = true;
+      // 
+      // logpigchase
+      // 
       this.logpigchase.AutoSize = true;
       this.logpigchase.Location = new System.Drawing.Point(21, 27);
       this.logpigchase.Name = "logpigchase";
-      this.logpigchase.Size = new Size(78, 19);
+      this.logpigchase.Size = new System.Drawing.Size(78, 19);
       this.logpigchase.TabIndex = 25;
       this.logpigchase.Text = "Pig Chase";
       this.logpigchase.UseVisualStyleBackColor = true;
+      // 
+      // getmentored
+      // 
       this.getmentored.AutoSize = true;
       this.getmentored.Location = new System.Drawing.Point(416, 55);
       this.getmentored.Name = "getmentored";
-      this.getmentored.Size = new Size(185, 19);
+      this.getmentored.Size = new System.Drawing.Size(185, 19);
       this.getmentored.TabIndex = 24;
       this.getmentored.Text = "Get Mentored by above player";
       this.getmentored.UseVisualStyleBackColor = true;
-      this.groupBox2.Controls.Add((Control) this.savedlabormulelists);
-      this.groupBox2.Controls.Add((Control) this.savemulelistname);
-      this.groupBox2.Controls.Add((Control) this.savelabormulelist);
-      this.groupBox2.Controls.Add((Control) this.deletelabormulelist);
-      this.groupBox2.Controls.Add((Control) this.loadlabormulelist);
+      // 
+      // groupBox2
+      // 
+      this.groupBox2.Controls.Add(this.savedlabormulelists);
+      this.groupBox2.Controls.Add(this.savemulelistname);
+      this.groupBox2.Controls.Add(this.savelabormulelist);
+      this.groupBox2.Controls.Add(this.deletelabormulelist);
+      this.groupBox2.Controls.Add(this.loadlabormulelist);
       this.groupBox2.Location = new System.Drawing.Point(343, 101);
       this.groupBox2.Name = "groupBox2";
-      this.groupBox2.Size = new Size(277, 261);
+      this.groupBox2.Size = new System.Drawing.Size(277, 261);
       this.groupBox2.TabIndex = 23;
       this.groupBox2.TabStop = false;
       this.groupBox2.Text = "Save Mule List";
-      this.savedlabormulelists.Font = new Font("Arial", 9f, FontStyle.Italic, GraphicsUnit.Point, (byte) 0);
-      this.savedlabormulelists.ForeColor = SystemColors.ControlDarkDark;
+      // 
+      // savedlabormulelists
+      // 
+      this.savedlabormulelists.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.savedlabormulelists.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
       this.savedlabormulelists.FormattingEnabled = true;
       this.savedlabormulelists.ItemHeight = 15;
       this.savedlabormulelists.Location = new System.Drawing.Point(143, 22);
       this.savedlabormulelists.Name = "savedlabormulelists";
-      this.savedlabormulelists.Size = new Size(120, 214);
+      this.savedlabormulelists.Size = new System.Drawing.Size(120, 214);
       this.savedlabormulelists.TabIndex = 18;
-      this.savemulelistname.Font = new Font("Arial", 9f, FontStyle.Italic, GraphicsUnit.Point, (byte) 0);
-      this.savemulelistname.ForeColor = SystemColors.ControlDarkDark;
+      // 
+      // savemulelistname
+      // 
+      this.savemulelistname.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.savemulelistname.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
       this.savemulelistname.Location = new System.Drawing.Point(20, 60);
       this.savemulelistname.Name = "savemulelistname";
-      this.savemulelistname.Size = new Size(117, 21);
+      this.savemulelistname.Size = new System.Drawing.Size(117, 21);
       this.savemulelistname.TabIndex = 17;
       this.savemulelistname.Text = "Mule List Name";
+      // 
+      // savelabormulelist
+      // 
       this.savelabormulelist.Location = new System.Drawing.Point(28, 87);
       this.savelabormulelist.Name = "savelabormulelist";
-      this.savelabormulelist.Size = new Size(109, 28);
+      this.savelabormulelist.Size = new System.Drawing.Size(109, 28);
       this.savelabormulelist.TabIndex = 13;
       this.savelabormulelist.Text = "Save Mule List";
       this.savelabormulelist.UseVisualStyleBackColor = true;
-      this.savelabormulelist.Click += new EventHandler(this.button1_Click);
+      this.savelabormulelist.Click += new System.EventHandler(this.button1_Click);
+      // 
+      // deletelabormulelist
+      // 
       this.deletelabormulelist.Location = new System.Drawing.Point(62, 215);
       this.deletelabormulelist.Name = "deletelabormulelist";
-      this.deletelabormulelist.Size = new Size(75, 30);
+      this.deletelabormulelist.Size = new System.Drawing.Size(75, 30);
       this.deletelabormulelist.TabIndex = 16;
       this.deletelabormulelist.Text = "Delete";
       this.deletelabormulelist.UseVisualStyleBackColor = true;
-      this.deletelabormulelist.Click += new EventHandler(this.deletelabormulelist_Click);
+      this.deletelabormulelist.Click += new System.EventHandler(this.deletelabormulelist_Click);
+      // 
+      // loadlabormulelist
+      // 
       this.loadlabormulelist.Location = new System.Drawing.Point(20, 147);
       this.loadlabormulelist.Name = "loadlabormulelist";
-      this.loadlabormulelist.Size = new Size(117, 27);
+      this.loadlabormulelist.Size = new System.Drawing.Size(117, 27);
       this.loadlabormulelist.TabIndex = 15;
       this.loadlabormulelist.Text = "Load List";
       this.loadlabormulelist.UseVisualStyleBackColor = true;
-      this.loadlabormulelist.Click += new EventHandler(this.loadlabormulelist_Click);
-      this.groupBox1.Controls.Add((Control) this.clearlist);
-      this.groupBox1.Controls.Add((Control) this.newmulepw);
-      this.groupBox1.Controls.Add((Control) this.label5);
-      this.groupBox1.Controls.Add((Control) this.label4);
-      this.groupBox1.Controls.Add((Control) this.deletemule);
-      this.groupBox1.Controls.Add((Control) this.addmule);
-      this.groupBox1.Controls.Add((Control) this.newmule);
-      this.groupBox1.Controls.Add((Control) this.labormulelist);
+      this.loadlabormulelist.Click += new System.EventHandler(this.loadlabormulelist_Click);
+      // 
+      // groupBox1
+      // 
+      this.groupBox1.Controls.Add(this.clearlist);
+      this.groupBox1.Controls.Add(this.newmulepw);
+      this.groupBox1.Controls.Add(this.label5);
+      this.groupBox1.Controls.Add(this.label4);
+      this.groupBox1.Controls.Add(this.deletemule);
+      this.groupBox1.Controls.Add(this.addmule);
+      this.groupBox1.Controls.Add(this.newmule);
+      this.groupBox1.Controls.Add(this.labormulelist);
       this.groupBox1.Location = new System.Drawing.Point(8, 101);
       this.groupBox1.Name = "groupBox1";
-      this.groupBox1.Size = new Size(298, 261);
+      this.groupBox1.Size = new System.Drawing.Size(298, 261);
       this.groupBox1.TabIndex = 22;
       this.groupBox1.TabStop = false;
       this.groupBox1.Text = "Labor Mules";
+      // 
+      // clearlist
+      // 
       this.clearlist.Location = new System.Drawing.Point(152, 87);
       this.clearlist.Name = "clearlist";
-      this.clearlist.Size = new Size(121, 28);
+      this.clearlist.Size = new System.Drawing.Size(121, 28);
       this.clearlist.TabIndex = 20;
       this.clearlist.Text = "Clear List";
       this.clearlist.UseVisualStyleBackColor = true;
-      this.clearlist.Click += new EventHandler(this.clearlist_Click);
-      this.newmulepw.Font = new Font("Arial", 9f, FontStyle.Italic, GraphicsUnit.Point, (byte) 0);
-      this.newmulepw.ForeColor = SystemColors.ControlDarkDark;
+      this.clearlist.Click += new System.EventHandler(this.clearlist_Click);
+      // 
+      // newmulepw
+      // 
+      this.newmulepw.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.newmulepw.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
       this.newmulepw.Location = new System.Drawing.Point(80, 215);
       this.newmulepw.Name = "newmulepw";
-      this.newmulepw.Size = new Size(100, 21);
+      this.newmulepw.Size = new System.Drawing.Size(100, 21);
       this.newmulepw.TabIndex = 5;
-      this.newmulepw.KeyPress += new KeyPressEventHandler(this.newmulepw_KeyPress);
+      this.newmulepw.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.newmulepw_KeyPress);
+      // 
+      // label5
+      // 
       this.label5.AutoSize = true;
       this.label5.Location = new System.Drawing.Point(10, 218);
       this.label5.Name = "label5";
-      this.label5.Size = new Size(57, 15);
+      this.label5.Size = new System.Drawing.Size(57, 15);
       this.label5.TabIndex = 10;
       this.label5.Text = "Password";
+      // 
+      // label4
+      // 
       this.label4.AutoSize = true;
       this.label4.Location = new System.Drawing.Point(33, 190);
       this.label4.Name = "label4";
-      this.label4.Size = new Size(39, 15);
+      this.label4.Size = new System.Drawing.Size(39, 15);
       this.label4.TabIndex = 9;
       this.label4.Text = "Name";
+      // 
+      // deletemule
+      // 
       this.deletemule.Location = new System.Drawing.Point(152, 20);
       this.deletemule.Name = "deletemule";
-      this.deletemule.Size = new Size(121, 30);
+      this.deletemule.Size = new System.Drawing.Size(121, 30);
       this.deletemule.TabIndex = 7;
       this.deletemule.Text = "Remove Selected";
       this.deletemule.UseVisualStyleBackColor = true;
-      this.deletemule.Click += new EventHandler(this.deletemule_Click);
+      this.deletemule.Click += new System.EventHandler(this.deletemule_Click);
+      // 
+      // addmule
+      // 
       this.addmule.Location = new System.Drawing.Point(186, 184);
       this.addmule.Name = "addmule";
-      this.addmule.Size = new Size(95, 24);
+      this.addmule.Size = new System.Drawing.Size(95, 24);
       this.addmule.TabIndex = 6;
       this.addmule.Text = "Add";
       this.addmule.UseVisualStyleBackColor = true;
-      this.addmule.Click += new EventHandler(this.addmule_Click);
-      this.newmule.Font = new Font("Arial", 9f, FontStyle.Italic, GraphicsUnit.Point, (byte) 0);
-      this.newmule.ForeColor = SystemColors.ControlDarkDark;
+      this.addmule.Click += new System.EventHandler(this.addmule_Click);
+      // 
+      // newmule
+      // 
+      this.newmule.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.newmule.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
       this.newmule.Location = new System.Drawing.Point(80, 187);
       this.newmule.Name = "newmule";
-      this.newmule.Size = new Size(100, 21);
+      this.newmule.Size = new System.Drawing.Size(100, 21);
       this.newmule.TabIndex = 4;
-      this.newmule.KeyPress += new KeyPressEventHandler(this.newmule_KeyPress);
-      this.labormulelist.Font = new Font("Arial", 9f, FontStyle.Italic, GraphicsUnit.Point, (byte) 0);
-      this.labormulelist.ForeColor = SystemColors.WindowFrame;
+      this.newmule.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.newmule_KeyPress);
+      // 
+      // labormulelist
+      // 
+      this.labormulelist.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.labormulelist.ForeColor = System.Drawing.SystemColors.WindowFrame;
       this.labormulelist.FormattingEnabled = true;
       this.labormulelist.ItemHeight = 15;
       this.labormulelist.Location = new System.Drawing.Point(13, 20);
       this.labormulelist.Name = "labormulelist";
-      this.labormulelist.Size = new Size(120, 154);
+      this.labormulelist.Size = new System.Drawing.Size(120, 154);
       this.labormulelist.TabIndex = 1;
-      this.laborname.Font = new Font("Arial", 9f, FontStyle.Italic, GraphicsUnit.Point, (byte) 0);
-      this.laborname.ForeColor = SystemColors.ControlDarkDark;
+      // 
+      // laborname
+      // 
+      this.laborname.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.laborname.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
       this.laborname.Location = new System.Drawing.Point(416, 28);
       this.laborname.Name = "laborname";
-      this.laborname.Size = new Size(100, 21);
+      this.laborname.Size = new System.Drawing.Size(100, 21);
       this.laborname.TabIndex = 15;
+      // 
+      // label6
+      // 
       this.label6.AutoSize = true;
-      this.label6.Font = new Font("Arial", 9f, FontStyle.Regular, GraphicsUnit.Point, (byte) 0);
+      this.label6.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.label6.Location = new System.Drawing.Point(287, 31);
       this.label6.Name = "label6";
-      this.label6.Size = new Size(123, 15);
+      this.label6.Size = new System.Drawing.Size(123, 15);
       this.label6.TabIndex = 14;
       this.label6.Text = "Labor This Character";
+      // 
+      // loglabormules
+      // 
       this.loglabormules.AutoSize = true;
       this.loglabormules.Location = new System.Drawing.Point(290, 55);
       this.loglabormules.Name = "loglabormules";
-      this.loglabormules.Size = new Size(114, 19);
+      this.loglabormules.Size = new System.Drawing.Size(114, 19);
       this.loglabormules.TabIndex = 13;
       this.loglabormules.Text = "Log Labor Mules";
       this.loglabormules.UseVisualStyleBackColor = true;
-      this.loglabormules.CheckedChanged += new EventHandler(this.loglabormules_CheckedChanged);
-      this.tabPage4.Controls.Add((Control) this.recordchestdata);
-      this.tabPage4.Controls.Add((Control) this.groupBox4);
-      this.tabPage4.Controls.Add((Control) this.groupBox3);
-      this.tabPage4.Controls.Add((Control) this.openitemxmleditor);
+      this.loglabormules.CheckedChanged += new System.EventHandler(this.loglabormules_CheckedChanged);
+      // 
+      // tabPage4
+      // 
+      this.tabPage4.Controls.Add(this.recordchestdata);
+      this.tabPage4.Controls.Add(this.groupBox4);
+      this.tabPage4.Controls.Add(this.groupBox3);
+      this.tabPage4.Controls.Add(this.openitemxmleditor);
       this.tabPage4.Location = new System.Drawing.Point(4, 24);
       this.tabPage4.Name = "tabPage4";
-      this.tabPage4.Size = new Size(628, 373);
+      this.tabPage4.Size = new System.Drawing.Size(628, 373);
       this.tabPage4.TabIndex = 7;
       this.tabPage4.Text = "Lists";
       this.tabPage4.UseVisualStyleBackColor = true;
+      // 
+      // recordchestdata
+      // 
       this.recordchestdata.AutoSize = true;
       this.recordchestdata.Location = new System.Drawing.Point(60, 323);
       this.recordchestdata.Name = "recordchestdata";
-      this.recordchestdata.Size = new Size(227, 19);
+      this.recordchestdata.Size = new System.Drawing.Size(227, 19);
       this.recordchestdata.TabIndex = 9;
       this.recordchestdata.Text = "Always record treasure chest/bag data";
       this.recordchestdata.UseVisualStyleBackColor = true;
-      this.recordchestdata.CheckedChanged += new EventHandler(this.recordchestdata_CheckedChanged);
-      this.groupBox4.Controls.Add((Control) this.textpurple);
-      this.groupBox4.Controls.Add((Control) this.textlightgreen);
-      this.groupBox4.Controls.Add((Control) this.textorange);
-      this.groupBox4.Controls.Add((Control) this.textwhite);
-      this.groupBox4.Controls.Add((Control) this.textbrown);
-      this.groupBox4.Controls.Add((Control) this.textgrey5);
-      this.groupBox4.Controls.Add((Control) this.textgrey6);
-      this.groupBox4.Controls.Add((Control) this.textgrey7);
-      this.groupBox4.Controls.Add((Control) this.textblack);
-      this.groupBox4.Controls.Add((Control) this.textpink);
-      this.groupBox4.Controls.Add((Control) this.textyellow);
-      this.groupBox4.Controls.Add((Control) this.textgreen);
-      this.groupBox4.Controls.Add((Control) this.textlightblue);
-      this.groupBox4.Controls.Add((Control) this.textblue);
-      this.groupBox4.Controls.Add((Control) this.textgrey1);
-      this.groupBox4.Controls.Add((Control) this.textgrey2);
-      this.groupBox4.Controls.Add((Control) this.textgrey3);
-      this.groupBox4.Controls.Add((Control) this.textgrey4);
-      this.groupBox4.Controls.Add((Control) this.textred);
+      this.recordchestdata.CheckedChanged += new System.EventHandler(this.recordchestdata_CheckedChanged);
+      // 
+      // groupBox4
+      // 
+      this.groupBox4.Controls.Add(this.textpurple);
+      this.groupBox4.Controls.Add(this.textlightgreen);
+      this.groupBox4.Controls.Add(this.textorange);
+      this.groupBox4.Controls.Add(this.textwhite);
+      this.groupBox4.Controls.Add(this.textbrown);
+      this.groupBox4.Controls.Add(this.textgrey5);
+      this.groupBox4.Controls.Add(this.textgrey6);
+      this.groupBox4.Controls.Add(this.textgrey7);
+      this.groupBox4.Controls.Add(this.textblack);
+      this.groupBox4.Controls.Add(this.textpink);
+      this.groupBox4.Controls.Add(this.textyellow);
+      this.groupBox4.Controls.Add(this.textgreen);
+      this.groupBox4.Controls.Add(this.textlightblue);
+      this.groupBox4.Controls.Add(this.textblue);
+      this.groupBox4.Controls.Add(this.textgrey1);
+      this.groupBox4.Controls.Add(this.textgrey2);
+      this.groupBox4.Controls.Add(this.textgrey3);
+      this.groupBox4.Controls.Add(this.textgrey4);
+      this.groupBox4.Controls.Add(this.textred);
       this.groupBox4.Location = new System.Drawing.Point(356, 22);
       this.groupBox4.Name = "groupBox4";
-      this.groupBox4.Size = new Size(209, 274);
+      this.groupBox4.Size = new System.Drawing.Size(209, 274);
       this.groupBox4.TabIndex = 8;
       this.groupBox4.TabStop = false;
       this.groupBox4.Text = "Kill Count Text Color";
+      // 
+      // textpurple
+      // 
       this.textpurple.AutoSize = true;
       this.textpurple.Location = new System.Drawing.Point(114, 122);
       this.textpurple.Name = "textpurple";
-      this.textpurple.Size = new Size(69, 19);
+      this.textpurple.Size = new System.Drawing.Size(69, 19);
       this.textpurple.TabIndex = 18;
       this.textpurple.TabStop = true;
       this.textpurple.Text = "p purple";
       this.textpurple.UseVisualStyleBackColor = true;
+      // 
+      // textlightgreen
+      // 
       this.textlightgreen.AutoSize = true;
       this.textlightgreen.Location = new System.Drawing.Point(114, 147);
       this.textlightgreen.Name = "textlightgreen";
-      this.textlightgreen.Size = new Size(92, 19);
+      this.textlightgreen.Size = new System.Drawing.Size(92, 19);
       this.textlightgreen.TabIndex = 17;
       this.textlightgreen.TabStop = true;
       this.textlightgreen.Text = "q light green";
       this.textlightgreen.UseVisualStyleBackColor = true;
+      // 
+      // textorange
+      // 
       this.textorange.AutoSize = true;
       this.textorange.Location = new System.Drawing.Point(114, 172);
       this.textorange.Name = "textorange";
-      this.textorange.Size = new Size(70, 19);
+      this.textorange.Size = new System.Drawing.Size(70, 19);
       this.textorange.TabIndex = 16;
       this.textorange.TabStop = true;
       this.textorange.Text = "s orange";
       this.textorange.UseVisualStyleBackColor = true;
+      // 
+      // textwhite
+      // 
       this.textwhite.AutoSize = true;
       this.textwhite.Location = new System.Drawing.Point(114, 222);
       this.textwhite.Name = "textwhite";
-      this.textwhite.Size = new Size(64, 19);
+      this.textwhite.Size = new System.Drawing.Size(64, 19);
       this.textwhite.TabIndex = 15;
       this.textwhite.TabStop = true;
       this.textwhite.Text = "u white";
       this.textwhite.UseVisualStyleBackColor = true;
+      // 
+      // textbrown
+      // 
       this.textbrown.AutoSize = true;
       this.textbrown.Location = new System.Drawing.Point(114, 197);
       this.textbrown.Name = "textbrown";
-      this.textbrown.Size = new Size(66, 19);
+      this.textbrown.Size = new System.Drawing.Size(66, 19);
       this.textbrown.TabIndex = 14;
       this.textbrown.TabStop = true;
       this.textbrown.Text = "t brown";
       this.textbrown.UseVisualStyleBackColor = true;
+      // 
+      // textgrey5
+      // 
       this.textgrey5.AutoSize = true;
       this.textgrey5.Location = new System.Drawing.Point(13, 247);
       this.textgrey5.Name = "textgrey5";
-      this.textgrey5.Size = new Size(66, 19);
+      this.textgrey5.Size = new System.Drawing.Size(66, 19);
       this.textgrey5.TabIndex = 13;
       this.textgrey5.TabStop = true;
       this.textgrey5.Text = "k grey 5";
       this.textgrey5.UseVisualStyleBackColor = true;
+      // 
+      // textgrey6
+      // 
       this.textgrey6.AutoSize = true;
       this.textgrey6.Location = new System.Drawing.Point(114, 22);
       this.textgrey6.Name = "textgrey6";
-      this.textgrey6.Size = new Size(63, 19);
+      this.textgrey6.Size = new System.Drawing.Size(63, 19);
       this.textgrey6.TabIndex = 12;
       this.textgrey6.TabStop = true;
       this.textgrey6.Text = "l grey 6";
       this.textgrey6.UseVisualStyleBackColor = true;
+      // 
+      // textgrey7
+      // 
       this.textgrey7.AutoSize = true;
       this.textgrey7.Location = new System.Drawing.Point(114, 47);
       this.textgrey7.Name = "textgrey7";
-      this.textgrey7.Size = new Size(71, 19);
+      this.textgrey7.Size = new System.Drawing.Size(71, 19);
       this.textgrey7.TabIndex = 11;
       this.textgrey7.TabStop = true;
       this.textgrey7.Text = "m grey 7";
       this.textgrey7.UseVisualStyleBackColor = true;
+      // 
+      // textblack
+      // 
       this.textblack.AutoSize = true;
       this.textblack.Location = new System.Drawing.Point(114, 72);
       this.textblack.Name = "textblack";
-      this.textblack.Size = new Size(63, 19);
+      this.textblack.Size = new System.Drawing.Size(63, 19);
       this.textblack.TabIndex = 10;
       this.textblack.TabStop = true;
       this.textblack.Text = "n black";
       this.textblack.UseVisualStyleBackColor = true;
+      // 
+      // textpink
+      // 
       this.textpink.AutoSize = true;
       this.textpink.Location = new System.Drawing.Point(114, 97);
       this.textpink.Name = "textpink";
-      this.textpink.Size = new Size(72, 19);
+      this.textpink.Size = new System.Drawing.Size(72, 19);
       this.textpink.TabIndex = 9;
       this.textpink.TabStop = true;
       this.textpink.Text = "o/w pink";
       this.textpink.UseVisualStyleBackColor = true;
+      // 
+      // textyellow
+      // 
       this.textyellow.AutoSize = true;
-      this.textyellow.ForeColor = SystemColors.ControlText;
+      this.textyellow.ForeColor = System.Drawing.SystemColors.ControlText;
       this.textyellow.Location = new System.Drawing.Point(13, 47);
       this.textyellow.Name = "textyellow";
-      this.textyellow.Size = new Size(68, 19);
+      this.textyellow.Size = new System.Drawing.Size(68, 19);
       this.textyellow.TabIndex = 8;
       this.textyellow.TabStop = true;
       this.textyellow.Text = "c yellow";
       this.textyellow.UseVisualStyleBackColor = true;
+      // 
+      // textgreen
+      // 
       this.textgreen.AutoSize = true;
       this.textgreen.Location = new System.Drawing.Point(13, 72);
       this.textgreen.Name = "textgreen";
-      this.textgreen.Size = new Size(74, 19);
+      this.textgreen.Size = new System.Drawing.Size(74, 19);
       this.textgreen.TabIndex = 7;
       this.textgreen.TabStop = true;
       this.textgreen.Text = "d/r green";
       this.textgreen.UseVisualStyleBackColor = true;
+      // 
+      // textlightblue
+      // 
       this.textlightblue.AutoSize = true;
       this.textlightblue.Location = new System.Drawing.Point(13, 97);
       this.textlightblue.Name = "textlightblue";
-      this.textlightblue.Size = new Size(95, 19);
+      this.textlightblue.Size = new System.Drawing.Size(95, 19);
       this.textlightblue.TabIndex = 6;
       this.textlightblue.TabStop = true;
       this.textlightblue.Text = "e/v light blue";
       this.textlightblue.UseVisualStyleBackColor = true;
+      // 
+      // textblue
+      // 
       this.textblue.AutoSize = true;
       this.textblue.Location = new System.Drawing.Point(13, 122);
       this.textblue.Name = "textblue";
-      this.textblue.Size = new Size(55, 19);
+      this.textblue.Size = new System.Drawing.Size(55, 19);
       this.textblue.TabIndex = 5;
       this.textblue.TabStop = true;
       this.textblue.Text = "f blue";
       this.textblue.UseVisualStyleBackColor = true;
+      // 
+      // textgrey1
+      // 
       this.textgrey1.AutoSize = true;
       this.textgrey1.Location = new System.Drawing.Point(13, 147);
       this.textgrey1.Name = "textgrey1";
-      this.textgrey1.Size = new Size(67, 19);
+      this.textgrey1.Size = new System.Drawing.Size(67, 19);
       this.textgrey1.TabIndex = 4;
       this.textgrey1.TabStop = true;
       this.textgrey1.Text = "g grey 1";
       this.textgrey1.UseVisualStyleBackColor = true;
+      // 
+      // textgrey2
+      // 
       this.textgrey2.AutoSize = true;
       this.textgrey2.Location = new System.Drawing.Point(13, 172);
       this.textgrey2.Name = "textgrey2";
-      this.textgrey2.Size = new Size(78, 19);
+      this.textgrey2.Size = new System.Drawing.Size(78, 19);
       this.textgrey2.TabIndex = 3;
       this.textgrey2.TabStop = true;
       this.textgrey2.Text = "a/h grey 2";
       this.textgrey2.UseVisualStyleBackColor = true;
+      // 
+      // textgrey3
+      // 
       this.textgrey3.AutoSize = true;
       this.textgrey3.Location = new System.Drawing.Point(13, 197);
       this.textgrey3.Name = "textgrey3";
-      this.textgrey3.Size = new Size(63, 19);
+      this.textgrey3.Size = new System.Drawing.Size(63, 19);
       this.textgrey3.TabIndex = 2;
       this.textgrey3.TabStop = true;
       this.textgrey3.Text = "i grey 3";
       this.textgrey3.UseVisualStyleBackColor = true;
+      // 
+      // textgrey4
+      // 
       this.textgrey4.AutoSize = true;
       this.textgrey4.Location = new System.Drawing.Point(13, 222);
       this.textgrey4.Name = "textgrey4";
-      this.textgrey4.Size = new Size(63, 19);
+      this.textgrey4.Size = new System.Drawing.Size(63, 19);
       this.textgrey4.TabIndex = 1;
       this.textgrey4.TabStop = true;
       this.textgrey4.Text = "j grey 4";
       this.textgrey4.UseVisualStyleBackColor = true;
+      // 
+      // textred
+      // 
       this.textred.AutoSize = true;
-      this.textred.ForeColor = SystemColors.ControlText;
+      this.textred.ForeColor = System.Drawing.SystemColors.ControlText;
       this.textred.Location = new System.Drawing.Point(13, 22);
       this.textred.Name = "textred";
-      this.textred.Size = new Size(52, 19);
+      this.textred.Size = new System.Drawing.Size(52, 19);
       this.textred.TabIndex = 0;
       this.textred.TabStop = true;
       this.textred.Text = "b red";
       this.textred.UseVisualStyleBackColor = true;
-      this.groupBox3.Controls.Add((Control) this.editwsbanlist);
-      this.groupBox3.Controls.Add((Control) this.editignorepeoplelist);
-      this.groupBox3.Controls.Add((Control) this.label1);
-      this.groupBox3.Controls.Add((Control) this.loadlistbtn);
-      this.groupBox3.Controls.Add((Control) this.edittrashlist);
-      this.groupBox3.Controls.Add((Control) this.editcustomloot);
-      this.groupBox3.Controls.Add((Control) this.editidentifyitems);
+      // 
+      // groupBox3
+      // 
+      this.groupBox3.Controls.Add(this.editwsbanlist);
+      this.groupBox3.Controls.Add(this.editignorepeoplelist);
+      this.groupBox3.Controls.Add(this.label1);
+      this.groupBox3.Controls.Add(this.loadlistbtn);
+      this.groupBox3.Controls.Add(this.edittrashlist);
+      this.groupBox3.Controls.Add(this.editcustomloot);
+      this.groupBox3.Controls.Add(this.editidentifyitems);
       this.groupBox3.Location = new System.Drawing.Point(60, 22);
       this.groupBox3.Name = "groupBox3";
-      this.groupBox3.Size = new Size(222, 253);
+      this.groupBox3.Size = new System.Drawing.Size(222, 253);
       this.groupBox3.TabIndex = 7;
       this.groupBox3.TabStop = false;
+      // 
+      // editwsbanlist
+      // 
       this.editwsbanlist.AutoSize = true;
       this.editwsbanlist.Location = new System.Drawing.Point(24, 226);
       this.editwsbanlist.Name = "editwsbanlist";
-      this.editwsbanlist.Size = new Size(181, 15);
+      this.editwsbanlist.Size = new System.Drawing.Size(181, 15);
       this.editwsbanlist.TabIndex = 6;
       this.editwsbanlist.TabStop = true;
       this.editwsbanlist.Text = "Edit World Shout ban List (string)";
-      this.editwsbanlist.LinkClicked += new LinkLabelLinkClickedEventHandler(this.editwsbanlist_LinkClicked);
+      this.editwsbanlist.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.editwsbanlist_LinkClicked);
+      // 
+      // editignorepeoplelist
+      // 
       this.editignorepeoplelist.AutoSize = true;
       this.editignorepeoplelist.Location = new System.Drawing.Point(24, 201);
       this.editignorepeoplelist.Name = "editignorepeoplelist";
-      this.editignorepeoplelist.Size = new Size(170, 15);
+      this.editignorepeoplelist.Size = new System.Drawing.Size(170, 15);
       this.editignorepeoplelist.TabIndex = 5;
       this.editignorepeoplelist.TabStop = true;
       this.editignorepeoplelist.Text = "Edit Ignore Aislings List (string)";
-      this.editignorepeoplelist.LinkClicked += new LinkLabelLinkClickedEventHandler(this.editignorepeoplelist_LinkClicked);
+      this.editignorepeoplelist.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.editignorepeoplelist_LinkClicked);
+      // 
+      // label1
+      // 
       this.label1.AutoSize = true;
       this.label1.Location = new System.Drawing.Point(6, 15);
       this.label1.Name = "label1";
-      this.label1.Size = new Size(211, 60);
+      this.label1.Size = new System.Drawing.Size(211, 60);
       this.label1.TabIndex = 1;
-      this.label1.Text = "Lists are loaded upon program startup,\r\nif you make an edit to a list.txt while\r\nprogram is open, you'll need to click\r\nthe Reload Lists button.";
+      this.label1.Text = "Lists are loaded upon program startup,\r\nif you make an edit to a list.txt while\r\n" +
+    "program is open, you\'ll need to click\r\nthe Reload Lists button.";
+      // 
+      // loadlistbtn
+      // 
       this.loadlistbtn.Location = new System.Drawing.Point(44, 78);
       this.loadlistbtn.Name = "loadlistbtn";
-      this.loadlistbtn.Size = new Size(116, 28);
+      this.loadlistbtn.Size = new System.Drawing.Size(116, 28);
       this.loadlistbtn.TabIndex = 0;
       this.loadlistbtn.Text = "Reload Lists";
       this.loadlistbtn.UseVisualStyleBackColor = true;
-      this.loadlistbtn.Click += new EventHandler(this.loadlistbtn_Click);
+      this.loadlistbtn.Click += new System.EventHandler(this.loadlistbtn_Click);
+      // 
+      // edittrashlist
+      // 
       this.edittrashlist.AutoSize = true;
       this.edittrashlist.Location = new System.Drawing.Point(24, 176);
       this.edittrashlist.Name = "edittrashlist";
-      this.edittrashlist.Size = new Size(121, 15);
+      this.edittrashlist.Size = new System.Drawing.Size(120, 15);
       this.edittrashlist.TabIndex = 4;
       this.edittrashlist.TabStop = true;
       this.edittrashlist.Text = "Edit Trash List (string)";
-      this.edittrashlist.LinkClicked += new LinkLabelLinkClickedEventHandler(this.edittrashlist_LinkClicked);
+      this.edittrashlist.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.edittrashlist_LinkClicked);
+      // 
+      // editcustomloot
+      // 
       this.editcustomloot.AutoSize = true;
       this.editcustomloot.Location = new System.Drawing.Point(24, 119);
       this.editcustomloot.Name = "editcustomloot";
-      this.editcustomloot.Size = new Size(145, 15);
+      this.editcustomloot.Size = new System.Drawing.Size(145, 15);
       this.editcustomloot.TabIndex = 2;
       this.editcustomloot.TabStop = true;
       this.editcustomloot.Text = "Edit Custom Loot List (int)";
-      this.editcustomloot.LinkClicked += new LinkLabelLinkClickedEventHandler(this.editcustomloot_LinkClicked);
+      this.editcustomloot.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.editcustomloot_LinkClicked);
+      // 
+      // editidentifyitems
+      // 
       this.editidentifyitems.AutoSize = true;
       this.editidentifyitems.Location = new System.Drawing.Point(24, 149);
       this.editidentifyitems.Name = "editidentifyitems";
-      this.editidentifyitems.Size = new Size(164, 15);
+      this.editidentifyitems.Size = new System.Drawing.Size(164, 15);
       this.editidentifyitems.TabIndex = 3;
       this.editidentifyitems.TabStop = true;
       this.editidentifyitems.Text = "Edit Identify Items List (string)";
-      this.editidentifyitems.LinkClicked += new LinkLabelLinkClickedEventHandler(this.editidentifyitems_LinkClicked);
+      this.editidentifyitems.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.editidentifyitems_LinkClicked);
+      // 
+      // openitemxmleditor
+      // 
       this.openitemxmleditor.Location = new System.Drawing.Point(104, 291);
       this.openitemxmleditor.Name = "openitemxmleditor";
-      this.openitemxmleditor.Size = new Size(141, 26);
+      this.openitemxmleditor.Size = new System.Drawing.Size(141, 26);
       this.openitemxmleditor.TabIndex = 6;
       this.openitemxmleditor.Text = "Open ItemXML Editor";
       this.openitemxmleditor.UseVisualStyleBackColor = true;
-      this.openitemxmleditor.Click += new EventHandler(this.openitemxmleditor_Click);
-      this.tabPage5.Controls.Add((Control) this.label3);
-      this.tabPage5.Controls.Add((Control) this.TaskFilter);
-      this.tabPage5.Controls.Add((Control) this.showall);
-      this.tabPage5.Controls.Add((Control) this.label2);
-      this.tabPage5.Controls.Add((Control) this.recenttaskslist);
+      this.openitemxmleditor.Click += new System.EventHandler(this.openitemxmleditor_Click);
+      // 
+      // tabPage5
+      // 
+      this.tabPage5.Controls.Add(this.label3);
+      this.tabPage5.Controls.Add(this.TaskFilter);
+      this.tabPage5.Controls.Add(this.showall);
+      this.tabPage5.Controls.Add(this.label2);
+      this.tabPage5.Controls.Add(this.recenttaskslist);
       this.tabPage5.Location = new System.Drawing.Point(4, 24);
       this.tabPage5.Name = "tabPage5";
-      this.tabPage5.Padding = new Padding(3);
-      this.tabPage5.Size = new Size(628, 373);
+      this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+      this.tabPage5.Size = new System.Drawing.Size(628, 373);
       this.tabPage5.TabIndex = 8;
       this.tabPage5.Text = "Recent Tasks";
       this.tabPage5.UseVisualStyleBackColor = true;
+      // 
+      // label3
+      // 
       this.label3.AutoSize = true;
       this.label3.Location = new System.Drawing.Point(441, 23);
       this.label3.Name = "label3";
-      this.label3.Size = new Size(34, 15);
+      this.label3.Size = new System.Drawing.Size(33, 15);
       this.label3.TabIndex = 8;
       this.label3.Text = "Task:";
-      this.TaskFilter.DropDownStyle = ComboBoxStyle.DropDownList;
+      // 
+      // TaskFilter
+      // 
+      this.TaskFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
       this.TaskFilter.FormattingEnabled = true;
-      this.TaskFilter.Items.AddRange(new object[1]
-      {
-        (object) "All"
-      });
+      this.TaskFilter.Items.AddRange(new object[] {
+            "All"});
       this.TaskFilter.Location = new System.Drawing.Point(481, 20);
       this.TaskFilter.Name = "TaskFilter";
-      this.TaskFilter.Size = new Size(121, 23);
+      this.TaskFilter.Size = new System.Drawing.Size(121, 23);
       this.TaskFilter.TabIndex = 7;
-      this.TaskFilter.Click += new EventHandler(this.TaskFilter_Click);
+      this.TaskFilter.Click += new System.EventHandler(this.TaskFilter_Click);
+      // 
+      // showall
+      // 
       this.showall.AutoSize = true;
       this.showall.Location = new System.Drawing.Point(271, 22);
       this.showall.Name = "showall";
-      this.showall.Size = new Size(112, 19);
+      this.showall.Size = new System.Drawing.Size(112, 19);
       this.showall.TabIndex = 6;
       this.showall.Text = "Show Untracked";
       this.showall.UseVisualStyleBackColor = true;
-      this.showall.CheckedChanged += new EventHandler(this.showall_CheckedChanged);
+      this.showall.CheckedChanged += new System.EventHandler(this.showall_CheckedChanged);
+      // 
+      // label2
+      // 
       this.label2.AutoSize = true;
       this.label2.Location = new System.Drawing.Point(15, 7);
       this.label2.Name = "label2";
-      this.label2.Size = new Size(195, 45);
+      this.label2.Size = new System.Drawing.Size(195, 45);
       this.label2.TabIndex = 1;
-      this.label2.Text = "Uncheck an item to stop tracking it.\r\n'Delete' key removes item from list,\r\n(it can still get re-added later).";
+      this.label2.Text = "Uncheck an item to stop tracking it.\r\n\'Delete\' key removes item from list,\r\n(it c" +
+    "an still get re-added later).";
+      // 
+      // recenttaskslist
+      // 
       this.recenttaskslist.CheckBoxes = true;
-      this.recenttaskslist.Columns.AddRange(new ColumnHeader[3]
-      {
-        this.columnHeader1,
-        this.columnHeader2,
-        this.columnHeader3
-      });
+      this.recenttaskslist.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
       this.recenttaskslist.FullRowSelect = true;
+      this.recenttaskslist.HideSelection = false;
       this.recenttaskslist.LabelWrap = false;
       this.recenttaskslist.Location = new System.Drawing.Point(18, 55);
       this.recenttaskslist.MultiSelect = false;
       this.recenttaskslist.Name = "recenttaskslist";
-      this.recenttaskslist.Size = new Size(589, 307);
+      this.recenttaskslist.Size = new System.Drawing.Size(589, 307);
       this.recenttaskslist.TabIndex = 0;
       this.recenttaskslist.UseCompatibleStateImageBehavior = false;
-      this.recenttaskslist.View = View.Details;
-      this.recenttaskslist.ColumnClick += new ColumnClickEventHandler(this.recenttaskslist_ColumnClick);
-      this.recenttaskslist.ItemChecked += new ItemCheckedEventHandler(this.recenttaskslist_ItemChecked);
-      this.recenttaskslist.KeyUp += new KeyEventHandler(this.recenttaskslist_KeyUp);
+      this.recenttaskslist.View = System.Windows.Forms.View.Details;
+      this.recenttaskslist.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.recenttaskslist_ColumnClick);
+      this.recenttaskslist.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.recenttaskslist_ItemChecked);
+      this.recenttaskslist.KeyUp += new System.Windows.Forms.KeyEventHandler(this.recenttaskslist_KeyUp);
+      // 
+      // columnHeader1
+      // 
       this.columnHeader1.Text = "Name";
       this.columnHeader1.Width = 109;
+      // 
+      // columnHeader2
+      // 
       this.columnHeader2.Text = "Task";
       this.columnHeader2.Width = 128;
+      // 
+      // columnHeader3
+      // 
       this.columnHeader3.Text = "Time Left";
       this.columnHeader3.Width = 249;
-      this.tabPage6.Controls.Add((Control) this.label12);
-      this.tabPage6.Controls.Add((Control) this.skulledlistview);
+      // 
+      // tabPage6
+      // 
+      this.tabPage6.Controls.Add(this.label12);
+      this.tabPage6.Controls.Add(this.skulledlistview);
       this.tabPage6.Location = new System.Drawing.Point(4, 24);
       this.tabPage6.Name = "tabPage6";
-      this.tabPage6.Padding = new Padding(3);
-      this.tabPage6.Size = new Size(628, 373);
+      this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+      this.tabPage6.Size = new System.Drawing.Size(628, 373);
       this.tabPage6.TabIndex = 9;
       this.tabPage6.Text = "Skulled";
       this.tabPage6.UseVisualStyleBackColor = true;
+      // 
+      // label12
+      // 
       this.label12.AutoSize = true;
       this.label12.Location = new System.Drawing.Point(94, 7);
       this.label12.Name = "label12";
-      this.label12.Size = new Size(414, 45);
+      this.label12.Size = new System.Drawing.Size(414, 45);
       this.label12.TabIndex = 1;
-      this.label12.Text = "'Delete' key removes item from list, but you shouldn't need to manually do it.\r\n\r\nLogged off skulled:";
-      this.skulledlistview.Columns.AddRange(new ColumnHeader[3]
-      {
-        this.columnHeader4,
-        this.columnHeader5,
-        this.columnHeader6
-      });
+      this.label12.Text = "\'Delete\' key removes item from list, but you shouldn\'t need to manually do it.\r\n\r" +
+    "\nLogged off skulled:";
+      // 
+      // skulledlistview
+      // 
+      this.skulledlistview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader4,
+            this.columnHeader5,
+            this.columnHeader6});
+      this.skulledlistview.HideSelection = false;
       this.skulledlistview.Location = new System.Drawing.Point(120, 55);
       this.skulledlistview.Name = "skulledlistview";
-      this.skulledlistview.Size = new Size(358, 243);
+      this.skulledlistview.Size = new System.Drawing.Size(358, 243);
       this.skulledlistview.TabIndex = 0;
       this.skulledlistview.UseCompatibleStateImageBehavior = false;
-      this.skulledlistview.View = View.Details;
-      this.skulledlistview.KeyUp += new KeyEventHandler(this.skulledlistview_KeyUp);
+      this.skulledlistview.View = System.Windows.Forms.View.Details;
+      this.skulledlistview.KeyUp += new System.Windows.Forms.KeyEventHandler(this.skulledlistview_KeyUp);
+      // 
+      // columnHeader4
+      // 
       this.columnHeader4.Text = "Name";
       this.columnHeader4.Width = 97;
+      // 
+      // columnHeader5
+      // 
       this.columnHeader5.Text = "Map";
       this.columnHeader5.Width = 153;
+      // 
+      // columnHeader6
+      // 
       this.columnHeader6.Text = "XY";
-      this.tabPage8.Controls.Add((Control) this.label10);
-      this.tabPage8.Controls.Add((Control) this.clearasensionlog);
-      this.tabPage8.Controls.Add((Control) this.ascensionlistview);
+      // 
+      // tabPage8
+      // 
+      this.tabPage8.Controls.Add(this.label10);
+      this.tabPage8.Controls.Add(this.clearasensionlog);
+      this.tabPage8.Controls.Add(this.ascensionlistview);
       this.tabPage8.Location = new System.Drawing.Point(4, 24);
       this.tabPage8.Name = "tabPage8";
-      this.tabPage8.Padding = new Padding(3);
-      this.tabPage8.Size = new Size(628, 373);
+      this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
+      this.tabPage8.Size = new System.Drawing.Size(628, 373);
       this.tabPage8.TabIndex = 10;
       this.tabPage8.Text = "Ascension Log";
       this.tabPage8.UseVisualStyleBackColor = true;
+      // 
+      // label10
+      // 
       this.label10.AutoSize = true;
       this.label10.Location = new System.Drawing.Point(200, 7);
       this.label10.Name = "label10";
-      this.label10.Size = new Size(200, 15);
+      this.label10.Size = new System.Drawing.Size(200, 15);
       this.label10.TabIndex = 2;
       this.label10.Text = "*for Experience Gem ascensions only";
+      // 
+      // clearasensionlog
+      // 
       this.clearasensionlog.Location = new System.Drawing.Point(268, 324);
       this.clearasensionlog.Name = "clearasensionlog";
-      this.clearasensionlog.Size = new Size(75, 23);
+      this.clearasensionlog.Size = new System.Drawing.Size(75, 23);
       this.clearasensionlog.TabIndex = 1;
       this.clearasensionlog.Text = "Clear List";
       this.clearasensionlog.UseVisualStyleBackColor = true;
-      this.clearasensionlog.Click += new EventHandler(this.clearasensionlog_Click);
-      this.ascensionlistview.Columns.AddRange(new ColumnHeader[4]
-      {
-        this.columnHeader7,
-        this.columnHeader8,
-        this.columnHeader9,
-        this.columnHeader10
-      });
+      this.clearasensionlog.Click += new System.EventHandler(this.clearasensionlog_Click);
+      // 
+      // ascensionlistview
+      // 
+      this.ascensionlistview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader7,
+            this.columnHeader8,
+            this.columnHeader9,
+            this.columnHeader10});
+      this.ascensionlistview.HideSelection = false;
       this.ascensionlistview.Location = new System.Drawing.Point(17, 25);
       this.ascensionlistview.Name = "ascensionlistview";
-      this.ascensionlistview.Size = new Size(591, 282);
+      this.ascensionlistview.Size = new System.Drawing.Size(591, 282);
       this.ascensionlistview.TabIndex = 0;
       this.ascensionlistview.UseCompatibleStateImageBehavior = false;
-      this.ascensionlistview.View = View.Details;
+      this.ascensionlistview.View = System.Windows.Forms.View.Details;
+      // 
+      // columnHeader7
+      // 
       this.columnHeader7.Text = "Date/Time";
       this.columnHeader7.Width = 137;
+      // 
+      // columnHeader8
+      // 
       this.columnHeader8.Text = "Name";
       this.columnHeader8.Width = 133;
+      // 
+      // columnHeader9
+      // 
       this.columnHeader9.Text = "Exp Amount";
       this.columnHeader9.Width = 157;
+      // 
+      // columnHeader10
+      // 
       this.columnHeader10.Text = "Increase";
       this.columnHeader10.Width = 71;
-      this.menuStrip1.Items.AddRange(new ToolStripItem[3]
-      {
-        (ToolStripItem) this.fileToolStripMenuItem,
-        (ToolStripItem) this.optionsToolStripMenuItem,
-        (ToolStripItem) this.hotkeysToolStripMenuItem
-      });
+      // 
+      // menuStrip1
+      // 
+      this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.optionsToolStripMenuItem,
+            this.hotkeysToolStripMenuItem});
       this.menuStrip1.Location = new System.Drawing.Point(0, 0);
       this.menuStrip1.Name = "menuStrip1";
-      this.menuStrip1.Size = new Size(640, 24);
+      this.menuStrip1.Size = new System.Drawing.Size(640, 24);
       this.menuStrip1.TabIndex = 1;
       this.menuStrip1.Text = "menuStrip1";
-      this.fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[2]
-      {
-        (ToolStripItem) this.launchDAToolStripMenuItem,
-        (ToolStripItem) this.launchMultipleDAsToolStripMenuItem
-      });
+      // 
+      // fileToolStripMenuItem
+      // 
+      this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.launchDAToolStripMenuItem,
+            this.launchMultipleDAsToolStripMenuItem});
       this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-      this.fileToolStripMenuItem.Size = new Size(58, 20);
+      this.fileToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
       this.fileToolStripMenuItem.Text = "Launch";
+      // 
+      // launchDAToolStripMenuItem
+      // 
       this.launchDAToolStripMenuItem.Name = "launchDAToolStripMenuItem";
-      this.launchDAToolStripMenuItem.Size = new Size(145, 22);
+      this.launchDAToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
       this.launchDAToolStripMenuItem.Text = "Launch DA";
-      this.launchDAToolStripMenuItem.Click += new EventHandler(this.launchDarkAgesToolStripMenuItem_Click);
-      this.launchMultipleDAsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[2]
-      {
-        (ToolStripItem) this.numOfDAs,
-        (ToolStripItem) this.launchMultiple
-      });
+      this.launchDAToolStripMenuItem.Click += new System.EventHandler(this.launchDarkAgesToolStripMenuItem_Click);
+      // 
+      // launchMultipleDAsToolStripMenuItem
+      // 
+      this.launchMultipleDAsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.numOfDAs,
+            this.launchMultiple});
       this.launchMultipleDAsToolStripMenuItem.Name = "launchMultipleDAsToolStripMenuItem";
-      this.launchMultipleDAsToolStripMenuItem.Size = new Size(145, 22);
-      this.launchMultipleDAsToolStripMenuItem.Text = "Multiple DA's";
+      this.launchMultipleDAsToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+      this.launchMultipleDAsToolStripMenuItem.Text = "Multiple DA\'s";
+      // 
+      // numOfDAs
+      // 
+      this.numOfDAs.Font = new System.Drawing.Font("Segoe UI", 9F);
       this.numOfDAs.Name = "numOfDAs";
-      this.numOfDAs.Size = new Size(100, 23);
+      this.numOfDAs.Size = new System.Drawing.Size(100, 23);
       this.numOfDAs.Text = "4";
-      this.numOfDAs.KeyPress += new KeyPressEventHandler(this.numOfDAs_KeyPress);
-      this.numOfDAs.TextChanged += new EventHandler(this.numOfDAs_TextChanged);
+      this.numOfDAs.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.numOfDAs_KeyPress);
+      this.numOfDAs.TextChanged += new System.EventHandler(this.numOfDAs_TextChanged);
+      // 
+      // launchMultiple
+      // 
       this.launchMultiple.Name = "launchMultiple";
-      this.launchMultiple.Size = new Size(160, 22);
+      this.launchMultiple.Size = new System.Drawing.Size(160, 22);
       this.launchMultiple.Text = "Launch";
-      this.launchMultiple.Click += new EventHandler(this.launchMultiple_Click);
-      this.optionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[5]
-      {
-        (ToolStripItem) this.viewPatchNotesToolStripMenuItem,
-        (ToolStripItem) this.chooseDAPathToolStripMenuItem,
-        (ToolStripItem) this.toolStripSeparator1,
-        (ToolStripItem) this.oldanim,
-        (ToolStripItem) this.relog
-      });
+      this.launchMultiple.Click += new System.EventHandler(this.launchMultiple_Click);
+      // 
+      // optionsToolStripMenuItem
+      // 
+      this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewPatchNotesToolStripMenuItem,
+            this.chooseDAPathToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.oldanim,
+            this.relog});
       this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-      this.optionsToolStripMenuItem.Size = new Size(61, 20);
+      this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
       this.optionsToolStripMenuItem.Text = "Options";
+      // 
+      // viewPatchNotesToolStripMenuItem
+      // 
       this.viewPatchNotesToolStripMenuItem.Name = "viewPatchNotesToolStripMenuItem";
-      this.viewPatchNotesToolStripMenuItem.Size = new Size(227, 22);
+      this.viewPatchNotesToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
       this.viewPatchNotesToolStripMenuItem.Text = "View Patch Notes";
-      this.viewPatchNotesToolStripMenuItem.Click += new EventHandler(this.viewPatchNotesToolStripMenuItem_Click);
+      this.viewPatchNotesToolStripMenuItem.Click += new System.EventHandler(this.viewPatchNotesToolStripMenuItem_Click);
+      // 
+      // chooseDAPathToolStripMenuItem
+      // 
       this.chooseDAPathToolStripMenuItem.Name = "chooseDAPathToolStripMenuItem";
-      this.chooseDAPathToolStripMenuItem.Size = new Size(227, 22);
+      this.chooseDAPathToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
       this.chooseDAPathToolStripMenuItem.Text = "Choose DA path";
-      this.chooseDAPathToolStripMenuItem.Click += new EventHandler(this.chooseDAPathToolStripMenuItem_Click);
+      this.chooseDAPathToolStripMenuItem.Click += new System.EventHandler(this.chooseDAPathToolStripMenuItem_Click);
+      // 
+      // toolStripSeparator1
+      // 
       this.toolStripSeparator1.Name = "toolStripSeparator1";
-      this.toolStripSeparator1.Size = new Size(224, 6);
+      this.toolStripSeparator1.Size = new System.Drawing.Size(224, 6);
+      // 
+      // oldanim
+      // 
       this.oldanim.Checked = true;
-      this.oldanim.CheckState = CheckState.Checked;
+      this.oldanim.CheckState = System.Windows.Forms.CheckState.Checked;
       this.oldanim.Name = "oldanim";
-      this.oldanim.Size = new Size(227, 22);
+      this.oldanim.Size = new System.Drawing.Size(227, 22);
       this.oldanim.Text = "Use Old Spell Animations";
-      this.oldanim.CheckedChanged += new EventHandler(this.oldanim_CheckedChanged);
-      this.oldanim.Click += new EventHandler(this.oldanim_Click);
+      this.oldanim.CheckedChanged += new System.EventHandler(this.oldanim_CheckedChanged);
+      this.oldanim.Click += new System.EventHandler(this.oldanim_Click);
+      // 
+      // relog
+      // 
       this.relog.Checked = true;
-      this.relog.CheckState = CheckState.Checked;
+      this.relog.CheckState = System.Windows.Forms.CheckState.Checked;
       this.relog.Name = "relog";
-      this.relog.Size = new Size(227, 22);
+      this.relog.Size = new System.Drawing.Size(227, 22);
       this.relog.Text = "Auto-Relog upon disconnect";
-      this.relog.CheckedChanged += new EventHandler(this.relog_CheckedChanged);
-      this.relog.Click += new EventHandler(this.relog_Click);
-      this.hotkeysToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[3]
-      {
-        (ToolStripItem) this.ctrlPGDNPausesAllClientsToolStripMenuItem,
-        (ToolStripItem) this.ctrlDELETEToolStripMenuItem,
-        (ToolStripItem) this.ctrlPGUPStopWalkingOnAllClientsToolStripMenuItem
-      });
-      this.hotkeysToolStripMenuItem.ForeColor = SystemColors.ControlText;
+      this.relog.CheckedChanged += new System.EventHandler(this.relog_CheckedChanged);
+      this.relog.Click += new System.EventHandler(this.relog_Click);
+      // 
+      // hotkeysToolStripMenuItem
+      // 
+      this.hotkeysToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ctrlPGDNPausesAllClientsToolStripMenuItem,
+            this.ctrlDELETEToolStripMenuItem,
+            this.ctrlPGUPStopWalkingOnAllClientsToolStripMenuItem});
+      this.hotkeysToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlText;
       this.hotkeysToolStripMenuItem.Name = "hotkeysToolStripMenuItem";
-      this.hotkeysToolStripMenuItem.Size = new Size(99, 20);
+      this.hotkeysToolStripMenuItem.Size = new System.Drawing.Size(99, 20);
       this.hotkeysToolStripMenuItem.Text = "Global Hotkeys";
+      // 
+      // ctrlPGDNPausesAllClientsToolStripMenuItem
+      // 
       this.ctrlPGDNPausesAllClientsToolStripMenuItem.Name = "ctrlPGDNPausesAllClientsToolStripMenuItem";
-      this.ctrlPGDNPausesAllClientsToolStripMenuItem.Size = new Size(308, 22);
+      this.ctrlPGDNPausesAllClientsToolStripMenuItem.Size = new System.Drawing.Size(308, 22);
       this.ctrlPGDNPausesAllClientsToolStripMenuItem.Text = "(Ctrl+PGDN) - Pauses all Clients";
+      // 
+      // ctrlDELETEToolStripMenuItem
+      // 
       this.ctrlDELETEToolStripMenuItem.Name = "ctrlDELETEToolStripMenuItem";
-      this.ctrlDELETEToolStripMenuItem.Size = new Size(308, 22);
+      this.ctrlDELETEToolStripMenuItem.Size = new System.Drawing.Size(308, 22);
       this.ctrlDELETEToolStripMenuItem.Text = "(Ctrl+DELETE) - Stop Attacking on all Clients";
+      // 
+      // ctrlPGUPStopWalkingOnAllClientsToolStripMenuItem
+      // 
       this.ctrlPGUPStopWalkingOnAllClientsToolStripMenuItem.Name = "ctrlPGUPStopWalkingOnAllClientsToolStripMenuItem";
-      this.ctrlPGUPStopWalkingOnAllClientsToolStripMenuItem.Size = new Size(308, 22);
+      this.ctrlPGUPStopWalkingOnAllClientsToolStripMenuItem.Size = new System.Drawing.Size(308, 22);
       this.ctrlPGUPStopWalkingOnAllClientsToolStripMenuItem.Text = "(Ctrl+PGUP) - Stop Walking on all Clients";
+      // 
+      // linkLabel1
+      // 
       this.linkLabel1.AutoSize = true;
       this.linkLabel1.Location = new System.Drawing.Point(236, 4);
       this.linkLabel1.Name = "linkLabel1";
-      this.linkLabel1.Size = new Size(115, 15);
+      this.linkLabel1.Size = new System.Drawing.Size(115, 15);
       this.linkLabel1.TabIndex = 3;
       this.linkLabel1.TabStop = true;
       this.linkLabel1.Text = "Slash Command List";
-      this.linkLabel1.LinkClicked += new LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+      this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+      // 
+      // toolTip1
+      // 
       this.toolTip1.AutoPopDelay = 10000;
       this.toolTip1.InitialDelay = 500;
       this.toolTip1.ReshowDelay = 100;
-      this.AutoScaleDimensions = new SizeF(7f, 15f);
-      this.AutoScaleMode = AutoScaleMode.Font;
-      this.ClientSize = new Size(640, 480);
-      this.Controls.Add((Control) this.linkLabel1);
-      this.Controls.Add((Control) this.clientTabs);
-      this.Controls.Add((Control) this.menuStrip1);
-      this.Font = new Font("Segoe UI", 9f, FontStyle.Regular, GraphicsUnit.Point, (byte) 0);
-      this.FormBorderStyle = FormBorderStyle.FixedSingle;
+      // 
+      // MainForm
+      // 
+      this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+      this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+      this.ClientSize = new System.Drawing.Size(640, 480);
+      this.Controls.Add(this.linkLabel1);
+      this.Controls.Add(this.clientTabs);
+      this.Controls.Add(this.menuStrip1);
+      this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
       this.MainMenuStrip = this.menuStrip1;
       this.MaximizeBox = false;
-      this.Name =  "MainForm";
-      this.StartPosition = FormStartPosition.CenterScreen;
+      this.Name = "MainForm";
+      this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "Slowpoke";
-      this.FormClosing += new FormClosingEventHandler(this.MainForm_FormClosing);
-      this.Load += new EventHandler(this.MainForm_Load);
+      this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+      this.Load += new System.EventHandler(this.MainForm_Load);
       this.clientTabs.ResumeLayout(false);
       this.tabPage1.ResumeLayout(false);
       this.tabControl2.ResumeLayout(false);
@@ -2854,7 +3431,7 @@ namespace Flintstones
       this.groupBox5.PerformLayout();
       this.tabPage7.ResumeLayout(false);
       this.tabPage7.PerformLayout();
-      this.alarm_walkval.EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.alarm_walkval)).EndInit();
       this.tabPage3.ResumeLayout(false);
       this.tabPage3.PerformLayout();
       this.groupBox2.ResumeLayout(false);
@@ -2877,6 +3454,39 @@ namespace Flintstones
       this.menuStrip1.PerformLayout();
       this.ResumeLayout(false);
       this.PerformLayout();
+
+    }
+
+    private void tabPage2_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void addalt_button_Click(object sender, EventArgs e)
+    {
+      string altname = altname_textbox.Text.Trim();
+      string altpass = altpass_textbox.Text;
+      alts.Add(altname, altpass);
+      altname_textbox.Clear();
+      altpass_textbox.Clear();
+      LoadAlts(); // reload the alts list
+    }
+
+    private void removealt_button_Click(object sender, EventArgs e)
+    {
+      foreach(var item in alt_listbox.SelectedItems)
+      {
+        alts.Remove(item.ToString());
+      }
+      LoadAlts(); // reload the alts list
+    }
+
+    private void loadalts_button_Click(object sender, EventArgs e)
+    {
+      foreach (var item in alt_listbox.SelectedItems)
+      {
+        Launch(item.ToString(), alts.Pass(item.ToString()));
+      }
     }
   }
 }
