@@ -50,6 +50,7 @@ namespace Flintstones
     public static byte invis = 80;
     public static Thread StrajNpc = (Thread) null;
     public static List<string> entitynametesting = new List<string>();
+    internal Items AllItems = new Items();
 
     public bool Running { get; private set; }
 
@@ -113,44 +114,47 @@ namespace Flintstones
 
     public Server()
     {
-      this.Listener = new TcpListener(IPAddress.Loopback, 2610);
-      this.Listener.Start(10);
-      Server.Clients = new List<Client>();
-      Server.gamemaps = new Dictionary<int, RootObject>();
+      Listener = new TcpListener(IPAddress.Loopback, 2610);
+      Listener.Start(10);
+      Clients = new List<Client>();
+      gamemaps = new Dictionary<int, RootObject>();
       WalkLocations = LoadWalkLocations();
-      Server.gamenpcs = new Dictionary<string, RootNpc>();
-      Server.ParcelList = new Dictionary<string, Parcel>(StringComparer.CurrentCultureIgnoreCase);
-      Server.ChestDatabase = new Dictionary<string, ChestItemXML>(StringComparer.CurrentCultureIgnoreCase);
-      Server.ChestDatabase.Add("Arcella's Gift1", new ChestItemXML("Arcella's Gift1", 0U));
-      Server.ChestDatabase.Add("Water Dungeon Chest", new ChestItemXML("Water Dungeon Chest", 0U));
-      Server.ChestDatabase.Add("Water Dungeon Chest Gold", new ChestItemXML("Water Dungeon Chest Gold", 0U));
-      Server.ChestDatabase.Add("Andor Chest", new ChestItemXML("Andor Chest", 0U));
-      Server.ChestDatabase.Add("Andor Chest Gold", new ChestItemXML("Andor Chest Gold", 0U));
-      Server.ChestDatabase.Add("Queen's Chest", new ChestItemXML("Queen's Chest", 0U));
-      Server.ChestDatabase.Add("Queen's Chest Gold", new ChestItemXML("Queen's Chest Gold", 0U));
-      Server.ChestDatabase.Add("Canal Bag", new ChestItemXML("Canal Bag", 0U));
-      Server.ChestDatabase.Add("Big Canal Bag", new ChestItemXML("Big Canal Bag", 0U));
-      Server.ChestDatabase.Add("Heavy Canal Bag", new ChestItemXML("Heavy Canal Bag", 0U));
-      this.PopulateChestDatabase();
-      Server.ItemMapDatabase = new Dictionary<string, ItemMapXML>(StringComparer.CurrentCultureIgnoreCase);
-      Server.ItemDatabase = new Dictionary<string, ItemXML>(StringComparer.CurrentCultureIgnoreCase);
-      this.PopulateItemDatabase();
-      Server.BetonyNodes = new Dictionary<string, HerbNode>();
-      Server.PersonacaNodes = new Dictionary<string, HerbNode>();
-      Server.HydeleNodes = new Dictionary<string, HerbNode>();
-      Server.HerbNodes = new Dictionary<string, HerbNode>();
-      this.PopulateNodes();
-      Server.AscendLog = new List<AscendData>();
-      Server.SkullList = new Dictionary<string, SkullData>(StringComparer.CurrentCultureIgnoreCase);
-      Server.TimedEvent = new Dictionary<string, Flintstones.TimedEvent>(StringComparer.CurrentCultureIgnoreCase);
-      Server.Relog = new Dictionary<string, Flintstones.Relog>(StringComparer.CurrentCultureIgnoreCase);
-      Server.Alts = new Dictionary<string, Client>(StringComparer.CurrentCultureIgnoreCase);
-      Server.Stuff = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
-      Server.DAServer = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase);
-      Server.DARegged = new Dictionary<string, bool>(StringComparer.CurrentCultureIgnoreCase);
+      gamenpcs = new Dictionary<string, RootNpc>();
+      ParcelList = new Dictionary<string, Parcel>(StringComparer.CurrentCultureIgnoreCase);
+      ChestDatabase = new Dictionary<string, ChestItemXML>(StringComparer.CurrentCultureIgnoreCase)
+      {
+        { "Arcella's Gift1", new ChestItemXML("Arcella's Gift1", 0U) },
+        { "Water Dungeon Chest", new ChestItemXML("Water Dungeon Chest", 0U) },
+        { "Water Dungeon Chest Gold", new ChestItemXML("Water Dungeon Chest Gold", 0U) },
+        { "Andor Chest", new ChestItemXML("Andor Chest", 0U) },
+        { "Andor Chest Gold", new ChestItemXML("Andor Chest Gold", 0U) },
+        { "Queen's Chest", new ChestItemXML("Queen's Chest", 0U) },
+        { "Queen's Chest Gold", new ChestItemXML("Queen's Chest Gold", 0U) },
+        { "Canal Bag", new ChestItemXML("Canal Bag", 0U) },
+        { "Big Canal Bag", new ChestItemXML("Big Canal Bag", 0U) },
+        { "Heavy Canal Bag", new ChestItemXML("Heavy Canal Bag", 0U) }
+      };
 
-      ItemList = LoadUnidentifyItems();
-      NeedsIdentifiedList = LoadIdentifyItems();
+      PopulateChestDatabase();
+      ItemMapDatabase = new Dictionary<string, ItemMapXML>(StringComparer.CurrentCultureIgnoreCase);
+      ItemDatabase = new Dictionary<string, ItemXML>(StringComparer.CurrentCultureIgnoreCase);
+      PopulateItemDatabase();
+      BetonyNodes = new Dictionary<string, HerbNode>();
+      PersonacaNodes = new Dictionary<string, HerbNode>();
+      HydeleNodes = new Dictionary<string, HerbNode>();
+      HerbNodes = new Dictionary<string, HerbNode>();
+      PopulateNodes();
+      AscendLog = new List<AscendData>();
+      SkullList = new Dictionary<string, SkullData>(StringComparer.CurrentCultureIgnoreCase);
+      TimedEvent = new Dictionary<string, Flintstones.TimedEvent>(StringComparer.CurrentCultureIgnoreCase);
+      Relog = new Dictionary<string, Flintstones.Relog>(StringComparer.CurrentCultureIgnoreCase);
+      Alts = new Dictionary<string, Client>(StringComparer.CurrentCultureIgnoreCase);
+      Stuff = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
+      DAServer = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase);
+      DARegged = new Dictionary<string, bool>(StringComparer.CurrentCultureIgnoreCase);
+
+      ItemList = AllItems.Unidentifiable;
+      NeedsIdentifiedList = AllItems.Identifiable;
       SpellList = LoadSpells();
 
       Server.StaticCharacters = new Dictionary<uint, Character>();
@@ -323,83 +327,6 @@ namespace Flintstones
       return new Dictionary<string, WalkLocation>();
     }
 
-    /// <summary>
-    /// Loads item data from the ItemList.xml file when item identification is <see langword="false"/> and returns a dictionary of 
-    /// item names and their associated data.
-    /// </summary>
-    /// <remarks>The method reads the ItemList.xml file located in the application's Settings directory. Only
-    /// items with a non-empty name are included in the returned dictionary.</remarks>
-    /// <returns>A dictionary containing item names as keys and their corresponding <see cref="ItemData"/> objects as values for all
-    /// items that do not need identification. The dictionary will be empty if no items are found in the file.</returns>
-    public static Dictionary<string, ItemData> LoadUnidentifyItems()
-    {
-      string filePath = Program.StartupPath + "\\Settings\\ItemList.xml";
-      if (!File.Exists(filePath))
-      {
-        MessageBox.Show("ItemList.xml not found in Settings folder. Continuing with an empty item list", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        return new Dictionary<string, ItemData>();
-      }
-
-      var document = XDocument.Load(filePath);
-      var itemList = new Dictionary<string, ItemData>();
-
-      foreach (var spell in document.Root.Elements("Item"))
-      {
-        string name = spell.Attribute("name")?.Value;
-
-        // Skip if name is null or whitespace
-        if (string.IsNullOrWhiteSpace(name))
-          continue;
-
-        int maxStack = (int)spell.Element("MaxStack");
-        bool needsIdentify = (bool)spell.Element("NeedsIdentify");
-        if (!needsIdentify)
-        {
-          itemList[name] = new ItemData(
-            name,
-            maxStack
-          );
-        }
-      }
-
-      return itemList;
-    }
-
-    /// <summary>
-    /// Loads item data from the ItemList.xml file when item identification is <see langword="true"/> and returns a list of item names.
-    /// </summary>
-    /// <remarks>The method reads the ItemList.xml file located in the application's Settings directory. Only
-    /// items with a non-empty name are included in the returned dictionary. </remarks>
-    /// <returns>A list containing item names. The list will be empty if no items that need identification are found in the file.</returns>
-    public static List<string> LoadIdentifyItems()
-    {
-      string filePath = Program.StartupPath + "\\Settings\\ItemList.xml";
-      if (!File.Exists(filePath))
-      {
-        MessageBox.Show("ItemList.xml not found in Settings folder. Continuing with an empty item list", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        return new List<string>();
-      }
-
-      var document = XDocument.Load(filePath);
-      var itemList = new List<string>();
-
-      foreach (var spell in document.Root.Elements("Item"))
-      {
-        string name = spell.Attribute("name")?.Value;
-
-        // Skip if name is null or whitespace
-        if (string.IsNullOrWhiteSpace(name))
-          continue;
-
-        bool needsIdentify = (bool)spell.Element("NeedsIdentify");
-        if (needsIdentify)
-        {
-          itemList.Add(name);
-        }
-      }
-
-      return itemList;
-    }
 
     /// <summary>
     /// Loads all spell definitions from the SpellList.xml file and returns them as a dictionary.

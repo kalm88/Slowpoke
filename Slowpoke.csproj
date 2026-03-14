@@ -60,8 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Types\Alts.cs" />
+    <Compile Include="Types\AutoWalkDestinations.cs" />
     <Compile Include="Types\CharacterStats.cs" />
     <Compile Include="Types\Enums.cs" />
+    <Compile Include="Types\Items.cs" />
     <Compile Include="Types\Meditation.cs" />
     <Compile Include="Types\Monster.cs" />
     <Compile Include="Types\MonsterKills.cs" />

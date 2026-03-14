@@ -582,7 +582,7 @@ namespace Flintstones
 
     public Process mainProc { get; set; }
 
-    public byte windowSize { get; set; }
+    public int windowSize { get; set; }
 
     public Map MapInfo { get; set; }
 
@@ -752,15 +752,21 @@ namespace Flintstones
       this.Tab = new ClientTab(this);
       this.Key = Encoding.ASCII.GetBytes("UrkcnItnI");
       this.KeyTable = new byte[1024];
-      this.RelogThread = new Thread(new ThreadStart(this.LogAfterDC));
+      this.RelogThread = new Thread(new ThreadStart(LogAfterDC));
+      this.RelogThread.Name = "RelogThread";
       this.RelogThread.Abort();
-      this.EntityNameThread = new Thread(new ThreadStart(this.EntityNameLoop));
+      this.EntityNameThread = new Thread(new ThreadStart(EntityNameLoop));
+      this.EntityNameThread.Name = "EntityNameThread";
       this.BotThread = new Thread(new ThreadStart(BotLoop));
       this.BotThread.Name = "BotThread";
-      this.WalkThread = new Thread(new ThreadStart(this.Walking));
-      this.QuestsThread = new Thread(new ThreadStart(this.Questing));
-      this.SpeakCommandThread = new Thread(new ThreadStart(this.SpeakThread));
-      this.ClientLoopThread = new Thread(new ThreadStart(this.ClientLoop));
+      this.WalkThread = new Thread(new ThreadStart(Walking));
+      this.WalkThread.Name = "WalkThread";
+      this.QuestsThread = new Thread(new ThreadStart(Questing));
+      this.QuestsThread.Name = "QuestThread";
+      this.SpeakCommandThread = new Thread(new ThreadStart(SpeakThread));
+      this.SpeakCommandThread.Name = "SpeakCommandThread";
+      this.ClientLoopThread = new Thread(new ThreadStart(ClientLoop));
+      this.ClientLoopThread.Name = "ClientLoopThread";
       this.ClientLoopThread.Start();
     }
 
@@ -768,7 +774,7 @@ namespace Flintstones
     {
       if (allClients)
       {
-        foreach (Client client in Server.Alts.Values.ToArray<Client>())
+        foreach (Client client in Server.Clients)
         {
           if (client != null && !client.Tab.ignorewalkall.Checked && (!this.SpeakMessage.StartsWith("andor ", StringComparison.CurrentCultureIgnoreCase) && !this.SpeakMessage.StartsWith("queen", StringComparison.CurrentCultureIgnoreCase) 
                                                                    || client.MapInfo.Name.StartsWith("Andor")) && (!this.SpeakMessage.StartsWith("chaos ", StringComparison.CurrentCultureIgnoreCase) 
@@ -2757,7 +2763,7 @@ namespace Flintstones
               Thread.Sleep(1000);
             }
           }
-          if (this.MapInfo.Name.StartsWith("Path Temple ") && this.Currentnpctext != string.Empty)
+          if (this.MapInfo.Name.StartsWith("Path Temple ") && !string.IsNullOrEmpty(Currentnpctext))
           {
             this.tocpopup = true;
             this.PopupClose(new uint?(this.CurrentnpcpopupID));
@@ -7431,118 +7437,188 @@ label_3045:
       {
         try
         {
-          if (!(this.refreshdelay == DateTime.MinValue))
+          if (this.refreshdelay != DateTime.MinValue && DateTime.UtcNow.Subtract(this.refreshdelay).TotalMilliseconds < 1200.0)
           {
-            if (this.refreshdelay != DateTime.MinValue)
-            {
-              if (DateTime.UtcNow.Subtract(this.refreshdelay).TotalMilliseconds < 1200.0)
-                goto label_92;
-            }
-            else
-              goto label_92;
+            Thread.Sleep(200);
+            return;
           }
+
           if (this.refreshdelay != DateTime.MinValue && DateTime.UtcNow.Subtract(this.refreshdelay).TotalMilliseconds >= 1200.0)
             this.refreshdelay = DateTime.MinValue;
-          if (!this.pause)
+
+          if (this.pause || this.pausewalk || this.donotwalk)
           {
-            if (!this.pausewalk)
+            Thread.Sleep(200);
+            return;
+          }
+
+          if (this.IsSkulled && this.IsSuained && this.IsStunned && this.SpellBar.Contains((ushort)90) && this.SpellBar.Contains((ushort)97) && this.SpellBar.Contains((ushort)101))
+          {
+            Thread.Sleep(200);
+            return;
+          }
+
+            if (this.Tab.wayregionson.Checked &&
+                this.laststep != DateTime.MinValue &&
+                (DateTime.UtcNow - this.laststep).TotalMilliseconds > 6000 &&
+                this.lastsuccessfulcast != DateTime.MinValue &&
+                (DateTime.UtcNow - this.lastsuccessfulcast).TotalMilliseconds > 10000)
             {
-              if (!this.donotwalk)
+            this.Refresh();
+            Thread.Sleep(1200);
+            this.laststep = DateTime.UtcNow;
+          }
+          if (this.Tab.vredaislings && this.Tab.walktored.Checked && !this.IsSurrounded(this.ServerLocation))
+          {
+            foreach (Player e in (IEnumerable<Player>) ((IEnumerable<Player>) this.NearbyPlayer()).OrderBy<Player, int>((Func<Player, int>) (e => e.Location.DistanceFrom(this.ServerLocation))))
+            {
+              if (e != null && (int) e.ID != (int) this.PlayerID && (Server.StaticCharacters[e.ID].isskulled || Server.StaticCharacters[e.ID].IsSkulled) && this.IsClosestToYou(e.Location) && !this.IsSurrounded(e.Location) && (this.GroupMembers.Contains(e.Name) || Server.Alts.ContainsKey(e.Name.ToLower()) || Server.friendlist != null && Server.friendlist.Contains(e.Name.ToLower())) && e.IsOnScreen && (!Server.Alts.ContainsKey(e.Name.ToLower()) || Server.Alts[e.Name.ToLower()].IsSkulled) && this.HasItem("Komadium"))
               {
-                if (this.IsSkulled && this.IsSuained && this.IsStunned && this.SpellBar.Contains((ushort) 90) && this.SpellBar.Contains((ushort) 97))
-                {
-                  if (this.SpellBar.Contains((ushort) 101))
-                    goto label_92;
-                }
-                if ((!this.Tab.wayregionson.Checked || !(this.laststep != DateTime.MinValue) || DateTime.UtcNow.Subtract(this.laststep).TotalMilliseconds <= 6000.0 || !(this.lastsuccessfulcast != DateTime.MinValue) ? 0 : (DateTime.UtcNow.Subtract(this.lastsuccessfulcast).TotalMilliseconds > 10000.0 ? 1 : 0)) != 0)
+                this.Red(e);
+                break;
+              }
+            }
+          }
+          if (this.oktofollow)
+          {
+            if (!this.disstopwalk)
+            {
+              if (this.autowalkon)
+              {
+                this.walkaround = false;
+                if (DateTime.UtcNow.Subtract(this.laststep).TotalSeconds > 2.0 && (this.ServerLocation.X != this.ClientLocation.X || this.ServerLocation.Y != this.ClientLocation.Y))
                 {
                   this.Refresh();
                   Thread.Sleep(1200);
-                  this.laststep = DateTime.UtcNow;
+                  this.laststep = DateTime.MinValue;
                 }
-                if (this.Tab.vredaislings && this.Tab.walktored.Checked && !this.IsSurrounded(this.ServerLocation))
+                this.AutoWalker();
+                this.AWTest();
+              }
+              else if (this.Tab.walkeverytile.Checked)
+              {
+                if (!this.walkaround)
+                  this.walkaround = true;
+                if (this.Tab.vactonlyinmobs)
                 {
-                  foreach (Player e in (IEnumerable<Player>) ((IEnumerable<Player>) this.NearbyPlayer()).OrderBy<Player, int>((Func<Player, int>) (e => e.Location.DistanceFrom(this.ServerLocation))))
+                  if (this.Mobbed)
+                    continue;
+                }
+                if (this.Tab.vwalktoloot && this.loot && this.walktoloot)
+                {
+                  Npc i = this.NearestItem();
+                  if (i != null && i.IsOnScreen && !this.ServerLocation.WithinSquare(i.Location, 2))
                   {
-                    if (e != null && (int) e.ID != (int) this.PlayerID && (Server.StaticCharacters[e.ID].isskulled || Server.StaticCharacters[e.ID].IsSkulled) && this.IsClosestToYou(e.Location) && !this.IsSurrounded(e.Location) && (this.GroupMembers.Contains(e.Name) || Server.Alts.ContainsKey(e.Name.ToLower()) || Server.friendlist != null && Server.friendlist.Contains(e.Name.ToLower())) && e.IsOnScreen && (!Server.Alts.ContainsKey(e.Name.ToLower()) || Server.Alts[e.Name.ToLower()].IsSkulled) && this.HasItem("Komadium"))
+                    Point[] path = this.MapInfo.FindPath(this.ClientLocation.X, this.ClientLocation.Y, i.Location.X, i.Location.Y, false);
+                    if (path.Length == 0)
+                      i.OutofReach = true;
+                    if (path.Length != 0 && path.Length < i.DistanceFrom(this.ServerLocation) * 2)
                     {
-                      this.Red(e);
-                      break;
+                      this.WalkToLoot(i);
+                      continue;
                     }
+                    if (this.walktoloot)
+                      this.walktoloot = false;
+                  }
+                  else if (i == null && this.walktoloot)
+                    this.walktoloot = false;
+                }
+                if (!this.Tab.topx.Text.Equals("") && !this.Tab.topy.Text.Equals("") && !this.Tab.bottomx.Text.Equals("") && !this.Tab.bottomy.Text.Equals(""))
+                  this.SearchAllTiles(int.Parse(this.Tab.topx.Text), int.Parse(this.Tab.topy.Text), int.Parse(this.Tab.bottomx.Text), int.Parse(this.Tab.bottomy.Text));
+              }
+              else if (this.Tab.vwayregionson)
+              {
+                if (DateTime.UtcNow.Subtract(this.laststep).TotalSeconds > 2.0 && (this.ServerLocation.X != this.ClientLocation.X || this.ServerLocation.Y != this.ClientLocation.Y))
+                {
+                  this.Refresh();
+                  Thread.Sleep(1200);
+                  this.laststep = DateTime.MinValue;
+                }
+                if (!this.Tab.haltwalknonfriends.Checked || this.SafeToWalkFast || this.MapInfo.Number == 2141)
+                  this.WayRegion();
+              }
+              else if (this.Tab.vfollowplayer && this.Tab.vfollowtarget != string.Empty && this.follow_walk != 1)
+              {
+                if (DateTime.UtcNow.Subtract(this.laststep).TotalSeconds > 2.0 && (this.ServerLocation.X != this.ClientLocation.X || this.ServerLocation.Y != this.ClientLocation.Y))
+                {
+                  this.Refresh();
+                  Thread.Sleep(1200);
+                  this.laststep = DateTime.MinValue;
+                }
+                else
+                  this.Follow(this.Tab.vfollowtarget, this.Tab.vfollowdist);
+              }
+              if (this.Tab.pigwalk.Checked)
+              {
+                if (this.MainTarget != null && this.MainTarget.IsOnScreen && this.MapInfo.Number == 2141)
+                {
+                  if (DateTime.UtcNow.Subtract(this.laststep).TotalSeconds > 2.0 && (this.ServerLocation.X != this.ClientLocation.X || this.ServerLocation.Y != this.ClientLocation.Y))
+                  {
+                    this.Refresh();
+                    Thread.Sleep(1200);
+                    this.laststep = DateTime.MinValue;
+                  }
+                  this.WalkOnTarget();
+                }
+                else if (this.HasMPig())
+                {
+                  if (this.HasFPig())
+                  {
+                    this.Tab.autowalker_locales.SelectedItem = (object) "Loures";
+                    this.Tab.walklocaleslist.SelectedItem = (object) "Throne Room";
+                    this.Tab.autowalker_button.Text = "Stop";
+                    this.autowalkon = true;
+                    this.Tab.pigwalk.Checked = false;
                   }
                 }
-                if (this.oktofollow)
+              }
+              else if (this.Tab.walktowards.Checked && !this.walktoloot && (this.WaitOnBlankNames() || !this.Tab.vactonlyinmobs || this.Tab.vactonlyinmobs && this.Mobbed))
+              {
+                if (this.itemdroppeddelay != DateTime.MinValue)
                 {
-                  if (!this.disstopwalk)
+                  if (DateTime.UtcNow.Subtract(this.itemdroppeddelay).TotalSeconds <= 3.0)
+                    goto label_92;
+                }
+                if (this.Tab.vwalktoloot && this.loot && this.walktoloot)
+                {
+                  Npc i = this.NearestItem();
+                  if (i != null && i.IsOnScreen && !this.ServerLocation.WithinSquare(i.Location, 2))
                   {
-                    if (this.autowalkon)
+                    Point[] path = this.MapInfo.FindPath(this.ClientLocation.X, this.ClientLocation.Y, i.Location.X, i.Location.Y, false);
+                    if (path.Length == 0)
+                      i.OutofReach = true;
+                    if (path.Length != 0 && path.Length < i.DistanceFrom(this.ServerLocation) * 2)
                     {
-                      this.walkaround = false;
-                      if (DateTime.UtcNow.Subtract(this.laststep).TotalSeconds > 2.0 && (this.ServerLocation.X != this.ClientLocation.X || this.ServerLocation.Y != this.ClientLocation.Y))
-                      {
-                        this.Refresh();
-                        Thread.Sleep(1200);
-                        this.laststep = DateTime.MinValue;
-                      }
-                      this.AutoWalker();
-                      this.AWTest();
+                      this.WalkToLoot(i);
+                      continue;
                     }
-                    else if (this.Tab.walkeverytile.Checked)
+                    if (this.walktoloot)
+                      this.walktoloot = false;
+                  }
+                  else if (i == null && this.walktoloot)
+                    this.walktoloot = false;
+                }
+                this.WalkTowardsNearestMonster();
+              }
+              else if (this.Tab.walktomonster.Checked)
+              {
+                if (!this.SpellBar.Contains((ushort) 10))
+                {
+                  if (this.Tab.vactonlyinmobs)
+                  {
+                    if (this.Tab.vactonlyinmobs)
                     {
-                      if (!this.walkaround)
-                        this.walkaround = true;
-                      if (this.Tab.vactonlyinmobs)
-                      {
-                        if (this.Mobbed)
-                          continue;
-                      }
-                      if (this.Tab.vwalktoloot && this.loot && this.walktoloot)
-                      {
-                        Npc i = this.NearestItem();
-                        if (i != null && i.IsOnScreen && !this.ServerLocation.WithinSquare(i.Location, 2))
-                        {
-                          Point[] path = this.MapInfo.FindPath(this.ClientLocation.X, this.ClientLocation.Y, i.Location.X, i.Location.Y, false);
-                          if (path.Length == 0)
-                            i.OutofReach = true;
-                          if (path.Length != 0 && path.Length < i.DistanceFrom(this.ServerLocation) * 2)
-                          {
-                            this.WalkToLoot(i);
-                            continue;
-                          }
-                          if (this.walktoloot)
-                            this.walktoloot = false;
-                        }
-                        else if (i == null && this.walktoloot)
-                          this.walktoloot = false;
-                      }
-                      if (!this.Tab.topx.Text.Equals("") && !this.Tab.topy.Text.Equals("") && !this.Tab.bottomx.Text.Equals("") && !this.Tab.bottomy.Text.Equals(""))
-                        this.SearchAllTiles(int.Parse(this.Tab.topx.Text), int.Parse(this.Tab.topy.Text), int.Parse(this.Tab.bottomx.Text), int.Parse(this.Tab.bottomy.Text));
+                      if (!this.Mobbed)
+                        goto label_92;
                     }
-                    else if (this.Tab.vwayregionson)
+                    else
+                      goto label_92;
+                  }
+                  if (this.MainTarget != null)
+                  {
+                    if (this.MainTarget.IsOnScreen)
                     {
-                      if (DateTime.UtcNow.Subtract(this.laststep).TotalSeconds > 2.0 && (this.ServerLocation.X != this.ClientLocation.X || this.ServerLocation.Y != this.ClientLocation.Y))
-                      {
-                        this.Refresh();
-                        Thread.Sleep(1200);
-                        this.laststep = DateTime.MinValue;
-                      }
-                      if (!this.Tab.haltwalknonfriends.Checked || this.SafeToWalkFast || this.MapInfo.Number == 2141)
-                        this.WayRegion();
-                    }
-                    else if (this.Tab.vfollowplayer && this.Tab.vfollowtarget != string.Empty && this.follow_walk != 1)
-                    {
-                      if (DateTime.UtcNow.Subtract(this.laststep).TotalSeconds > 2.0 && (this.ServerLocation.X != this.ClientLocation.X || this.ServerLocation.Y != this.ClientLocation.Y))
-                      {
-                        this.Refresh();
-                        Thread.Sleep(1200);
-                        this.laststep = DateTime.MinValue;
-                      }
-                      else
-                        this.Follow(this.Tab.vfollowtarget, this.Tab.vfollowdist);
-                    }
-                    if (this.Tab.pigwalk.Checked)
-                    {
-                      if (this.MainTarget != null && this.MainTarget.IsOnScreen && this.MapInfo.Number == 2141)
+                      if (this.MainTarget.Map == this.MapInfo.Number)
                       {
                         if (DateTime.UtcNow.Subtract(this.laststep).TotalSeconds > 2.0 && (this.ServerLocation.X != this.ClientLocation.X || this.ServerLocation.Y != this.ClientLocation.Y))
                         {
@@ -7550,83 +7626,12 @@ label_3045:
                           Thread.Sleep(1200);
                           this.laststep = DateTime.MinValue;
                         }
-                        this.WalkOnTarget();
-                      }
-                      else if (this.HasMPig())
-                      {
-                        if (this.HasFPig())
+                        if (this.SurroundedCount == 0)
+                          this.WalkToTarget();
+                        else if (this.SurroundedCount != 4)
                         {
-                          this.Tab.autowalker_locales.SelectedItem = (object) "Loures";
-                          this.Tab.walklocaleslist.SelectedItem = (object) "Throne Room";
-                          this.Tab.autowalker_button.Text = "Stop";
-                          this.autowalkon = true;
-                          this.Tab.pigwalk.Checked = false;
-                        }
-                      }
-                    }
-                    else if (this.Tab.walktowards.Checked && !this.walktoloot && (this.WaitOnBlankNames() || !this.Tab.vactonlyinmobs || this.Tab.vactonlyinmobs && this.Mobbed))
-                    {
-                      if (this.itemdroppeddelay != DateTime.MinValue)
-                      {
-                        if (DateTime.UtcNow.Subtract(this.itemdroppeddelay).TotalSeconds <= 3.0)
-                          goto label_92;
-                      }
-                      if (this.Tab.vwalktoloot && this.loot && this.walktoloot)
-                      {
-                        Npc i = this.NearestItem();
-                        if (i != null && i.IsOnScreen && !this.ServerLocation.WithinSquare(i.Location, 2))
-                        {
-                          Point[] path = this.MapInfo.FindPath(this.ClientLocation.X, this.ClientLocation.Y, i.Location.X, i.Location.Y, false);
-                          if (path.Length == 0)
-                            i.OutofReach = true;
-                          if (path.Length != 0 && path.Length < i.DistanceFrom(this.ServerLocation) * 2)
-                          {
-                            this.WalkToLoot(i);
-                            continue;
-                          }
-                          if (this.walktoloot)
-                            this.walktoloot = false;
-                        }
-                        else if (i == null && this.walktoloot)
-                          this.walktoloot = false;
-                      }
-                      this.WalkTowardsNearestMonster();
-                    }
-                    else if (this.Tab.walktomonster.Checked)
-                    {
-                      if (!this.SpellBar.Contains((ushort) 10))
-                      {
-                        if (this.Tab.vactonlyinmobs)
-                        {
-                          if (this.Tab.vactonlyinmobs)
-                          {
-                            if (!this.Mobbed)
-                              goto label_92;
-                          }
-                          else
-                            goto label_92;
-                        }
-                        if (this.MainTarget != null)
-                        {
-                          if (this.MainTarget.IsOnScreen)
-                          {
-                            if (this.MainTarget.Map == this.MapInfo.Number)
-                            {
-                              if (DateTime.UtcNow.Subtract(this.laststep).TotalSeconds > 2.0 && (this.ServerLocation.X != this.ClientLocation.X || this.ServerLocation.Y != this.ClientLocation.Y))
-                              {
-                                this.Refresh();
-                                Thread.Sleep(1200);
-                                this.laststep = DateTime.MinValue;
-                              }
-                              if (this.SurroundedCount == 0)
-                                this.WalkToTarget();
-                              else if (this.SurroundedCount != 4)
-                              {
-                                if (this.Tab.attackleaderstarget.Checked)
-                                  this.WalkToTarget();
-                              }
-                            }
-                          }
+                          if (this.Tab.attackleaderstarget.Checked)
+                            this.WalkToTarget();
                         }
                       }
                     }
@@ -12701,6 +12706,7 @@ label_146:
     }
 
 
+    // Version by Avi
     public void SpellMonsters(Client client)
     {
       // Jump out when skulled or dead
@@ -14928,7 +14934,7 @@ label_860:
             Rect rectangle = new Rect();
             if (!User32.GetWindowRect(this.mainProc.MainWindowHandle, out rectangle))
               break;
-            this.windowSize = rectangle.Width <= 1200 ? (byte) 1 : (byte) 2;
+            this.windowSize = rectangle.Width <= 1200 ? 1 : 2;
             break;
           }
         }
@@ -14957,7 +14963,7 @@ label_860:
             Console.WriteLine($"Client loop running: {ex}");
           }
         }
-        Thread.Sleep(15); // windows scheduler has 15ms resolution, so this is effectively 15ms
+        Thread.Sleep(15); // windows scheduler has 15ms resolution
       }
 
       try
@@ -14969,19 +14975,44 @@ label_860:
         QuestThreadRunning = false;
 
         if (BotThread != null && BotThread.IsAlive)
-          BotThread.Join();
+        {
+          if (!BotThread.Join(2000))
+          {
+            Console.WriteLine($"Bot thread of {Name} did not exit in a timely manner, aborting.");
+          }
+        }
 
         if (SpeakCommandThread != null && SpeakCommandThread.IsAlive)
-          SpeakCommandThread.Join();
+        {
+          if (!SpeakCommandThread.Join(2000))
+          {
+            Console.WriteLine($"Speak command thread of {Name} did not exit in a timely manner, aborting.");
+          }
+        }
 
         if (EntityNameThread != null && EntityNameThread.IsAlive)
-          EntityNameThread.Join();
+        {
+          if(!EntityNameThread.Join(2000))
+          {
+            Console.WriteLine($"Entity name thread of {Name} did not exit in a timely manner, aborting.");
+          }
+        }
 
         if (WalkThread != null && WalkThread.IsAlive)
-          WalkThread.Join();
+        {
+          if (!WalkThread.Join(2000))
+          {
+            Console.WriteLine($"Walk thread of {Name} did not exit in a timely manner, aborting.");
+          }
+        }
 
         if (QuestsThread != null && QuestsThread.IsAlive)
-          QuestsThread.Join();
+        {
+          if (!QuestsThread.Join(2000))
+          {
+            Console.WriteLine($"Quests thread of {Name} did not exit in a timely manner, aborting.");
+          }
+        }
 
         if (IsSkulled)
         {
@@ -15198,6 +15229,9 @@ label_860:
       Client asyncState = (Client) ar.AsyncState;
       try
       {
+        if (asyncState.ClientSocket is null)
+          return;
+
         int num = asyncState.ClientSocket.EndReceive(ar);
         for (int index = 0; index < num; ++index)
           asyncState.fullClientBuffer.Add(asyncState.clientBuffer[index]);
@@ -15227,6 +15261,14 @@ label_860:
           }
           asyncState.clientReceiving = false;
         }
+      }
+      catch (ObjectDisposedException)
+      {
+        asyncState.Connected = false;
+      }
+      catch (SocketException)
+      {
+        asyncState.Connected = false;
       }
       catch
       {
@@ -15266,6 +15308,14 @@ label_860:
           }
           asyncState.serverReceiving = false;
         }
+      }
+      catch (ObjectDisposedException)
+      {
+        asyncState.Connected = false;
+      }
+      catch (SocketException)
+      {
+        asyncState.Connected = false;
       }
       catch
       {
@@ -21028,7 +21078,46 @@ label_20:
 
     public void AutoWalker()
     {
-      if (!this.Tab.vautowalker_locales.Equals("Tavaly Village") && !this.Tab.vautowalker_locales.Equals("Plamit Village") && !this.Tab.vautowalker_locales.Equals("Veltain Mines") && !this.Tab.vautowalker_locales.Equals("Aman Jungle") && !this.Tab.vautowalker_locales.Equals("Lost Ruins") && !this.Tab.vautowalker_locales.Equals("Gladiator Arena") && !this.Tab.vautowalker_locales.Equals("Water Dungeon") && !this.Tab.vautowalker_locales.Equals("Hwarone") && !this.Tab.vautowalker_locales.Equals("Andor") && !this.Tab.vautowalker_locales.Equals("Desert Dunes") && !this.Tab.vautowalker_locales.Equals("Noam") && !this.Tab.vautowalker_locales.Equals("Asilon") && !this.Tab.vautowalker_locales.Equals("Lynith") && !this.Tab.vautowalker_locales.Equals("Mt Merry") && (Server.DAServer[this.Name] == 2617 || this.MapInfo.Number == 390 && !this.Tab.vautowalker_locales.Equals("Abel") && this.Tab.vautowalker_locales != "Nearest Bank" && this.Tab.vautowalker_locales != "Nearest Restaurant" || this.MapInfo.Number == 3940 && !this.Tab.vautowalker_locales.Equals("Loures") && this.Tab.vautowalker_locales != "Canal Key 2 (blob)" && this.Tab.vautowalker_locales != "Canal Key 1 (skrull)" && this.Tab.vautowalker_locales != "Canal Ent" || this.MapInfo.Number == 136 && !this.Tab.vautowalker_locales.Equals("Mileth") && this.Tab.vautowalker_locales != "Nearest Bank" && this.Tab.vautowalker_locales != "Nearest Restaurant") && (Server.DAServer[this.Name] != 2617 || this.MapInfo.Number != 10056 && this.MapInfo.Number != 10055 && this.MapInfo.Number != 10004 && this.MapInfo.Number != 10000 && this.MapInfo.Number != 10999 && this.MapInfo.Number != 10998))
+      HashSet<string> medenianAreas = new HashSet<string>()
+      {
+        "Tavaly Village",
+        "Plamit Village",
+        "Veltain Mines",
+        "Aman Jungle",
+        "Lost Ruins",
+        "Gladiator Arena",
+        "Water Dungeon",
+        "Hwarone",
+        "Andor",
+        "Desert Dunes",
+        "Noam",
+        "Asilon",
+        "Lynith",
+        "Mt Merry",
+      };
+
+      if (!medenianAreas.Contains(Tab.vautowalker_locales) && 
+          (Server.DAServer[this.Name] == 2617 || 
+            this.MapInfo.Number == 390 && 
+            !this.Tab.vautowalker_locales.Equals("Abel") && 
+            this.Tab.vautowalker_locales != "Nearest Bank" && 
+            this.Tab.vautowalker_locales != "Nearest Restaurant" 
+          || this.MapInfo.Number == 3940 && 
+            !this.Tab.vautowalker_locales.Equals("Loures") && 
+            this.Tab.vautowalker_locales != "Canal Key 2 (blob)" &&
+            this.Tab.vautowalker_locales != "Canal Key 1 (skrull)" && 
+            this.Tab.vautowalker_locales != "Canal Ent" 
+          || this.MapInfo.Number == 136 && 
+            !this.Tab.vautowalker_locales.Equals("Mileth") && 
+            this.Tab.vautowalker_locales != "Nearest Bank" && 
+            this.Tab.vautowalker_locales != "Nearest Restaurant") && 
+          (Server.DAServer[this.Name] != 2617 || 
+            this.MapInfo.Number != 10056 && 
+            this.MapInfo.Number != 10055 && 
+            this.MapInfo.Number != 10004 && 
+            this.MapInfo.Number != 10000 && 
+            this.MapInfo.Number != 10999 && 
+            this.MapInfo.Number != 10998))
       {
         if (this.Tab.vautowalker_locales.Equals("Loures") && this.HasItem("Loures Song") && this.ItemAmount("Loures Song") > 1U)
         {
@@ -22663,31 +22752,32 @@ label_20:
     public bool WaitOnPlayersInRange()
     {
       int num = 0;
-      foreach (object obj in this.Tab.Wayregion.waitonplayerslistbox.Items)
+      foreach (object altPlayer in this.Tab.Wayregion.waitonplayerslistbox.Items)
       {
-        if (obj != null)
+        if (altPlayer is null)
+          continue;
+
+
+        Player characterByName = FindCharacterByName<Player>(altPlayer.ToString());
+        if (characterByName == null)
         {
-          Player characterByName = this.FindCharacterByName<Player>(obj.ToString());
-          if (characterByName == null)
-          {
-            if (!this.missing.Contains(obj.ToString()))
-              this.missing.Add(obj.ToString());
-            ++num;
-          }
-          else if (characterByName.IsOnScreen && this.ServerLocation.DistanceFrom(characterByName.Location) < 9)
-          {
-            if (this.missing.Contains(obj.ToString()))
-              this.missing.Remove(obj.ToString());
-          }
-          else if (!characterByName.IsOnScreen)
-          {
-            if (!this.missing.Contains(obj.ToString()))
-              this.missing.Add(obj.ToString());
-            ++num;
-          }
-          else if (this.ServerLocation.DistanceFrom(characterByName.Location) >= 9)
-            ++num;
+          if (!this.missing.Contains(altPlayer.ToString()))
+            this.missing.Add(altPlayer.ToString());
+          ++num;
         }
+        else if (characterByName.IsOnScreen && this.ServerLocation.DistanceFrom(characterByName.Location) < 9)
+        {
+          if (this.missing.Contains(altPlayer.ToString()))
+            this.missing.Remove(altPlayer.ToString());
+        }
+        else if (!characterByName.IsOnScreen)
+        {
+          if (!this.missing.Contains(altPlayer.ToString()))
+            this.missing.Add(altPlayer.ToString());
+          ++num;
+        }
+        else if (this.ServerLocation.DistanceFrom(characterByName.Location) >= 9)
+          ++num;
       }
       return num <= 0;
     }
@@ -22765,7 +22855,7 @@ label_20:
       while (!this.logoff)
         Thread.Sleep(200);
       Thread.Sleep(1000);
-      User32._MouseClick((IntPtr) hwnd, 599, 165, (int) this.windowSize);
+      User32._MouseClick((IntPtr)hwnd, 599, 165, windowSize);
       if (!Program.MainForm.loglabormules.Checked && !Program.MainForm.getmentored.Checked && !Program.MainForm.logpigchase.Checked && !Program.MainForm.frostylog.Checked || Program.MainForm.labormulelist.Items.Count <= 0)
         return;
       new Thread(new ParameterizedThreadStart(this.LogNext)).Start(hwnd);
@@ -22780,7 +22870,7 @@ label_20:
       string text = strArray[0];
       string keys = strArray[1];
       Thread.Sleep(3000);
-      User32._MouseClick(hwnd, 120, 318, (int) this.windowSize);
+      User32._MouseClick(hwnd, 120, 318, windowSize);
       Thread.Sleep(500);
       User32._SendText(hwnd, text);
       Thread.Sleep(200);
@@ -22800,7 +22890,7 @@ label_20:
       if (Server.Relog[name].ServerReset)
         Thread.Sleep(120000);
       Thread.Sleep(1500);
-      User32._MouseClick(mainWindowHandle, 292, 228, (int) this.windowSize);
+      User32._MouseClick(mainWindowHandle, 292, 228, windowSize);
       do
       {
         Thread.Sleep(200);
@@ -22823,9 +22913,9 @@ label_20:
       }
       while (Server.Relog[name].WaitForOk);
       Thread.Sleep(200);
-      User32._MouseClick(mainWindowHandle, 234, 391, (int) this.windowSize);
+      User32._MouseClick(mainWindowHandle, 234, 391, windowSize);
       Thread.Sleep(1000);
-      User32._MouseClick(mainWindowHandle, 120, 318, (int) this.windowSize);
+      User32._MouseClick(mainWindowHandle, 120, 318, windowSize);
       Thread.Sleep(500);
       User32._SendText(mainWindowHandle, name);
       Thread.Sleep(200);
@@ -22917,55 +23007,55 @@ label_20:
 
     public void PopupOption1()
     {
-      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 333, (int) this.windowSize);
+      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 333, windowSize);
       Thread.Sleep(350);
     }
 
     public void PopupOption2()
     {
-      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 315, (int) this.windowSize);
+      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 315, windowSize);
       Thread.Sleep(350);
     }
 
     public void PopupOption3()
     {
-      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 295, (int) this.windowSize);
+      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 295, windowSize);
       Thread.Sleep(350);
     }
 
     public void PopupOption4()
     {
-      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 280, (int) this.windowSize);
+      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 280, windowSize);
       Thread.Sleep(350);
     }
 
     public void PopupOption5()
     {
-      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 261, (int) this.windowSize);
+      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 261, windowSize);
       Thread.Sleep(350);
     }
 
     public void PopupOption6()
     {
-      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 241, (int) this.windowSize);
+      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 241, windowSize);
       Thread.Sleep(350);
     }
 
     public void PopupOption7()
     {
-      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 226, (int) this.windowSize);
+      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 226, windowSize);
       Thread.Sleep(350);
     }
 
     public void PopupOption8()
     {
-      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 207, (int) this.windowSize);
+      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 207, windowSize);
       Thread.Sleep(350);
     }
 
     public void PopupOption9()
     {
-      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 187, (int) this.windowSize);
+      User32._MouseClick(this.mainProc.MainWindowHandle, 604, 187, windowSize);
       Thread.Sleep(350);
     }
 
@@ -23467,36 +23557,59 @@ label_151:
             num4 = 0;
           if (num4 != 0)
             return false;
-          int num5;
-          if (!target.HasValue && this.PreventSpam.ContainsKey(s.Name))
+
+          if (!target.HasValue &&
+              PreventSpam.ContainsKey(s.Name) &&
+              DateTime.UtcNow.Subtract(PreventSpam[s.Name]).TotalMilliseconds < 1000)
           {
-            timeSpan = DateTime.UtcNow.Subtract(this.PreventSpam[s.Name]);
-            num5 = timeSpan.TotalMilliseconds < 1000.0 ? 1 : 0;
-          }
-          else
-            num5 = 0;
-          if (num5 != 0)
             return false;
-          int num6;
-          if (target.HasValue && this.Characters.ContainsKey(target.Value) && this.Characters[target.Value] != null && this.Characters[target.Value].PreventSpam.ContainsKey(s.Name))
+          }
+          //int num5;
+          //if (!target.HasValue && this.PreventSpam.ContainsKey(s.Name))
+          //{
+          //  timeSpan = DateTime.UtcNow.Subtract(this.PreventSpam[s.Name]);
+          //  num5 = timeSpan.TotalMilliseconds < 1000.0 ? 1 : 0;
+          //}
+          //else
+          //  num5 = 0;
+          //if (num5 != 0)
+          //  return false;
+
+          if (target.HasValue && 
+              Characters.ContainsKey(target.Value) && 
+              Characters[target.Value] != null && 
+              Characters[target.Value].PreventSpam.ContainsKey(s.Name) &&
+              DateTime.UtcNow.Subtract(Characters[target.Value].PreventSpam[s.Name]).TotalMilliseconds < 1000)
           {
-            timeSpan = DateTime.UtcNow.Subtract(this.Characters[target.Value].PreventSpam[s.Name]);
-            num6 = timeSpan.TotalMilliseconds < 1000.0 ? 1 : 0;
-          }
-          else
-            num6 = 0;
-          if (num6 != 0)
             return false;
-          int num7;
-          if (s.CastLines == 0 && !this.SafeToWalkFast && target.HasValue && this.LastTarget != 0U && (int) this.LastTarget != (int) target.Value && this.newtargetdelay != DateTime.MinValue)
+          }
+
+          //int num6;
+          //if (target.HasValue && this.Characters.ContainsKey(target.Value) && this.Characters[target.Value] != null && this.Characters[target.Value].PreventSpam.ContainsKey(s.Name))
+          //{
+          //  timeSpan = DateTime.UtcNow.Subtract(this.Characters[target.Value].PreventSpam[s.Name]);
+          //  num6 = timeSpan.TotalMilliseconds < 1000.0 ? 1 : 0;
+          //}
+          //else
+          //  num6 = 0;
+          //if (num6 != 0)
+          //  return false;
+
+          double randomDelay = this.RandomNumber(
+              (int)this.Tab.switchtargetdelaya.Value,
+              (int)this.Tab.switchtargetdelayb.Value
+          );
+
+          if (s.CastLines == 0 &&
+              timeSpan.TotalMilliseconds <= randomDelay &&
+              !this.SafeToWalkFast && 
+              target.HasValue && this.LastTarget != 0U && 
+              (int)this.LastTarget != (int)target.Value && 
+              this.newtargetdelay != DateTime.MinValue)
           {
-            timeSpan = DateTime.UtcNow.Subtract(this.newtargetdelay);
-            num7 = timeSpan.TotalMilliseconds <= (double) this.RandomNumber((int) this.Tab.switchtargetdelaya.Value, (int) this.Tab.switchtargetdelayb.Value) ? 1 : 0;
-          }
-          else
-            num7 = 0;
-          if (num7 != 0)
             return false;
+          }
+
           int num8;
           if (s.CastLines == 0 && s.Name.Equals("ard cradh"))
           {
@@ -23507,6 +23620,7 @@ label_151:
             num8 = 0;
           if (num8 != 0)
             return false;
+
           int num9;
           if (s.CastLines == 0 && !this.SafeToWalkFast)
           {
@@ -24281,29 +24395,124 @@ label_232:
 
     public bool IsGem(string itemName) => itemName == "Raw Beryl" || itemName == "Raw Coral" || itemName == "Raw Ruby" || itemName == "Raw Talgonite" || itemName == "Raw Hy-brasyl";
 
-    public bool IsArmor(string itemName) => itemName == "Gardcorp" || itemName == "Journeyman" || itemName == "Lorum" || itemName == "Mane" || itemName == "Duin-uasal" || itemName == "Leather Tunic" 
-      || itemName == "Jupe" || itemName == "Lorica" || itemName == "Kasmanium Armor" || itemName == "Chainmail" || itemName == "Iplet Mail" || itemName == "Platemail" || itemName == "Hy-brasyl Plate" 
-      || itemName == "Dobok" || itemName == "Culotte" || itemName == "Earth Garb" || itemName == "Wind Garb" || itemName == "Mountain Garb" || itemName == "Cowl" || itemName == "Galuchat Coat" 
-      || itemName == "Mantle" || itemName == "Hierophant" || itemName == "Dalmatica" || itemName == "Scout Leather" || itemName == "Dwarvish Leather" || itemName == "Paluten" || itemName == "Keaton" 
-      || itemName == "Bardocle" || itemName == "Magi Skirt" || itemName == "Benusta" || itemName == "Stoller" || itemName == "Clymouth" || itemName == "Clamyth" || itemName == "Leather Bliaut" 
-      || itemName == "Cuirass" || itemName == "Cotehardie" || itemName == "Kasmanium Hauberk" || itemName == "Surplice Blouse" || itemName == "Labyrinth Mail" || itemName == "Phoenix Mail" 
-      || itemName == "Hy-brasyl Plate" || itemName == "Earth Bodice" || itemName == "Lotus Bodice" || itemName == "Moon Bodice" || itemName == "Lightning Garb" || itemName == "Sea Garb" 
-      || itemName == "Gorget Gown" || itemName == "Mystic Gown" || itemName == "Elle" || itemName == "Dolman" || itemName == "Bansagart" || itemName == "Cotte" || itemName == "Brigandine" 
-      || itemName == "Corsette" || itemName == "Pebble Rose" || itemName == "Kagum";
+    public bool IsArmor(string itemName)
+      => itemName == "Bansagart" 
+      || itemName == "Bardocle" 
+      || itemName == "Benusta" 
+      || itemName == "Brigandine" 
+      || itemName == "Chainmail" 
+      || itemName == "Clamyth" 
+      || itemName == "Clymouth" 
+      || itemName == "Corsette" 
+      || itemName == "Cotehardie" 
+      || itemName == "Cotte" 
+      || itemName == "Cowl" 
+      || itemName == "Cuirass" 
+      || itemName == "Culotte" 
+      || itemName == "Dalmatica" 
+      || itemName == "Dobok" 
+      || itemName == "Dolman" 
+      || itemName == "Duin-uasal" 
+      || itemName == "Dwarvish Leather" 
+      || itemName == "Earth Bodice" 
+      || itemName == "Earth Garb" 
+      || itemName == "Elle" 
+      || itemName == "Galuchat Coat" 
+      || itemName == "Gardcorp" 
+      || itemName == "Gorget Gown" 
+      || itemName == "Hierophant" 
+      || itemName == "Hy-brasyl Plate" 
+      || itemName == "Iplet Mail" 
+      || itemName == "Journeyman" 
+      || itemName == "Jupe" 
+      || itemName == "Kagum"
+      || itemName == "Kasmanium Armor" 
+      || itemName == "Kasmanium Hauberk" 
+      || itemName == "Keaton" 
+      || itemName == "Labyrinth Mail" 
+      || itemName == "Leather Bliaut" 
+      || itemName == "Leather Tunic" 
+      || itemName == "Lightning Garb" 
+      || itemName == "Lorica" 
+      || itemName == "Lorum" 
+      || itemName == "Lotus Bodice" 
+      || itemName == "Magi Skirt" 
+      || itemName == "Mane" 
+      || itemName == "Mantle" 
+      || itemName == "Moon Bodice" 
+      || itemName == "Mountain Garb" 
+      || itemName == "Mystic Gown" 
+      || itemName == "Paluten" 
+      || itemName == "Pebble Rose" 
+      || itemName == "Phoenix Mail" 
+      || itemName == "Platemail" 
+      || itemName == "Scout Leather" 
+      || itemName == "Sea Garb" 
+      || itemName == "Stoller" 
+      || itemName == "Surplice Blouse" 
+      || itemName == "Wind Garb";
 
     public bool HasArmors() => this.HasMArmors() || this.HasFArmors();
 
-    public bool HasMArmors() => this.HasItem("Gardcorp") || this.HasItem("Journeyman") || this.HasItem("Lorum") || this.HasItem("Mane") || this.HasItem("Duin-uasal") || this.HasItem("Leather Tunic") 
-      || this.HasItem("Jupe") || this.HasItem("Lorica") || this.HasItem("Kasmanium Armor") || this.HasItem("Chainmail") || this.HasItem("Iplet Mail") || this.HasItem("Platemail") 
-      || this.HasItem("Hy-brasyl Plate") || this.HasItem("Dobok") || this.HasItem("Culotte") || this.HasItem("Earth Garb") || this.HasItem("Wind Garb") || this.HasItem("Mountain Garb") 
-      || this.HasItem("Cowl") || this.HasItem("Galuchat Coat") || this.HasItem("Mantle") || this.HasItem("Hierophant") || this.HasItem("Dalmatica") || this.HasItem("Scout Leather") 
-      || this.HasItem("Dwarvish Leather") || this.HasItem("Paluten") || this.HasItem("Keaton") || this.HasItem("Bardocle");
+    public bool HasMArmors()
+      => this.HasItem("Bardocle")
+      || this.HasItem("Chainmail")
+      || this.HasItem("Cowl")
+      || this.HasItem("Culotte")
+      || this.HasItem("Dalmatica")
+      || this.HasItem("Dobok")
+      || this.HasItem("Duin-uasal")
+      || this.HasItem("Dwarvish Leather")
+      || this.HasItem("Earth Garb")
+      || this.HasItem("Galuchat Coat")
+      || this.HasItem("Gardcorp")
+      || this.HasItem("Hierophant")
+      || this.HasItem("Hy-brasyl Plate")
+      || this.HasItem("Iplet Mail")
+      || this.HasItem("Journeyman")
+      || this.HasItem("Jupe")
+      || this.HasItem("Kasmanium Armor")
+      || this.HasItem("Keaton")
+      || this.HasItem("Leather Tunic")
+      || this.HasItem("Lorica")
+      || this.HasItem("Lorum")
+      || this.HasItem("Mane")
+      || this.HasItem("Mantle")
+      || this.HasItem("Mountain Garb")
+      || this.HasItem("Paluten")
+      || this.HasItem("Platemail")
+      || this.HasItem("Scout Leather")
+      || this.HasItem("Wind Garb");
 
-    public bool HasFArmors() => this.HasItem("Magi Skirt") || this.HasItem("Benusta") || this.HasItem("Stoller") || this.HasItem("Clymouth") || this.HasItem("Clamyth") || this.HasItem("Leather Bliaut") 
-      || this.HasItem("Cuirass") || this.HasItem("Cotehardie") || this.HasItem("Kasmanium Hauberk") || this.HasItem("Surplice Blouse") || this.HasItem("Labyrinth Mail") || this.HasItem("Phoenix Mail")
-      || this.HasItem("Hy-brasyl Armor") || this.HasItem("Earth Bodice") || this.HasItem("Lotus Bodice") || this.HasItem("Moon Bodice") || this.HasItem("Lightning Garb") || this.HasItem("Sea Garb") 
-      || this.HasItem("Gorget Gown") || this.HasItem("Mystic Gown") || this.HasItem("Elle") || this.HasItem("Dolman") || this.HasItem("Bansagart") || this.HasItem("Cotte") || this.HasItem("Brigandine") 
-      || this.HasItem("Corsette") || this.HasItem("Pebble Rose") || this.HasItem("Kagum");
+    public bool HasFArmors()
+      => this.HasItem("Bansagart")
+      || this.HasItem("Benusta")
+      || this.HasItem("Brigandine")
+      || this.HasItem("Clamyth")
+      || this.HasItem("Clymouth")
+      || this.HasItem("Corsette")
+      || this.HasItem("Cotehardie")
+      || this.HasItem("Cotte")
+      || this.HasItem("Cuirass")
+      || this.HasItem("Dolman")
+      || this.HasItem("Earth Bodice")
+      || this.HasItem("Elle")
+      || this.HasItem("Gorget Gown")
+      || this.HasItem("Hy-brasyl Armor")
+      || this.HasItem("Kagum")
+      || this.HasItem("Kasmanium Hauberk")
+      || this.HasItem("Labyrinth Mail")
+      || this.HasItem("Leather Bliaut")
+      || this.HasItem("Lightning Garb")
+      || this.HasItem("Lotus Bodice")
+      || this.HasItem("Magi Skirt")
+      || this.HasItem("Moon Bodice")
+      || this.HasItem("Mystic Gown")
+      || this.HasItem("Pebble Rose")
+      || this.HasItem("Phoenix Mail")
+      || this.HasItem("Sea Garb")
+      || this.HasItem("Stoller")
+      || this.HasItem("Surplice Blouse");
 
     public void DropArmors()
     {
@@ -24331,18 +24540,17 @@ label_232:
 
     public T FindCharacterByName<T>(string name) where T : Character
     {
-      try
+      foreach (Character character in Characters.Values)
       {
-        foreach (Character character in this.Characters.Values.ToArray<Character>())
+        if (character is T result &&
+            Server.StaticCharacters.ContainsKey(character.ID) &&
+            character.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase))
         {
-          if (character != null && Server.StaticCharacters.ContainsKey(character.ID) && character.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && character is T characterByName)
-            return characterByName;
+          return result;
         }
       }
-      catch
-      {
-      }
-      return default (T);
+
+      return default;
     }
 
     public Player[] AnyPlayer()
@@ -24533,7 +24741,7 @@ label_232:
 
     public bool NonAltAtLocation(int x, int y)
     {
-      foreach (Player nearbyNonAlt in this.NearbyNonAlts())
+      foreach (Player nearbyNonAlt in NearbyNonAlts())
       {
         if (nearbyNonAlt != null && nearbyNonAlt.IsOnScreen && nearbyNonAlt.Location.X == x && nearbyNonAlt.Location.Y == y)
           return true;
@@ -24543,11 +24751,24 @@ label_232:
 
     public bool SomeoneElseIsCloserTo(Npc e)
     {
-      if (this.MapInfo.Name.Contains("Training Dojo") || this.MapInfo.Name.Equals("Count Macabre Mansion") || this.MapInfo.Name.Equals("Balanced Arena"))
+      if (e is null)
         return false;
-      foreach (Player player in this.AnyPlayer())
+
+      if (MapInfo.Name.Contains("Training Dojo") 
+        || this.MapInfo.Name.Equals("Count Macabre Mansion") 
+        || this.MapInfo.Name.Equals("Balanced Arena"))
+        return false;
+
+      foreach (Player player in AnyPlayer())
       {
-        if (player != null && player.IsOnScreen && player.DistanceFrom(e.Location) < 5 && (player.DistanceFrom(e.Location) < 3 || this.ServerLocation.DistanceFrom(e.Location) > player.DistanceFrom(e.Location)) && !Server.Alts.ContainsKey(player.Name.ToLower()) && !Server.friendlist.Contains(player.Name.ToLower()) && !this.GroupMembers.Contains(player.Name.ToLower()))
+        if (player is null)
+          continue;
+
+        if (player.IsOnScreen && player.DistanceFrom(e.Location) < 5 && (player.DistanceFrom(e.Location) < 3 
+            || this.ServerLocation.DistanceFrom(e.Location) > player.DistanceFrom(e.Location)) 
+              && !Server.Alts.ContainsKey(player.Name.ToLower()) 
+              && !Server.friendlist.Contains(player.Name.ToLower()) 
+              && !this.GroupMembers.Contains(player.Name.ToLower()))
           return true;
       }
       return false;
@@ -25500,12 +25721,12 @@ label_31:
     {
       Npc[] source = this.AllNearbyMonsters();
       List<Npc> npcList = new List<Npc>();
-      foreach (Npc npc in (IEnumerable<Npc>) ((IEnumerable<Npc>) source).OrderBy<Npc, int>((Func<Npc, int>) (e => e.Location.DistanceFrom(this.ServerLocation))))
+      foreach (Npc npc in (IEnumerable<Npc>)source.OrderBy<Npc, int>(e => e.Location.DistanceFrom(ServerLocation)))
       {
         if (npc != null && npc.Image == 266 && npc.IsOnScreen)
           npcList.Add(npc);
       }
-      foreach (Npc npc in (IEnumerable<Npc>) ((IEnumerable<Npc>) source).OrderBy<Npc, int>((Func<Npc, int>) (e => e.Location.DistanceFrom(this.ServerLocation))))
+      foreach (Npc npc in (IEnumerable<Npc>)source.OrderBy<Npc, int>(e => e.Location.DistanceFrom(ServerLocation)))
       {
         if (npc != null && npc.Image == 272 && npc.IsOnScreen)
           npcList.Add(npc);

@@ -274,7 +274,7 @@ namespace Flintstones
     {
       if (!File.Exists(Options.FullDarkAgesPath))
       {
-        int num = (int) MessageBox.Show(Options.FullDarkAgesPath + " could not be located.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+        MessageBox.Show(Options.FullDarkAgesPath + " could not be located.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
       }
       else
         this.Launch();
@@ -318,7 +318,7 @@ namespace Flintstones
         Kernel32.ResumeThread(processInfo.ThreadHandle);
 
         // Get rid of the nasty startup pop-up by hitting 'enter'
-        Thread.Sleep(3000);
+        Thread.Sleep(3200);
         Process process = Process.GetProcessById(processInfo.ProcessId);
         IntPtr hwnd = process.MainWindowHandle;
         User32.PopupHitReturn(hwnd);
@@ -363,7 +363,7 @@ namespace Flintstones
         Kernel32.ResumeThread(processInfo.ThreadHandle);
 
         // Get rid of the nasty startup pop-up by hitting 'enter'
-        Thread.Sleep(3000);
+        Thread.Sleep(3200);
         Process process = Process.GetProcessById(processInfo.ProcessId);
         IntPtr hwnd = process.MainWindowHandle;
         User32.PopupHitReturn(hwnd);
@@ -373,7 +373,7 @@ namespace Flintstones
         {
           int windowSize = rectangle.Width <= 1200 ? 1 : 2;
           // Open login
-          Thread.Sleep(200);
+          Thread.Sleep(500);
           User32._MouseClick(hwnd, 120, 318, windowSize);
           Thread.Sleep(500);
           User32._SendText(hwnd, name);
@@ -383,6 +383,7 @@ namespace Flintstones
           User32._SendKeys(hwnd, pass);
           Thread.Sleep(200);
           User32.PopupHitReturn(hwnd);
+          Thread.Sleep(3000);
         }
       }
     }
@@ -1915,6 +1916,7 @@ namespace Flintstones
       // tabPage2
       // 
       this.tabPage2.Controls.Add(this.loadalts_button);
+      this.tabPage2.Controls.Add(this.Friendlist_label);
       this.tabPage2.Controls.Add(this.altname_label);
       this.tabPage2.Controls.Add(this.altpass_label);
       this.tabPage2.Controls.Add(this.altname_textbox);
@@ -1923,7 +1925,6 @@ namespace Flintstones
       this.tabPage2.Controls.Add(this.removealt_button);
       this.tabPage2.Controls.Add(this.alts_label);
       this.tabPage2.Controls.Add(this.alt_listbox);
-      this.tabPage2.Controls.Add(this.Friendlist_label);
       this.tabPage2.Controls.Add(this.groupBox5);
       this.tabPage2.Controls.Add(this.deletefriend);
       this.tabPage2.Controls.Add(this.friendname_error2);
@@ -1943,7 +1944,7 @@ namespace Flintstones
       // 
       // loadalts_button
       // 
-      this.loadalts_button.Location = new System.Drawing.Point(291, 0);
+      this.loadalts_button.Location = new System.Drawing.Point(291, 13);
       this.loadalts_button.Name = "loadalts_button";
       this.loadalts_button.Size = new System.Drawing.Size(150, 30);
       this.loadalts_button.TabIndex = 93;
@@ -2009,7 +2010,7 @@ namespace Flintstones
       // 
       this.alts_label.AutoSize = true;
       this.alts_label.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.alts_label.Location = new System.Drawing.Point(343, 28);
+      this.alts_label.Location = new System.Drawing.Point(344, 0);
       this.alts_label.Name = "alts_label";
       this.alts_label.Size = new System.Drawing.Size(50, 15);
       this.alts_label.TabIndex = 87;
@@ -2031,7 +2032,7 @@ namespace Flintstones
       // 
       this.Friendlist_label.AutoSize = true;
       this.Friendlist_label.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.Friendlist_label.Location = new System.Drawing.Point(506, 28);
+      this.Friendlist_label.Location = new System.Drawing.Point(509, 3);
       this.Friendlist_label.Name = "Friendlist_label";
       this.Friendlist_label.Size = new System.Drawing.Size(64, 15);
       this.Friendlist_label.TabIndex = 85;
@@ -2170,7 +2171,7 @@ namespace Flintstones
       this.friends.AutoSize = true;
       this.friends.Checked = true;
       this.friends.CheckState = System.Windows.Forms.CheckState.Checked;
-      this.friends.Location = new System.Drawing.Point(447, 6);
+      this.friends.Location = new System.Drawing.Point(447, 20);
       this.friends.Name = "friends";
       this.friends.Size = new System.Drawing.Size(181, 19);
       this.friends.TabIndex = 70;

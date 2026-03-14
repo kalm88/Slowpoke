@@ -14,14 +14,19 @@ namespace Flintstones
   /// </summary>
   internal class Alts
   {
-    string filePath = Path.Combine(Program.StartupPath, "Settings", "AltList.xml");
-    Dictionary<string, string> _alts = new Dictionary<string, string>();
+    private string filePath = Path.Combine(Program.StartupPath, "Settings", "AltList.xml");
+    private Dictionary<string, string> _alts = new Dictionary<string, string>();
 
     public Alts() 
     { 
       Load();
-    } 
+    }
 
+    /// <summary>
+    /// Add an alt with the given name and password to the list and saves the list to AltList.xml. If an alt with the same name already exists, its password will be updated.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="pass"></param>
     public void Add(string name, string pass)
     {
       if (_alts.ContainsKey(name))
@@ -32,6 +37,10 @@ namespace Flintstones
       Save();
     }
 
+    /// <summary>
+    /// Removes the alt with the given name from the list and saves the list to AltList.xml. Does nothing if the alt name is not found.
+    /// </summary>
+    /// <param name="name"></param>
     public void Remove(string name)
     {
       _alts.Remove(name);
@@ -42,7 +51,7 @@ namespace Flintstones
     /// <summary>
     /// Loas the list with alts and their password from AltList.xml
     /// </summary>
-    public void Load()
+    private void Load()
     {
       XDocument document;
 
@@ -73,7 +82,7 @@ namespace Flintstones
     /// <summary>
     /// Save the alts and their password to AltList.xml
     /// </summary>
-    public void Save()
+    private void Save()
     {
       var document = new XDocument(
           new XElement("Alts",
@@ -98,6 +107,11 @@ namespace Flintstones
       return _alts.Keys.ToList();
     }
 
+    /// <summary>
+    /// Give the password for the given alt name. Returns null if the alt name is not found.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public string Pass(string name)
     {
       return _alts[name];

@@ -155,7 +155,10 @@ namespace Flintstones
       Program.MainForm.BeginInvoke((Action) (() => Program.MainForm.ItemXMLEditor.UpdateChestsForm()));
     }
 
-    private void ChestItemXMLEditorChild_FormClosing(object sender, FormClosingEventArgs e) => this.Close();
+    private void ChestItemXMLEditorChild_FormClosing(object sender, FormClosingEventArgs e)
+    {
+
+    }
 
     protected override void Dispose(bool disposing)
     {
