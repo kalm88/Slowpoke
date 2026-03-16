@@ -68,6 +68,7 @@
     <Compile Include="Types\Monster.cs" />
     <Compile Include="Types\MonsterKills.cs" />
     <Compile Include="Types\SpeakCommands.cs" />
+    <Compile Include="Types\Walking.cs" />
     <Compile Include="Types\WalkLocation.cs" />
     <Compile Include="Views\ClientTab.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -235,8 +236,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Alarms\ALARMquiet.wav" />
-    <EmbeddedResource Include="Forms\ArenaCounter.resx" />
-    <EmbeddedResource Include="Forms\AscendOptions.resx" />
+    <EmbeddedResource Include="Forms\ArenaCounter.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AscendOptions.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ChestItemXMLEditorChild.resx" />
     <EmbeddedResource Include="Alarms\chime.wav" />
     <EmbeddedResource Include="Views\ClientTab.resx">

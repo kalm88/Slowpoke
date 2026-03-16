@@ -4,6 +4,7 @@
 //SlowPoke
 //SlowPoke
 
+using slowpoke.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 using System.Xml;
@@ -474,9 +476,9 @@ namespace Flintstones
       [CharacterClass.Monk] = new CharacterStats() { Maxhp = 6850, Str = 180, Int = 150, Wis = 100, Con = 215, Dex = 100 },
     };
 
-    public Dictionary<string, DateTime> PreventSpam { get; set; }
 
-    public Thread GetMailThread { get; set; }
+
+    public Dictionary<string, DateTime> PreventSpam { get; set; }
 
     public Thread EntityNameThread { get; set; }
 
@@ -680,12 +682,18 @@ namespace Flintstones
 
     public Socket ServerSocket { get; private set; }
 
-    private SpeakCommands Commands = new SpeakCommands();
-
+    private CancellationTokenSource _cts;
+    private SpeakCommands _speakCommands;
+    private Task SpeakCommandTask;
+    private Walking _walkCommands;
+    private Task WalkCommandTask;
     private Dictionary<string, Dictionary<DugonColor, Action>> dugonMeditations;
 
     public Client(Server server, Socket socket, EndPoint endPoint)
     {
+      _speakCommands = new SpeakCommands(this);
+      _walkCommands = new Walking(this);
+
       this.PreventSpam = new Dictionary<string, DateTime>();
       this.ArenaCounter = new Dictionary<string, Arena>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
       this.Combos = new Dictionary<string, string>((IEqualityComparer<string>) StringComparer.CurrentCultureIgnoreCase);
@@ -759,15 +767,36 @@ namespace Flintstones
       this.EntityNameThread.Name = "EntityNameThread";
       this.BotThread = new Thread(new ThreadStart(BotLoop));
       this.BotThread.Name = "BotThread";
-      this.WalkThread = new Thread(new ThreadStart(Walking));
-      this.WalkThread.Name = "WalkThread";
+      //this.WalkThread = new Thread(new ThreadStart(Walking));
+      //this.WalkThread.Name = "WalkThread";
       this.QuestsThread = new Thread(new ThreadStart(Questing));
       this.QuestsThread.Name = "QuestThread";
-      this.SpeakCommandThread = new Thread(new ThreadStart(SpeakThread));
-      this.SpeakCommandThread.Name = "SpeakCommandThread";
+      //this.SpeakCommandThread = new Thread(new ThreadStart(SpeakThread));
+      //this.SpeakCommandThread.Name = "SpeakCommandThread";
       this.ClientLoopThread = new Thread(new ThreadStart(ClientLoop));
       this.ClientLoopThread.Name = "ClientLoopThread";
       this.ClientLoopThread.Start();
+
+      Start();
+    }
+
+    public void Start()
+    {
+      _cts = new CancellationTokenSource();
+
+      SpeakCommandTask = Task.Run(() => _speakCommands.Run(_cts.Token));
+      WalkCommandTask  = Task.Run(() => _walkCommands.Run(_cts.Token));
+    }
+
+    private bool IsIncapacitated()
+    {
+      return this.IsSkulled
+        || this.IsStunned
+        || this.IsSuained
+        || this.SpellBar.Contains((ushort)90)
+        || this.SpellBar.Contains((ushort)97)
+        || this.SpellBar.Contains((ushort)101)
+      ;
     }
 
     public void walkcommand(string locala, string localb = "", bool allClients = true)
@@ -845,106 +874,30 @@ namespace Flintstones
       }
     }
 
-    public void SpeakThread()
-    {
-      SpeakCommandThreadRunning = true;
-      while (SpeakCommandThreadRunning)
-      {
-        if (this.SpeakMessage != string.Empty)
-        {
-          bool commandExecuted = false;
-          if (Commands.TryExecuteCommand(this.SpeakMessage, this))
-          {
-            commandExecuted = true;
-          }
+    // Currently Out of Order
+    //public void SpeakThread()
+    //{
+    //  SpeakCommandThreadRunning = true;
+    //  while (SpeakCommandThreadRunning)
+    //  {
+    //    if (SpeakMessage != string.Empty)
+    //    {
+    //      bool commandExecuted = false;
+    //      if (Commands.TryExecuteCommand(SpeakMessage, this))
+    //      {
+    //        commandExecuted = true;
+    //      }
 
+    //      SpeakMessage = string.Empty;
+    //      if (!commandExecuted)
+    //      {
+    //        SendMessage($"Command not implemented: {SpeakMessage}", "pink");
+    //      }
+    //    }
 
-          if (this.SpeakMessage.StartsWith("/count", StringComparison.CurrentCultureIgnoreCase))
-          {
-            commandExecuted = true;
-            if (this.SpeakMessage.StartsWith("/count+", StringComparison.CurrentCultureIgnoreCase))
-            {
-              foreach (string groupMember in this.GroupMembers)
-              {
-                if (groupMember != string.Empty && this.GroupCounter.ContainsKey(groupMember.ToLower()))
-                  ++this.GroupCounter[groupMember.ToLower()].FilthyErbieCount;
-              }
-            }
-            else if (this.SpeakMessage.StartsWith("/count-", StringComparison.CurrentCultureIgnoreCase))
-            {
-              foreach (string groupMember in this.GroupMembers)
-              {
-                if (groupMember != string.Empty && this.GroupCounter.ContainsKey(groupMember.ToLower()))
-                  --this.GroupCounter[groupMember.ToLower()].FilthyErbieCount;
-              }
-            }
-            else
-            {
-              string text = string.Empty;
-              foreach (string groupMember in this.GroupMembers)
-              {
-                if (groupMember != string.Empty && this.GroupCounter.ContainsKey(groupMember.ToLower()))
-                  text = text + groupMember + " : " + this.GroupCounter[groupMember.ToLower()].FilthyErbieCount.ToString() + "\n";
-              }
-              if (text != string.Empty)
-                this.SendMessage(text, (byte) 8);
-            }
-          }
-          if (this.SpeakMessage.StartsWith("/arm"))
-          {
-            this.SendMessage(this.ClientArms.ToString());
-            commandExecuted = true;
-          }
-          string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-          if (this.SpeakMessage.StartsWith("/legend"))
-          {
-            string filePath = Path.Combine(desktopPath, $"{this.Name}-marks.txt");
-            StreamWriter streamWriter = new StreamWriter(filePath, true);
-            foreach (KeyValuePair<string, string> legendMark in this.LegendMarks)
-            {
-              if (legendMark.Key != null)
-                streamWriter.WriteLine(legendMark.Key + " _ " + legendMark.Value);
-            }
-            streamWriter.Close();
-            commandExecuted = true;
-          }
-          if (this.SpeakMessage.StartsWith("/test"))
-          {
-            string filePath = Path.Combine(desktopPath, $"{this.Name}-test.txt");
-            StreamWriter streamWriter = new StreamWriter(filePath, true);
-            foreach (KeyValuePair<string, string> legendMark in this.LegendMarks)
-            {
-              if (legendMark.Key != null)
-                streamWriter.WriteLine(legendMark.Key + " _ " + legendMark.Value);
-            }
-            streamWriter.Close();
-            commandExecuted = true;
-          }
-          if (this.SpeakMessage.StartsWith("/balls"))
-          {
-            if (!this.buyballpots)
-            {
-              this.SendMessage("Buying potions.");
-              this.buyballpots = true;
-            }
-            else
-            {
-              this.SendMessage("Stopped buying potions.");
-              this.buyballpots = false;
-            }
-            commandExecuted = true;
-          }
-
-          this.SpeakMessage = string.Empty;
-          if (!commandExecuted)
-          {
-            SendMessage($"Command not implemented: {SpeakMessage}", "pink");
-          }
-        }
-
-        Thread.Sleep(200);
-      }
-    }
+    //    Thread.Sleep(200);
+    //  }
+    //}
 
     public void MySpeakMessageFunc()
     {
@@ -1235,7 +1188,9 @@ namespace Flintstones
       {
         try
         {
-          if (this.Tab.studycreaturetxt.Checked && (this.sensedelay == DateTime.MinValue || DateTime.UtcNow.Subtract(this.sensedelay).TotalMilliseconds > 800.0) && (this.CanSkill("Study Creature") || this.CanSkill("Echo Sense") || this.CanSkill("Martial Awareness") || this.CanSkill("Combat Senses")))
+          if (this.Tab.studycreaturetxt.Checked 
+              && (this.sensedelay == DateTime.MinValue || DateTime.UtcNow.Subtract(this.sensedelay).TotalMilliseconds > 800.0) 
+              && (this.CanSkill("Study Creature") || this.CanSkill("Echo Sense") || this.CanSkill("Martial Awareness") || this.CanSkill("Combat Senses")))
           {
             foreach (Npc allNearbyMonster in this.AllNearbyMonsters())
             {
@@ -1270,173 +1225,6 @@ namespace Flintstones
                   break;
                 }
                 break;
-              }
-            }
-          }
-          if (this.Tab.recorditemdata.Checked)
-          {
-            if (this.ClickedEntityID == 0U)
-            {
-              foreach (Character character in this.Characters.Values.OrderByDescending<Character, DateTime>((Func<Character, DateTime>) (c => c.CreateTime)).ToArray<Character>())
-              {
-                if (character != null && character.Name == string.Empty && character.IsOnScreen && character is Npc)
-                {
-                  if ((character as Npc).Type == Npc.NpcType.NormalMonster || (character as Npc).Type == Npc.NpcType.PassableMonster)
-                  {
-                    this.ClickEntity(character.ID);
-                    this.ClickedEntityID = character.ID;
-                    this.EntityClickTimer = DateTime.UtcNow;
-                    break;
-                  }
-                  if ((character as Npc).Type == Npc.NpcType.Item && character.WasDropped)
-                  {
-                    this.ClickEntity(character.ID);
-                    this.ClickedEntityID = character.ID;
-                    this.EntityClickTimer = DateTime.UtcNow;
-                    break;
-                  }
-                  if ((character as Npc).Type != Npc.NpcType.Item || character.WasDropped)
-                    break;
-                }
-              }
-            }
-            else if (this.EntityClickTimer != DateTime.MinValue && DateTime.UtcNow.Subtract(this.EntityClickTimer).TotalMilliseconds > 2000.0)
-            {
-              this.ClickedEntityID = 0U;
-              this.EntityClickTimer = DateTime.MinValue;
-            }
-            foreach (Character character1 in this.Characters.Values.ToArray<Character>())
-            {
-              if (character1 != null && character1.Name != string.Empty && character1.CountedItsKill && character1.Map == this.MapInfo.Number)
-              {
-                if (character1.DropList.Count<uint>() > 0)
-                {
-                  foreach (uint num in character1.DropList.ToArray())
-                  {
-                    if (character1.Map == this.MapInfo.Number)
-                    {
-                      if (this.Characters.ContainsKey(num) && this.Characters[num] is Npc && this.Characters[num].Name != string.Empty)
-                      {
-                        Npc character2 = this.Characters[num] as Npc;
-                        if (this.NeedsIdentified(character2))
-                        {
-                          if (character2.SecondName == string.Empty)
-                            character2.SecondName = character2.Name;
-                          if (!character2.Looted && character2.FakeChatCount < (byte) 3 && (character2.FakeChatDelay == DateTime.MinValue || DateTime.UtcNow.Subtract(character2.FakeChatDelay).TotalSeconds > 2.0))
-                          {
-                            ++character2.FakeChatCount;
-                            string[] strArray = new string[8];
-                            strArray[0] = character2.Name;
-                            strArray[1] = ": Identify me! (";
-                            int x = character2.Location.X;
-                            strArray[2] = x.ToString();
-                            strArray[3] = ", ";
-                            int y = character2.Location.Y;
-                            strArray[4] = y.ToString();
-                            strArray[5] = ", ";
-                            strArray[6] = character2.MapName;
-                            strArray[7] = ")";
-                            this.FakeChat(string.Concat(strArray), num);
-                            character2.FakeChatDelay = DateTime.UtcNow;
-                          }
-                          else if (!character2.Looted && character2.FakeChatCount == (byte) 3 && DateTime.UtcNow.Subtract(character2.FakeChatDelay).TotalSeconds > 30.0)
-                          {
-                            character2.FakeChatCount = (byte) 0;
-                            character2.FakeChatDelay = DateTime.UtcNow;
-                          }
-                        }
-                        else
-                        {
-                          if (character2.Name == "Gold Pile" || character2.Name == "Silver Pile")
-                            character1.GoldList.Add(character2.ID);
-                          if (character2.Name != "fior sal" && character2.Name != "fior srad" && character2.Name != "fior creag" && character2.Name != "fior athar" && character2.Name != "Gold Pile" && character2.Name != "Gold Coin" && character2.Name != "Silver Pile" && character2.Name != "Silver Coin")
-                            this.SendMessage(character1.Name + " dropped " + character2.Name);
-                          string mapkey = character1.Map.ToString() + "_" + character1.MapName;
-                          string key1 = (character1 as Npc).Image.ToString() + "_" + character1.Name;
-                          Item2XML item2Xml = new Item2XML();
-                          if (character2.Name == "Red Potion")
-                          {
-                            item2Xml.SecondName = character2.Name;
-                            if (character2.MapName == "Ruins Altar 5")
-                              character2.Name = "beothaich deum";
-                            else
-                              character2.Name = "ard ioc deum";
-                          }
-                          else if (character2.Name == "Purple Potion")
-                          {
-                            item2Xml.SecondName = character2.Name;
-                            character2.Name = "mor ioc deum";
-                          }
-                          else if (character2.Name == "Orange Potion")
-                          {
-                            item2Xml.SecondName = character2.Name;
-                            character2.Name = "beag ioc deum";
-                          }
-                          else if (character2.Name == "Blue Potion")
-                          {
-                            item2Xml.SecondName = character2.Name;
-                            character2.Name = "beag spiorad deum";
-                          }
-                          else if (character2.Name == "Tentacle" && character2.Image - 16384 == 1546)
-                          {
-                            item2Xml.SecondName = character2.Name;
-                            character2.Name = "Green Tentacle";
-                          }
-                          else if (character2.SecondName != string.Empty)
-                            item2Xml.SecondName = character2.SecondName;
-                          string key2 = (character2.Image - 16384).ToString() + "_" + character2.Name;
-                          if (Server.ItemMapDatabase[mapkey].Monsters.ContainsKey(key1))
-                          {
-                            if (Server.ItemMapDatabase[mapkey].Monsters[key1].Drops.ContainsKey(key2))
-                            {
-                              ++Server.ItemMapDatabase[mapkey].Monsters[key1].Drops[key2].DropCount;
-                            }
-                            else
-                            {
-                              item2Xml.Name = character2.Name;
-                              item2Xml.Image = character2.Image - 16384;
-                              item2Xml.DropCount = 1U;
-                              Server.ItemMapDatabase[mapkey].Monsters[key1].Drops.Add(key2, item2Xml);
-                            }
-                            Program.MainForm.BeginInvoke((Action) (() => Program.MainForm.ItemXMLEditor.UpdateMapForm(Server.ItemMapDatabase[mapkey], this.Name)));
-                          }
-                          else
-                            this.SendMessage("FAIL: Item dropped from a monster/map that didnt record");
-                          character1.DropList.Remove(num);
-                        }
-                      }
-                    }
-                    else
-                      break;
-                  }
-                }
-                if (character1.GoldList.Count > 0)
-                {
-                  foreach (uint key3 in character1.GoldList.ToArray())
-                  {
-                    if (character1.Map == this.MapInfo.Number)
-                    {
-                      if (this.Characters.ContainsKey(key3) && this.Characters[key3] is Npc && this.Characters[key3].Name != string.Empty)
-                      {
-                        Npc character3 = this.Characters[key3] as Npc;
-                        if (character3.GoldAmount > 0U)
-                        {
-                          string mapkey = character1.Map.ToString() + "_" + character1.MapName;
-                          string key4 = (character1 as Npc).Image.ToString() + "_" + character1.Name;
-                          if (Server.ItemMapDatabase[mapkey].Monsters.ContainsKey(key4) && !Server.ItemMapDatabase[mapkey].Monsters[key4].GoldAmounts.Contains(character3.GoldAmount.ToString()))
-                          {
-                            this.SendMessage(character1.Name + " dropped " + character3.GoldAmount.ToString("#,##0") + " gold!");
-                            Server.ItemMapDatabase[mapkey].Monsters[key4].GoldAmounts.Add(character3.GoldAmount.ToString());
-                            Program.MainForm.BeginInvoke((Action) (() => Program.MainForm.ItemXMLEditor.UpdateMapForm(Server.ItemMapDatabase[mapkey], this.Name)));
-                          }
-                          character1.GoldList.Remove(key3);
-                        }
-                      }
-                    }
-                    else
-                      break;
-                  }
-                }
               }
             }
           }
@@ -7452,7 +7240,7 @@ label_3045:
             return;
           }
 
-          if (this.IsSkulled && this.IsSuained && this.IsStunned && this.SpellBar.Contains((ushort)90) && this.SpellBar.Contains((ushort)97) && this.SpellBar.Contains((ushort)101))
+          if (IsIncapacitated())
           {
             Thread.Sleep(200);
             return;
@@ -14982,13 +14770,15 @@ label_860:
           }
         }
 
-        if (SpeakCommandThread != null && SpeakCommandThread.IsAlive)
-        {
-          if (!SpeakCommandThread.Join(2000))
-          {
-            Console.WriteLine($"Speak command thread of {Name} did not exit in a timely manner, aborting.");
-          }
-        }
+        //if (SpeakCommandThread != null && SpeakCommandThread.IsAlive)
+        //{
+        //  if (!SpeakCommandThread.Join(2000))
+        //  {
+        //    Console.WriteLine($"Speak command thread of {Name} did not exit in a timely manner, aborting.");
+        //  }
+        //}
+
+        _cts.Cancel();
 
         if (EntityNameThread != null && EntityNameThread.IsAlive)
         {
@@ -20343,8 +20133,20 @@ label_860:
                 if (timeSpan.TotalSeconds < 0.8)
                   break;
               }
-              if (this.Tab.vactonlyinmobs && this.Mobbed || point1.DistanceFrom(this.ClientLocation) < num || this.IsSkulled || this.IsStunned || this.IsSuained || this.SpellBar.Contains((ushort) 90) || this.SpellBar.Contains((ushort) 97) || this.SpellBar.Contains((ushort) 101) || this.pause || this.pausewalk || this.donotwalk || this.disstopwalk || !this.Tab.vfollowplayer || this.Tab.vcastwhilefollow && this.castingoneline || !path2[index].Passable || Math.Abs(this.ClientLocation.X - path2[index].X) + Math.Abs(this.ClientLocation.Y - path2[index].Y) != 1)
+
+              if (this.Tab.vactonlyinmobs && this.Mobbed
+                || point1.DistanceFrom(this.ClientLocation) < num
+                || IsIncapacitated()
+                || this.pause
+                || this.pausewalk
+                || this.donotwalk
+                || this.disstopwalk
+                || !this.Tab.vfollowplayer
+                || this.Tab.vcastwhilefollow && this.castingoneline
+                || !path2[index].Passable
+                || Math.Abs(this.ClientLocation.X - path2[index].X) + Math.Abs(this.ClientLocation.Y - path2[index].Y) != 1)
                 break;
+
               Direction direction = this.ClientLocation - new Location(path2[index].X, path2[index].Y);
               if (direction == Direction.None)
                 break;
@@ -20376,8 +20178,27 @@ label_860:
                 if (timeSpan.TotalSeconds < 0.8 && this.DistanceFrom(characterByName.Location) > 7)
                   break;
               }
-              if (this.Tab.vactonlyinmobs && this.Mobbed || this.IsSurrounded(characterByName.Location) || characterByName.DistanceFrom(this.ClientLocation) < num || this.IsSkulled || this.IsStunned || this.IsSuained || this.SpellBar.Contains((ushort) 90) || this.SpellBar.Contains((ushort) 97) || this.SpellBar.Contains((ushort) 101) || this.pause || this.pausewalk || this.donotwalk || this.disstopwalk || !this.Tab.vfollowplayer || this.Tab.vcastwhilefollow && this.castingoneline && this.DistanceFrom(characterByName.Location) > 7 || !characterByName.IsOnScreen || characterByName == null || num == 0 || !path1[index].Passable || Math.Abs(this.ClientLocation.X - path1[index].X) + Math.Abs(this.ClientLocation.Y - path1[index].Y) != 1)
+
+              if (this.Tab.vactonlyinmobs
+                && this.Mobbed
+                || this.IsSurrounded(characterByName.Location)
+                || characterByName.DistanceFrom(this.ClientLocation) < num
+                || IsIncapacitated()
+                || this.pause
+                || this.pausewalk
+                || this.donotwalk
+                || this.disstopwalk
+                || !this.Tab.vfollowplayer
+                || this.Tab.vcastwhilefollow
+                && this.castingoneline
+                && this.DistanceFrom(characterByName.Location) > 7
+                || !characterByName.IsOnScreen
+                || characterByName == null
+                || num == 0
+                || !path1[index].Passable
+                || Math.Abs(this.ClientLocation.X - path1[index].X) + Math.Abs(this.ClientLocation.Y - path1[index].Y) != 1)
                 break;
+
               Direction direction = this.ClientLocation - new Location(path1[index].X, path1[index].Y);
               if (direction == Direction.None)
                 break;
@@ -20828,41 +20649,41 @@ label_24:
       }
     }
 
+
     public void AutoWalker(int x, int y)
     {
       if (this.MapInfo == null || !this.MapInfo.IsLoaded)
         return;
       this.MapInfo.UpdateBlocks(this);
-      Point[] path1 = this.MapInfo.FindPath(this.ClientLocation.X, this.ClientLocation.Y, x, y, false);
-      if (this.MapInfo.Number == 10056 && !this.Tab.vautowalker_locales.Equals("Mt Merry"))
-      {
-        if (this.ClientLocation.Y >= 13)
-          path1 = this.MapInfo.FindPath(this.ClientLocation.X, this.ClientLocation.Y, x, y, false);
-        else if (this.ClientLocation.X >= 10)
-          path1 = this.MapInfo.FindPath(this.ClientLocation.X, this.ClientLocation.Y, this.ClientLocation.X, this.RandomNumber(13, 15), false);
-      }
-      if (path1.Length == 0)
+      Point[] walkPath = this.MapInfo.FindPath(this.ClientLocation.X, this.ClientLocation.Y, x, y, false);
+
+      //
+      // Noam inn exception
+      //
+      //if (this.MapInfo.Number == 10056 && !this.Tab.vautowalker_locales.Equals("Mt Merry"))
+      //{
+      //  if (this.ClientLocation.Y >= 13)
+      //    path1 = this.MapInfo.FindPath(this.ClientLocation.X, this.ClientLocation.Y, x, y, false);
+      //  else if (this.ClientLocation.X >= 10)
+      //    path1 = this.MapInfo.FindPath(this.ClientLocation.X, this.ClientLocation.Y, this.ClientLocation.X, this.RandomNumber(13, 15), false);
+      //}
+
+
+      if (walkPath.Length == 0)
       {
         DateTime utcNow;
         TimeSpan timeSpan;
-        int num1;
         if (this.autowalkon && this.laststep != DateTime.MinValue)
         {
           utcNow = DateTime.UtcNow;
           timeSpan = utcNow.Subtract(this.laststep);
-          num1 = timeSpan.TotalSeconds > 5.0 ? 1 : 0;
-        }
-        else
-          num1 = 0;
-        if (num1 != 0)
-        {
+
           foreach (Player player in this.NearbyPlayer())
           {
             int num2;
             if (player != null && player.IsOnScreen && player.LastAction != DateTime.MinValue)
             {
-              utcNow = DateTime.UtcNow;
-              timeSpan = utcNow.Subtract(player.LastAction);
+              timeSpan = DateTime.UtcNow.Subtract(player.LastAction);
               if (timeSpan.TotalSeconds > 5.0 && Server.Alts.ContainsKey(player.Name))
               {
                 if (Server.Alts[player.Name].laststep != DateTime.MinValue)
@@ -20929,21 +20750,30 @@ label_20:
       }
       else
       {
-        if (path1.Length != 0 && ((IEnumerable<Point>) path1).Last<Point>().X == 0 && ((IEnumerable<Point>) path1).Last<Point>().Y == 0 || path1.Length == 0)
+        if (walkPath.Last().X == 0 && walkPath.Last().Y == 0)
           return;
-        for (int index = 0; index <= path1.Length; ++index)
+
+        foreach (var step in walkPath)
         {
-          if (this.castingoneline)
+          if (castingoneline)
           {
             Thread.Sleep(1000);
             break;
           }
-          if (!this.autowalkon || this.IsSkulled || this.IsStunned || this.IsSuained || this.SpellBar.Contains((ushort) 90) || this.SpellBar.Contains((ushort) 97) || this.SpellBar.Contains((ushort) 101) || this.pause || this.pausewalk || this.donotwalk || !path1[index].Passable && path1[index].X != x && path1[index].Y != y || Math.Abs(this.ClientLocation.X - path1[index].X) + Math.Abs(this.ClientLocation.Y - path1[index].Y) != 1)
+
+          if (!this.autowalkon 
+              || IsIncapacitated()
+              || this.pausewalk 
+              || this.donotwalk 
+              || !step.Passable && step.X != x && step.Y != y 
+              || Math.Abs(this.ClientLocation.X - step.X) + Math.Abs(this.ClientLocation.Y - step.Y) != 1)
             break;
-          this.Walk(this.ClientLocation - new Location(path1[index].X, path1[index].Y));
+
+          this.Walk(this.ClientLocation - new Location(step.X, step.Y));
           this.laststep = DateTime.UtcNow;
           this.lastaction = DateTime.UtcNow;
-          if (this.ClientLocation.X == x && this.ClientLocation.Y == y || this.ServerLocation.X == x && this.ServerLocation.Y == y)
+          if (this.ClientLocation.X == x && this.ClientLocation.Y == y 
+            || this.ServerLocation.X == x && this.ServerLocation.Y == y)
           {
             this.Refresh();
             Thread.Sleep(1200);
@@ -22400,6 +22230,8 @@ label_20:
       this.SkillSpellCaption("repair all");
     }
 
+
+    // Out of Order
     public void Red(Player e)
     {
       this.oktofollow = false;

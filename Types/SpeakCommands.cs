@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace Flintstones
 {
   internal class SpeakCommands
   {
     private Dictionary<string, Action<Client, string[]>> Commands { get; }
+
+    string DesktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+    Client _client;
 
     /// <summary>
     /// List of spells used to attack boss (Count/Countess)
@@ -49,8 +55,9 @@ namespace Flintstones
       { "thunder", "thunderfury" },
     };
 
-    public SpeakCommands()
+    public SpeakCommands(Client client)
     {
+      _client = client;
       Commands = new Dictionary<string, Action<Client, string[]>>(StringComparer.OrdinalIgnoreCase);
 
       // Register aliases for a command
@@ -77,6 +84,7 @@ namespace Flintstones
       Register(BuffIcons, "/icon");
       Register(MapID, "/map");
       Register(ItemID, "/item");
+      Register(Legend, "/legend", "/test");
 
       // Bank and inventory commands
       Register(DropItems, "/drop");
@@ -94,6 +102,7 @@ namespace Flintstones
       Register(Beggar, "/beg");
       Register(BuyFiorSrad, "/fiorsread");
       Register(BankList, "/banklist");
+      Register(BuyAllPots, "/balls");
 
       Register(SwitchMonsterForm, "/m");
       Register(RemoveMonsters, "/ram");
@@ -138,9 +147,39 @@ namespace Flintstones
       Register(YuleLogs, "/yule");
       Register(Frosty, "/frosty");
       Register(FilthyErbies, "/meg", "/filthyerbies");
+      Register(CountUpErbies, "/count+");
+      Register(CountDownErbies, "/count-");
+      Register(ShowCountedErbies, "/count");
+
 
     }
 
+    public void Run(CancellationToken token)
+    {
+      Console.WriteLine($"Speaking thread of {_client.Name} Started");
+
+      while (!token.IsCancellationRequested)
+      {
+        if (_client.SpeakMessage != string.Empty)
+        {
+          bool commandExecuted = false;
+          if (TryExecuteCommand(_client.SpeakMessage, _client))
+          {
+            commandExecuted = true;
+          }
+
+          _client.SpeakMessage = string.Empty;
+          if (!commandExecuted)
+          {
+            _client.SendMessage($"Command not implemented: {_client.SpeakMessage}", "pink");
+          }
+        }
+
+        Thread.Sleep(200);
+      }
+
+      Console.WriteLine($"Speak command Thread of {_client.Name} stopped");
+    }
 
     /// <summary>
     /// Registers aliases for a command script.
@@ -615,6 +654,25 @@ namespace Flintstones
     }
 
     /// <summary>
+    /// Buying potions
+    /// </summary>
+    /// <param name="client"></param>
+    /// <param name="args"></param>
+    public void BuyAllPots(Client client, string[] args)
+    {
+      if (!client.buyballpots)
+      {
+        client.SendMessage("Buying potions.");
+        client.buyballpots = true;
+      }
+      else
+      {
+        client.SendMessage("Stopped buying potions.");
+        client.buyballpots = false;
+      }
+    }
+
+    /// <summary>
     /// Switches the monster form  If no arguments are supplied, toggles the monster form state.
     /// </summary>
     /// <remarks>If the arguments are invalid or not provided, a message is sent to the client prompting for a
@@ -885,6 +943,23 @@ namespace Flintstones
     {
       int iconNr = client.Inventory[0].Icon - 32768;
       client.SendMessage($"{client.Inventory[0].Name}, Img#: {iconNr}, Pal#: {client.Inventory[0].IconPal}");
+    }
+
+    /// <summary>
+    /// Writes you legend marks to a file on your desktop.
+    /// </summary>
+    /// <param name="client"></param>
+    /// <param name="args"></param>
+    public void Legend(Client client, string[] args)
+    {
+      string filePath = Path.Combine(DesktopPath, $"{client.Name}-marks.txt");
+      StreamWriter streamWriter = new StreamWriter(filePath, true);
+      foreach (KeyValuePair<string, string> legendMark in client.LegendMarks)
+      {
+        if (legendMark.Key != null)
+          streamWriter.WriteLine(legendMark.Key + " _ " + legendMark.Value);
+      }
+      streamWriter.Close();
     }
 
     /// <summary>
@@ -2353,6 +2428,52 @@ namespace Flintstones
       client.Tab.autowalker_locales.SelectedItem = "Mt Merry";
       client.Tab.walklocaleslist.SelectedItem = "Mother Erbie";
       InitWalking(client);
+    }
+
+    /// <summary>
+    /// Something with counting filthy erbies.
+    /// </summary>
+    /// <param name="client"></param>
+    /// <param name="args"></param>
+    public void CountUpErbies(Client client, string[] args)
+    {
+      foreach (string groupMember in client.GroupMembers)
+      {
+        if (groupMember != string.Empty && client.GroupCounter.ContainsKey(groupMember.ToLower()))
+          ++client.GroupCounter[groupMember.ToLower()].FilthyErbieCount;
+      }
+
+    }
+    /// <summary>
+    /// Something with counting filthy erbies.
+    /// </summary>
+    /// <param name="client"></param>
+    /// <param name="args"></param>
+    public void CountDownErbies(Client client, string[] args)
+    {
+      foreach (string groupMember in client.GroupMembers)
+      {
+        if (groupMember != string.Empty && client.GroupCounter.ContainsKey(groupMember.ToLower()))
+          --client.GroupCounter[groupMember.ToLower()].FilthyErbieCount;
+      }
+
+    }
+    /// <summary>
+    /// Something with counting filthy erbies.
+    /// </summary>
+    /// <param name="client"></param>
+    /// <param name="args"></param>
+    public void ShowCountedErbies(Client client, string[] args)
+    {
+      string text = string.Empty;
+      foreach (string groupMember in client.GroupMembers)
+      {
+        if (groupMember != string.Empty && client.GroupCounter.ContainsKey(groupMember.ToLower()))
+          text = text + groupMember + " : " + client.GroupCounter[groupMember.ToLower()].FilthyErbieCount.ToString() + "\n";
+      }
+      if (text != string.Empty)
+        client.SendMessage(text, (byte)8);
+
     }
   }
 }

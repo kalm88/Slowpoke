@@ -235,7 +235,7 @@ namespace Flintstones
       this.ServerMessageHandlers[76] = new ServerMessageHandler(this.ServerMessage_0x4C_LogOffSignal);
       this.ServerMessageHandlers[96] = new ServerMessageHandler(this.ServerMessage_0x60_OK);
       this.ServerMessageHandlers[103] = new ServerMessageHandler(this.ServerMessage_0x67_WorldMapResponse);
-      this.RemoteEndPoint = (EndPoint) new IPEndPoint(IPAddress.Parse("52.88.55.94"), 2610);
+      this.RemoteEndPoint = new IPEndPoint(IPAddress.Parse("52.88.55.94"), 2610);
       this.ServerLoopThread = new Thread(new ThreadStart(this.ServerLoop));
       this.ServerLoopThread.Start();
       Server.TimedEvents = new Thread(new ThreadStart(this.EventsLoop));
@@ -976,7 +976,7 @@ namespace Flintstones
             Console.WriteLine("Invalid IP address.");
           }
         }
-        Thread.Sleep(1);
+        Thread.Sleep(15);
       }
     }
 
@@ -1671,12 +1671,12 @@ namespace Flintstones
         client.BotThread.Start();
       if (!client.EntityNameThread.IsAlive)
         client.EntityNameThread.Start();
-      if (!client.WalkThread.IsAlive)
-        client.WalkThread.Start();
+      //if (!client.WalkThread.IsAlive)
+      //  client.WalkThread.Start();
       if (!client.QuestsThread.IsAlive)
         client.QuestsThread.Start();
-      if (!client.SpeakCommandThread.IsAlive)
-        client.SpeakCommandThread.Start();
+      //if (!client.SpeakCommandThread.IsAlive)
+      //  client.SpeakCommandThread.Start();
       if (client.Tab.pigwalk.Checked && client.HasItem("Ability and Experience Gift 1") && client.ItemAmount("Ability and Experience Gift 1") == 5U)
       {
         client.SendMessage("Stopped walking, you're at max stack of gift 1s", "red");
@@ -2163,18 +2163,8 @@ label_53:
         string str4 = strArray[2].Substring(strArray[2].IndexOf("EXP:") + 4).Trim();
         string s = strArray[3].Substring(strArray[3].IndexOf("HP:") + 3).Trim();
         string str5 = strArray[4].Substring(strArray[4].IndexOf("Lev:") + 4).Trim();
-        string str6;
-        string str7;
-        if (str3 != "Giant Losgann")
-        {
-          str6 = strArray[5].Substring(strArray[5].IndexOf("ATTACK NATURE:") + 14).Trim();
-          str7 = strArray[6].Substring(strArray[6].IndexOf("DEFENSE NATURE:") + 15).Trim();
-        }
-        else
-        {
-          str6 = "Earth";
-          str7 = strArray[5].Substring(strArray[5].IndexOf("DEFENSE NATURE:") + 15).Trim();
-        }
+        string str6 = strArray[5].Substring(strArray[5].IndexOf("ATTACK NATURE:") + 14).Trim();
+        string str7 = strArray[6].Substring(strArray[6].IndexOf("DEFENSE NATURE:") + 15).Trim(); ;
         string str8 = client.MapInfo.Number.ToString();
         string str9 = client.MapInfo.Name;
         if (str9.StartsWith("Chadul"))
@@ -2354,6 +2344,7 @@ label_53:
           }
         }
       }
+
       if (Server.ignoreaislinglist.Count<string>() > 0)
       {
         foreach (string str12 in Server.ignoreaislinglist)

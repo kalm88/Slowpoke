@@ -22,6 +22,12 @@ namespace Flintstones
       this.Y = y;
     }
 
+    public Location(Point point)
+    {
+      this.X = point.X;
+      this.Y = point.Y;
+    }
+
     public int DistanceFrom(Location loc) => Math.Abs(this.X - loc.X) + Math.Abs(this.Y - loc.Y);
 
     public int DistanceFrom(int x, int y) => Math.Abs(this.X - x) + Math.Abs(this.Y - y);
